@@ -1,7 +1,7 @@
 module.exports = {
   devServer: {
     proxy: {
-      "/api": {
+      '/api': {
         // 要发送请求的服务器地址
         target: 'ssss',
         pathRewrite: {

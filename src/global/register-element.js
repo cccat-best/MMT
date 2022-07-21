@@ -1,7 +1,4 @@
-import {
-  Button,
-  Table
-} from 'element-ui'
+import { Button, Table } from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 const components = [Button, Table]
 export default function (Vue) {
