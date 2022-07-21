@@ -16,7 +16,7 @@ const routes = [{
   },
   {
     path: "/home",
-    component: () => import("../views/home/home.vue")
+    component: () => import("../views/home/home.vue"),
   }
 ]
 const router = new VueRouter({
