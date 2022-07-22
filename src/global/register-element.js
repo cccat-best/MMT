@@ -11,7 +11,10 @@ import {
   MenuItem,
   MenuItemGroup,
   Row,
-  Col
+  Col,
+  Image,
+  Input,
+  Form
 } from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 const components = [
@@ -27,7 +30,10 @@ const components = [
   MenuItem,
   MenuItemGroup,
   Row,
-  Col
+  Col,
+  Image,
+  Input,
+  Form
 ]
 export default function (Vue) {
   for (const component of components) {
