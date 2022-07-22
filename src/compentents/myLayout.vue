@@ -6,6 +6,7 @@
         :style="'background-color:' + asideBgColor + ';'"
         v-if="isAside"
       >
+        <slot name="asideTitle"></slot>
         <el-menu
           :default-active="defaultActiveItem"
           class="el-menu-vertical-demo"
