@@ -14,7 +14,7 @@ import {
   Col,
   DatePicker,
   TimeSelect,
-  TimePicker,
+  TimePicker
 } from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 const components = [
@@ -33,7 +33,7 @@ const components = [
   Col,
   DatePicker,
   TimeSelect,
-  TimePicker,
+  TimePicker
 ]
 export default function (Vue) {
   for (const component of components) {

@@ -1,15 +1,9 @@
 <template>
-  <div>
-    部门问题
-  </div>
+  <div>部门问题</div>
 </template>
 
 <script>
-export default {
-
-}
+export default {}
 </script>
 
-<style>
-
-</style>
+<style></style>

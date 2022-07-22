@@ -28,18 +28,18 @@
 export default {
   data() {
     return {
-       value1: '',
+      value1: ''
     }
   },
   methods: {
     getDate() {
-      console.log(this.value1);
+      console.log(this.value1)
     }
-  },
+  }
 }
 </script>
 
-<style lang='less'>
+<style lang="less">
 .time-content {
   .time-title {
     color: #838383;
@@ -63,7 +63,7 @@ export default {
     display: flex;
     .time-select {
       width: 80%;
-    margin-top: 60px;
+      margin-top: 60px;
     }
   }
 }

@@ -8,12 +8,10 @@
 </template>
 
 <script>
-export default {
-
-}
+export default {}
 </script>
 
-<style lang='less'>
+<style lang="less">
 .baseContent {
   .baseTitle {
     .mainTitle {
