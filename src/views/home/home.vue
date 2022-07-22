@@ -7,7 +7,9 @@
       :menuItemList="menuList"
     >
       <template slot="header">hello, 我是头部插槽 </template>
-      >
+      <template slot="asideTitle">
+        <div class="menuTitle">mmt</div>
+      </template>
       <template slot="main">
         <router-view></router-view>
       </template>
@@ -68,5 +70,12 @@ export default {
 <style lang="less" scoped>
 .home {
   height: 100%;
+}
+.menuTitle {
+  color: #d3dce6;
+  font-size: 28px;
+  height: 60px;
+  line-height: 60px;
+  text-align: center;
 }
 </style>
