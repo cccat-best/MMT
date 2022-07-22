@@ -4,7 +4,7 @@ import router from './router'
 import store from './store'
 import registerElement from './global/register-element'
 import './global/global.less'
-;('./global/register-element')
+import './global/iconfont.css'
 Vue.config.productionTip = false
 // 注册Element
 Vue.use(registerElement)
