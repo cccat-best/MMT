@@ -20,7 +20,10 @@
         </div>
         <div
           :class="['aside-item', asideShow == 3 ? 'asideactive' : '']"
-          @click="asideShow = 3;gotoPross()"
+          @click="
+            asideShow = 3
+            gotoPross()
+          "
         >
           <i class="el-icon-takeaway-box aside-item-icon"></i>
           面试流程设置
@@ -63,9 +66,9 @@ export default {
   },
   methods: {
     gotoPross() {
-         this.$router.push({
-        path: "/process",
-      });
+      this.$router.push({
+        path: '/process'
+      })
     }
   }
 }
