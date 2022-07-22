@@ -9,7 +9,6 @@
       <template slot="header">hello, 我是头部插槽 </template>
       >
       <template slot="main">
-        我是中部插槽
         <router-view></router-view>
       </template>
     </my-layout-vue>
@@ -19,6 +18,7 @@
 <script>
 import myLayoutVue from '../../compentents/myLayout.vue'
 export default {
+  name: 'home',
   components: {
     myLayoutVue
   },
@@ -44,7 +44,7 @@ export default {
           iconClass: '',
           id: '3',
           title: '面试安排',
-          pagePath: '/login'
+          pagePath: '/home/arrangement'
         },
         {
           iconClass: '',

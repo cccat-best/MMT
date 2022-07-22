@@ -1,4 +1,5 @@
 import {
+  Progress,
   Button,
   Table,
   Container,
@@ -15,6 +16,7 @@ import {
 } from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 const components = [
+  Progress,
   Button,
   Table,
   Container,
