@@ -8,7 +8,7 @@
     >
       <template slot="header">hello, 我是头部插槽 </template>
       <template slot="asideTitle">
-        <div class="menuTitle">mmt</div>
+        <div class="menuTitle">MMT</div>
       </template>
       <template slot="main">
         <router-view></router-view>
