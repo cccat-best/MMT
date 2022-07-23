@@ -4,10 +4,18 @@ import router from './router'
 import store from './store'
 import registerElement from './global/register-element'
 import './global/global.less'
-import './global/iconfont.css'
-Vue.config.productionTip = false
+;('./global/register-element')
+
 // 注册Element
 Vue.use(registerElement)
+
+import {} from 'element-ui'
+
+import axios from 'axios'
+import VueAxios from 'vue-axios'
+
+Vue.use(VueAxios, axios)
+Vue.config.productionTip = false
 new Vue({
   router,
   store,
