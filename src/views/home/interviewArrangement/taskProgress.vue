@@ -1,8 +1,11 @@
 <template>
   <div>
+    <!-- 环形图 -->
     <div class="figure">
       <el-progress
         type="circle"
+        :height="160"
+        :width="160"
         :percentage="percentage"
         :format="format"
       ></el-progress>
@@ -18,7 +21,7 @@ export default {
     return {
       done: 388,
       total: 500,
-      percentage: ''
+      percentage: 0
     }
   },
   methods: {
@@ -29,3 +32,8 @@ export default {
   }
 }
 </script>
+<style scoped>
+.figure {
+  margin-bottom: 20px;
+}
+</style>

@@ -1,4 +1,5 @@
 import {
+  Input,
   Progress,
   Button,
   Table,
@@ -12,13 +13,17 @@ import {
   MenuItem,
   MenuItemGroup,
   Row,
-  Col
+  Col,
+  TableColumn,
+  Pagination
 } from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 const components = [
+  Input,
   Progress,
   Button,
   Table,
+  TableColumn,
   Container,
   Header,
   Aside,
@@ -29,7 +34,8 @@ const components = [
   MenuItem,
   MenuItemGroup,
   Row,
-  Col
+  Col,
+  Pagination
 ]
 export default function (Vue) {
   for (const component of components) {
