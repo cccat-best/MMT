@@ -1,4 +1,6 @@
 import {
+  TimePicker,
+  DatePicker,
   Input,
   Progress,
   Button,
@@ -19,6 +21,8 @@ import {
 } from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 const components = [
+  TimePicker,
+  DatePicker,
   Input,
   Progress,
   Button,

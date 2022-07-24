@@ -32,7 +32,7 @@
           "
           height="50%"
           border
-          style="width: 600px"
+          style="width: 600px; border-radius: 8px"
           :row-style="{ height: 0 + 'px' }"
           :cell-style="{ padding: 0 + 'px' }"
         >
@@ -193,7 +193,7 @@ export default {
   height: 100%;
 }
 .dingwei {
-  margin-top: 30px;
+  margin-top: 40px;
   display: flex;
   justify-content: left;
 }
@@ -208,6 +208,7 @@ export default {
   padding: 10px 15px 10px 15px;
   border: solid gray 0.5px;
   text-decoration: none;
+  border-color: rgb(192, 196, 204);
 }
 
 .btn:focus {

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="dingwei">
     <!-- 环形图 -->
     <div class="figure">
       <el-progress
@@ -35,5 +35,8 @@ export default {
 <style scoped>
 .figure {
   margin-bottom: 20px;
+}
+.dingwei {
+  margin-top: 40px;
 }
 </style>

@@ -37,9 +37,9 @@ export default {
 }
 .right {
   height: 100%;
-  display: flex;
+  /* display: flex;
   flex-direction: column;
   justify-content: space-around;
-  align-items: center;
+  align-items: center; */
 }
 </style>
