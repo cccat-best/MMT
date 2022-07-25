@@ -32,7 +32,7 @@
       </svg>
     </span>
     <br />
-    <button @click="hello">hello</button>
+    <button @click="hello">验证发请求是否正常</button>
   </el-dialog>
 </template>
 
@@ -91,11 +91,12 @@ export default {
     },
     // 复制成功
     onCopy: function (e) {
-      console.log('成功复制： ' + e.text)
+      this.$message.success('成功复制： '+e.text)
+      // console.log(e)
     },
     // 复制失败
-    onError: function (e) {
-      console.log('复制失败： ' + e)
+    onError: function () {
+      this.$message.error('复制失败' )
     }
   }
 }
