@@ -3,7 +3,7 @@
     <!-- 面试管理栏 -->
     <div class="top-content">
       <i class="el-icon-takeaway-box top-content-icon"></i>
-        面试管理
+      面试管理
     </div>
     <!-- 主题区域 -->
     <div class="main-content">
@@ -11,48 +11,63 @@
       <div class="nav">
         <div
           :class="['common-nav', showactive == 1 ? 'active' : '']"
-          @click="showactive = 1;gotoSign()"
+          @click="
+            showactive = 1
+            gotoSign()
+          "
         >
           报名
         </div>
 
         <div
           :class="['common-nav', showactive == 2 ? 'active' : '']"
-          @click="showactive = 2;gotoInterview1()"
+          @click="
+            showactive = 2
+            gotoInterview1()
+          "
         >
           一面
         </div>
 
         <div
           :class="['common-nav', showactive == 3 ? 'active' : '']"
-          @click="showactive = 3;gotoInterview2()"
+          @click="
+            showactive = 3
+            gotoInterview2()
+          "
         >
           二面
         </div>
 
         <div
           :class="['common-nav', showactive == 4 ? 'active' : '']"
-          @click="showactive = 4;gotoInterview3()"
+          @click="
+            showactive = 4
+            gotoInterview3()
+          "
           v-show="changePage >= 3"
         >
           三面
           <!-- 删除按钮 -->
           <i
             :class="['el-icon-remove', 'icon-remove']"
-            @click="removeInterviewPage"
+            @click="removeInterviewPage3"
           ></i>
         </div>
 
         <div
           :class="['common-nav', showactive == 5 ? 'active' : '']"
-          @click="showactive = 5;gotoInterview4()"
+          @click="
+            showactive = 5
+            gotoInterview4()
+          "
           v-show="changePage === 4"
         >
           四面
           <!-- 删除按钮 -->
           <i
             :class="['el-icon-remove', 'icon-remove']"
-            @click="removeInterviewPage"
+            @click="removeInterviewPage4"
           ></i>
         </div>
 
@@ -71,50 +86,62 @@ export default {
     return {
       showactive: 1,
       changePage: 3,
-      tabPosition: 'left'
+      tabPosition: 'left',
+      //当第四轮面试存在不允许删除第三轮
+      isDelpage3: true
     }
   },
   methods: {
     //是否删除面试
-    removeInterviewPage() {
-        if(confirm('确认要删除此轮面试吗')) {
-          this.changePage--
-        }
-      },
+    removeInterviewPage3() {
+      if (confirm('确认要删除此轮面试吗') && this.isDelpage3) {
+        this.changePage--
+        this.showactive--
+        console.log(this.showactive);
+      }
+    },
+    removeInterviewPage4() {
+      if (confirm('确认要删除此轮面试吗') ) {
+        this.changePage--
+        this.showactive--
+        console.log(this.showactive);
+      }
+    },
     //导航切换
     gotoSign() {
       this.$router.push({
-        path:'/signup'
+        path: '/signup'
       })
     },
-    gotoInterview1(){
+    gotoInterview1() {
       this.$router.push({
-        path:'/interview1'
+        path: '/interview1'
       })
     },
-    gotoInterview2(){
+    gotoInterview2() {
       this.$router.push({
-        path:'/interview2'
+        path: '/interview2'
       })
     },
-    gotoInterview3(){
+    gotoInterview3() {
       this.$router.push({
-        path:'/interview3'
+        path: '/interview3'
       })
     },
-    gotoInterview4(){
+    gotoInterview4() {
       this.$router.push({
-        path:'/interview4'
+        path: '/interview4'
       })
-    },
+    }
   },
 }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 .content {
-  height: 100%;
-  width: 100%;
+  // height: 100%;
+  overflow: hidden;
+  // width: 100%;
   background-color: #e9eef3;
   .top-content {
     display: flex;
@@ -124,7 +151,7 @@ export default {
     line-height: 14px;
     color: #f57d2d;
     .top-content-icon {
-      margin-right: 10px ;
+      margin-right: 10px;
     }
     .top-title {
       text-align: center;
@@ -133,13 +160,13 @@ export default {
     }
   }
   .main-content {
-    height: 95%;
+    height: 115%;
     width: 100%;
     background-color: white;
     border: 2px solid #969698;
-    
+
     margin-top: 5px;
-    
+
     .nav {
       width: 100%;
       height: 70px;
@@ -166,7 +193,7 @@ export default {
           position: absolute;
           top: 17px;
           right: 7px;
-          color:#3080ff;
+          color: #3080ff;
         }
       }
       .add {

@@ -17,15 +17,15 @@ const routes = [
   },
   {
     path: '/home',
-    component: () => import('../views/home/home.vue'),
+    component: () => import('../views/home/home.vue')
   },
   {
-    path:'/superAdmin',
-    component: () => import('../views/home/superAdmin.vue'),
+    path: '/superAdmin',
+    component: () => import('../views/superAdmin/superAdmin.vue'),
     children: [
       {
         path: '/process',
-        component: () => import('../views/home/interviewProcess/main.vue'),
+        component: () => import('../views/superAdmin/interviewProcess/main.vue'),
         children: [
           {
             path: '/',
@@ -35,57 +35,35 @@ const routes = [
             path: '/signup',
             component: () =>
               import(
-                '../views/home/interviewProcess/signupOrInterview/signup.vue'
+                '../views/superAdmin/interviewProcess/signupOrInterview/signup.vue'
               ),
-            children:[
-              {
-                path:'/',
-                redirect:'/time'
-              },
-              {
-                path:'/time',
-                component: () => import('../views/home/interviewProcess/signupOrInterview/signupContent/selectTime.vue')
-              },
-              {
-                path:'/base',
-                component: () => import('../views/home/interviewProcess/signupOrInterview/signupContent/baseQuestion.vue')
-              },
-              {
-                path:'/section',
-                component: () => import('../views/home/interviewProcess/signupOrInterview/signupContent/sectoralissues.vue')
-              },
-              {
-                path:'/synth',
-                component: () => import('../views/home/interviewProcess/signupOrInterview/signupContent/synthesisProblem.vue')
-              },
-            ]
           },
           {
             path: '/interview1',
             component: () =>
               import(
-                '../views/home/interviewProcess/signupOrInterview/interview1.vue'
+                '../views/superAdmin/interviewProcess/signupOrInterview/interview1.vue'
               )
           },
           {
             path: '/interview2',
             component: () =>
               import(
-                '../views/home/interviewProcess/signupOrInterview/interview2.vue'
+                '../views/superAdmin/interviewProcess/signupOrInterview/interview2.vue'
               )
           },
           {
             path: '/interview3',
             component: () =>
               import(
-                '../views/home/interviewProcess/signupOrInterview/interview3.vue'
+                '../views/superAdmin/interviewProcess/signupOrInterview/interview3.vue'
               )
           },
           {
             path: '/interview4',
             component: () =>
               import(
-                '../views/home/interviewProcess/signupOrInterview/interview4.vue'
+                '../views/superAdmin/interviewProcess/signupOrInterview/interview4.vue'
               )
           }
         ]

@@ -122,6 +122,7 @@ export default {
 }
 
 .el-main {
+  // overflow: hidden;
   background-color: #e9eef3;
   color: #333;
   text-align: center;

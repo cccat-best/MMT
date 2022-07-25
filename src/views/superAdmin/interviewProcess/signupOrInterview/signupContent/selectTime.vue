@@ -16,7 +16,6 @@
           end-placeholder="结束日期"
           class="time-select"
           value-format="yyyy-MM-dd hh:mm:ss"
-          @change="getDate"
         >
         </el-date-picker>
       </div>
@@ -24,24 +23,27 @@
   </div>
 </template>
 
-<script>
+<script >
+import {mapMutations} from 'vuex'
 export default {
   data() {
     return {
-       value1: '',
+      value1: ''
     }
   },
   methods: {
-    getDate() {
-      console.log(this.value1);
+    ...mapMutations('problem',['updateTime']),
+    packge() {
+      this.updateTime(this.value1)
     }
-  },
+  }
 }
 </script>
 
-<style lang='less'>
+<style lang="less" scoped>
 .time-content {
   .time-title {
+    margin-top: 10px;
     color: #838383;
     display: flex;
     flex-direction: column;
@@ -63,7 +65,7 @@ export default {
     display: flex;
     .time-select {
       width: 80%;
-    margin-top: 60px;
+      margin-top: 60px;
     }
   }
 }
