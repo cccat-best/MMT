@@ -27,7 +27,11 @@ const routes = [
   },
   {
     path: '/home',
-    component: () => import('../views/home/home.vue'),
+    component: () => import('../views/home/home.vue')
+  },
+  {
+    path: '/superAdmin',
+    component: () => import('../views/superAdmin/superAdmin.vue'),
     children: [
       {
         path: '/process',
@@ -42,7 +46,41 @@ const routes = [
             component: () =>
               import(
                 '../views/home/interviewProcess/signupOrInterview/signup.vue'
-              )
+              ),
+            children: [
+              {
+                path: '/',
+                redirect: '/time'
+              },
+              {
+                path: '/time',
+                component: () =>
+                  import(
+                    '../views/home/interviewProcess/signupOrInterview/signupContent/selectTime.vue'
+                  )
+              },
+              {
+                path: '/base',
+                component: () =>
+                  import(
+                    '../views/home/interviewProcess/signupOrInterview/signupContent/baseQuestion.vue'
+                  )
+              },
+              {
+                path: '/section',
+                component: () =>
+                  import(
+                    '../views/home/interviewProcess/signupOrInterview/signupContent/sectoralissues.vue'
+                  )
+              },
+              {
+                path: '/synth',
+                component: () =>
+                  import(
+                    '../views/home/interviewProcess/signupOrInterview/signupContent/synthesisProblem.vue'
+                  )
+              }
+            ]
           },
           {
             path: '/interview1',

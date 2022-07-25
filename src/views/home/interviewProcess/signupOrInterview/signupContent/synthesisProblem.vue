@@ -1,5 +1,5 @@
 <template>
-  <div>home</div>
+  <div>综合问题</div>
 </template>
 
 <script>

@@ -24,7 +24,10 @@ import {
   Tag,
   Form,
   FormItem,
-  RadioGroup
+  RadioGroup,
+  DatePicker,
+  TimeSelect,
+  TimePicker
 } from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 const components = [
@@ -51,7 +54,10 @@ const components = [
   Tag,
   Form,
   FormItem,
-  RadioGroup
+  RadioGroup,
+  DatePicker,
+  TimeSelect,
+  TimePicker
 ]
 export default function (Vue) {
   for (const component of components) {
