@@ -91,12 +91,12 @@ export default {
     },
     // 复制成功
     onCopy: function (e) {
-      this.$message.success('成功复制： '+e.text)
+      this.$message.success('成功复制： ' + e.text)
       // console.log(e)
     },
     // 复制失败
     onError: function () {
-      this.$message.error('复制失败' )
+      this.$message.error('复制失败')
     }
   }
 }
