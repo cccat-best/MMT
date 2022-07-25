@@ -25,7 +25,8 @@ const routes = [
     children: [
       {
         path: '/process',
-        component: () => import('../views/home/interviewProcess/main.vue'),
+        component: () =>
+          import('../views/superAdmin/interviewProcess/main.vue'),
         children: [
           {
             path: '/',
@@ -35,69 +36,35 @@ const routes = [
             path: '/signup',
             component: () =>
               import(
-                '../views/home/interviewProcess/signupOrInterview/signup.vue'
-              ),
-            children: [
-              {
-                path: '/',
-                redirect: '/time'
-              },
-              {
-                path: '/time',
-                component: () =>
-                  import(
-                    '../views/home/interviewProcess/signupOrInterview/signupContent/selectTime.vue'
-                  )
-              },
-              {
-                path: '/base',
-                component: () =>
-                  import(
-                    '../views/home/interviewProcess/signupOrInterview/signupContent/baseQuestion.vue'
-                  )
-              },
-              {
-                path: '/section',
-                component: () =>
-                  import(
-                    '../views/home/interviewProcess/signupOrInterview/signupContent/sectoralissues.vue'
-                  )
-              },
-              {
-                path: '/synth',
-                component: () =>
-                  import(
-                    '../views/home/interviewProcess/signupOrInterview/signupContent/synthesisProblem.vue'
-                  )
-              }
-            ]
+                '../views/superAdmin/interviewProcess/signupOrInterview/signup.vue'
+              )
           },
           {
             path: '/interview1',
             component: () =>
               import(
-                '../views/home/interviewProcess/signupOrInterview/interview1.vue'
+                '../views/superAdmin/interviewProcess/signupOrInterview/interview1.vue'
               )
           },
           {
             path: '/interview2',
             component: () =>
               import(
-                '../views/home/interviewProcess/signupOrInterview/interview2.vue'
+                '../views/superAdmin/interviewProcess/signupOrInterview/interview2.vue'
               )
           },
           {
             path: '/interview3',
             component: () =>
               import(
-                '../views/home/interviewProcess/signupOrInterview/interview3.vue'
+                '../views/superAdmin/interviewProcess/signupOrInterview/interview3.vue'
               )
           },
           {
             path: '/interview4',
             component: () =>
               import(
-                '../views/home/interviewProcess/signupOrInterview/interview4.vue'
+                '../views/superAdmin/interviewProcess/signupOrInterview/interview4.vue'
               )
           }
         ]

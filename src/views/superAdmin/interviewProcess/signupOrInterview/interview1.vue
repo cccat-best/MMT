@@ -1,9 +1,10 @@
 <template>
-  <div>综合问题</div>
+  <div class="vi"></div>
 </template>
 
 <script>
 export default {}
 </script>
 
-<style></style>
+<style>
+</style>
