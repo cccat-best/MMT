@@ -65,7 +65,7 @@ export default {
   name: 'interviewNotice',
   data() {
     return {
-      name: '卢小布',
+      name: '猫猫',
       bumen: '学生事务中心',
       order: '一面',
       date: '',
@@ -93,6 +93,22 @@ export default {
       }
       this.timeValue0 = hh + ':' + mm
     }
+  },
+  mounted() {
+    this.$bus.$on('order', (data) => {
+      this.order = data
+    }),
+      this.$bus.$on('selectionName', (data) => {
+        this.name = data
+      }),
+      this.$bus.$on('selectionBumen', (data) => {
+        this.bumen = data
+      })
+  },
+  beforeCreate() {
+    this.$bus.$off('order')
+    this.$bus.$off('selectionName')
+    this.$bus.$off('selectionBumen')
   }
 }
 </script>

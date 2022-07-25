@@ -19,8 +19,8 @@ export default {
   name: 'taskProgress',
   data() {
     return {
-      done: 388,
-      total: 500,
+      done: 10,
+      total: 11,
       percentage: 0
     }
   },
