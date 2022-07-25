@@ -47,12 +47,12 @@
   </div>
 </template>
 <script>
- import baseQues from './signupContent/baseQuestion.vue'
+import baseQues from './signupContent/baseQuestion.vue'
 import selectTime from './signupContent/selectTime.vue'
 import synth from './signupContent/synthesisProblem.vue'
 import sectionQues from './signupContent/sectoralissues.vue'
 export default {
-  components: {  selectTime,baseQues,synth,sectionQues},
+  components: { selectTime, baseQues, synth, sectionQues },
   data() {
     return {
       showactive: 1
@@ -64,16 +64,16 @@ export default {
       this.showactive = 1
     }
   },
-  watch:{
+  watch: {
     //四个问题切换时 会暂存用户设置
-    showactive(newv,oldv) {
-      if(oldv == 1) {
+    showactive(newv, oldv) {
+      if (oldv == 1) {
         this.$refs.time.packge()
       }
-      if(oldv == 3) {
+      if (oldv == 3) {
         this.$refs.base.packgeBaseQue()
       }
-      if(oldv == 4) {
+      if (oldv == 4) {
         this.$refs.section.packgeSectionQue()
       }
     }
@@ -126,7 +126,6 @@ export default {
   }
   .right {
     width: 70%;
-
   }
 }
 </style>

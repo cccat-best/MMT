@@ -23,9 +23,15 @@
         </div>
       </div>
       <!-- 部门&&问题展示 -->
-      <div class="section-que-content" v-for="(item,i) in departmentList" :key="'d'+i">
+      <div
+        class="section-que-content"
+        v-for="(item, i) in departmentList"
+        :key="'d' + i"
+      >
         <!-- 部门名称 -->
-        <div class="section-que-content-title">部门：{{item.departmentName}}</div>
+        <div class="section-que-content-title">
+          部门：{{ item.departmentName }}
+        </div>
         <!-- 问题展示区&&添加区 -->
         <addQues :departmentId="item.departmentId" ref="a"></addQues>
       </div>
@@ -35,9 +41,9 @@
 
 <script>
 import addQues from './addQues.vue'
-import  {mapMutations} from 'vuex'
+import { mapMutations } from 'vuex'
 export default {
-  components:{addQues},
+  components: { addQues },
   data() {
     return {
       //最多可报名部门数
@@ -50,7 +56,7 @@ export default {
         { departmentId: 3, departmentName: '问题部' }
       ],
       //如果部门数为1不显示调剂按钮
-      departmentCount: 0,
+      departmentCount: 0
     }
   },
   mounted() {
@@ -58,18 +64,17 @@ export default {
     this.departmentCount = this.departmentList.length
   },
   methods: {
-    ...mapMutations('problem',['updateMaxDepartment','updateAllocated']),
+    ...mapMutations('problem', ['updateMaxDepartment', 'updateAllocated']),
     packgeSectionQue() {
       this.updateMaxDepartment(this.maxDepartment)
       this.updateAllocated(this.allocated)
       //保存问题到vuex
-      for(let i =0 ;i<this.$refs.a.length;i++) {
+      for (let i = 0; i < this.$refs.a.length; i++) {
         this.$refs.a[i].saveToVuex()
       }
       //  console.log(6);
     }
-  },
-
+  }
 }
 </script>
 
@@ -106,7 +111,6 @@ export default {
         display: flex;
         font-size: 20px;
       }
-
     }
   }
 }

@@ -62,8 +62,19 @@
           ></i>
           <span class="freeView-name">{{ item2.description }}</span>
           <select style="width: 166.4px">
-            <option selected="selected" disabled="disabled" style='display: none' value=''></option>
-            <option v-for="(item3,index3) in item2.option" :key="'op'+index3" v-show="item3 != null">{{item3}}</option>
+            <option
+              selected="selected"
+              disabled="disabled"
+              style="display: none"
+              value=""
+            ></option>
+            <option
+              v-for="(item3, index3) in item2.option"
+              :key="'op' + index3"
+              v-show="item3 != null"
+            >
+              {{ item3 }}
+            </option>
           </select>
         </div>
       </div>
@@ -103,26 +114,28 @@
               <el-button size="mini" type="text" @click="visible = false"
                 >取消</el-button
               >
-              <el-button
-                type="primary"
-                size="mini"
-                @click="
-                  addTextQues()
-                "
+              <el-button type="primary" size="mini" @click="addTextQues()"
                 >确定</el-button
               >
             </div>
-            <el-button slot="reference" class="base-add-botton" style="line-height:5px">自定义填空</el-button>
+            <el-button
+              slot="reference"
+              class="base-add-botton"
+              style="line-height: 5px"
+              >自定义填空</el-button
+            >
           </el-popover>
           <!-- 自定义选择 -->
           <el-popover
-          ref="baseAddPopover"
+            ref="baseAddPopover"
             placement="top-start"
             width="300"
             v-model="visible1"
             style="margin-left: 30px"
-
-            :popper-options="{ boundariesElement: 'viewport', removeOnDestroy: true }"
+            :popper-options="{
+              boundariesElement: 'viewport',
+              removeOnDestroy: true
+            }"
           >
             <p>添加自定义问题描述</p>
             <el-input
@@ -143,7 +156,7 @@
             >
               <el-form-item
                 v-for="(domain, index) in form.domains"
-                :label="'选项' + (index+1)"
+                :label="'选项' + (index + 1)"
                 :key="domain.key"
                 :prop="'domains.' + index + '.value'"
               >
@@ -157,22 +170,22 @@
                   >
                 </div>
               </el-form-item>
-              <el-button @click="addDomain" >添加选项</el-button>
+              <el-button @click="addDomain">添加选项</el-button>
             </el-form>
             <div style="text-align: right; margin: 0">
               <el-button size="mini" type="text" @click="visible1 = false"
                 >取消</el-button
               >
-              <el-button
-                type="primary"
-                size="mini"
-                @click="
-                  addChoseList()
-                "
+              <el-button type="primary" size="mini" @click="addChoseList()"
                 >确定</el-button
               >
             </div>
-            <el-button slot="reference" class="base-add-botton" style="line-height:5px">自定义选择</el-button>
+            <el-button
+              slot="reference"
+              class="base-add-botton"
+              style="line-height: 5px"
+              >自定义选择</el-button
+            >
           </el-popover>
         </div>
       </div>
@@ -181,7 +194,7 @@
 </template>
 
 <script scoped>
-import {mapMutations} from 'vuex'
+import { mapMutations } from 'vuex'
 export default {
   data() {
     return {
@@ -210,46 +223,46 @@ export default {
       mustList: [
         {
           isShow: true,
-          description: '姓名',
+          description: '姓名'
         },
         {
           isShow: true,
-          description: '学号',
+          description: '学号'
         },
         {
           isShow: true,
-          description: '手机号',
+          description: '手机号'
         }
       ],
       //预设问题
       preList: [
         {
           isShow: true,
-          description: '班级',
+          description: '班级'
         },
         {
           isShow: true,
-          description: '学院',
+          description: '学院'
         },
         {
           isShow: true,
-          description: '专业',
+          description: '专业'
         },
         {
           isShow: true,
-          description: '性别',
+          description: '性别'
         },
         {
           isShow: true,
-          description: 'QQ',
+          description: 'QQ'
         },
         {
           isShow: false,
-          description: '生日',
+          description: '生日'
         },
         {
           isShow: false,
-          description: '身高',
+          description: '身高'
         }
       ],
       //自定义文本问题
@@ -259,7 +272,10 @@ export default {
     }
   },
   methods: {
-    ...mapMutations('problem',['updateGeneralQuestions','updateQuestionsList']),
+    ...mapMutations('problem', [
+      'updateGeneralQuestions',
+      'updateQuestionsList'
+    ]),
     //删除自定义文本问题
     removeTextChoose(item) {
       this.textList = this.textList.filter(
@@ -324,9 +340,9 @@ export default {
       if (this.text1 == '') {
         return this.$message.error('问题不能为空')
       }
-      for(let i=0;i<this.form.domains.length;i++) {
-        if(this.form.domains[i].value == '')
-        return this.$message.error('选项不能为空')
+      for (let i = 0; i < this.form.domains.length; i++) {
+        if (this.form.domains[i].value == '')
+          return this.$message.error('选项不能为空')
       }
       //如果找不到这个问题 避免重复问题
       if (!this.chooseList.find((p) => p.description === this.text1)) {
@@ -389,10 +405,12 @@ export default {
     packgeBaseQue() {
       let generalQuestions = [] //预设问题选择情况
       //过滤是否选中此预设问题
-      this.preList.filter(p => p.isShow).forEach(p => {
-        generalQuestions.push(p.description)
-      })
-      let questionsList = [...this.textList,...this.chooseList]
+      this.preList
+        .filter((p) => p.isShow)
+        .forEach((p) => {
+          generalQuestions.push(p.description)
+        })
+      let questionsList = [...this.textList, ...this.chooseList]
       this.updateGeneralQuestions(generalQuestions)
       this.updateQuestionsList(questionsList)
     }
@@ -455,7 +473,7 @@ export default {
         .choose-name {
           margin-left: 3px;
           margin-right: 5px;
-          width:50px
+          width: 50px;
         }
       }
     }

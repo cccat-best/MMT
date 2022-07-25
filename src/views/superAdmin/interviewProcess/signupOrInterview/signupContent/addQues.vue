@@ -123,7 +123,7 @@
 </template>
 
 <script>
-import {mapMutations} from 'vuex'
+import { mapMutations } from 'vuex'
 export default {
   data() {
     return {
@@ -152,7 +152,10 @@ export default {
     }
   },
   methods: {
-      ...mapMutations('problem',['updateDepartmentQuestionsList','removeDepartmentQuestionsList']),
+    ...mapMutations('problem', [
+      'updateDepartmentQuestionsList',
+      'removeDepartmentQuestionsList'
+    ]),
     //动态增减选项
     removeDomain(item) {
       if (this.form.domains.length === 2) {
@@ -188,7 +191,7 @@ export default {
       ) {
         let que = {
           // 部门id
-          departmentId:this.departmentId,
+          departmentId: this.departmentId,
           //是单选
           selection: true,
           description: this.text2
@@ -253,7 +256,7 @@ export default {
       ) {
         let que = {
           // 部门id
-          departmentId:this.departmentId,
+          departmentId: this.departmentId,
           //不是选择
           selection: false,
           description: this.text1,
@@ -285,7 +288,6 @@ export default {
     },
     // 删除问题
     removeItem(item1) {
-
       this.departmentQuestionsList = this.departmentQuestionsList.filter(
         (p) => p.description != item1.description
       )
@@ -294,12 +296,12 @@ export default {
     },
     //保存到vuex
     saveToVuex() {
-      this.departmentQuestionsList.forEach(ques => {
+      this.departmentQuestionsList.forEach((ques) => {
         this.updateDepartmentQuestionsList(ques)
       })
     }
   },
-  props:["departmentId"],
+  props: ['departmentId']
 }
 </script>
 

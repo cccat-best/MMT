@@ -145,8 +145,8 @@
   </div>
 </template>
 
-<script >
-import { mapState } from "vuex";
+<script>
+import { mapState } from 'vuex'
 export default {
   data() {
     return {
@@ -174,9 +174,16 @@ export default {
       }
     }
   },
-   computed:{
+  computed: {
     //拿到前面页面的问题
-    ...mapState('problem',['time','generalQuestions','questionsList','departmentQuestionsList','maxDepartment','allocated']),
+    ...mapState('problem', [
+      'time',
+      'generalQuestions',
+      'questionsList',
+      'departmentQuestionsList',
+      'maxDepartment',
+      'allocated'
+    ])
   },
   methods: {
     //动态增减选项
@@ -325,7 +332,8 @@ export default {
     //发送请求给后端
     sendTo() {
       //开始结束时间必填
-      if(this.time.length == 0) return this.$message.error('请确认填写是否填写了开始截至时间')
+      if (this.time.length == 0)
+        return this.$message.error('请确认填写是否填写了开始截至时间')
       const qustionList = {
         userId: 1,
         organizationId: 1,
@@ -338,10 +346,9 @@ export default {
         allocated: this.allocated,
         comprehensiveQuestionsList: this.comprehensiveQuestionsList
       }
-      console.log(qustionList);
+      console.log(qustionList)
     }
-  },
-
+  }
 }
 </script>
 
