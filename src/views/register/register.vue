@@ -4,7 +4,7 @@
       <!-- 左侧icon和文本 -->
       <div class="left-icon">
         <el-image :src="url" :fit="fill" class="icon-img"></el-image>
-        <div class="icon-text">SIPC-MMT</div>
+        <div class="icon-text">MMT</div>
       </div>
       <!-- 右侧信息框 -->
       <el-form
@@ -79,21 +79,21 @@
 export default {
   name: 'Register',
   data() {
-
     var validatePass2 = (rule, value, callback) => {
       if (value === '') {
         callback(new Error('请再次输入密码'))
-      } else if (value !== this.registerForm.psw) {
+      } else if (value !== this.registerForm.password) {
         callback(new Error('两次输入密码不一致!'))
       } else {
         callback()
       }
     }
-    var validatePass = (rule,value,callback) => {
-      let reg= /^[0-9A-Za-z]{6,16}$/
-      if(!reg.test(value)){callback(new Error('密码必须是由6-16位字母或数字的任意组合'))
-      }else{
-          callback()
+    var validatePass = (rule, value, callback) => {
+      let reg = /^[0-9A-Za-z]{6,16}$/
+      if (!reg.test(value)) {
+        callback(new Error('密码必须是由6-16位字母或数字的任意组合'))
+      } else {
+        callback()
       }
     }
     return {
@@ -111,7 +111,7 @@ export default {
         name: [{ required: true, message: '请输入姓名', trigger: 'blur' }],
         password: [
           { required: true, message: '请输入密码', trigger: 'blur' },
-          { validator:validatePass, trigger: 'blur' }
+          { validator: validatePass, trigger: 'blur' }
         ],
         confirmPassword: [
           { required: true, message: '请确认密码', trigger: 'blur' },
@@ -127,16 +127,16 @@ export default {
   methods: {
     goLogin() {
       this.$router.push('/Login')
-      this.$http.post('http://127.0.0.1:38080/register')
     },
-    toRegister(){
-      this.$http.post('http://127.0.0.1:38080/register/b',
-      this.registerForm
-      ).then(res=>{
-        console.log(res.data.code);
-      }).catch(function(error){
-        console.log(error);
-      })
+    toRegister() {
+      this.$http
+        .post('http://127.0.0.1:38080/register/b', this.registerForm)
+        .then((res) => {
+          console.log(res.data.code)
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
     }
   },
   components: {}
@@ -170,13 +170,13 @@ export default {
 }
 .icon-text {
   color: rgba(26, 113, 185, 100);
-  font-size: 64px;
+  font-size: 50px;
   text-align: left;
   font-family: Arial-400;
-  margin-top: 38px;
+  margin-top: 70px;
 }
 .right-box {
-  margin-left: 29px;
+  margin-left: 150px;
   width: 376px;
   height: 480px;
   line-height: 18px;
@@ -262,4 +262,3 @@ export default {
   cursor: pointer;
 }
 </style>
-

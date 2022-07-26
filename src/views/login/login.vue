@@ -4,7 +4,7 @@
       <!-- 左侧icon和文本 -->
       <div class="left-icon">
         <el-image :src="url" :fit="fill" class="icon-img"></el-image>
-        <div class="icon-text">SIPC-MMT</div>
+        <div class="icon-text">MMT</div>
       </div>
       <!-- 右侧信息框 -->
       <el-form
@@ -53,13 +53,9 @@ export default {
         studentId: '',
         password: ''
       },
-      rules:{
-        studentId:[
-          { required: true, message: '请输入学号', trigger: 'blur' },
-        ],
-        password:[
-          { required: true, message: '请输入密码', trigger: 'blur'}
-        ]
+      rules: {
+        studentId: [{ required: true, message: '请输入学号', trigger: 'blur' }],
+        password: [{ required: true, message: '请输入密码', trigger: 'blur' }]
       }
     }
   },
@@ -67,14 +63,15 @@ export default {
     goRegister() {
       this.$router.push('/register')
     },
-    goLogin(){
-      this.$http.post('http://127.0.0.1:38080/login/b',
-      this.loginForm
-      ).then(res=>{
-        console.log(res.data.code);
-      }).catch(function(error){
-        console.log(error);
-      })
+    goLogin() {
+      this.$http
+        .post('http://127.0.0.1:38080/login/b', this.loginForm)
+        .then((res) => {
+          console.log(res.data.code)
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
     }
   },
   components: {}
@@ -108,13 +105,13 @@ export default {
 }
 .icon-text {
   color: rgba(26, 113, 185, 100);
-  font-size: 64px;
+  font-size: 50px;
   text-align: left;
   font-family: Arial-400;
-  margin-top: 38px;
+  margin-top: 70px;
 }
 .right-box {
-  margin-left: 29px;
+  margin-left: 150px;
   width: 364px;
   height: 368px;
   line-height: 18px;
@@ -134,7 +131,7 @@ export default {
   font-family: Arial-400;
 }
 .id >>> .el-form-item__label,
-.psw >>> .el-form-item__label{
+.psw >>> .el-form-item__label {
   color: rgba(51, 51, 51, 100);
   font-size: 18px;
   font-family: Arial-400;
@@ -173,7 +170,7 @@ export default {
   background-color: rgba(26, 113, 185, 100);
   text-align: center;
 }
-.el-form-item{
+.el-form-item {
   margin-top: 45px;
 }
 .footer {
@@ -183,12 +180,12 @@ export default {
   font-size: 17px;
   font-family: Arial-400;
 }
-.no-id ,.register{
+.no-id,
+.register {
   color: rgba(134, 116, 116, 100);
 }
 .register:hover {
   color: rgba(26, 113, 185, 100);
-  cursor:pointer;
-
+  cursor: pointer;
 }
 </style>
