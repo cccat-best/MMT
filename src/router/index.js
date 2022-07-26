@@ -16,16 +16,6 @@ const routes = [
     component: () => import('../views/register/register.vue')
   },
   {
-    path: '/superAdmin',
-    component: () => import('../views/home/superAdmin.vue'),
-    children: [
-      {
-        path: 'accountManage',
-        component: () => import('../views/home/accountManage/main.vue')
-      }
-    ]
-  },
-  {
     path: '/home',
     component: () => import('../views/home/home.vue')
   },
@@ -33,6 +23,10 @@ const routes = [
     path: '/superAdmin',
     component: () => import('../views/superAdmin/superAdmin.vue'),
     children: [
+      {
+        path: 'accountManage',
+        component: () => import('../views/superAdmin/accountManage/main.vue')
+      },
       {
         path: '/process',
         component: () =>

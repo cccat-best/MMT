@@ -64,7 +64,10 @@ export default {
     hello() {
       axios({
         method: 'get',
-        url: 'https://pss.bdstatic.com/r/www/cache/static/aladdin-san/app/se_com_default/result_96d2f86.js'
+        url: 'https://192.29.27.252:38080/organization/department-id',
+        data: {
+          organizationId: 0
+        }
       }).then(
         (res) => {
           this.$message.success('hello:   ' + res)
