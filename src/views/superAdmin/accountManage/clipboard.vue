@@ -64,7 +64,7 @@ export default {
     hello() {
       axios({
         method: 'get',
-        url: 'http://119.29.27.252:38080/organization/department-id?organizationId=2&userId=2',
+        url: 'http://119.29.27.252:38080/organization/department-id?organizationId=2&userId=2'
       }).then(
         (res) => {
           this.$message.success('hello:   ' + res)
