@@ -5,6 +5,11 @@ import store from './store'
 import registerElement from './global/register-element'
 import './global/global.less'
 import './global/iconfont.css'
+// 引入axios
+import axios from 'axios'
+
+// 使用axios
+Vue.prototype.$http = axios
 Vue.config.productionTip = false
 // 注册Element
 Vue.use(registerElement)

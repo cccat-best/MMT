@@ -14,7 +14,8 @@ import {
   Col,
   Image,
   Input,
-  Form
+  Form,
+  FormItem
 } from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 const components = [
@@ -33,7 +34,8 @@ const components = [
   Col,
   Image,
   Input,
-  Form
+  Form,
+  FormItem
 ]
 export default function (Vue) {
   for (const component of components) {
