@@ -6,14 +6,21 @@
         <div class="aside-title">MMT</div>
         <div
           :class="['aside-item', asideShow == 1 ? 'asideactive' : '']"
-          @click="asideShow = 1"
+          @click="
+          asideShow = 1
+          gotosuperAdmin()
+          "
+
         >
           <i class="el-icon-s-home aside-item-icon"></i>
           面试面板
         </div>
         <div
           :class="['aside-item', asideShow == 2 ? 'asideactive' : '']"
-          @click="asideShow = 2"
+          @click="
+            asideShow = 2
+            gotoInformationSet()
+          "
         >
           <i class="el-icon-picture aside-item-icon"></i>
           宣传信息设置
@@ -36,7 +43,8 @@
           组织管理
         </div>
       </el-aside>
-      interviewProcess
+      <!-- 这段可能会引发bug，注释掉了就 -->
+      <!-- interviewProcess -->
       <el-container>
         <!-- 头部 -->
         <el-header>
@@ -69,6 +77,19 @@ export default {
     gotoPross() {
       this.$router.push({
         path: '/process'
+      })
+    },
+    //跳转到宣传信息设置界面
+    gotoInformationSet(){
+      this.$router.push({
+        path:'/basicInformation'
+      })
+    },
+    //跳转到superAdmin界面
+    gotosuperAdmin(){
+      // console.log(this.$router)
+      this.$router.push({
+        path:'/superAdmin'
       })
     }
   }
