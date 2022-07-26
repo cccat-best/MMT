@@ -17,6 +17,11 @@ Vue.filter('replacestar', function (value) {
   return str
 })
 
+// 引入axios
+import axios from 'axios'
+
+// 使用axios
+Vue.prototype.$http = axios
 Vue.config.productionTip = false
 // 注册Element
 Vue.use(registerElement)
