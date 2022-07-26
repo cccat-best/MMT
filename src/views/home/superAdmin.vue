@@ -30,11 +30,14 @@
         </div>
         <div
           :class="['aside-item', asideShow == 4 ? 'asideactive' : '']"
-          @click="asideShow = 4"
+          @click="
+            asideShow = 4
+            goAccountManage()
+          "
         >
           <i class="el-icon-s-custom aside-item-icon"></i>
           <!-- 待完善 -->
-          <router-link to="/superAdmin/accountManage">组织管理</router-link>
+          组织管理
         </div>
       </el-aside>
       <el-container>
@@ -70,6 +73,9 @@ export default {
       this.$router.push({
         path: '/process'
       })
+    },
+    goAccountManage() {
+      this.$router.push({ path: '/superAdmin/accountManage' })
     }
   }
 }

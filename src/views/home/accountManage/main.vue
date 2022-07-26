@@ -114,6 +114,10 @@
       >
       </el-table-column>
       <el-table-column prop="phone" label="手机号" width="120">
+        <!-- 脱敏显示 -->
+        <template slot-scope="scope">
+          {{ scope.row.phone | replacestar }}
+        </template>
       </el-table-column>
       <el-table-column label="修改账号" fixed="right">
         <!-- 单次删除需要scope来传数据 -->
@@ -357,6 +361,11 @@ export default {
 }
 </script>
 <style lang="less" scoped>
+* {
+  // line-height: 15px;
+  line-height: 3vh;
+  // color: black;
+}
 .seach-header {
   display: flex;
   justify-content: flex-end;
