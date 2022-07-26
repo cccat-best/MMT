@@ -59,15 +59,12 @@ export default {
     changeBack() {
       this.color = 'rgba(51,51,51,1)'
     },
-    // 实验HTTP请求，使用百度的随便一个接口
 
+    // 实验HTTP请求，使用百度的随便一个接口
     hello() {
       axios({
         method: 'get',
-        url: 'https://192.29.27.252:38080/organization/department-id',
-        data: {
-          organizationId: 0
-        }
+        url: 'http://119.29.27.252:38080/organization/department-id?organizationId=2&userId=2',
       }).then(
         (res) => {
           this.$message.success('hello:   ' + res)
