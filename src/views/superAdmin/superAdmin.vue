@@ -1,7 +1,6 @@
 <template>
   <div>
     <el-container class="home-container">
-      <h1>111111111111111111111111111111111111</h1>
       <!-- 侧边栏 -->
       <el-aside width="200px">
         <div class="aside-title">MMT</div>
