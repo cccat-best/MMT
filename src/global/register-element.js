@@ -24,7 +24,13 @@ import {
   Tag,
   Form,
   FormItem,
-  RadioGroup
+  RadioGroup,
+  DatePicker,
+  TimeSelect,
+  TimePicker,
+  Checkbox,
+  Popover,
+  InputNumber
 } from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 const components = [
@@ -51,18 +57,26 @@ const components = [
   Tag,
   Form,
   FormItem,
-  RadioGroup
+  RadioGroup,
+  DatePicker,
+  TimeSelect,
+  TimePicker,
+  Radio,
+  Checkbox,
+  Dialog,
+  Popover,
+  Input,
+  Form,
+  FormItem,
+  InputNumber
 ]
 export default function (Vue) {
   for (const component of components) {
     Vue.use(component)
   }
-  //待修改
-  // Vue.prototype.$loading = Loading.service
   Vue.prototype.$msgbox = MessageBox
   Vue.prototype.$alert = MessageBox.alert
   Vue.prototype.$confirm = MessageBox.confirm
   Vue.prototype.$prompt = MessageBox.prompt
-  // Vue.prototype.$notify = Notification
   Vue.prototype.$message = Message
 }

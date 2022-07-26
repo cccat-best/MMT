@@ -1,5 +1,5 @@
 <template>
-  <div>66666666</div>
+  <div class="vi"></div>
 </template>
 
 <script>

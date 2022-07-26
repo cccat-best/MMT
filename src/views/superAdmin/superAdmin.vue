@@ -36,7 +36,6 @@
           "
         >
           <i class="el-icon-s-custom aside-item-icon"></i>
-          <!-- 待完善 -->
           组织管理
         </div>
       </el-aside>
@@ -101,6 +100,7 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
+
     color: white;
     font-size: 18px;
     text-align: center;
@@ -126,19 +126,24 @@ export default {
     background-color: rgb(62, 68, 76);
   }
 }
+
 .el-main {
+  // overflow: hidden;
   background-color: #e9eef3;
   color: #333;
   text-align: center;
   line-height: 160px;
 }
+
 body > .el-container {
   margin-bottom: 40px;
 }
+
 .el-container:nth-child(5) .el-aside,
 .el-container:nth-child(6) .el-aside {
   line-height: 260px;
 }
+
 .el-container:nth-child(7) .el-aside {
   line-height: 320px;
 }

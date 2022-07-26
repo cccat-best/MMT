@@ -51,7 +51,7 @@
           <!-- 删除按钮 -->
           <i
             :class="['el-icon-remove', 'icon-remove']"
-            @click="removeInterviewPage"
+            @click="removeInterviewPage3"
           ></i>
         </div>
 
@@ -67,7 +67,7 @@
           <!-- 删除按钮 -->
           <i
             :class="['el-icon-remove', 'icon-remove']"
-            @click="removeInterviewPage"
+            @click="removeInterviewPage4"
           ></i>
         </div>
 
@@ -86,14 +86,25 @@ export default {
     return {
       showactive: 1,
       changePage: 3,
-      tabPosition: 'left'
+      tabPosition: 'left',
+      //当第四轮面试存在不允许删除第三轮
+      isDelpage3: true
     }
   },
   methods: {
     //是否删除面试
-    removeInterviewPage() {
+    removeInterviewPage3() {
+      if (confirm('确认要删除此轮面试吗') && this.isDelpage3) {
+        this.changePage--
+        this.showactive--
+        console.log(this.showactive)
+      }
+    },
+    removeInterviewPage4() {
       if (confirm('确认要删除此轮面试吗')) {
         this.changePage--
+        this.showactive--
+        console.log(this.showactive)
       }
     },
     //导航切换
@@ -126,10 +137,11 @@ export default {
 }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 .content {
-  height: 100%;
-  width: 100%;
+  // height: 100%;
+  overflow: hidden;
+  // width: 100%;
   background-color: #e9eef3;
   .top-content {
     display: flex;
@@ -148,7 +160,7 @@ export default {
     }
   }
   .main-content {
-    height: 95%;
+    height: 115%;
     width: 100%;
     background-color: white;
     border: 2px solid #969698;
