@@ -363,7 +363,7 @@ export default {
 <style lang="less" scoped>
 * {
   // line-height: 15px;
-  line-height: 3vh;
+  line-height: 2.95vh;
   // color: black;
 }
 .seach-header {
