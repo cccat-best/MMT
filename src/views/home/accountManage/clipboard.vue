@@ -65,7 +65,7 @@ export default {
       axios({
         method: 'get',
         url: 'https://192.29.27.252:38080/organization/department-id',
-        data:{
+        data: {
           organizationId: 0
         }
       }).then(
