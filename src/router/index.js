@@ -38,7 +38,8 @@ const routes = [
       // },
       {
         path: 'reply',
-        component: () => import('../views/home/interviewReply/interviewReply.vue'),
+        component: () =>
+          import('../views/home/interviewReply/interviewReply.vue')
       }
     ]
   }
