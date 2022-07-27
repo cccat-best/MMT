@@ -3,7 +3,7 @@
     <!-- 面试管理栏 -->
     <div class="top-content">
       <i class="el-icon-takeaway-box top-content-icon"></i>
-        面试管理
+      面试管理
     </div>
     <!-- 主题区域 -->
     <div class="main-content">
@@ -11,28 +11,40 @@
       <div class="nav">
         <div
           :class="['common-nav', showactive == 1 ? 'active' : '']"
-          @click="showactive = 1;gotoSign()"
+          @click="
+            showactive = 1
+            gotoSign()
+          "
         >
           报名
         </div>
 
         <div
           :class="['common-nav', showactive == 2 ? 'active' : '']"
-          @click="showactive = 2;gotoInterview1()"
+          @click="
+            showactive = 2
+            gotoInterview1()
+          "
         >
           一面
         </div>
 
         <div
           :class="['common-nav', showactive == 3 ? 'active' : '']"
-          @click="showactive = 3;gotoInterview2()"
+          @click="
+            showactive = 3
+            gotoInterview2()
+          "
         >
           二面
         </div>
 
         <div
           :class="['common-nav', showactive == 4 ? 'active' : '']"
-          @click="showactive = 4;gotoInterview3()"
+          @click="
+            showactive = 4
+            gotoInterview3()
+          "
           v-show="changePage >= 3"
         >
           三面
@@ -45,7 +57,10 @@
 
         <div
           :class="['common-nav', showactive == 5 ? 'active' : '']"
-          @click="showactive = 5;gotoInterview4()"
+          @click="
+            showactive = 5
+            gotoInterview4()
+          "
           v-show="changePage === 4"
         >
           四面
@@ -77,37 +92,37 @@ export default {
   methods: {
     //是否删除面试
     removeInterviewPage() {
-        if(confirm('确认要删除此轮面试吗')) {
-          this.changePage--
-        }
-      },
+      if (confirm('确认要删除此轮面试吗')) {
+        this.changePage--
+      }
+    },
     //导航切换
     gotoSign() {
       this.$router.push({
-        path:'/signup'
+        path: '/signup'
       })
     },
-    gotoInterview1(){
+    gotoInterview1() {
       this.$router.push({
-        path:'/interview1'
+        path: '/interview1'
       })
     },
-    gotoInterview2(){
+    gotoInterview2() {
       this.$router.push({
-        path:'/interview2'
+        path: '/interview2'
       })
     },
-    gotoInterview3(){
+    gotoInterview3() {
       this.$router.push({
-        path:'/interview3'
+        path: '/interview3'
       })
     },
-    gotoInterview4(){
+    gotoInterview4() {
       this.$router.push({
-        path:'/interview4'
+        path: '/interview4'
       })
-    },
-  },
+    }
+  }
 }
 </script>
 
@@ -124,7 +139,7 @@ export default {
     line-height: 14px;
     color: #f57d2d;
     .top-content-icon {
-      margin-right: 10px ;
+      margin-right: 10px;
     }
     .top-title {
       text-align: center;
@@ -137,9 +152,9 @@ export default {
     width: 100%;
     background-color: white;
     border: 2px solid #969698;
-    
+
     margin-top: 5px;
-    
+
     .nav {
       width: 100%;
       height: 70px;
@@ -166,7 +181,7 @@ export default {
           position: absolute;
           top: 17px;
           right: 7px;
-          color:#3080ff;
+          color: #3080ff;
         }
       }
       .add {

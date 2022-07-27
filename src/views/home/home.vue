@@ -10,26 +10,30 @@
               @close="handleClose"
               background-color="#282E38"
               text-color="#fff"
-              active-text-color="#ffd04b"
+              active-text-color="#409eff"
             >
               <el-menu-item index="0">
-                <span slot="title" style="font-size: 25px">MMT</span>
+                <span slot="title" style="font-size: 30px">MMT</span>
               </el-menu-item>
               <el-menu-item index="1">
-                <i class="el-icon-house"></i>
-                <span slot="title">面试看板</span>
+                <!-- <i class="el-icon-house"></i> -->
+                <span slot="title">面试总看板</span>
               </el-menu-item>
               <el-menu-item index="2">
-                <i class="el-icon-picture"></i>
-                <span slot="title">宣传信息设置</span>
+                <!-- <i class="el-icon-picture"></i> -->
+                <span slot="title">数据看板</span>
               </el-menu-item>
-              <el-menu-item index="3">
-                <i class="el-icon-takeaway-box"></i>
-                <span slot="title">面试流程设置</span>
+              <el-menu-item index="/arrangement">
+                <!-- <i class="el-icon-takeaway-box"></i> -->
+                <span slot="title">面试安排</span>
               </el-menu-item>
               <el-menu-item index="4">
-                <i class="el-icon-user-solid"></i>
-                <span slot="title">账号管理</span>
+                <!-- <i class="el-icon-user-solid"></i> -->
+                <span slot="title">实时面试</span>
+              </el-menu-item>
+              <el-menu-item index="5">
+                <!-- <i class="el-icon-user-solid"></i> -->
+                <span slot="title">面试复盘</span>
               </el-menu-item>
             </el-menu>
           </el-col>
@@ -37,8 +41,14 @@
       </el-aside>
       <el-container>
         <el-header>
-          <el-row type="flex" align="middle">
-            <el-page-header @back="goBack" content="学生创新创业实践中心">
+          <el-row type="flex" align="middle" justify="space-between">
+            <!-- <span style="color: black; font-size: 20px">{{
+              loginOrganizationName
+            }}</span> -->
+            <el-page-header
+              @back="goBack"
+              :content="this.loginOrganizationName"
+            >
             </el-page-header>
             <svg
               t="1658546350823"
@@ -50,6 +60,7 @@
               width="30"
               height="30"
               style="margin-left: auto"
+              v-if="isSuper"
             >
               <path
                 d="M537.216 1003.776h-427.52c-27.072 0-52.8-11.456-70.592-31.296a76.352 76.352 0 0 1-19.904-58.88l-0.192-60.16a32 32 0 0 1 64 0v63.872c-0.384 5.44 0.576 8.832 3.968 12.608a30.656 30.656 0 0 0 22.72 9.856h427.52a32 32 0 0 1 0 64z"
@@ -72,26 +83,96 @@
                 p-id="3308"
               ></path>
             </svg>
-            <el-button type="text" @click="onSubmit">超级管理</el-button>
-            <div class="block" style="margin-left: 30px">
-              <el-avatar :size="35" :src="circleUrl"></el-avatar>
+            <el-button
+              class="color-change"
+              type="text"
+              @click="superAdmin"
+              style="color: black; margin-right: 10px"
+              @mouseover="this.style.color = blue"
+              v-if="isSuper"
+              >超级管理</el-button
+            >
+            <div class="block">
+              <el-avatar
+                :size="35"
+                :src="circleUrl"
+                style="vertical-align: middle"
+              ></el-avatar>
+              <el-dropdown hide-timeout="1200">
+                <span class="el-dropdown-link" style="color: black">
+                  {{ name }}<i class="el-icon-arrow-down el-icon--right"></i>
+                </span>
+                <el-dropdown-menu slot="dropdown">
+                  <!-- <el-dropdown-item command="学生创新创业实践中心"
+                    >学生创新创业实践中心</el-dropdown-item
+                  >
+                  <el-dropdown-item command="b">学生会</el-dropdown-item>
+                  <el-dropdown-item command="c">团委</el-dropdown-item>
+                  <el-dropdown-item command="d">党建办</el-dropdown-item>
+                  <el-dropdown-item command="e"
+                    >学生事务服务中心</el-dropdown-item
+                  > -->
+                  <div style="text-align: center">
+                    <el-avatar
+                      :size="35"
+                      :src="circleUrl"
+                      style="vertical-align: middle"
+                    ></el-avatar>
+                    <div>李政东</div>
+                    <div style="font-size: 5px">
+                      {{ loginOrganizationName }}
+                    </div>
+                  </div>
+
+                  <el-dropdown-item divided>
+                    <el-dropdown
+                      @command="changeOrganization"
+                      style="width: 140px"
+                    >
+                      <span class="el-dropdown-link">
+                        切换社团<i
+                          class="el-icon-arrow-down el-icon--right"
+                        ></i>
+                      </span>
+                      <el-dropdown-menu slot="dropdown">
+                        <el-dropdown-item command="学生创新创业实践中心"
+                          >学生创新创业实践中心</el-dropdown-item
+                        >
+                        <el-dropdown-item command="b" divided
+                          >学生会</el-dropdown-item
+                        >
+                        <el-dropdown-item command="c" divided
+                          >团委</el-dropdown-item
+                        >
+                        <el-dropdown-item command="d" divided
+                          >党建办</el-dropdown-item
+                        >
+                        <el-dropdown-item command="e" divided
+                          >学生事务服务中心</el-dropdown-item
+                        >
+                      </el-dropdown-menu>
+                    </el-dropdown>
+                  </el-dropdown-item>
+
+                  <el-dropdown-item divided>
+                    <el-button
+                      type="text"
+                      @click="quitLogin"
+                      class="el-dropdown-link"
+                      style="padding: 0px; margin: 0px"
+                      >退出登录</el-button
+                    >
+                  </el-dropdown-item>
+                </el-dropdown-menu>
+              </el-dropdown>
             </div>
-            <el-dropdown>
-              <span class="el-dropdown-link" style="color: black">
-                {{ name }}<i class="el-icon-arrow-down el-icon--right"></i>
-              </span>
-              <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item>黄金糕</el-dropdown-item>
-                <el-dropdown-item>狮子头</el-dropdown-item>
-                <el-dropdown-item>螺蛳粉</el-dropdown-item>
-                <el-dropdown-item>双皮奶</el-dropdown-item>
-                <el-dropdown-item>蚵仔煎</el-dropdown-item>
-              </el-dropdown-menu>
-            </el-dropdown>
           </el-row>
         </el-header>
         <el-main>
-          <div class="organization-info" style="margin-left: 20%">
+          <div
+            class="organization-info"
+            style="text-align: left; margin-left: 20%"
+          >
             <el-row>
               <el-col :span="24"
                 ><div class="">
@@ -99,7 +180,20 @@
                 </div></el-col
               >
               <el-col :span="24"
-                ><div class="">已加入组织：{{ organizations }}</div></el-col
+                ><div class="">
+                  已加入组织：
+                  <span v-for="(item, index) in organizations" :key="index">
+                    <el-tag
+                      type="info"
+                      style="
+                        color: black;
+                        background-color: #d7d7d7;
+                        margin-right: 10px;
+                      "
+                      >{{ item }}</el-tag
+                    >
+                  </span>
+                </div></el-col
               >
               <el-button
                 type="primary"
@@ -110,7 +204,7 @@
             </el-row>
           </div>
           <el-divider></el-divider>
-          <div class="personal-info" style="margin-left: 20%">
+          <div class="personal-info" style="margin-left: 20%; text-align: left">
             <el-row>
               <el-col :span="24"
                 ><el-row>
@@ -151,28 +245,29 @@
               >
             </el-row>
           </div>
-          <div class="quit-botton" style="margin-left: 40%; margin-top: 10%">
-            <el-button type="danger">退出登录</el-button>
-          </div>
+
           <!-- 修改密码弹出框 -->
           <el-dialog title="更改密码" :visible.sync="dialogForm1Visible">
             <el-form :model="pwdForm" ref="pwdForm" :rules="rules1">
-              <el-form-item label="原密码" prop="pwdForm.password">
+              <el-form-item label="原密码" prop="password">
                 <el-input
+                  type="password"
                   v-model="pwdForm.password"
                   autocomplete="off"
                 ></el-input>
               </el-form-item>
 
-              <el-form-item label="新密码" prop="pwdForm.newPassword">
+              <el-form-item label="新密码" prop="newPassword">
                 <el-input
+                  type="password"
                   v-model="pwdForm.newPassword"
                   autocomplete="off"
                 ></el-input>
               </el-form-item>
 
-              <el-form-item label="确认密码" prop="pwdForm.confirmNewPassword">
+              <el-form-item label="确认密码" prop="confirmNewPassword">
                 <el-input
+                  type="password"
                   v-model="pwdForm.confirmNewPassword"
                   autocomplete="off"
                 ></el-input>
@@ -188,21 +283,21 @@
           <!-- 更改手机号弹出框 -->
           <el-dialog title="修改手机号" :visible.sync="dialogForm2Visible">
             <el-form :model="phoneForm" ref="phoneForm" :rules="rules2">
-              <el-form-item label="原手机号" prop="phoneForm.phone">
+              <el-form-item label="原手机号" prop="phone">
                 <el-input
                   v-model="phoneForm.phone"
                   autocomplete="off"
                 ></el-input>
               </el-form-item>
 
-              <el-form-item label="验证码" prop="phoneForm.confirm">
+              <el-form-item label="验证码" prop="confirm">
                 <el-input
                   v-model="phoneForm.confirm"
                   autocomplete="off"
                 ></el-input>
               </el-form-item>
 
-              <el-form-item label="新手机号" prop="phoneForm.newPhone">
+              <el-form-item label="新手机号" prop="newPhone">
                 <el-input
                   v-model="phoneForm.newPhone"
                   autocomplete="off"
@@ -240,6 +335,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
   data() {
     return {
@@ -248,17 +344,18 @@ export default {
       squareUrl:
         'https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png',
       sizeList: ['large', 'medium', 'small'],
-      studentId: '',
-      name: '',
+      studentId: '20212403',
+      name: '李政东',
 
-      organizations: [],
+      organizations: ['学生创新创业实践中心', '学生会'],
 
-      loginOrganizationName: '',
+      loginOrganizationName: '学生创新创业实践中心',
       loginOrganizationId: '',
       permission: '',
-
+      cookie: '',
       organizationName: '',
       organizationId: '',
+      isSuper: false,
       rules1: {
         password: [
           { required: true, message: '请输入原密码', trigger: 'blur' },
@@ -278,12 +375,12 @@ export default {
       dialogForm2Visible: false,
       dialogForm3Visible: false,
       pwdForm: {
-        password: '',
+        password: '88888888',
         newPassword: '',
         confirmNewPassword: ''
       },
       phoneForm: {
-        phone: '',
+        phone: '19179755936',
         confirm: '',
         newPhone: ''
       },
@@ -311,6 +408,42 @@ export default {
           return false
         }
       })
+    },
+    changeOrganization(command) {
+      alert(command)
+      axios({
+        method: 'post',
+        baseURL: 'https://mmt-dev.sipcoj.com',
+        url: '/login/check',
+        data: command,
+        headers: {
+          'content-type': 'application/json'
+        }
+      }).then((val) => {
+        this.loginOrganizationName = val.data.data.loginOrganizationName
+        this.loginOrganizationId = val.data.data.loginOrganizationId
+        this.organizations = val.data.data.organizations
+        this.permission = val.data.data.permission
+        this.phoneForm.phone = val.data.data.phone
+        this.name = val.data.data.name
+      })
+    },
+    quitLogin() {
+      alert('按下退出登录')
+      axios({
+        method: 'delete',
+        baseURL: 'https://mmt-dev.sipcoj.com',
+        url: '/logout',
+
+        headers: {
+          'content-type': 'application/json'
+        }
+      }).then((val) => {
+        alert(val.data.data.message)
+      })
+    },
+    superAdmin() {
+      this.$router.push('/superAdmin')
     }
   }
 }
@@ -379,13 +512,25 @@ body > .el-container {
 }
 
 .el-page-header__title:hover {
-  background: #1c88cf;
+  color: #409eff;
+}
+.el-icon-back:hover {
+  color: #409eff !important;
 }
 .el-dropdown-link {
   cursor: pointer;
-  color: #409eff;
+  color: black;
+}
+.el-dropdown-link:hover {
+  color: #409eff !important;
 }
 .el-icon-arrow-down {
   font-size: 12px;
+}
+.color-change:hover {
+  color: #409eff !important;
+}
+.el-menu-item:hover {
+  color: #409eff !important;
 }
 </style>

@@ -19,7 +19,8 @@ import {
   Dropdown,
   DropdownMenu,
   DropdownItem,
-  Input
+  Input,
+  Tag,
 } from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 const components = [
@@ -43,7 +44,8 @@ const components = [
   Dropdown,
   DropdownMenu,
   DropdownItem,
-  Input
+  Input,
+  Tag,
 ]
 export default function (Vue) {
   for (const component of components) {
