@@ -182,6 +182,7 @@ export default {
       // 关键字搜索
       organizationId: 0, ////组织名不知道，需要询问
       searchWord: '',
+      data: '',
 
       // 页码
       tableList: [], //当前页展示数据
@@ -216,13 +217,22 @@ export default {
     // https://mmt-dev.sipcoj.com/
     //关键字搜索
     searchKeyWord() {
-      axios({
-        method: 'post',
-        url: 'https://mmt-dev.sipcoj.com/account/manage/all',
-        data: {
+      // 判断字符串是否为空
+      if (this.searchWord != '') {
+        this.data = {
           organizationId: this.organizationId,
           searchWord: this.searchWord
         }
+      } else {
+        this.data = {
+          organizationId: this.organizationId
+        }
+      }
+      // 发请求
+      axios({
+        method: 'post',
+        url: 'https://mmt-dev.sipcoj.com/account/manage/all',
+        data: this.data
       }).then(
         (res) => {
           this.tableData = res.data.studentList
