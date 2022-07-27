@@ -95,9 +95,10 @@
       ref="multipleTable"
       :data="tableList"
       @sort-change="sortTableFun"
+      @filter-change="filterChange"
       :default-sort="
-        ({ prop: 'studentId', order: 'ascending' },
-        { prop: 'permission', order: 'ascending' })
+        ({ prop: 'permission', order: 'ascending' },
+        { prop: 'studentId', order: 'ascending' })
       "
       @selection-change="handleSelectionChange"
     >
@@ -157,7 +158,7 @@
       >
       <!-- 邀请码，可一键复制 -->
       <clipBoard ref="clipBoard" />
-      <!-- 引入很多弹窗 -->
+      <!-- 引入修改账号、修改密码、删除弹窗 -->
       <manyDialog ref="manyDialog" />
       <!-- 批量操作弹窗 -->
       <batchOperateDialog ref="batchOperateDialog" />
@@ -311,7 +312,13 @@ export default {
 
     // 筛选权限
     filterPermission(value, row) {
+      // this.$message.success('筛选权限')
       return row.permission === value
+    },
+    filterChange(data) {
+      console.log(data)
+      console.log(data.value)
+      console.log(data.key)
     },
     //修改账号表单校验，待修改
     findError() {
