@@ -33,14 +33,13 @@ export default {
           iconClass: '',
           id: '1',
           title: '面试总看板',
-          // 瞎写的
-          pagePath: '/login'
+          pagePath: '/home'
         },
         {
           iconClass: '',
           id: '2',
           title: '数据看板',
-          pagePath: '/login'
+          pagePath: '/home'
         },
         {
           iconClass: '',
@@ -52,13 +51,13 @@ export default {
           iconClass: '',
           id: '4',
           title: '实时面试',
-          pagePath: '/login'
+          pagePath: '/home'
         },
         {
           iconClass: '',
           id: '5',
           title: '面试复盘',
-          pagePath: '/login'
+          pagePath: '/home/reply'
         }
       ]
     }

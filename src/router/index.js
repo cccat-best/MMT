@@ -31,15 +31,15 @@ const routes = [
         path: 'arrangement',
         component: () =>
           import('../views/home/interviewArrangement/interviewArrangement.vue')
-      }
+      },
       // {
       //   path: '',
       //   component: () => import(''),
       // },
-      // {
-      //   path: '',
-      //   component: () => import(''),
-      // }
+      {
+        path: 'reply',
+        component: () => import('../views/home/interviewReply/interviewReply.vue'),
+      }
     ]
   }
 ]
