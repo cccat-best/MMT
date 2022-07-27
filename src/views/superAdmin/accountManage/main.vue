@@ -94,17 +94,28 @@
       height="400px"
       ref="multipleTable"
       :data="tableList"
-      :default-sort="{ prop: 'studentId', order: 'ascending' }"
+      @sort-change="sortTableFun"
+      :default-sort="
+        ({ prop: 'studentId', order: 'ascending' },
+        { prop: 'permission', order: 'ascending' })
+      "
       @selection-change="handleSelectionChange"
     >
       <!-- 注意上面有tableList -->
       <el-table-column type="selection" width="55" fixed> </el-table-column>
-      <el-table-column prop="studentId" label="学号" sortable width="120" fixed>
+      <el-table-column
+        prop="studentId"
+        label="学号"
+        sortable="custom"
+        width="120"
+        fixed
+      >
       </el-table-column>
       <el-table-column prop="name" label="姓名" width="120"> </el-table-column>
       <el-table-column
         prop="permission"
         label="用户权限"
+        sortable="custom"
         :filters="[
           { text: 'commitee', value: 'commitee' },
           { text: 'member', value: 'member' }
@@ -180,9 +191,11 @@ export default {
   data() {
     return {
       // 关键字搜索
-      organizationId: 0, ////组织名不知道，需要询问
+      organizationId: 0, ////组织名不知道，需要询问////////////////////////
       searchWord: '',
-      data: '',
+      data: '', //发请求的data
+      order: 'asc', //排序顺序
+      column: 'permission', //排序变量
 
       // 页码
       tableList: [], //当前页展示数据
@@ -206,13 +219,65 @@ export default {
   created() {
     //获取数据
     // this.getData()???
+
     this.searchKeyWord()
+    this.orderChange(this.tableData)
     //渲染数据
-    this.page.pagesize = 10
-    this.page.currentPage = 1
-    this.pageCutDouwn()
+    // this.page.pagesize = 10
+    // this.page.currentPage = 1
+    // this.pageCutDouwn()
   },
   methods: {
+    // 排序///////////////////////////////////
+    sortTableFun(column) {
+      //用户点击这一列的上下排序按钮时，触发的函数
+      this.column = column.prop //该方法获取到当前列绑定的prop字段名赋值给一个变量，之后这个变量做为入参传给后端
+      if (column.prop) {
+        //该列有绑定prop字段走这个分支
+        if (column.order == 'ascending') {
+          //当用户点击的是升序按钮，即ascending时
+          this.order = 'asc' //将order这个变量赋值为后端接口文档定义的升序的字段名，之后作为入参传给后端
+        } else if (column.order == 'descending') {
+          //当用户点击的是升序按钮，即descending时
+          this.order = 'desc' //将order这个变量赋值为后端接口文档定义的降序的字段名，之后作为入参传给后端
+        }
+        this.orderChange(this.tableData) //改变全部数据顺序
+      }
+    },
+    orderChange(datalist) {
+      // this.$message.success('发起后端请求的接口')
+      // 对权限排序
+      if (this.column == 'permission') {
+        // console.log(Number(datalist[4].permission[0]))
+        if (this.order == 'desc') {
+          datalist.sort((a, b) => {
+            return b.permission[0] > a.permission[0] ? 1 : -1
+          }) //permission 降序
+        } else {
+          datalist.sort((a, b) => {
+            return b.permission[0] < a.permission[0] ? 1 : -1
+          }) //permission 升序
+        }
+      }
+      // 对学号排序
+      else if (this.column == 'studentId') {
+        // 修改数组顺序，后续可能要用对象保存原始数据
+        if (this.order == 'desc') {
+          datalist.sort((a, b) => {
+            return Number(b.studentId) > Number(a.studentId) ? 1 : -1
+          }) //permission 降序
+        } else {
+          datalist.sort((a, b) => {
+            return Number(b.studentId) < Number(a.studentId) ? 1 : -1
+          }) //permission 升序
+        }
+      }
+      // 渲染排序后的数据
+      this.page.pagesize = 10
+      this.page.currentPage = 1
+      this.pageCutDouwn()
+    },
+
     // url
     // https://mmt-dev.sipcoj.com/
     //关键字搜索
