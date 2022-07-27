@@ -1,9 +1,191 @@
 <template>
-  <div class="login">login</div>
+  <el-container class="father">
+    <el-main class="content">
+      <!-- 左侧icon和文本 -->
+      <div class="left-icon">
+        <el-image :src="url" :fit="fill" class="icon-img"></el-image>
+        <div class="icon-text">MMT</div>
+      </div>
+      <!-- 右侧信息框 -->
+      <el-form
+        class="right-box"
+        :model="loginForm"
+        :rules="rules"
+        ref="loginForm"
+        label-width="100px"
+        hide-required-asterisk="true"
+      >
+        <p class="login-text">登录</p>
+        <el-form-item label="账号" class="id" prop="studentId">
+          <el-input
+            placeholder="请输入学号/账号"
+            v-model="loginForm.studentId"
+            class="input-id"
+          >
+          </el-input>
+        </el-form-item>
+        <el-form-item label="密码" class="psw" prop="password">
+          <el-input
+            placeholder="请输入密码"
+            v-model="loginForm.password"
+            class="input-psw"
+            show-password
+          >
+          </el-input>
+        </el-form-item>
+        <div class="forget-text">忘记密码？</div>
+        <el-button class="login-btn" @click="goLogin()">登陆 </el-button>
+        <div class="footer">
+          <div class="no-id">没有账号？</div>
+          <div class="register" @click="goRegister()">注册</div>
+        </div>
+      </el-form>
+    </el-main>
+  </el-container>
 </template>
-
 <script>
-export default {}
+export default {
+  name: 'Login',
+  data() {
+    return {
+      url: require('@../../../public/sipc.png'),
+      loginForm: {
+        studentId: '',
+        password: ''
+      },
+      rules: {
+        studentId: [{ required: true, message: '请输入学号', trigger: 'blur' }],
+        password: [{ required: true, message: '请输入密码', trigger: 'blur' }]
+      }
+    }
+  },
+  methods: {
+    goRegister() {
+      this.$router.push('/register')
+    },
+    goLogin() {
+      this.$http
+        .post('http://127.0.0.1:38080/login/b', this.loginForm)
+        .then((res) => {
+          console.log(res.data.code)
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
+    }
+  },
+  components: {}
+}
 </script>
+<style scoped>
+.father {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+.content {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.left-icon {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.el-image icon-img {
+  width: 206px;
+  height: 206px;
+}
+.icon-img {
+  width: 206px;
+  height: 206px;
+}
+.icon-text {
+  color: rgba(26, 113, 185, 100);
+  font-size: 50px;
+  text-align: left;
+  font-family: Arial-400;
+  margin-top: 70px;
+}
+.right-box {
+  margin-left: 150px;
+  width: 364px;
+  height: 368px;
+  line-height: 18px;
+  border-radius: 15px;
+  background-color: rgba(255, 255, 255, 100);
+  text-align: center;
+  border: 3px solid rgba(26, 113, 185, 100);
+}
+.login-text {
+  margin-left: 30px;
+  margin-top: 24px;
+  width: 61px;
+  height: 34px;
+  color: rgba(26, 113, 185, 100);
+  font-size: 30px;
+  text-align: left;
+  font-family: Arial-400;
+}
+.id >>> .el-form-item__label,
+.psw >>> .el-form-item__label {
+  color: rgba(51, 51, 51, 100);
+  font-size: 18px;
+  font-family: Arial-400;
+}
 
-<style scoped></style>
+.input-id >>> .el-input__inner,
+.input-psw >>> .el-input__inner {
+  border: none;
+  border-radius: 0;
+  border-bottom: 1px solid #797979;
+  padding: 0;
+  margin-right: 10px;
+  width: 240px;
+}
+.forget-text {
+  margin-top: 18px;
+  margin-left: 250px;
+  width: 85px;
+  height: 14px;
+  color: rgba(134, 116, 116, 100);
+  font-size: 17px;
+  font-family: Arial-400;
+}
+.el-form >>> .el-form-item__error {
+  margin-left: 8px;
+}
+.login-btn {
+  margin-top: 15px;
+  font-family: Arial-400;
+  color: rgba(255, 255, 255, 100);
+  font-size: 25px;
+  width: 289px;
+  height: 40px;
+  line-height: 18px;
+  border-radius: 15px;
+  background-color: rgba(26, 113, 185, 100);
+  text-align: center;
+}
+.el-form-item {
+  margin-top: 45px;
+}
+.footer {
+  display: flex;
+  margin-left: 111px;
+  margin-top: 11px;
+  font-size: 17px;
+  font-family: Arial-400;
+}
+.no-id,
+.register {
+  color: rgba(134, 116, 116, 100);
+}
+.register:hover {
+  color: rgba(26, 113, 185, 100);
+  cursor: pointer;
+}
+</style>

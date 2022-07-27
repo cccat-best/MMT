@@ -18,7 +18,20 @@ import {
   Row,
   Col,
   TableColumn,
-  Pagination
+  Pagination,
+  Dialog,
+  Divider,
+  Alert,
+  Message,
+  MessageBox,
+  Tag,
+  Form,
+  FormItem,
+  RadioGroup,
+  TimeSelect,
+  Checkbox,
+  Popover,
+  Image
 } from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 const components = [
@@ -41,10 +54,34 @@ const components = [
   MenuItemGroup,
   Row,
   Col,
-  Pagination
+  TableColumn,
+  Pagination,
+  Dialog,
+  Radio,
+  Divider,
+  Alert,
+  Tag,
+  Form,
+  FormItem,
+  RadioGroup,
+  TimeSelect,
+  Checkbox,
+  Dialog,
+  Popover,
+  Input,
+  Form,
+  FormItem,
+  Image,
+  Input,
+  FormItem
 ]
 export default function (Vue) {
   for (const component of components) {
     Vue.use(component)
   }
+  Vue.prototype.$msgbox = MessageBox
+  Vue.prototype.$alert = MessageBox.alert
+  Vue.prototype.$confirm = MessageBox.confirm
+  Vue.prototype.$prompt = MessageBox.prompt
+  Vue.prototype.$message = Message
 }
