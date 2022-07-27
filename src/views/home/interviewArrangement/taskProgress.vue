@@ -2,6 +2,7 @@
   <div class="dingwei">
     <!-- 环形图 -->
     <div class="figure">
+      <!-- 当percentage为0,时控制台会报错,加上  v-if = "percentage",就不会有错误,但页面也不会有空进度条 -->
       <el-progress
         type="circle"
         :height="160"
@@ -26,9 +27,27 @@ export default {
   },
   methods: {
     format() {
-      this.percentage = (this.done * 100) / this.total
+      this.percentage = (this.done / this.total) * 100
       return `任务进度条`
     }
+  },
+
+  //任务进度表发送请求，初始页面渲染
+  created() {
+    let url = '/interview-arrangement/data'
+    let params = {
+      admissionId: 20212803
+    }
+    this.$http
+      .get(url, params)
+      .then((response) => {
+        console.log(response)
+        this.total = response.data.data.totalStu
+        this.done = response.data.data.informedStu
+      })
+      .catch((error) => {
+        console.log(error)
+      })
   }
 }
 </script>

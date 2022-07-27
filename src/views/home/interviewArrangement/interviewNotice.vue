@@ -31,12 +31,12 @@
       <p class="p0">面试通知：</p>
       <p class="p1">
         亲爱的<u>{{ name }}</u
-        >, <u>{{ bumen }}</u
+        >, <u>{{ departmentName }}</u
         >邀请你进入<b>{{ order }}</b
         >面试。
       </p>
       <p class="p2">
-        面试时间：<u>{{ dateValue0 }} {{ timeValue0 }}</u>
+        面试时间：<u>{{ dateValue0 }} &nbsp; {{ timeValue0 }}&nbsp; </u>
       </p>
       <p class="p2">
         面试地点：<input
@@ -54,7 +54,7 @@
       <p class="p1">请提前做好准备。</p>
       <div class="button">
         <el-button plain>取消</el-button>
-        <el-button type="primary">确定</el-button>
+        <el-button type="primary" @click="queding">确定</el-button>
       </div>
     </div>
   </div>
@@ -65,14 +65,15 @@ export default {
   name: 'interviewNotice',
   data() {
     return {
-      name: '猫猫',
-      bumen: '学生事务中心',
+      name: 'Hanry',
+      departmentName: '学生事务中心',
       order: '一面',
       date: '',
       time: '',
       dateValue0: '',
       timeValue0: '',
-      address: ''
+      address: '',
+      messageTemplate: ''
     }
   },
   methods: {
@@ -92,6 +93,39 @@ export default {
         mm = '0' + mm
       }
       this.timeValue0 = hh + ':' + mm
+    },
+    queding() {
+      //确定获取模板
+      const url1 = '/interview-arrangement/getNotice'
+      let params = {
+        type: 1
+      }
+      this.$http
+        .get(url1, params)
+        .then((response) => {
+          // console.log(response)
+          this.messageTemplate = response.data.data.messageTemplate
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+      // 确定保存message
+
+      // 确定发送请求
+      // var form2 = {
+      //   admissionId: 20212803,
+      //   studentId: 20220001,
+      //   messageTemplate: this.messageTemplate
+      // }
+      // const url2 = '/interview-arrangement/postNotice'
+      // let post = this.$http.post(url2, form2)
+      // post
+      //   .then((res) => {
+      //     console.log(res)
+      //   })
+      //   .catch((err) => {
+      //     console.log(err)
+      //   })
     }
   },
   mounted() {
@@ -101,14 +135,14 @@ export default {
       this.$bus.$on('selectionName', (data) => {
         this.name = data
       }),
-      this.$bus.$on('selectionBumen', (data) => {
-        this.bumen = data
+      this.$bus.$on('selectiondepartmentName', (data) => {
+        this.departmentName = data
       })
   },
   beforeCreate() {
     this.$bus.$off('order')
     this.$bus.$off('selectionName')
-    this.$bus.$off('selectionBumen')
+    this.$bus.$off('selectiondepartmentName')
   }
 }
 </script>

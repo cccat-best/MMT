@@ -3,10 +3,12 @@
     <!-- 面试次序 -->
     <div class="dingwei">
       <div>
-        <div class="interviewOrder" @click="pdBtn">
-          <button class="btn btn1" ref="btn1" autofocus>一面</button>
-          <button class="btn btn2" ref="btn2">二面</button>
-          <button class="btn btn3" ref="btn3">三面</button>
+        <div class="btn-group" @click="pdBtn">
+          <button type="button" class="btn btn1 btn0" ref="btn1" autofocus>
+            一面
+          </button>
+          <button type="button" class="btn btn2" ref="btn2">二面</button>
+          <button type="button" class="btn btn3" ref="btn3">三面</button>
         </div>
         <div class="text1"><b>待面试人员名单：</b></div>
       </div>
@@ -31,10 +33,18 @@
         style="width: 600px; border-radius: 8px"
         :row-style="{ height: 0 + 'px' }"
         :cell-style="{ padding: 0 + 'px' }"
-        @selection-change="selectionLineChangeHandle"
       >
         >
-        <el-table-column type="selection" width="50" />
+        <el-table-column label="" width="50">
+          <template slot-scope="scope">
+            <el-radio
+              :label="scope.row.studentId"
+              v-model="radio"
+              @change.native="getCurrentRow(scope.row)"
+              >&nbsp;</el-radio
+            >
+          </template>
+        </el-table-column>
         <el-table-column
           prop="id"
           label="ID"
@@ -43,12 +53,12 @@
           :index="indexMethod"
         >
         </el-table-column>
-        <el-table-column prop="xuehao" label="学号" width="100">
+        <el-table-column prop="studentId" label="学号" width="100">
         </el-table-column>
         <el-table-column prop="name" label="姓名" width="80"> </el-table-column>
         <el-table-column prop="class" label="班级" width="100">
         </el-table-column>
-        <el-table-column prop="bumen" label="面试部门" width="110">
+        <el-table-column prop="departmentName" label="面试部门" width="110">
         </el-table-column>
         <el-table-column prop="status" label="通知状态" witch="80">
         </el-table-column>
@@ -80,83 +90,83 @@ export default {
       total: 11,
       search: '',
       multipleSelection: [],
-      selectionLine: [],
+      radio: '',
       tableData: [
         {
-          xuehao: 20220001,
+          studentId: 20220001,
           name: '卢小1',
           class: '大数据1班',
-          bumen: '学生事务中心',
+          departmentName: '学生事务中心',
           status: '已通知'
         },
         {
-          xuehao: 20220002,
+          studentId: 20220002,
           name: '卢小2',
           class: '大数据1班',
-          bumen: '学生事务中心',
+          departmentName: '学生事务中心',
           status: '已通知'
         },
         {
-          xuehao: 20220003,
+          studentId: 20220003,
           name: '卢小3',
           class: '大数据1班',
-          bumen: '学生事务中心',
+          departmentName: '学生事务中心',
           status: '已通知'
         },
         {
-          xuehao: 20220004,
+          studentId: 20220004,
           name: '卢小4',
           class: '大数据1班',
-          bumen: '学生事务中心',
+          departmentName: '学生事务中心',
           status: '已通知'
         },
         {
-          xuehao: 20220005,
+          studentId: 20220005,
           name: '卢小5',
           class: '大数据1班',
-          bumen: '学生事务中心',
+          departmentName: '学生事务中心',
           status: '已通知'
         },
         {
-          xuehao: 20220006,
+          studentId: 20220006,
           name: '卢小6',
           class: '大数据1班',
-          bumen: '学生事务中心',
+          departmentName: '学生事务中心',
           status: '已通知'
         },
         {
-          xuehao: 20220007,
+          studentId: 20220007,
           name: '卢小7',
           class: '大数据1班',
-          bumen: '学生事务中心',
+          departmentName: '学生事务中心',
           status: '已通知'
         },
         {
-          xuehao: 20220008,
+          studentId: 20220008,
           name: '卢小8',
           class: '大数据1班',
-          bumen: '学生事务中心',
+          departmentName: '学生事务中心',
           status: '已通知'
         },
         {
-          xuehao: 20220009,
+          studentId: 20220009,
           name: '卢小9',
           class: '大数据1班',
-          bumen: '学生事务中心',
+          departmentName: '学生事务中心',
           status: '已通知'
         },
         {
-          xuehao: 20220010,
+          studentId: 20220010,
           name: '卢小10',
           class: '大数据1班',
-          bumen: '学生事务中心',
+          departmentName: '学生事务中心',
           status: '已通知'
         },
         {
-          xuehao: 20220011,
+          studentId: 20220011,
           name: '卢小11',
           class: '大数据1班',
-          bumen: '学生事务中心',
+          departmentName: '学生事务中心',
           status: '未通知'
         }
       ]
@@ -189,23 +199,140 @@ export default {
       this.currentPage = currentPage
     },
     pdBtn() {
-      if (document.activeElement == this.$refs.btn1) {
+      var btn0 = document.activeElement
+      btn0.classList.add('btn0')
+      if (btn0 == this.$refs.btn1) {
+        this.$refs.btn2.classList.remove('btn0')
+        this.$refs.btn3.classList.remove('btn0')
         this.order = '一面'
+
+        //一面数据发送请求
+        let url = '/interview-arrangement/info/like'
+        let params = {
+          admissionId: 20212803
+        }
+        this.$http
+          .get(url, params)
+          .then((response) => {
+            // console.log(response)
+            this.tableData = []
+            this.total = response.data.data.total
+            this.student0 = response.data.data.infoBackParamList
+            for (let i = 0; i < this.total; i++) {
+              this.tableData.push({
+                key: i.toString(),
+                studentId: ` ${this.student0[i].studentId}`,
+                name: ` ${this.student0[i].studentName}`,
+                class: ` ${this.student0[i].className}`,
+                departmentName: ` ${this.student0[i].departmentName}`,
+                status: ` ${this.student0[i].status}`
+              })
+            }
+          })
+          .catch((error) => {
+            console.log(error)
+          })
       }
-      if (document.activeElement == this.$refs.btn2) {
+      if (btn0 == this.$refs.btn2) {
+        this.$refs.btn1.classList.remove('btn0')
+        this.$refs.btn3.classList.remove('btn0')
         this.order = '二面'
+
+        //二面数据发送请求
+        let url = '/interview-arrangement/info/like'
+        let params = {
+          admissionId: 20212803,
+          round: 2
+        }
+        this.$http
+          .get(url, params)
+          .then((response) => {
+            // console.log(response)
+            this.tableData = []
+            this.total = response.data.data.total
+            this.student0 = response.data.data.infoBackParamList
+            for (let i = 0; i < this.total; i++) {
+              this.tableData.push({
+                key: i.toString(),
+                studentId: ` ${this.student0[i].studentId}`,
+                name: ` ${this.student0[i].studentName}`,
+                class: ` ${this.student0[i].className}`,
+                departmentName: ` ${this.student0[i].departmentName}`,
+                status: ` ${this.student0[i].status}`
+              })
+            }
+          })
+          .catch((error) => {
+            console.log(error)
+          })
       }
-      if (document.activeElement == this.$refs.btn3) {
+      if (btn0 == this.$refs.btn3) {
+        this.$refs.btn1.classList.remove('btn0')
+        this.$refs.btn2.classList.remove('btn0')
         this.order = '三面'
+
+        //三面数据发送请求
+        let url = '/interview-arrangement/info/like'
+        let params = {
+          admissionId: 20212803,
+          round: 3
+        }
+        this.$http
+          .get(url, params)
+          .then((response) => {
+            // console.log(response)
+            this.tableData = []
+            this.total = response.data.data.total
+            this.student0 = response.data.data.infoBackParamList
+            for (let i = 0; i < this.total; i++) {
+              this.tableData.push({
+                key: i.toString(),
+                studentId: ` ${this.student0[i].studentId}`,
+                name: ` ${this.student0[i].studentName}`,
+                class: ` ${this.student0[i].className}`,
+                departmentName: ` ${this.student0[i].departmentName}`,
+                status: ` ${this.student0[i].status}`
+              })
+            }
+          })
+          .catch((error) => {
+            console.log(error)
+          })
       }
       this.$bus.$emit('order', this.order)
     },
-    selectionLineChangeHandle(val) {
-      this.selectionLine = val
-      var length = this.selectionLine.length
-      this.$bus.$emit('selectionName', this.selectionLine[length - 1].name)
-      this.$bus.$emit('selectionBumen', this.selectionLine[length - 1].bumen)
+    getCurrentRow(row) {
+      this.$bus.$emit('selectionName', row.name)
+      this.$bus.$emit('selectiondepartmentName', row.departmentName)
     }
+  },
+  created() {
+    //一面数据发送请求，初始页面渲染
+    let url = '/interview-arrangement/info/like'
+    let params = {
+      admissionId: 20212803
+    }
+    this.$http
+      .get(url, params)
+      .then((response) => {
+        // console.log(response)
+        this.tableData = []
+        this.total = response.data.data.total
+        this.student0 = response.data.data.infoBackParamList
+        for (let i = 0; i < this.total; i++) {
+          this.tableData.push({
+            key: i.toString(),
+            studentId: ` ${this.student0[i].studentId}`,
+            name: ` ${this.student0[i].studentName}`,
+            class: ` ${this.student0[i].className}`,
+            departmentName: ` ${this.student0[i].departmentName}`,
+            status: ` ${this.student0[i].status}`
+          })
+        }
+      })
+      .catch((error) => {
+        console.log(error)
+      })
   }
 }
 </script>
@@ -234,7 +361,7 @@ export default {
   border-color: rgb(192, 196, 204);
 }
 
-.btn:focus {
+.btn0 {
   outline: 0;
   background: gray;
   color: white;

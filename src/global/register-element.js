@@ -1,4 +1,5 @@
 import {
+  Radio,
   TimePicker,
   DatePicker,
   Input,
@@ -21,6 +22,7 @@ import {
 } from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 const components = [
+  Radio,
   TimePicker,
   DatePicker,
   Input,
