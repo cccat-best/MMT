@@ -224,7 +224,7 @@
               <el-col :span="24"
                 ><el-col :span="6"><div class="">手机号</div></el-col>
                 <el-col :span="6"
-                  ><div class="">{{ pwdForm.phone }}</div></el-col
+                  ><div class="">{{ phoneNuberConvert(phone) }}</div></el-col
                 >
                 <el-col :span="6"
                   ><div class="">
@@ -361,7 +361,7 @@ export default {
       sizeList: ['large', 'medium', 'small'],
       studentId: '20212403',
       name: '李政东',
-
+      phone: '18296723193',
       organizations: [
         { id: '2', name: '学生创新创业实践中心' },
         { id: '3', name: '学生会' }
@@ -407,8 +407,7 @@ export default {
         confirmNewPassword: ''
       },
       phoneForm: {
-        phone: '19179755936',
-
+        phone: '',
         newPhone: ''
       },
       jmoForm: {
@@ -436,7 +435,7 @@ export default {
               console.log(res.message)
             })
             .catch((err) => {
-              console.log('密码错误')
+              console.log(err)
             })
         } else {
           alert('验证不通过')
@@ -454,7 +453,7 @@ export default {
               console.log(res.message)
             })
             .catch((err) => {
-              console.log('手机号错误')
+              console.log(err)
             })
         } else {
           alert('验证不通过')
@@ -472,7 +471,7 @@ export default {
               console.log(res.message)
             })
             .catch((err) => {
-              console.log('邀请码错误')
+              console.log(err)
             })
         } else {
           alert('验证不通过')
@@ -495,7 +494,7 @@ export default {
         this.loginOrganizationId = val.data.data.loginOrganizationId
         this.organizations = val.data.data.organizations
         this.permission = val.data.data.permission
-        this.phoneForm.phone = val.data.data.phone
+        this.phone = val.data.data.phone
         this.name = val.data.data.name
       })
     },
@@ -528,12 +527,18 @@ export default {
           this.loginOrganizationId = res.data.data.loginOrganizationId
           this.organizations = res.data.data.organizations
           this.permission = res.data.data.permission
-          this.phoneForm.phone = res.data.data.phone
+          this.phone = res.data.data.phone
           this.name = res.data.data.name
         })
         .catch((err) => {
-          console.log('邀请码错误')
+          console.log(err)
         })
+    },
+    phoneNuberConvert(number) {
+      if (!number) return ''
+      let pat = /(\d{3})\d*(\d{4})/
+      let result = number.replace(pat, '$1***$2')
+      return result
     }
   },
   created() {
@@ -594,7 +599,6 @@ body > .el-container {
 .el-row {
   height: 100%;
 }
-
 .el-dropdown-link {
   cursor: pointer;
   color: black;
