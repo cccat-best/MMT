@@ -95,7 +95,9 @@ export default {
           // password: this.passWord, 修改账号不需要password
           permission: this.permission, //选中的权限
           phone: this.multipleSelection[index].phone,
-          studentId: this.multipleSelection[index].studentId
+          studentId: this.multipleSelection[index].studentId,
+          // studentNumber完全不影响，学号不修改，直接凑一个数据
+          studentNumber: this.multipleSelection[index].studentId
         }
       }
       // console.log('点击批量修改')

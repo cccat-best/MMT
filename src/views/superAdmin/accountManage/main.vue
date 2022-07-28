@@ -149,7 +149,9 @@
         </template>
       </el-table-column>
       <el-table-column label="修改密码" fixed="right">
-        <el-button size="mini" @click="handleKeyEdit">修改密码</el-button>
+        <template slot-scope="scope">
+        <el-button size="mini" @click="handleKeyEdit(scope.row)">修改密码</el-button>
+        </template>
       </el-table-column>
 
       <el-table-column label="删除账号" fixed="right">
@@ -434,12 +436,16 @@ export default {
       //不够优雅，待改进
       this.$refs.manyDialog.DialogVisibleChangeAccount = true
       this.$refs.manyDialog.organizationId = this.organizationId
+      // 传值
       this.$refs.manyDialog.formLabelAlign = data
+      // 深拷贝同步副本
+      this.$refs.manyDialog.AccountFormCheck=JSON.parse(JSON.stringify(this.$refs.manyDialog.formLabelAlign))
     },
     //修改密码弹窗
-    handleKeyEdit() {
+    handleKeyEdit(data) {
       this.$refs.manyDialog.dialogVisibleKey = true
       this.$refs.manyDialog.organizationId = this.organizationId
+      this.$refs.manyDialog.formLabelAlign = data
     },
     //删除 弹窗
     handleDelete(data) {
