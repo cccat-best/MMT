@@ -20,8 +20,15 @@ Vue.filter('replacestar', function (value) {
   return str
 })
 Vue.config.productionTip = false
+;('./global/register-element')
+
 // 注册Element
 Vue.use(registerElement)
+
+import {} from 'element-ui'
+
+
+Vue.config.productionTip = false
 new Vue({
   router,
   store,
