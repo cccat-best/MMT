@@ -197,7 +197,11 @@ export default {
     // 提交密码修改
     handleDialogVisibleKey() {
       if (this.ruleForm.pass != '') {
-        this.postAxios()
+        if (this.ruleForm.pass==this.ruleForm.checkPass) {
+          this.postAxios()
+        }else{
+          this.$message.error('两次输入密码不同')
+        }
       } else {
         this.$message.error('密码不能为空')
       }
