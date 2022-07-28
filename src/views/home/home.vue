@@ -1,12 +1,17 @@
 <template>
   <div class="super-content">
-    <layout :menuItemList="menuItemList" asideBgColor="#282e38" menuItemColor="#a4a6aa" meunItemActiveColor="#f57d2d">
+    <layout
+      :menuItemList="menuItemList"
+      asideBgColor="#282e38"
+      menuItemColor="#a4a6aa"
+      meunItemActiveColor="#f57d2d"
+    >
       <!-- 侧边栏标题 -->
       <div slot="asideTitle" class="aside-title">MMT</div>
       <!-- 头部 -->
       <template slot="header">
-       <div class="header">
-        <div class="header-left">
+        <div class="header">
+          <div class="header-left">
             <i class="el-icon-s-unfold"></i>
             科技协会
           </div>
@@ -14,7 +19,7 @@
             <i class="el-icon-s-fold"></i>
             退出超级管理
           </div>
-       </div>
+        </div>
       </template>
       <!-- 主体 -->
       <template slot="main">
@@ -73,11 +78,11 @@ export default {
     font-size: 20px;
   }
   .header {
-  height: 50px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: rgb(253, 255, 254);
-}
+    height: 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgb(253, 255, 254);
+  }
 }
 </style>
