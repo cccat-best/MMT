@@ -24,50 +24,9 @@ const routes = [
     component: () => import('../views/superAdmin/superAdmin.vue'),
     children: [
       {
-        path: '/process',
-        component: () =>
-          import('../views/superAdmin/interviewProcess/main.vue'),
-        children: [
-          {
-            path: '/',
-            redirect: '/signup'
-          },
-          {
-            path: '/signup',
-            component: () =>
-              import(
-                '../views/superAdmin/interviewProcess/signupOrInterview/signup.vue'
-              )
-          },
-          {
-            path: '/interview1',
-            component: () =>
-              import(
-                '../views/superAdmin/interviewProcess/signupOrInterview/interview1.vue'
-              )
-          },
-          {
-            path: '/interview2',
-            component: () =>
-              import(
-                '../views/superAdmin/interviewProcess/signupOrInterview/interview2.vue'
-              )
-          },
-          {
-            path: '/interview3',
-            component: () =>
-              import(
-                '../views/superAdmin/interviewProcess/signupOrInterview/interview3.vue'
-              )
-          },
-          {
-            path: '/interview4',
-            component: () =>
-              import(
-                '../views/superAdmin/interviewProcess/signupOrInterview/interview4.vue'
-              )
-          }
-        ]
+        //面试流程页面
+        path: 'process',
+        component: () => import('../views/superAdmin/interviewProcess/main.vue')
       }
     ]
   }

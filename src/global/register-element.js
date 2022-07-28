@@ -24,7 +24,10 @@ import {
   Message,
   Form,
   FormItem,
-  InputNumber
+  InputNumber,
+  TabPane,
+  TableColumn,
+  Tabs
 } from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 const components = [
@@ -51,7 +54,10 @@ const components = [
   Input,
   Form,
   FormItem,
-  InputNumber
+  InputNumber,
+  TabPane,
+  TableColumn,
+  Tabs
 ]
 export default function (Vue) {
   for (const component of components) {

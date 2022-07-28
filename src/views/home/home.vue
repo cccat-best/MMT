@@ -1,9 +1,83 @@
 <template>
-  <div>home</div>
+  <div class="super-content">
+    <layout :menuItemList="menuItemList" asideBgColor="#282e38" menuItemColor="#a4a6aa" meunItemActiveColor="#f57d2d">
+      <!-- 侧边栏标题 -->
+      <div slot="asideTitle" class="aside-title">MMT</div>
+      <!-- 头部 -->
+      <template slot="header">
+       <div class="header">
+        <div class="header-left">
+            <i class="el-icon-s-unfold"></i>
+            科技协会
+          </div>
+          <div class="header-right">
+            <i class="el-icon-s-fold"></i>
+            退出超级管理
+          </div>
+       </div>
+      </template>
+      <!-- 主体 -->
+      <template slot="main">
+        <router-view></router-view>
+      </template>
+    </layout>
+  </div>
 </template>
 
 <script>
-export default {}
+import layout from '@/compentents/myLayout.vue'
+export default {
+  components: { layout },
+  data() {
+    return {
+      menuItemList: [
+        {
+          iconClass: 'el-icon-s-home',
+          id: '1',
+          pagePath: '',
+          title: '面试面板'
+        },
+        {
+          iconClass: 'el-icon-picture',
+          id: '2',
+          pagePath: '',
+          title: '宣传信息设置'
+        },
+        {
+          iconClass: 'el-icon-takeaway-box',
+          id: '3',
+          pagePath: '/superAdmin/process',
+          title: '面试流程设置'
+        },
+        {
+          iconClass: 'el-icon-s-custom',
+          id: '4',
+          pagePath: '',
+          title: '组织管理'
+        }
+      ]
+    }
+  }
+}
 </script>
 
-<style></style>
+<style lang="less" scoped>
+.super-content {
+  height: 100vh;
+  .aside-title {
+    color: white;
+    height: 65px;
+    width: 200px;
+    text-align: center;
+    line-height: 65px;
+    font-size: 20px;
+  }
+  .header {
+  height: 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgb(253, 255, 254);
+}
+}
+</style>
