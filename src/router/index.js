@@ -17,7 +17,31 @@ const routes = [
   },
   {
     path: '/home',
-    component: () => import('../views/home/home.vue')
+    component: () => import('../views/home/home.vue'),
+    children: [
+      // {
+      //   path: '',
+      //   component: () => import(''),
+      // },
+      // {
+      //   path: '',
+      //   component: () => import(''),
+      // },
+      {
+        path: 'arrangement',
+        component: () =>
+          import('../views/home/interviewArrangement/interviewArrangement.vue')
+      },
+      // {
+      //   path: '',
+      //   component: () => import(''),
+      // },
+      {
+        path: 'reply',
+        component: () =>
+          import('../views/home/interviewReply/interviewReply.vue')
+      }
+    ]
   },
   {
     path: '/superAdmin',

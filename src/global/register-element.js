@@ -1,4 +1,9 @@
 import {
+  Radio,
+  TimePicker,
+  DatePicker,
+  Input,
+  Progress,
   Button,
   Table,
   Container,
@@ -14,9 +19,7 @@ import {
   Col,
   TableColumn,
   Pagination,
-  Input,
   Dialog,
-  Radio,
   Divider,
   Alert,
   Message,
@@ -25,17 +28,21 @@ import {
   Form,
   FormItem,
   RadioGroup,
-  DatePicker,
   TimeSelect,
-  TimePicker,
   Checkbox,
   Popover,
-  InputNumber
+  Image
 } from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 const components = [
+  Radio,
+  TimePicker,
+  DatePicker,
+  Input,
+  Progress,
   Button,
   Table,
+  TableColumn,
   Container,
   Header,
   Aside,
@@ -49,7 +56,6 @@ const components = [
   Col,
   TableColumn,
   Pagination,
-  Input,
   Dialog,
   Radio,
   Divider,
@@ -58,17 +64,16 @@ const components = [
   Form,
   FormItem,
   RadioGroup,
-  DatePicker,
   TimeSelect,
-  TimePicker,
-  Radio,
   Checkbox,
   Dialog,
   Popover,
   Input,
   Form,
   FormItem,
-  InputNumber
+  Image,
+  Input,
+  FormItem
 ]
 export default function (Vue) {
   for (const component of components) {
