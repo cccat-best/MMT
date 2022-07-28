@@ -27,7 +27,6 @@ Vue.use(registerElement)
 
 import {} from 'element-ui'
 
-
 Vue.config.productionTip = false
 new Vue({
   router,
