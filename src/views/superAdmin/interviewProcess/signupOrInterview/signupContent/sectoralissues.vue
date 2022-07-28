@@ -23,9 +23,15 @@
         </div>
       </div>
       <!-- 部门&&问题展示 -->
-      <div class="section-que-content" v-for="(item,i) in departmentList" :key="'d'+i">
+      <div
+        class="section-que-content"
+        v-for="(item, i) in departmentList"
+        :key="'d' + i"
+      >
         <!-- 部门名称 -->
-        <div class="section-que-content-title">部门：{{item.departmentName}}</div>
+        <div class="section-que-content-title">
+          部门{{i+1}}：{{ item.departmentName }}
+        </div>
         <!-- 问题展示区&&添加区 -->
         <addQues :departmentId="item.departmentId" ref="a"></addQues>
       </div>
@@ -35,41 +41,48 @@
 
 <script>
 import addQues from './addQues.vue'
-import  {mapMutations} from 'vuex'
+import { mapMutations } from 'vuex'
+import axios from "axios";
 export default {
-  components:{addQues},
+  //添加问题组件
+  components: { addQues },
   data() {
     return {
       //最多可报名部门数
       maxDepartment: 1,
       //是否调剂
       allocated: false,
-      departmentList: [
-        { departmentId: 1, departmentName: '设计部' },
-        { departmentId: 2, departmentName: '产品部' },
-        { departmentId: 3, departmentName: '问题部' }
-      ],
+      //部门数组
+      departmentList: [],
       //如果部门数为1不显示调剂按钮
-      departmentCount: 0,
+      departmentCount: 0
     }
   },
   mounted() {
-    //测试是否显示调剂
-    this.departmentCount = this.departmentList.length
+    this.getDeppartmentList()
+
   },
   methods: {
-    ...mapMutations('problem',['updateMaxDepartment','updateAllocated']),
+    ...mapMutations('problem', ['updateMaxDepartment', 'updateAllocated']),
     packgeSectionQue() {
+      //保存最大可报部门数 是否调剂
       this.updateMaxDepartment(this.maxDepartment)
       this.updateAllocated(this.allocated)
       //保存问题到vuex
-      for(let i =0 ;i<this.$refs.a.length;i++) {
+      for (let i = 0; i < this.$refs.a.length; i++) {
         this.$refs.a[i].saveToVuex()
       }
-      //  console.log(6);
+    },
+    async getDeppartmentList() {
+      const organizationId = 2
+      const userId = 2
+     const{data:res} =await axios.get(`http://119.29.27.252:38080/organization/department-id?organizationId=${organizationId}&userId=${userId}`)
+      //判断是否请求成功
+      if(res.code != '00000') return this.$message.error('部门请求失败'+res.message)
+        this.departmentCount = res.data.departmentList.length
+        this.departmentList = res.data.departmentList
     }
-  },
-
+  }
 }
 </script>
 
@@ -80,7 +93,7 @@ export default {
     font-size: 30px;
     display: flex;
     color: #828282;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
   }
   .section-content {
     margin-left: 25px;
@@ -106,7 +119,6 @@ export default {
         display: flex;
         font-size: 20px;
       }
-
     }
   }
 }

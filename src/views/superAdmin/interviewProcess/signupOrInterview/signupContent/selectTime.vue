@@ -23,8 +23,8 @@
   </div>
 </template>
 
-<script >
-import {mapMutations} from 'vuex'
+<script>
+import { mapMutations } from 'vuex'
 export default {
   data() {
     return {
@@ -32,7 +32,7 @@ export default {
     }
   },
   methods: {
-    ...mapMutations('problem',['updateTime']),
+    ...mapMutations('problem', ['updateTime']),
     packge() {
       this.updateTime(this.value1)
     }
@@ -60,11 +60,13 @@ export default {
     }
   }
   .block {
-    width: 100%;
+    width: 660px;
     margin-top: 10px;
+    margin-left: 30px;
     display: flex;
     .time-select {
-      width: 80%;
+      height: 100%;
+      width: 100%;
       margin-top: 60px;
     }
   }

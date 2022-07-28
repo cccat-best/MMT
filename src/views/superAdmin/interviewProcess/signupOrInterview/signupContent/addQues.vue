@@ -16,7 +16,7 @@
             <span class="freeView-name">{{ item1.description }}</span>
           </div>
           <!-- 展示选项 -->
-          <select style="width: 166.4px" v-show="item1.isSelection">
+          <select class="freeView-select" v-show="item1.selection">
             <option
               selected="selected"
               disabled="disabled"
@@ -32,7 +32,7 @@
             </option>
           </select>
           <!--  展示input框-->
-          <input type="text" v-show="!item1.isSelection" />
+          <input type="text" v-show="!item1.selection" class="freeView-input" />
         </div>
       </div>
     </div>
@@ -108,7 +108,7 @@
           </el-form>
         </div>
 
-        <div style="text-align: right; margin: 0">
+        <div style="text-align: right; margin-top:15px ;height:40px" >
           <el-button size="mini" type="text" @click="addShow = false"
             >取消</el-button
           >
@@ -116,14 +116,14 @@
             >确定</el-button
           >
         </div>
-        <el-button slot="reference" class="add-botton">+添加综合问题</el-button>
+        <el-button slot="reference" class="add-botton" >+添加部门问题</el-button>
       </el-popover>
     </div>
   </div>
 </template>
 
 <script>
-import {mapMutations} from 'vuex'
+import { mapMutations } from 'vuex'
 export default {
   data() {
     return {
@@ -152,7 +152,10 @@ export default {
     }
   },
   methods: {
-      ...mapMutations('problem',['updateDepartmentQuestionsList','removeDepartmentQuestionsList']),
+    ...mapMutations('problem', [
+      'updateDepartmentQuestionsList',
+      'removeDepartmentQuestionsList'
+    ]),
     //动态增减选项
     removeDomain(item) {
       if (this.form.domains.length === 2) {
@@ -188,7 +191,7 @@ export default {
       ) {
         let que = {
           // 部门id
-          departmentId:this.departmentId,
+          departmentId: this.departmentId,
           //是单选
           selection: true,
           description: this.text2
@@ -253,7 +256,7 @@ export default {
       ) {
         let que = {
           // 部门id
-          departmentId:this.departmentId,
+          departmentId: this.departmentId,
           //不是选择
           selection: false,
           description: this.text1,
@@ -285,21 +288,29 @@ export default {
     },
     // 删除问题
     removeItem(item1) {
-
       this.departmentQuestionsList = this.departmentQuestionsList.filter(
         (p) => p.description != item1.description
       )
+      //同步删减vuex中此问题
       this.removeDepartmentQuestionsList(item1)
       this.isAdd--
     },
     //保存到vuex
     saveToVuex() {
-      this.departmentQuestionsList.forEach(ques => {
+      this.departmentQuestionsList.forEach((ques) => {
         this.updateDepartmentQuestionsList(ques)
       })
     }
   },
-  props:["departmentId"],
+  props: ['departmentId'],
+  watch:{
+    //弹出框位置修正
+    chooseAdd() {
+      this.$nextTick(() => {
+        this.$refs.addPopover.updatePopper()
+      })
+    }
+  }
 }
 </script>
 
@@ -334,11 +345,20 @@ export default {
         text-overflow: ellipsis;
       }
     }
+    .freeView-input {
+        border-radius: 5px;
+        border: 1px solid #0f2d2d;
+      }
+      .freeView-select {
+        width: 165.4px;
+        border-radius: 5px;
+        border: 1px solid #0f2d2d;
+      }
   }
 }
 .add-qus {
   display: flex;
-  margin-top: 20px;
+  margin-top: 10px;
   padding-left: 25px;
   .add-botton {
     color: white;

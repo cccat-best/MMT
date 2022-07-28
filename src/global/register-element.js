@@ -25,6 +25,9 @@ import {
   Form,
   FormItem,
   InputNumber,
+  TabPane,
+  TableColumn,
+  Tabs
 } from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 const components = [
@@ -51,16 +54,19 @@ const components = [
   Input,
   Form,
   FormItem,
-  InputNumber
+  InputNumber,
+  TabPane,
+  TableColumn,
+  Tabs
+
 ]
 export default function (Vue) {
   for (const component of components) {
     Vue.use(component)
   }
-Vue.prototype.$msgbox = MessageBox;
-Vue.prototype.$alert = MessageBox.alert;
-Vue.prototype.$confirm = MessageBox.confirm;
-Vue.prototype.$prompt = MessageBox.prompt;
-Vue.prototype.$message = Message;
+  Vue.prototype.$msgbox = MessageBox
+  Vue.prototype.$alert = MessageBox.alert
+  Vue.prototype.$confirm = MessageBox.confirm
+  Vue.prototype.$prompt = MessageBox.prompt
+  Vue.prototype.$message = Message
 }
-
