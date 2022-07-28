@@ -34,10 +34,20 @@ import {
   Image,
   Tabs,
   TabPane,
-  InputNumber
+  InputNumber,
+  PageHeader,
+  Avatar,
+  Dropdown,
+  DropdownMenu,
+  DropdownItem,
 } from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 const components = [
+  DropdownItem,
+  DropdownMenu,
+  Dropdown,
+  Avatar,
+  PageHeader,
   Radio,
   TimePicker,
   DatePicker,
