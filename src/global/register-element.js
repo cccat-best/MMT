@@ -32,6 +32,8 @@ import {
   Checkbox,
   Popover,
   Image,
+  Tabs,
+  TabPane,
   InputNumber
 } from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
@@ -75,6 +77,8 @@ const components = [
   Image,
   Input,
   FormItem,
+  Tabs,
+  TabPane,
   InputNumber
 ]
 export default function (Vue) {

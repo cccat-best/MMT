@@ -21,7 +21,7 @@
               :index="item.id"
               v-for="(item, index) in menuItemList"
               :key="index"
-              @clikc="handleMenuItemClick(item)"
+              @click="handleMenuItemClick(item)"
               :route="item.pagePath"
             >
               <el-icon :class="['iconfont', item.iconClass]"></el-icon>
@@ -110,6 +110,7 @@ export default {
   },
   methods: {
     handleMenuItemClick(item) {
+      console.log(item)
       this.$route.push(item.pagePath)
     }
   }
