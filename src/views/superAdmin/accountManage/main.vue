@@ -1,5 +1,11 @@
 <template>
   <div>
+    <!-- 测试更新数据 -->
+    <button @click="de">
+      测试更新数据，删掉了前三个数据，后面完工时记得删掉这个
+    </button>
+    <!--  -->
+
     <!-- 批量操作 -->
     <div class="seach-header">
       <div>
@@ -94,22 +100,37 @@
       height="400px"
       ref="multipleTable"
       :data="tableList"
-      :default-sort="{ prop: 'studentId', order: 'ascending' }"
+      @sort-change="sortTableFun"
+      @filter-change="filterChange"
+      :default-sort="
+        ({ prop: 'studentId', order: 'ascending' },
+        { prop: 'permission', order: 'ascending' })
+      "
       @selection-change="handleSelectionChange"
     >
       <!-- 注意上面有tableList -->
       <el-table-column type="selection" width="55" fixed> </el-table-column>
-      <el-table-column prop="studentId" label="学号" sortable width="120" fixed>
+      <el-table-column
+        prop="studentId"
+        label="学号"
+        sortable="custom"
+        width="120"
+        fixed
+      >
       </el-table-column>
       <el-table-column prop="name" label="姓名" width="120"> </el-table-column>
+      <!-- :filter-multiple="false"过滤器单选 -->
+      <!-- :filter-method="filterPermission" 前端过滤 -->
       <el-table-column
         prop="permission"
         label="用户权限"
+        sortable="custom"
         :filters="[
           { text: 'commitee', value: 'commitee' },
           { text: 'member', value: 'member' }
         ]"
-        :filter-method="filterPermission"
+        column-key="permission"
+        :filter-multiple="false"
         width="120"
       >
       </el-table-column>
@@ -146,7 +167,7 @@
       >
       <!-- 邀请码，可一键复制 -->
       <clipBoard ref="clipBoard" />
-      <!-- 引入很多弹窗 -->
+      <!-- 引入修改账号、修改密码、删除弹窗 -->
       <manyDialog ref="manyDialog" />
       <!-- 批量操作弹窗 -->
       <batchOperateDialog ref="batchOperateDialog" />
@@ -180,18 +201,22 @@ export default {
   data() {
     return {
       // 关键字搜索
-      organizationId: 0, ////组织名不知道，需要询问
+      organizationId: 0, ////组织名不知道，需要询问////////////////////////
       searchWord: '',
+      data: '', //发请求的data
+      order: 'asc', //排序顺序，默认升序
+      column: 'permission', //排序变量，默认权限升序
 
       // 页码
       tableList: [], //当前页展示数据
       page: {
         currentPage: 1, // 当前页码
-        pagesize: 10, // 每页条数
+        pagesize: 10, // 每页条数，默认10
         total: 100
       },
       // 表格数据
-      tableData: [...data], //模拟数据
+      tableData: [...data], //模拟数据，发请求会获取数据覆盖它
+      tableDataChange: [], //排序、筛选之后的数据
       //多选选中记录,只能记录单页，需要改进
       multipleSelection: []
     }
@@ -204,29 +229,105 @@ export default {
   },
   created() {
     //获取数据
-    // this.getData()???
     this.searchKeyWord()
+    // 在没有请求成功时，以此获取模拟数据并渲染分页，成功后最好删掉
+    this.$message.success(
+      '在没有请求成功时，以此获取模拟数据并渲染分页，成功后最好删掉'
+    )
+    this.orderChange(this.tableData)
     //渲染数据
-    this.page.pagesize = 10
-    this.page.currentPage = 1
-    this.pageCutDouwn()
+    // this.page.pagesize = 10
+    // this.page.currentPage = 1
+    // this.pageCutDouwn()
   },
   methods: {
+    // 测试数据更新时，表单数据是否同步更新了
+    de() {
+      this.$message.success(
+        '测试更新数据，删掉了前三个数据，后面完工时记得删掉这个'
+      )
+      this.tableData = this.tableData.slice(3)
+      this.orderChange(this.tableData)
+    },
+
+    // 触发排序
+    sortTableFun(column) {
+      //用户点击这一列的上下排序按钮时，触发的函数
+      this.column = column.prop //该方法获取到当前列绑定的prop字段名赋值给一个变量，之后这个变量做为入参传给后端
+      if (column.prop) {
+        //该列有绑定prop字段走这个分支
+        if (column.order == 'ascending') {
+          //当用户点击的是升序按钮，即ascending时
+          this.order = 'asc' //将order这个变量赋值为后端接口文档定义的升序的字段名，之后作为入参传给后端
+        } else if (column.order == 'descending') {
+          //当用户点击的是升序按钮，即descending时
+          this.order = 'desc' //将order这个变量赋值为后端接口文档定义的降序的字段名，之后作为入参传给后端
+        }
+        this.orderChange(this.tableDataChange) //改变全部数据顺序
+      }
+    },
+    // 排序，默认权限升序，并完成渲染分页
+    orderChange(datalist) {
+      // this.$message.success('发起后端请求的接口')
+      // 对权限排序
+      if (this.column == 'permission') {
+        // console.log(Number(datalist[4].permission[0]))
+        if (this.order == 'desc') {
+          datalist.sort((a, b) => {
+            return b.permission[0] > a.permission[0] ? 1 : -1
+          }) //permission 降序
+        } else {
+          datalist.sort((a, b) => {
+            return b.permission[0] < a.permission[0] ? 1 : -1
+          }) //permission 升序
+        }
+      }
+      // 对学号排序
+      else if (this.column == 'studentId') {
+        // 修改数组顺序，后续可能要用对象保存原始数据
+        if (this.order == 'desc') {
+          datalist.sort((a, b) => {
+            return Number(b.studentId) > Number(a.studentId) ? 1 : -1
+          }) //permission 降序
+        } else {
+          datalist.sort((a, b) => {
+            return Number(b.studentId) < Number(a.studentId) ? 1 : -1
+          }) //permission 升序
+        }
+      }
+      // 渲染排序后的数据，分页
+      // this.page.pagesize = 10
+      this.page.currentPage = 1
+      this.tableDataChange = datalist
+      this.pageCutDouwn(this.tableDataChange)
+    },
+
     // url
     // https://mmt-dev.sipcoj.com/
     //关键字搜索
     searchKeyWord() {
-      axios({
-        method: 'post',
-        url: 'https://mmt-dev.sipcoj.com/account/manage/all',
-        data: {
+      // 判断字符串是否为空
+      if (this.searchWord != '') {
+        this.data = {
           organizationId: this.organizationId,
           searchWord: this.searchWord
         }
+      } else {
+        this.data = {
+          organizationId: this.organizationId
+        }
+      }
+      // 发请求
+      axios({
+        method: 'post',
+        url: 'https://mmt-dev.sipcoj.com/account/manage/all',
+        data: this.data
       }).then(
         (res) => {
           this.tableData = res.data.studentList
           this.total = res.data.total
+          // 通知所有相关项更新数据，因为他们使用tableDataChange而不是tableData
+          this.orderChange(this.tableData)
         },
         (err) => {
           this.$message.error('获取数据失败' + err)
@@ -234,38 +335,71 @@ export default {
       )
     },
 
-    // 筛选权限
-    filterPermission(value, row) {
-      return row.permission === value
+    // 触发筛选权限
+    filterChange(data) {
+      // console.log(data.permission[0])
+      // 传permission
+      this.filterChangeData(data.permission[0])
     },
-    //修改账号表单校验，待修改
-    findError() {
-      if (!/^20[1-9][0-9][0-9]{4}$/.test(this.sendData.stdId)) {
-        this.$message.error('学号长度为8')
-      } else if (!/^[\u4E00-\u9FA5]{2,5}$/.test(this.sendData.stdName)) {
-        this.$message.error('请输入真实姓名')
-      } else if (!/^(1[3-9][0-9])[0-9]{8}$/.test(this.sendData.stdPhone)) {
-        this.$message.error('电话不符合规范')
-      } else this.ifError = true
-    },
-    //发请求模板////////////////////////////////////////
-    postData() {
-      this.findError() //校验数据
-      if (this.ifError) {
-        axios({
-          method: 'post',
-          url: 'http://47.94.90.140:8000/post',
-          data: this.sendData
-        }).then(
-          (res) => {
-            this.$message.success(res.data.message)
-          },
-          (err) => {
-            this.$message.error(err)
-          }
-        )
+    // 对数组筛选
+    filterChangeData(permission) {
+      if (permission == 'commitee') {
+        // console.log(permission=="commitee")
+        // console.log(this.tableData[0].permission=="commitee")
+        this.$message.success(permission)
+        // 只改变tableDataChange，保证能够还原，不会越筛越少
+        this.tableDataChange = this.tableData.filter((element) => {
+          // console.log(element.permission=="commitee")
+          return element.permission == 'commitee'
+        })
+        // console.log(this.tableData)
+      } else if (permission == 'member') {
+        this.$message.success(permission)
+        this.tableDataChange = this.tableData.filter((element) => {
+          // console.log(element.permission=="commitee")
+          return element.permission == 'member'
+        })
+      } else {
+        // permission结果为undefined,因为element-ui自动生成这个选项，我也不知道怎么给它加value值
+        // console.log(permission)
+        this.$message.error('全部')
+        this.tableDataChange = this.tableData
       }
+      // 渲染筛选后数据
+      this.page.pagesize = 10
+      this.page.currentPage = 1
+      this.pageCutDouwn(this.tableDataChange)
     },
+
+    //修改账号表单校验、发请求模板，待删除，防止后面更改需求，先不删
+    // findError() {
+    //   if (!/^20[1-9][0-9][0-9]{4}$/.test(this.sendData.stdId)) {
+    //     this.$message.error('学号长度为8')
+    //   } else if (!/^[\u4E00-\u9FA5]{2,5}$/.test(this.sendData.stdName)) {
+    //     this.$message.error('请输入真实姓名')
+    //   } else if (!/^(1[3-9][0-9])[0-9]{8}$/.test(this.sendData.stdPhone)) {
+    //     this.$message.error('电话不符合规范')
+    //   } else this.ifError = true
+    // },
+    //发请求模板，待删除，防止后面更改需求，先不删
+    // postData() {
+    //   this.findError() //校验数据
+    //   if (this.ifError) {
+    //     axios({
+    //       method: 'post',
+    //       url: 'http://47.94.90.140:8000/post',
+    //       data: this.sendData
+    //     }).then(
+    //       (res) => {
+    //         this.$message.success(res.data.message)
+    //       },
+    //       (err) => {
+    //         this.$message.error(err)
+    //       }
+    //     )
+    //   }
+    // },
+
     // 批量操作，先传输选中数据
     pushMultipleSelectionData() {
       this.$refs.batchOperateDialog.multipleSelection = this.multipleSelection
@@ -291,7 +425,7 @@ export default {
     //多选选中添加到记录中
     handleSelectionChange(val) {
       this.multipleSelection = val
-      /////////////////直接获取选中数据
+      /////////////////直接获取选中数据///////////////////////////
       console.log(this.multipleSelection)
     },
     //修改账号弹窗
@@ -333,29 +467,28 @@ export default {
       //     })
       //   })
     },
-    // 获取全部信息
-    getData() {},
-    //修改页码
+    //修改页容量
     handleSizeChange(val) {
       this.page.pagesize = val
-      // 页容量回到第一页
+      // 回到第一页
       this.page.currentPage = 1
       // console.log(`每页: ${val}`)
-      this.pageCutDouwn()
+      this.pageCutDouwn(this.tableDataChange)
     },
+    // 修改到第几页
     handleCurrentChange(val) {
       this.page.currentPage = val
       // console.log(`当前页: ${val}`)
-      this.pageCutDouwn()
+      this.pageCutDouwn(this.tableDataChange)
     },
     // 具体分页操作
-    pageCutDouwn() {
-      this.tableList = this.tableData.filter(
+    pageCutDouwn(tableDataChange) {
+      this.tableList = tableDataChange.filter(
         (item, index) =>
           index < this.page.currentPage * this.page.pagesize &&
           index >= this.page.pagesize * (this.page.currentPage - 1)
       )
-      this.page.total = this.tableData.length
+      this.page.total = tableDataChange.length
     }
   }
 }
