@@ -31,7 +31,10 @@ import {
   TimeSelect,
   Checkbox,
   Popover,
-  Image
+  Image,
+  Tabs,
+  TabPane,
+  InputNumber
 } from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 const components = [
@@ -73,7 +76,10 @@ const components = [
   FormItem,
   Image,
   Input,
-  FormItem
+  FormItem,
+  Tabs,
+  TabPane,
+  InputNumber
 ]
 export default function (Vue) {
   for (const component of components) {
