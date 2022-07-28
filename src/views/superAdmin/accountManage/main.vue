@@ -150,7 +150,9 @@
       </el-table-column>
       <el-table-column label="修改密码" fixed="right">
         <template slot-scope="scope">
-        <el-button size="mini" @click="handleKeyEdit(scope.row)">修改密码</el-button>
+          <el-button size="mini" @click="handleKeyEdit(scope.row)"
+            >修改密码</el-button
+          >
         </template>
       </el-table-column>
 
@@ -439,7 +441,9 @@ export default {
       // 传值
       this.$refs.manyDialog.formLabelAlign = data
       // 深拷贝同步副本
-      this.$refs.manyDialog.AccountFormCheck=JSON.parse(JSON.stringify(this.$refs.manyDialog.formLabelAlign))
+      this.$refs.manyDialog.AccountFormCheck = JSON.parse(
+        JSON.stringify(this.$refs.manyDialog.formLabelAlign)
+      )
     },
     //修改密码弹窗
     handleKeyEdit(data) {

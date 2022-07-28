@@ -274,11 +274,11 @@ export default {
       }).then(
         (res) => {
           this.$message.success(res.data.message)
-          this.isErrorPass=false
+          this.isErrorPass = false
         },
         (err) => {
           this.$message.error(err)
-          this.isErrorPass=false
+          this.isErrorPass = false
         }
       )
     },
@@ -338,8 +338,8 @@ export default {
       } else if (this.ruleForm.pass == this.ruleForm.checkPass) {
         this.isErrorPass = true
       } else {
-          this.$message.error('两次输入密码不同')
-        }
+        this.$message.error('两次输入密码不同')
+      }
     }
   }
 }
