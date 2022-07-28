@@ -370,34 +370,36 @@ export default {
       this.page.currentPage = 1
       this.pageCutDouwn(this.tableDataChange)
     },
-    //修改账号表单校验，待修改
-    findError() {
-      if (!/^20[1-9][0-9][0-9]{4}$/.test(this.sendData.stdId)) {
-        this.$message.error('学号长度为8')
-      } else if (!/^[\u4E00-\u9FA5]{2,5}$/.test(this.sendData.stdName)) {
-        this.$message.error('请输入真实姓名')
-      } else if (!/^(1[3-9][0-9])[0-9]{8}$/.test(this.sendData.stdPhone)) {
-        this.$message.error('电话不符合规范')
-      } else this.ifError = true
-    },
-    //发请求模板////////////////////////////////////////
-    postData() {
-      this.findError() //校验数据
-      if (this.ifError) {
-        axios({
-          method: 'post',
-          url: 'http://47.94.90.140:8000/post',
-          data: this.sendData
-        }).then(
-          (res) => {
-            this.$message.success(res.data.message)
-          },
-          (err) => {
-            this.$message.error(err)
-          }
-        )
-      }
-    },
+
+    //修改账号表单校验、发请求模板，待删除，防止后面更改需求，先不删
+    // findError() {
+    //   if (!/^20[1-9][0-9][0-9]{4}$/.test(this.sendData.stdId)) {
+    //     this.$message.error('学号长度为8')
+    //   } else if (!/^[\u4E00-\u9FA5]{2,5}$/.test(this.sendData.stdName)) {
+    //     this.$message.error('请输入真实姓名')
+    //   } else if (!/^(1[3-9][0-9])[0-9]{8}$/.test(this.sendData.stdPhone)) {
+    //     this.$message.error('电话不符合规范')
+    //   } else this.ifError = true
+    // },
+    //发请求模板，待删除，防止后面更改需求，先不删
+    // postData() {
+    //   this.findError() //校验数据
+    //   if (this.ifError) {
+    //     axios({
+    //       method: 'post',
+    //       url: 'http://47.94.90.140:8000/post',
+    //       data: this.sendData
+    //     }).then(
+    //       (res) => {
+    //         this.$message.success(res.data.message)
+    //       },
+    //       (err) => {
+    //         this.$message.error(err)
+    //       }
+    //     )
+    //   }
+    // },
+
     // 批量操作，先传输选中数据
     pushMultipleSelectionData() {
       this.$refs.batchOperateDialog.multipleSelection = this.multipleSelection
@@ -423,7 +425,7 @@ export default {
     //多选选中添加到记录中
     handleSelectionChange(val) {
       this.multipleSelection = val
-      /////////////////直接获取选中数据
+      /////////////////直接获取选中数据///////////////////////////
       console.log(this.multipleSelection)
     },
     //修改账号弹窗
