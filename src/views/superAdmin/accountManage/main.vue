@@ -361,8 +361,9 @@ export default {
         })
       } else {
         // permission结果为undefined,因为element-ui自动生成这个选项，我也不知道怎么给它加value值
-        console.log(permission)
-        this.$message.error('全部 应该退出筛选或筛选两个，待优化')
+        // console.log(permission)
+        this.$message.error('全部')
+        this.tableDataChange = this.tableData
       }
       // 渲染筛选后数据
       this.page.pagesize = 10
