@@ -11,9 +11,4 @@
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
 }
-html,
-body,
-#app {
-  height: 100%;
-}
 </style>

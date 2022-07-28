@@ -82,18 +82,21 @@ export default {
 </script>
 <style lang="less" scoped>
 .main {
+  height: 525px;
   overflow: hidden;
-  min-height: 600px;
+  width: 1250px;
+  min-height: 455px;
+  min-width: 900px;
   line-height: normal;
-  padding-top: 50px;
-  padding-left: 20px;
-  height: 100%;
-  width: 100%;
+  // padding-top: 50px;
+  // padding-left: 20px;
+  // height: 100%;
   display: flex;
   .left {
-    margin-top: 10px;
-    margin-left: 20px;
-    width: 18%;
+    height: 450px;
+    margin-top: 30px;
+    margin-left: 25px;
+    width: 15%;
     .nav-title {
       display: flex;
       flex-direction: column;
@@ -125,7 +128,14 @@ export default {
     }
   }
   .right {
-    width: 70%;
+    width: 80%;
+    /* 滚动条 */
+    background-color: #fff;
+    height: 510px;
+    margin-top: 12px;
+    -webkit-overflow-scrolling: touch;
+    overflow-y: auto;
+    white-space: nowrap;
   }
 }
 </style>

@@ -483,7 +483,7 @@ export default {
       margin-top: 40px;
       width: 660px;
       height: 168px;
-      margin-bottom: 20px;
+      margin-bottom: 30px;
       box-shadow: 4px 4px 8px 4px rgba(0, 0, 0, 0.2);
       padding: 5px 20px;
       .yushe-title {

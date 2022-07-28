@@ -19,7 +19,7 @@
               <span class="freeView-name">{{ item1.description }}</span>
             </div>
             <!-- 展示选项 -->
-            <select style="width: 166.4px" v-show="item1.isSelection">
+            <select style="width: 166.4px" v-show="item1.selection">
               <option
                 selected="selected"
                 disabled="disabled"
@@ -35,7 +35,7 @@
               </option>
             </select>
             <!--  展示input框-->
-            <input type="text" v-show="!item1.isSelection" />
+            <input type="text" v-show="!item1.selection" />
           </div>
         </div>
       </div>
@@ -45,6 +45,7 @@
           placement="top"
           width="300"
           v-model="addShow"
+          ref="synthPopover"
           :popper-options="{
             boundariesElement: 'viewport',
             removeOnDestroy: true
@@ -137,7 +138,7 @@
           type="primary"
           plain
           class="bottom-button-item"
-          @click="sendTo()"
+          @click="isSend()"
           >提交</el-button
         >
       </div>
@@ -147,6 +148,7 @@
 
 <script>
 import { mapState } from 'vuex'
+import axios from 'axios'
 export default {
   data() {
     return {
@@ -172,6 +174,14 @@ export default {
           }
         ]
       }
+    }
+  },
+  watch: {
+    //弹出框位置修正
+    chooseAdd() {
+      this.$nextTick(() => {
+        this.$refs.synthPopover.updatePopper()
+      })
     }
   },
   computed: {
@@ -222,7 +232,7 @@ export default {
       ) {
         let que = {
           //不是单选
-          isSelection: true,
+          selection: true,
           description: this.text2
         }
         let option = {
@@ -287,7 +297,7 @@ export default {
       ) {
         let que = {
           //不是选择
-          isSelection: false,
+          selection: false,
           description: this.text1,
           option: {
             a: null,
@@ -311,10 +321,8 @@ export default {
     pushQue() {
       if (this.chooseAdd === 1) {
         this.addTextQues()
-        console.log(this.comprehensiveQuestionsList)
       } else {
         this.addChoseList()
-        console.log(this.comprehensiveQuestionsList)
       }
     },
     // 删除问题
@@ -323,30 +331,70 @@ export default {
         (p) => p.description != item1.description
       )
       this.isAdd--
-      console.log(this.comprehensiveQuestionsList)
     },
     //如果点击取消回到时间选择页
     cancel() {
       this.$parent.cancel()
     },
-    //发送请求给后端
-    sendTo() {
-      //开始结束时间必填
-      if (this.time.length == 0)
-        return this.$message.error('请确认填写是否填写了开始截至时间')
-      const qustionList = {
-        userId: 1,
-        organizationId: 1,
-        startTime: this.time[0],
-        endTime: this.time[1],
-        generalQuestions: this.generalQuestions,
-        questionsList: this.questionsList,
-        maxDepartment: this.maxDepartment,
-        departmentQuestionsList: this.departmentQuestionsList,
-        allocated: this.allocated,
-        comprehensiveQuestionsList: this.comprehensiveQuestionsList
-      }
-      console.log(qustionList)
+    //是否发送请求给后端
+    isSend() {
+      this.$confirm('是否确认提交？', '提交', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        .then(() => {
+          //开始结束时间必填
+          if (this.time.length == 0)
+            return this.$message.error('请确认填写是否填写了开始截至时间')
+          const qustionList = {
+            userId: 2,
+            organizationId: 2,
+            startTime: this.time[0],
+            endTime: this.time[1],
+            generalQuestions: this.generalQuestions,
+            questionsList: this.questionsList,
+            maxDepartment: this.maxDepartment,
+            departmentQuestionsList: this.departmentQuestionsList,
+            allocated: this.allocated,
+            comprehensiveQuestionsList: this.comprehensiveQuestionsList
+          }
+          console.log(qustionList)
+          //调用函数发送请求
+          this.sendTo(qustionList)
+        })
+        .catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消提交'
+          })
+        })
+    },
+    async sendTo(qustionList) {
+      // const res = await axios.post(
+      //   'http://119.29.27.252:38080/organization/interview/sign',
+      //   {
+      //     data: JSON.stringify(qustionList)
+      //   },
+      //   {
+      //     headers: {
+      //       'Access-Control-Allow-Origin': '*', //解决cors头问题
+      //       'Access-Control-Allow-Credentials': 'true' //解决session问题
+      //     },
+      //     withCredentials: true
+      //   }
+      // )
+      axios.post('http://119.29.27.252:38080/organization/interview/sign', qustionList).then((res) => {
+        console.log('res=>', res)
+      })
+      //   axios.post('http://119.29.27.252:38080/organization/interview/sign',JSON.stringify(qustionList))
+      //   .then(res => {
+      //     console.log(res)
+      //   })
+      //   .catch(err => {
+      //     console.error(err);
+      //   })
+      // console.log('这是结果', res)
     }
   }
 }

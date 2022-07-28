@@ -30,10 +30,7 @@
         </div>
         <div
           :class="['aside-item', asideShow == 4 ? 'asideactive' : '']"
-          @click="
-            asideShow = 4
-            goAccountManage()
-          "
+          @click="asideShow = 4"
         >
           <i class="el-icon-s-custom aside-item-icon"></i>
           组织管理
@@ -70,11 +67,8 @@ export default {
   methods: {
     gotoPross() {
       this.$router.push({
-        path: '/process'
+        path: '/superAdmin/process'
       })
-    },
-    goAccountManage() {
-      this.$router.push({ path: '/superAdmin/accountManage' })
     }
   }
 }
