@@ -197,9 +197,9 @@ export default {
     // 提交密码修改
     handleDialogVisibleKey() {
       if (this.ruleForm.pass != '') {
-        if (this.ruleForm.pass==this.ruleForm.checkPass) {
+        if (this.ruleForm.pass == this.ruleForm.checkPass) {
           this.postAxios()
-        }else{
+        } else {
           this.$message.error('两次输入密码不同')
         }
       } else {
