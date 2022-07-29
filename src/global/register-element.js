@@ -37,7 +37,7 @@ import {
   DropdownMenu,
   DropdownItem,
   Menu,
-  MenuItem,
+  MenuItem
 } from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 const components = [
