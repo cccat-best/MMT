@@ -272,7 +272,7 @@ export default {
         this.page.currentPage > totalPage ? totalPage : this.page.currentPage
       this.page.currentPage =
         this.page.currentPage < 1 ? 1 : this.page.currentPage
-        // 分页并根据已有order排序
+      // 分页并根据已有order排序
       this.orderChange(this.tableData, this.page.currentPage)
       // 根据已有permissionSelect筛选
       this.filterChangeData(this.permissionSelect)
@@ -370,7 +370,7 @@ export default {
     // 触发筛选权限
     filterChange(data) {
       // console.log(data.permission)
-      this.permissionSelect=data.permission[0]
+      this.permissionSelect = data.permission[0]
       // 传permission
       this.filterChangeData(data.permission[0])
     },

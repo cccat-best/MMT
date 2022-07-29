@@ -137,7 +137,7 @@ export default {
       //当前行数据，修改账户，原数据的引用用于校验
       AccountFormCheck: {},
       // 删除当前行的索引
-      deleteIndex:0,
+      deleteIndex: 0,
 
       // 修改密码，确认密码////////////////////////////////////////////
       ruleForm: {
@@ -221,7 +221,7 @@ export default {
         }
       )
       // 单行删除同步，达到页面删除效果，仅靠发请求是没办法从视觉上删除的
-      this.$emit('deleteAlign',this.deleteIndex)
+      this.$emit('deleteAlign', this.deleteIndex)
     },
     // 验证已修改数据，放入postData中
     // 情况是有修改的记录修改，没有修改记录null,全部要发到请求中
@@ -312,7 +312,6 @@ export default {
                 studentId: this.formLabelAlign.studentId,
                 // 原学号，引用
                 studentNumber: this.AccountFormCheck.studentId
-
               }
             ]
           }
@@ -335,13 +334,13 @@ export default {
       }
     },
     // 如果账号修改成功，把修改内容同步到AccountFormCheck
-    changeBackUpdateAlign(){
-      console.log(" 如果修改成功,把修改内容同步到AccountFormCheck")
+    changeBackUpdateAlign() {
+      console.log(' 如果修改成功,把修改内容同步到AccountFormCheck')
       // AccountFormCheck从主页传过来的是原对象的引用，可以直接在这里同步
-      this.AccountFormCheck.name=this.formLabelAlign.name
-      this.AccountFormCheck.permission=this.formLabelAlign.permission
-      this.AccountFormCheck.phone=this.formLabelAlign.phone
-      this.AccountFormCheck.studentId=this.formLabelAlign.studentId
+      this.AccountFormCheck.name = this.formLabelAlign.name
+      this.AccountFormCheck.permission = this.formLabelAlign.permission
+      this.AccountFormCheck.phone = this.formLabelAlign.phone
+      this.AccountFormCheck.studentId = this.formLabelAlign.studentId
     },
     // 修改账号表单校验，待修改
     findError() {
