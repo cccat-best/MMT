@@ -13,12 +13,7 @@
           justify="space-between"
           style="height: 100%"
         >
-          <el-page-header
-            @back="goBack"
-            :content="this.loginOrganizationName"
-            class="back-botton"
-          >
-          </el-page-header>
+          <div class="leftTop">{{ loginOrganizationName }}</div>
           <svg
             t="1658546350823"
             class="icon"
@@ -204,9 +199,6 @@ export default {
     }
   },
   methods: {
-    goBack() {
-      console.log('go back')
-    },
     changeOrganization(command) {
       alert(command)
       axios({
