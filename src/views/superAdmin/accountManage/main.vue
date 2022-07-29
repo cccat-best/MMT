@@ -254,9 +254,9 @@ export default {
     // this.pageCutDouwn()
   },
   // mounted() {
-    // 通过Vue自带的$on去为子组件添加自定义事件
-    // this.$refs.batchOperateDialog.$on('myBatchOperateChange',batchOperateChange)
-    // this.$refs.batchOperateDialog.$on('myBatchOperateDelete',batchOperateDelete)
+  // 通过Vue自带的$on去为子组件添加自定义事件
+  // this.$refs.batchOperateDialog.$on('myBatchOperateChange',batchOperateChange)
+  // this.$refs.batchOperateDialog.$on('myBatchOperateDelete',batchOperateDelete)
   // },
   methods: {
     // 测试数据更新时，表单数据是否同步更新了
