@@ -435,7 +435,7 @@ export default {
             .then((res) => {
               console.log(res.message)
             })
-            .catch((err) => {
+            .catch(() => {
               console.log('密码错误')
             })
         } else {
@@ -453,7 +453,7 @@ export default {
             .then((res) => {
               console.log(res.message)
             })
-            .catch((err) => {
+            .catch(() => {
               console.log('手机号错误')
             })
         } else {
@@ -471,7 +471,7 @@ export default {
             .then((res) => {
               console.log(res.message)
             })
-            .catch((err) => {
+            .catch(() => {
               console.log('邀请码错误')
             })
         } else {
@@ -531,7 +531,7 @@ export default {
           this.phoneForm.phone = res.data.data.phone
           this.name = res.data.data.name
         })
-        .catch((err) => {
+        .catch(() => {
           console.log('邀请码错误')
         })
     }

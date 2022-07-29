@@ -5,6 +5,7 @@
       asideBgColor="#282e38"
       menuItemColor="#a4a6aa"
       meunItemActiveColor="#f57d2d"
+      :defaultActiveItem="defaultActiveItem"
     >
       <!-- 侧边栏标题 -->
       <div slot="asideTitle" class="aside-title">MMT</div>
@@ -35,17 +36,18 @@ export default {
   components: { layout },
   data() {
     return {
+      defaultActiveItem: '1',
       menuItemList: [
         {
           iconClass: 'el-icon-s-home',
           id: '1',
-          pagePath: '',
+          pagePath: '/superAdmin/interviewTable',
           title: '面试面板'
         },
         {
           iconClass: 'el-icon-picture',
           id: '2',
-          pagePath: '',
+          pagePath: '/superAdmin/informationSet',
           title: '宣传信息设置'
         },
         {
@@ -57,11 +59,21 @@ export default {
         {
           iconClass: 'el-icon-s-custom',
           id: '4',
-          pagePath: '',
+          pagePath: '/superAdmin/accountManage',
           title: '组织管理'
         }
       ]
     }
+  },
+  created() {
+    // 解决defaultActiveItem 刷新问题
+    if (this.$route.path === '/superAdmin/interviewTable')
+      this.defaultActiveItem = '1'
+    if (this.$route.path === '/superAdmin/informationSet')
+      this.defaultActiveItem = '2'
+    if (this.$route.path === '/superAdmin/process') this.defaultActiveItem = '3'
+    if (this.$route.path === '/superAdmin/accountManage')
+      this.defaultActiveItem = '4'
   }
 }
 </script>
