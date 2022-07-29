@@ -1,16 +1,14 @@
 <template>
-  <div class="bbig">
-    <div class="big">
-      <div class="left">
-        <!-- 面试次序和主体数据 -->
-        <personList></personList>
-      </div>
-      <div class="right">
-        <!-- 任务进度表 -->
-        <taskProgress></taskProgress>
-        <!-- 面试通知 -->
-        <interviewNotice></interviewNotice>
-      </div>
+  <div class="big">
+    <div class="left">
+      <!-- 面试次序和主体数据 -->
+      <personList></personList>
+    </div>
+    <div class="right">
+      <!-- 任务进度表 -->
+      <taskProgress></taskProgress>
+      <!-- 面试通知 -->
+      <interviewNotice></interviewNotice>
     </div>
   </div>
 </template>
@@ -31,10 +29,6 @@ export default {
 </script>
 
 <style scoped>
-.bbig {
-  display: flex;
-  justify-content: center;
-}
 .big {
   height: 600px;
   width: 1260px;
