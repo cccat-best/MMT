@@ -108,7 +108,7 @@
           </el-form>
         </div>
 
-        <div style="text-align: right; margin-top:15px ;height:40px" >
+        <div style="text-align: right; margin-top: 15px; height: 40px">
           <el-button size="mini" type="text" @click="addShow = false"
             >取消</el-button
           >
@@ -116,7 +116,7 @@
             >确定</el-button
           >
         </div>
-        <el-button slot="reference" class="add-botton" >+添加部门问题</el-button>
+        <el-button slot="reference" class="add-botton">+添加部门问题</el-button>
       </el-popover>
     </div>
   </div>
@@ -303,7 +303,7 @@ export default {
     }
   },
   props: ['departmentId'],
-  watch:{
+  watch: {
     //弹出框位置修正
     chooseAdd() {
       this.$nextTick(() => {
@@ -346,14 +346,14 @@ export default {
       }
     }
     .freeView-input {
-        border-radius: 5px;
-        border: 1px solid #0f2d2d;
-      }
-      .freeView-select {
-        width: 165.4px;
-        border-radius: 5px;
-        border: 1px solid #0f2d2d;
-      }
+      border-radius: 5px;
+      border: 1px solid #0f2d2d;
+    }
+    .freeView-select {
+      width: 165.4px;
+      border-radius: 5px;
+      border: 1px solid #0f2d2d;
+    }
   }
 }
 .add-qus {

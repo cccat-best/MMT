@@ -26,7 +26,7 @@ const routes = [
       {
         //面试流程页面
         path: 'process',
-        component: () => import('../views/superAdmin/interviewProcess/main.vue'),
+        component: () => import('../views/superAdmin/interviewProcess/main.vue')
       }
     ]
   }

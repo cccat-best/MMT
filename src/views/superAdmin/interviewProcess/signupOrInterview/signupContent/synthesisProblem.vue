@@ -35,7 +35,11 @@
               </option>
             </select>
             <!--  展示input框-->
-            <input type="text" v-show="!item1.selection" class="freeView-input"/>
+            <input
+              type="text"
+              v-show="!item1.selection"
+              class="freeView-input"
+            />
           </div>
         </div>
       </div>
@@ -350,6 +354,7 @@ export default {
           //开始结束时间必填
           if (this.time.length == 0)
             return this.$message.error('请确认填写是否填写了开始截至时间')
+            // 数据打包
           const qustionList = {
             userId: 2,
             organizationId: 2,
@@ -364,7 +369,7 @@ export default {
           }
           console.log(qustionList)
           //调用函数发送请求
-          // this.sendTo(qustionList)
+           this.sendTo(qustionList)
         })
         .catch(() => {
           this.$message({
@@ -374,24 +379,16 @@ export default {
         })
     },
     async sendTo(qustionList) {
-      // const res = await axios.post(
-      //   'http://119.29.27.252:38080/organization/interview/sign',
-      //   {
-      //     data: JSON.stringify(qustionList)
-      //   },
-      //   {
-      //     headers: {
-      //       'Access-Control-Allow-Origin': '*', //解决cors头问题
-      //       'Access-Control-Allow-Credentials': 'true' //解决session问题
-      //     },
-      //     withCredentials: true
-      //   }
-      // )
-      axios.post('http://119.29.27.252:38080/organization/interview/sign', qustionList).then((res) => {
-        console.log('res=>', res)
-        if(res.data.code !== '00000') return this.$message.error('提交失败')
-        return this.$message.success('提交成功')
-      }).catch(err => err)
+      axios
+        .post(
+          'http://119.29.27.252:38080/organization/interview/sign',
+          qustionList
+        )
+        .then((res) => {
+          if (res.data.code !== '00000') return this.$message.error('提交失败')
+          return this.$message.success('提交成功')
+        })
+        .catch((err) => err)
     }
   }
 }
@@ -440,16 +437,16 @@ export default {
           }
         }
         .freeView-input {
-        border-radius: 5px;
-        border: 1px solid #0f2d2d;
-        height: 18px;
-      }
-      .freeView-select {
-        width: 165.4px;
-        border-radius: 5px;
-        border: 1px solid #0f2d2d;
-        height: 20px;
-      }
+          border-radius: 5px;
+          border: 1px solid #0f2d2d;
+          height: 18px;
+        }
+        .freeView-select {
+          width: 165.4px;
+          border-radius: 5px;
+          border: 1px solid #0f2d2d;
+          height: 20px;
+        }
       }
     }
     .add-qus {

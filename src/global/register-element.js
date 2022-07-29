@@ -58,7 +58,6 @@ const components = [
   TabPane,
   TableColumn,
   Tabs
-
 ]
 export default function (Vue) {
   for (const component of components) {

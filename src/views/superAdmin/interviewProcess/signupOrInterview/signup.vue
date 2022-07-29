@@ -82,10 +82,10 @@ export default {
 </script>
 <style lang="less" scoped>
 .main {
-  height: 525px;
+   height: 100vh;
   overflow: hidden;
   width: 1250px;
-  min-height: 455px;
+  min-height: 620px;
   min-width: 900px;
   line-height: normal;
   // padding-top: 50px;

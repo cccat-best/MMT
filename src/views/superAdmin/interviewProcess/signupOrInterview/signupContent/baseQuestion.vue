@@ -11,7 +11,7 @@
         <div class="must-item" v-for="(must, index) in mustList" :key="index">
           <div class="must-star">*</div>
           <div class="must-name">{{ must.description }}</div>
-          <div ><input type="text" class="must-input" /></div>
+          <div><input type="text" class="must-input" /></div>
         </div>
       </div>
       <!-- 可选问题 -->
@@ -29,7 +29,7 @@
             @click="item.isShow = !item.isShow"
           ></i>
           <span class="choose-name">{{ item.description }}</span>
-          <input type="text" class="choose-input"/>
+          <input type="text" class="choose-input" />
         </div>
       </div>
       <!-- 自定义问题展示 -->
@@ -47,7 +47,7 @@
             @click="removeTextChoose(item1)"
           ></i>
           <span class="freeView-name">{{ item1.description }}</span>
-          <input type="text" class="freeView-input"/>
+          <input type="text" class="freeView-input" />
         </div>
         <!-- 自定义选择问题展示 -->
         <div
@@ -460,8 +460,8 @@ export default {
           margin-right: 5px;
         }
         .must-input {
-           border-radius: 5px;
-           border: 1px solid #0f2d2d;
+          border-radius: 5px;
+          border: 1px solid #0f2d2d;
         }
       }
     }

@@ -1,12 +1,18 @@
 <template>
   <div class="super-content">
-    <layout :menuItemList="menuItemList" asideBgColor="#282e38" menuItemColor="#a4a6aa" meunItemActiveColor="#f57d2d">
+    <layout
+      :menuItemList="menuItemList"
+      asideBgColor="#282e38"
+      menuItemColor="#a4a6aa"
+      meunItemActiveColor="#f57d2d"
+      :defaultActiveItem="defaultActiveItem"
+    >
       <!-- 侧边栏标题 -->
       <div slot="asideTitle" class="aside-title">MMT</div>
       <!-- 头部 -->
       <template slot="header">
-       <div class="header">
-        <div class="header-left">
+        <div class="header">
+          <div class="header-left">
             <i class="el-icon-s-unfold"></i>
             科技协会
           </div>
@@ -14,7 +20,7 @@
             <i class="el-icon-s-fold"></i>
             退出超级管理
           </div>
-       </div>
+        </div>
       </template>
       <!-- 主体 -->
       <template slot="main">
@@ -30,17 +36,18 @@ export default {
   components: { layout },
   data() {
     return {
+      defaultActiveItem:'1',
       menuItemList: [
         {
           iconClass: 'el-icon-s-home',
           id: '1',
-          pagePath: '',
+          pagePath: '/superAdmin/interviewTable',
           title: '面试面板'
         },
         {
           iconClass: 'el-icon-picture',
           id: '2',
-          pagePath: '',
+          pagePath: '/superAdmin/informationSet',
           title: '宣传信息设置'
         },
         {
@@ -52,12 +59,19 @@ export default {
         {
           iconClass: 'el-icon-s-custom',
           id: '4',
-          pagePath: '',
+          pagePath: '/superAdmin/accountManage',
           title: '组织管理'
         }
       ]
     }
-  }
+  },
+  created() {
+    // 解决defaultActiveItem 刷新问题
+    if(this.$route.path === '/superAdmin/interviewTable') this.defaultActiveItem = '1'
+    if(this.$route.path === '/superAdmin/informationSet') this.defaultActiveItem = '2'
+    if(this.$route.path === '/superAdmin/process') this.defaultActiveItem = '3'
+    if(this.$route.path === '/superAdmin/accountManage') this.defaultActiveItem = '4'
+  },
 }
 </script>
 
@@ -73,15 +87,15 @@ export default {
     font-size: 20px;
   }
   .header {
-  height: 50px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: rgb(253, 255, 254);
-}
-/deep/.el-menu-item {
-  display: flex;
-  align-items: center;
-}
+    height: 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgb(253, 255, 254);
+  }
+  /deep/.el-menu-item {
+    display: flex;
+    align-items: center;
+  }
 }
 </style>

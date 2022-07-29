@@ -19,7 +19,7 @@
             label="一面"
             name="second"
             class="body"
-            v-if="roundCount >= 1"
+
             ><interview round="1"></interview
           ></el-tab-pane>
           <el-tab-pane
@@ -97,24 +97,20 @@ export default {
     },
     changeRound() {
       let obj = {
-        userId: 2,
         organizationId: 2,
         rounds: this.num
       }
       axios
-        .post(
-          'http://119.29.27.252:38080/organization/interview/round',
-          obj
-        )
+        .post('http://119.29.27.252:38080/organization/interview/round', obj)
         .then((res) => {
-          console.log('res=>', res)
+         this.getRound()
         })
         .catch((err) => err)
-        //重新获取面试轮数
-        // setTimeout(() => {
-        //   this.getRound()
-        // },1000)
-        this.roundCount = this.num
+      //重新获取面试轮数
+      // setTimeout(() => {
+      //   this.getRound()
+      // },1000)
+      // this.roundCount = this.num
     },
     //得到几面
     async getRound() {
@@ -128,19 +124,20 @@ export default {
       } else {
         this.roundCount = res.data.round
       }
-      console.log(res)
-    }
+    },
   },
   mounted() {
-    this.getRound()
+    //this.getRound()
   }
 }
 </script>
 
 <style lang="less" scoped>
 .content {
+  overflow: hidden;
   position: relative;
-  height: 620px;
+  height: 85vh;
+  // min-height: 620px;
   // overflow: hidden;
   width: 1250px;
   min-width: 900px;
@@ -170,8 +167,9 @@ export default {
     // width: 100%;
     // background-color: rgb(206, 127, 127);
     // border: 2px solid #969698;
-    height: 595px;
+    // height: 595px;
     // overflow: hidden;
+
     width: 1250px;
     margin-top: 5px;
     .nav {
@@ -212,7 +210,7 @@ export default {
     }
     .body {
       width: 1250px;
-      height: 525px;
+      // height: 525px;
       background-color: white;
     }
   }
