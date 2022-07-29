@@ -1,31 +1,15 @@
 <template>
   <div class="dingwei">
     <div class="title">
-      <span class="date">
-        <el-date-picker
-          v-model="date"
-          style="width: 150px"
-          type="date"
-          placeholder="请选择日期"
-          size="small"
-          @change="dateValue"
-        >
-        </el-date-picker>
-      </span>
-      <span class="time">
-        <el-time-picker
-          arrow-control
-          v-model="time"
-          style="width: 150px"
-          :picker-options="{
-            selectableRange: '00:00:00 - 23:59:59'
-          }"
-          placeholder="请选择时间"
-          size="small"
-          @change="timeValue"
-        >
-        </el-time-picker>
-      </span>
+      <el-date-picker
+        v-model="dateTime"
+        type="datetime"
+        style="width: 230px"
+        size="small"
+        @change="dateTimeValue"
+        placeholder="请选择日期时间"
+      >
+      </el-date-picker>
     </div>
     <div class="text">
       <p class="p0">面试通知：</p>
@@ -68,8 +52,8 @@ export default {
       name: 'Hanry',
       departmentName: '学生事务中心',
       order: '一面',
-      date: '',
-      time: '',
+      timestamp: '',
+      dateTime: '',
       dateValue0: '',
       timeValue0: '',
       address: '',
@@ -77,15 +61,14 @@ export default {
     }
   },
   methods: {
-    dateValue() {
-      var year = this.date.getFullYear() //年
-      var month = this.date.getMonth() + 1 //月
-      var day = this.date.getDate() //日
+    dateTimeValue() {
+      this.timestamp = this.dateTime.getTime()
+      var year = this.dateTime.getFullYear() //年
+      var month = this.dateTime.getMonth() + 1 //月
+      var day = this.dateTime.getDate() //日
       this.dateValue0 = year + '-' + month + '-' + day
-    },
-    timeValue() {
-      var hh = this.time.getHours() //时
-      var mm = this.time.getMinutes() //分
+      var hh = this.dateTime.getHours() //时
+      var mm = this.dateTime.getMinutes() //分
       if (hh < 10) {
         hh = '0' + hh
       }
@@ -105,27 +88,27 @@ export default {
         .then((response) => {
           // console.log(response)
           this.messageTemplate = response.data.data.messageTemplate
+          console.log(this.messageTemplate)
+          // 确定发送请求
+          var form2 = {
+            message: this.messageTemplate,
+            studentId: 20229989,
+            organizationId: 2
+          }
+          const url2 = '/interview-arrangement/postNotice'
+          let post = this.$http.post(url2, form2)
+          post
+            .then((res) => {
+              console.log(res)
+            })
+            .catch((err) => {
+              console.log(err)
+            })
         })
         .catch((error) => {
           console.log(error)
         })
       // 确定保存message
-
-      // 确定发送请求
-      // var form2 = {
-      //   admissionId: 20212803,
-      //   studentId: 20220001,
-      //   messageTemplate: this.messageTemplate
-      // }
-      // const url2 = '/interview-arrangement/postNotice'
-      // let post = this.$http.post(url2, form2)
-      // post
-      //   .then((res) => {
-      //     console.log(res)
-      //   })
-      //   .catch((err) => {
-      //     console.log(err)
-      //   })
     }
   },
   mounted() {
