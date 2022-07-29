@@ -36,7 +36,7 @@ export default {
   components: { layout },
   data() {
     return {
-      defaultActiveItem:'1',
+      defaultActiveItem: '1',
       menuItemList: [
         {
           iconClass: 'el-icon-s-home',
@@ -67,11 +67,14 @@ export default {
   },
   created() {
     // 解决defaultActiveItem 刷新问题
-    if(this.$route.path === '/superAdmin/interviewTable') this.defaultActiveItem = '1'
-    if(this.$route.path === '/superAdmin/informationSet') this.defaultActiveItem = '2'
-    if(this.$route.path === '/superAdmin/process') this.defaultActiveItem = '3'
-    if(this.$route.path === '/superAdmin/accountManage') this.defaultActiveItem = '4'
-  },
+    if (this.$route.path === '/superAdmin/interviewTable')
+      this.defaultActiveItem = '1'
+    if (this.$route.path === '/superAdmin/informationSet')
+      this.defaultActiveItem = '2'
+    if (this.$route.path === '/superAdmin/process') this.defaultActiveItem = '3'
+    if (this.$route.path === '/superAdmin/accountManage')
+      this.defaultActiveItem = '4'
+  }
 }
 </script>
 

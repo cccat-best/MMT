@@ -354,7 +354,7 @@ export default {
           //开始结束时间必填
           if (this.time.length == 0)
             return this.$message.error('请确认填写是否填写了开始截至时间')
-            // 数据打包
+          // 数据打包
           const qustionList = {
             userId: 2,
             organizationId: 2,
@@ -369,7 +369,7 @@ export default {
           }
           console.log(qustionList)
           //调用函数发送请求
-           this.sendTo(qustionList)
+          this.sendTo(qustionList)
         })
         .catch(() => {
           this.$message({

@@ -54,9 +54,9 @@ export default {
       allocated: false,
       //部门数组
       departmentList: [
-        {departmentId:1,departmentName:'学习部'},
-        {departmentId:2,departmentName:'自管会'},
-        {departmentId:3,departmentName:'体育部'},
+        { departmentId: 1, departmentName: '学习部' },
+        { departmentId: 2, departmentName: '自管会' },
+        { departmentId: 3, departmentName: '体育部' }
       ],
       //如果部门数为1不显示调剂按钮
       departmentCount: 0
@@ -72,7 +72,7 @@ export default {
       this.updateMaxDepartment(this.maxDepartment)
       this.updateAllocated(this.allocated)
       //保存问题到vuex
-      if(!this.$refs.a) return
+      if (!this.$refs.a) return
       for (let i = 0; i < this.$refs.a.length; i++) {
         this.$refs.a[i].saveToVuex()
       }

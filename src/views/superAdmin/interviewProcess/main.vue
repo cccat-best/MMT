@@ -15,11 +15,7 @@
             ><signup></signup
           ></el-tab-pane>
           <!-- 1-4面 -->
-          <el-tab-pane
-            label="一面"
-            name="second"
-            class="body"
-
+          <el-tab-pane label="一面" name="second" class="body"
             ><interview round="1"></interview
           ></el-tab-pane>
           <el-tab-pane
@@ -102,8 +98,8 @@ export default {
       }
       axios
         .post('http://119.29.27.252:38080/organization/interview/round', obj)
-        .then((res) => {
-         this.getRound()
+        .then(() => {
+          this.getRound()
         })
         .catch((err) => err)
       //重新获取面试轮数
@@ -124,7 +120,7 @@ export default {
       } else {
         this.roundCount = res.data.round
       }
-    },
+    }
   },
   mounted() {
     //this.getRound()

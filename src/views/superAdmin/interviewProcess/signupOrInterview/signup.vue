@@ -82,7 +82,7 @@ export default {
 </script>
 <style lang="less" scoped>
 .main {
-   height: 100vh;
+  height: 100vh;
   overflow: hidden;
   width: 1250px;
   min-height: 620px;
