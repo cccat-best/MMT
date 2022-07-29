@@ -436,7 +436,7 @@ export default {
               console.log(res.message)
             })
             .catch((err) => {
-              console.log('密码错误')
+              console.log(err, '密码错误')
             })
         } else {
           alert('验证不通过')
@@ -454,7 +454,7 @@ export default {
               console.log(res.message)
             })
             .catch((err) => {
-              console.log('手机号错误')
+              console.log(err, '手机号错误')
             })
         } else {
           alert('验证不通过')
@@ -472,7 +472,7 @@ export default {
               console.log(res.message)
             })
             .catch((err) => {
-              console.log('邀请码错误')
+              console.log(err, '邀请码错误')
             })
         } else {
           alert('验证不通过')
@@ -532,7 +532,7 @@ export default {
           this.name = res.data.data.name
         })
         .catch((err) => {
-          console.log('邀请码错误')
+          console.log(err, '邀请码错误')
         })
     }
   },
