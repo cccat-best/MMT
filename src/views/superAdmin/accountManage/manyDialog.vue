@@ -220,6 +220,7 @@ export default {
           this.$message.error(err)
         }
       )
+
       // 单行删除同步，达到页面删除效果，仅靠发请求是没办法从视觉上删除的
       this.$emit('deleteAlign', this.deleteIndex)
     },
@@ -318,7 +319,7 @@ export default {
         }).then(
           (res) => {
             this.$message.success(res.data.message)
-            if (res.code == '200') {
+            if (res.data.code == '200') {
               // 如果修改成功，把修改内容同步到AccountFormCheck
               this.changeBackUpdateAlign()
             }

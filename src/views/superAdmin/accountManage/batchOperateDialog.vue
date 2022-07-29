@@ -44,6 +44,7 @@
 //引入axios
 import axios from 'axios'
 export default {
+  name: 'batchOperateDialog',
   data() {
     return {
       dialogVisibleDelete: false, //批量删除
@@ -77,13 +78,23 @@ export default {
         }
       }).then(
         (res) => {
-          this.$message.success(res.data.message)
+          if (res.data.code == '200') {
+            this.$message.success(res.data.message)
+            // 同步更新页面权限数据
+            this.$emit('myBatchOperateDelete', studentListData)
+          } else {
+            this.$message.error(res.data.message)
+            console.log('code: ' + res.data.code)
+          }
         },
         (err) => {
           this.$message.error(err)
         }
       )
+      console.log('--------仅供测试同步批量删除更新========')
+      this.$emit('myBatchOperateDelete', studentListData)
     },
+
     // 批量修改
     handleDialogVisibleChangePermission() {
       // 准备账号信息list
@@ -111,12 +122,28 @@ export default {
         }
       }).then(
         (res) => {
-          this.$message.success(res.data.message)
+          if (res.data.code == '200') {
+            this.$message.success(res.data.message)
+            // 同步更新页面权限数据
+            this.multipleSelection.forEach((item) => {
+              item.permission = this.permission
+            })
+            // console.log(this.multipleSelection)
+          } else {
+            this.$message.error(res.data.message)
+          }
         },
         (err) => {
           this.$message.error(err)
         }
       )
+      // 仅供测试
+      console.log('测试批量修改权限后，同步更新页面权限数据')
+      // 同步更新页面权限数据，multipleSelection好像也是引用
+      this.multipleSelection.forEach((item) => {
+        item.permission = this.permission
+      })
+      this.$emit('myBatchOperateChange', 114514)
     }
   }
 }

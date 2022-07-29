@@ -178,7 +178,12 @@
       <!-- deleteAlign自定义事件，单行删除同步 -->
       <manyDialog ref="manyDialog" @deleteAlign="deleteAlign" />
       <!-- 批量操作弹窗 -->
-      <batchOperateDialog ref="batchOperateDialog" />
+      <!-- 自定义事件，批量删除和修改同步 -->
+      <batchOperateDialog
+        ref="batchOperateDialog"
+        @myBatchOperateChange="batchOperateChange"
+        @myBatchOperateDelete="batchOperateDelete"
+      />
     </div>
     <!-- 页码 -->
     <el-pagination
@@ -248,6 +253,11 @@ export default {
     // this.page.currentPage = 1
     // this.pageCutDouwn()
   },
+  // mounted() {
+    // 通过Vue自带的$on去为子组件添加自定义事件
+    // this.$refs.batchOperateDialog.$on('myBatchOperateChange',batchOperateChange)
+    // this.$refs.batchOperateDialog.$on('myBatchOperateDelete',batchOperateDelete)
+  // },
   methods: {
     // 测试数据更新时，表单数据是否同步更新了
     de() {
@@ -258,6 +268,19 @@ export default {
       this.orderChange(this.tableData)
     },
 
+    // 批量修改同步
+    batchOperateChange(datalist) {
+      // console.log('批量修改同步')
+      console.log(datalist)
+    },
+    // 批量删除同步
+    batchOperateDelete(studentListData) {
+      // console.log('批量删除同步')
+      console.log(studentListData)
+      // this.tableData.filter(()=>{
+
+      // })
+    },
     //单行删除同步,达到页面删除效果，仅靠发请求是没办法从视觉上删除的
     deleteAlign(index) {
       // console.log("单行删除同步")
