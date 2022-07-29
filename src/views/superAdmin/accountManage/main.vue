@@ -214,7 +214,7 @@ export default {
       data: '', //发请求的data
       order: 'asc', //排序顺序，默认升序
       column: 'permission', //排序变量，默认权限升序
-      permissionSelect: 'permission', //筛选变量
+      permissionSelect: null, //筛选变量
 
       // 页码
       tableList: [], //当前页展示数据
