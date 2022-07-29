@@ -158,7 +158,10 @@
 
       <el-table-column label="删除账号" fixed="right">
         <template slot-scope="scope">
-          <el-button size="mini" type="danger" @click="handleDelete(scope.row)"
+          <el-button
+            size="mini"
+            type="danger"
+            @click="handleDelete(scope.$index, scope.row)"
             >删除</el-button
           >
         </template>
@@ -172,7 +175,8 @@
       <!-- 邀请码，可一键复制 -->
       <clipBoard ref="clipBoard" />
       <!-- 引入修改账号、修改密码、删除弹窗 -->
-      <manyDialog ref="manyDialog" />
+      <!-- deleteAlign自定义事件，单行删除同步 -->
+      <manyDialog ref="manyDialog" @deleteAlign="deleteAlign" />
       <!-- 批量操作弹窗 -->
       <batchOperateDialog ref="batchOperateDialog" />
     </div>
@@ -210,6 +214,7 @@ export default {
       data: '', //发请求的data
       order: 'asc', //排序顺序，默认升序
       column: 'permission', //排序变量，默认权限升序
+      permissionSelect: 'permission', //筛选变量
 
       // 页码
       tableList: [], //当前页展示数据
@@ -240,7 +245,6 @@ export default {
     )
     this.orderChange(this.tableData)
     //渲染数据
-    // this.page.pagesize = 10
     // this.page.currentPage = 1
     // this.pageCutDouwn()
   },
@@ -252,6 +256,26 @@ export default {
       )
       this.tableData = this.tableData.slice(3)
       this.orderChange(this.tableData)
+    },
+
+    //单行删除同步,达到页面删除效果，仅靠发请求是没办法从视觉上删除的
+    deleteAlign(index) {
+      // console.log("单行删除同步")
+      const deleteIndex =
+        (this.page.currentPage - 1) * this.page.pagesize + index
+      // 删一个
+      this.tableData.splice(deleteIndex, 1)
+      // 同步更新
+      // 为了在删除最后一页的最后一条数据时能成功跳转回最后一页的上一页
+      const totalPage = Math.ceil((this.page.total - 1) / this.page.pagesize) // 总页数
+      this.page.currentPage =
+        this.page.currentPage > totalPage ? totalPage : this.page.currentPage
+      this.page.currentPage =
+        this.page.currentPage < 1 ? 1 : this.page.currentPage
+        // 分页并根据已有order排序
+      this.orderChange(this.tableData, this.page.currentPage)
+      // 根据已有permissionSelect筛选
+      this.filterChangeData(this.permissionSelect)
     },
 
     // 触发排序
@@ -271,7 +295,7 @@ export default {
       }
     },
     // 排序，默认权限升序，并完成渲染分页
-    orderChange(datalist) {
+    orderChange(datalist, currentPage) {
       // this.$message.success('发起后端请求的接口')
       // 对权限排序
       if (this.column == 'permission') {
@@ -300,8 +324,7 @@ export default {
         }
       }
       // 渲染排序后的数据，分页
-      // this.page.pagesize = 10
-      this.page.currentPage = 1
+      this.page.currentPage = currentPage == undefined ? 1 : currentPage
       this.tableDataChange = datalist
       this.pageCutDouwn(this.tableDataChange)
     },
@@ -328,8 +351,13 @@ export default {
         data: this.data
       }).then(
         (res) => {
-          this.tableData = res.data.studentList
-          this.total = res.data.total
+          // 因为请求访问权限异常，res.data.studentList在返回信息中为undefined
+          if (res.data.studentList == undefined) {
+            // 用造的假数据顶上
+          } else {
+            this.tableData = res.data.studentList
+            this.total = res.data.total
+          }
           // 通知所有相关项更新数据，因为他们使用tableDataChange而不是tableData
           this.orderChange(this.tableData)
         },
@@ -341,7 +369,8 @@ export default {
 
     // 触发筛选权限
     filterChange(data) {
-      // console.log(data.permission[0])
+      // console.log(data.permission)
+      this.permissionSelect=data.permission[0]
       // 传permission
       this.filterChangeData(data.permission[0])
     },
@@ -370,7 +399,6 @@ export default {
         this.tableDataChange = this.tableData
       }
       // 渲染筛选后数据
-      this.page.pagesize = 10
       this.page.currentPage = 1
       this.pageCutDouwn(this.tableDataChange)
     },
@@ -438,11 +466,11 @@ export default {
       //不够优雅，待改进
       this.$refs.manyDialog.DialogVisibleChangeAccount = true
       this.$refs.manyDialog.organizationId = this.organizationId
-      // 传值
-      this.$refs.manyDialog.formLabelAlign = data
+      // 传值,这里AccountFormCheck和formLabelAlign是反的
+      this.$refs.manyDialog.AccountFormCheck = data
       // 深拷贝同步副本
-      this.$refs.manyDialog.AccountFormCheck = JSON.parse(
-        JSON.stringify(this.$refs.manyDialog.formLabelAlign)
+      this.$refs.manyDialog.formLabelAlign = JSON.parse(
+        JSON.stringify(this.$refs.manyDialog.AccountFormCheck)
       )
     },
     //修改密码弹窗
@@ -452,12 +480,13 @@ export default {
       this.$refs.manyDialog.formLabelAlign = data
     },
     //删除 弹窗
-    handleDelete(data) {
+    handleDelete(index, data) {
       console.log(data)
       // console.log(data.__ob__)
       // console.log(index)
       this.$refs.manyDialog.dialogVisibleDeleteAlign = true
       this.$refs.manyDialog.organizationId = this.organizationId
+      this.$refs.manyDialog.deleteIndex = index
       this.$refs.manyDialog.formLabelAlign.studentId = data.studentId
       // this.$confirm('此操作将删除：' + data.name + '，是否继续？', '提示', {
       //   confirmButtonText: '确定',

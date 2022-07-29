@@ -132,10 +132,12 @@ export default {
 
       // 验证后，用来发修改账户或密码请求的数据
       postData: {},
-      //当前行数据，修改账户
+      //当前行数据，修改账户，副本用于修改
       formLabelAlign: {},
-      //当前行数据，修改账户，备份用于校验
+      //当前行数据，修改账户，原数据的引用用于校验
       AccountFormCheck: {},
+      // 删除当前行的索引
+      deleteIndex:0,
 
       // 修改密码，确认密码////////////////////////////////////////////
       ruleForm: {
@@ -218,6 +220,8 @@ export default {
           this.$message.error(err)
         }
       )
+      // 单行删除同步，达到页面删除效果，仅靠发请求是没办法从视觉上删除的
+      this.$emit('deleteAlign',this.deleteIndex)
     },
     // 验证已修改数据，放入postData中
     // 情况是有修改的记录修改，没有修改记录null,全部要发到请求中
@@ -267,7 +271,8 @@ export default {
               permission: this.formLabelAlign.permission,
               phone: this.formLabelAlign.phone,
               studentId: this.formLabelAlign.studentId,
-              studentNumber: this.AccountFormCheck.studentId
+              // 原学号，修改密码是不改变学号的
+              studentNumber: this.formLabelAlign.studentId
             }
           ]
         }
@@ -284,7 +289,9 @@ export default {
     },
     // 提交账户修改
     handleDialogVisibleChangeAccount() {
+      // 原来的方案是修改了就传，没修改的数据传null
       // this.checkPostData()
+
       this.findError() //校验数据
       // console.log(this.formLabelAlign.permission);
       if (this.isError) {
@@ -298,18 +305,24 @@ export default {
             organizationId: this.organizationId,
             studentList: [
               {
+                // 可能修改后数据
                 name: this.formLabelAlign.name,
                 permission: this.formLabelAlign.permission,
                 phone: this.formLabelAlign.phone,
                 studentId: this.formLabelAlign.studentId,
-                // 原学号，修改密码是不改变学号的
-                studentNumber: this.formLabelAlign.studentId
+                // 原学号，引用
+                studentNumber: this.AccountFormCheck.studentId
+
               }
             ]
           }
         }).then(
           (res) => {
             this.$message.success(res.data.message)
+            if (res.code == '200') {
+              // 如果修改成功，把修改内容同步到AccountFormCheck
+              this.changeBackUpdateAlign()
+            }
             this.isError = false
           },
           (err) => {
@@ -317,7 +330,18 @@ export default {
             this.isError = false
           }
         )
+        // 实验：如果修改成功，把修改内容同步到AccountFormCheck
+        this.changeBackUpdateAlign()
       }
+    },
+    // 如果账号修改成功，把修改内容同步到AccountFormCheck
+    changeBackUpdateAlign(){
+      console.log(" 如果修改成功,把修改内容同步到AccountFormCheck")
+      // AccountFormCheck从主页传过来的是原对象的引用，可以直接在这里同步
+      this.AccountFormCheck.name=this.formLabelAlign.name
+      this.AccountFormCheck.permission=this.formLabelAlign.permission
+      this.AccountFormCheck.phone=this.formLabelAlign.phone
+      this.AccountFormCheck.studentId=this.formLabelAlign.studentId
     },
     // 修改账号表单校验，待修改
     findError() {
