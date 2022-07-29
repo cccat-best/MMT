@@ -51,6 +51,7 @@ export default {
     return {
       name: 'Hanry',
       departmentName: '学生事务中心',
+      studentId: 20220000,
       order: '一面',
       timestamp: '',
       dateTime: '',
@@ -78,37 +79,54 @@ export default {
       this.timeValue0 = hh + ':' + mm
     },
     queding() {
-      //确定获取模板
-      const url1 = '/interview-arrangement/getNotice'
-      let params = {
-        type: 1
-      }
-      this.$http
-        .get(url1, params)
-        .then((response) => {
-          // console.log(response)
-          this.messageTemplate = response.data.data.messageTemplate
-          console.log(this.messageTemplate)
-          // 确定发送请求
-          var form2 = {
-            message: this.messageTemplate,
-            studentId: 20229989,
-            organizationId: 2
-          }
-          const url2 = '/interview-arrangement/postNotice'
-          let post = this.$http.post(url2, form2)
-          post
-            .then((res) => {
-              console.log(res)
-            })
-            .catch((err) => {
-              console.log(err)
-            })
-        })
-        .catch((error) => {
-          console.log(error)
-        })
       // 确定保存message
+      var form3 = {
+        studentId: this.studentId,
+        startTime: this.timestamp,
+        address: this.address
+      }
+      // const url3 = '/interview-arrangement/arrangeNotice'
+      // let post3 = this.$http.post(url3, form3)
+      // post3
+      //   .then((res) => {
+      //     console.log(res)
+      //   })
+      //   .catch((err) => {
+      //     console.log(err)
+      //   })
+
+      //确定获取模板
+      // const url1 = '/interview-arrangement/getNotice'
+      // let params = {
+      //   type: 1
+      // }
+      // this.$http
+      //   .get(url1, params)
+      //   .then((response) => {
+      //     // console.log(response)
+      //     this.messageTemplate = response.data.data.messageTemplate
+      //     console.log(this.messageTemplate)
+      //   })
+      //   .catch((error) => {
+      //     console.log(error)
+      //   })
+
+      // 确定发送请求
+      var form2 = {
+        message: 'post message',
+        organizationId: 2,
+        studentId: this.studentId
+      }
+      // const url2 = '/interview-arrangement/postNotice'
+      // let post2 = this.$http.post(url2, form2)
+      // post2
+      //   .then((res) => {
+      //     console.log(res)
+      //   })
+      //   .catch((err) => {
+      //     console.log(err)
+      //   })
+      console.log(form3, form2)
     }
   },
   mounted() {
@@ -118,6 +136,9 @@ export default {
       this.$bus.$on('selectionName', (data) => {
         this.name = data
       }),
+      this.$bus.$on('selectionStudentId', (data) => {
+        this.studentId = data
+      }),
       this.$bus.$on('selectiondepartmentName', (data) => {
         this.departmentName = data
       })
@@ -125,6 +146,7 @@ export default {
   beforeCreate() {
     this.$bus.$off('order')
     this.$bus.$off('selectionName')
+    this.$bus.$off('selectionStudentId')
     this.$bus.$off('selectiondepartmentName')
   }
 }
