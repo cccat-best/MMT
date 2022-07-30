@@ -93,9 +93,9 @@ export default {
     // 验证是否需要获取验证码
     beforeGetInvitationCode() {
       // if (this.nowTime == '') {
-        // this.$message.success('第一次')
-        this.getNowTime()
-        this.getInvitationCodeRequest()
+      // this.$message.success('第一次')
+      this.getNowTime()
+      this.getInvitationCodeRequest()
       // }
       // 10分钟之内不能重发
       // else {
@@ -108,7 +108,7 @@ export default {
       //     this.$message.success('在10分钟之外,可以发请求了,记得删掉这个')
       //     this.getNowTime()
       //     this.getInvitationCodeRequest()
-        // }
+      // }
       // }
     },
     // 实验HTTP请求，使用百度的随便一个接口,待删除
