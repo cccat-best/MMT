@@ -3,13 +3,13 @@ let data = [
     name: '王小虎',
     permission: 'commitee',
     phone: 13222221131,
-    studentId: '20210001'
+    studentId: '20210002'
   },
   {
     name: '小',
     permission: 'commitee',
     phone: 143114242421,
-    studentId: '20210002'
+    studentId: '20210001'
   },
   {
     name: '王',

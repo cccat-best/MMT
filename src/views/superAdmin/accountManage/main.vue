@@ -1,7 +1,15 @@
 <template>
-  <div>
+  <div class="content">
     <!-- 测试更新数据 -->
-    <button @click="de">测试更新数据，后面完工时记得删掉这个</button>
+    <div
+      @click="de"
+      style="float: left; height: 5px; width: 150px; margin-right: 10px"
+    >
+      测试更新数据,后面完工时记得删掉这个
+    </div>
+    <div @click="co" style="float: left; height: 5px; width: 150px">
+      测试cookie,后面完工时记得删掉这个
+    </div>
     <!--  -->
 
     <!-- 批量操作 -->
@@ -205,10 +213,10 @@ import axios from 'axios'
 import data from './data.js'
 import data2 from './data copy.js'
 // 引入clipBoard
-import clipBoard from './clipboard.vue'
+import clipBoard from './dialog/clipboard.vue'
 //引入弹窗
-import manyDialog from './manyDialog.vue' //单行修改
-import batchOperateDialog from './batchOperateDialog.vue' //批量修改
+import manyDialog from './dialog/manyDialog.vue' //单行修改
+import batchOperateDialog from './dialog/batchOperateDialog.vue' //批量修改
 export default {
   data() {
     return {
@@ -265,7 +273,41 @@ export default {
       // this.tableData = this.tableData.slice(3)
       this.tableData = data2
       this.orderChange(this.tableData)
+      // 矫正顺序
+      this.orderChange(this.tableData)
     },
+    // 测试cookie
+    co() {
+      // 发请求模板，待删除，防止后面更改需求，先不删
+        axios({
+          method: 'post',
+          url: 'http://114.132.71.147:38080/login/b',
+          data: {
+            studentId:20200001,
+            password: 123456
+          }
+        }).then(
+          (res) => {
+            this.$message.success(res.data.message)
+          },
+          (err) => {
+            this.$message.error(err)
+          }
+        )
+        axios({
+          method: 'get',
+          url: 'http://114.132.71.147:38080/set-cookie/b',
+        }).then(
+          (res) => {
+            this.$message.success(res.data.message)
+          },
+          (err) => {
+            this.$message.error(err)
+          }
+        )
+    },
+
+
 
     // 批量修改同步
     batchOperateChange(datalist) {
@@ -607,6 +649,10 @@ export default {
   // line-height: 15px;
   line-height: 2.95vh;
   // color: black;
+}
+.content{
+  // 暂定900px
+  min-width: 900px;
 }
 .seach-header {
   display: flex;
