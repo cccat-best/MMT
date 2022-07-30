@@ -15,13 +15,13 @@ let data = [
     name: '猫王',
     permission: 'member',
     phone: 14451419198,
-    studentId: '20210004'
+    studentId: '20210003'
   },
   {
     name: '虎魄',
     permission: 'commitee',
     phone: 16633101092,
-    studentId: '20210003'
+    studentId: '20210004'
   },
   {
     name: '王虎',
@@ -93,7 +93,7 @@ let data = [
     name: '亚瑟',
     permission: 'member',
     phone: 15316666666,
-    studentId: '20210029'
+    studentId: '20210016'
   },
   {
     name: '二舅',
@@ -147,19 +147,19 @@ let data = [
     name: '尤雨溪',
     permission: 'member',
     phone: 15316666666,
-    studentId: '20212307'
+    studentId: '20210307'
   },
   {
     name: '大佬',
     permission: 'member',
     phone: 15316666666,
-    studentId: '20210307'
+    studentId: '20210309'
   },
   {
     name: '账号',
     permission: 'member',
     phone: 15316666666,
-    studentId: '20210923'
+    studentId: '20210911'
   },
   {
     name: '管理',

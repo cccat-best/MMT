@@ -223,6 +223,7 @@ export default {
 
       // 单行删除同步，达到页面删除效果，仅靠发请求是没办法从视觉上删除的
       this.$emit('deleteAlign', this.deleteIndex)
+      this.dialogVisibleDeleteAlign = false
     },
     // 验证已修改数据，放入postData中
     // 情况是有修改的记录修改，没有修改记录null,全部要发到请求中

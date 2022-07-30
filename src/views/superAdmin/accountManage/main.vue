@@ -322,6 +322,9 @@ export default {
       const deleteIndex = (this.currentPage - 1) * this.pagesize + index
       // 删一个
       this.tableData.splice(deleteIndex, 1)
+      // console.log(deleteIndex)
+      // 如果是deleteIndex保持着，会删掉下一个顶上这个位置的那一条
+      // 所以要及时退出弹窗
       // 同步更新
       // 为了在删除最后一页的最后一条数据时能成功跳转回最后一页的上一页
       // const totalPage = Math.ceil((this.total - 1) / this.pagesize) // 总页数
