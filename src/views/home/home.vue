@@ -13,14 +13,26 @@
           justify="space-between"
           style="height: 100%; overflow: hidden"
         >
+          <!-- 应江哥要求，个人中心页面需要加上顶部左上角的返回键，所以个人中心页面传了一个isPersonal的参数来判断是否是个人中心页面，通过这个参数来展示不同的顶部 -->
           <div
+            v-if="!isPersonal"
             class="leftTop"
             style="height: 20px; overflow: hidden; margin-left: 20px"
           >
             {{ loginOrganizationName }}
           </div>
+          <el-page-header
+            v-if="isPersonal"
+            @back="goBack"
+            :content="this.loginOrganizationName"
+            class="back-botton"
+          >
+          </el-page-header>
+          <!-- 应江哥要求，顶部的超级管理按钮和icon只在有superadmin权限的账号显示，所以个人中心传了一个issuper来判断是否显示超级管理 -->
+          <!-- 不过我感觉这个工作应该让登录进去后的第一个页面来做，似乎个人中心不是登录后的第一个页面？ -->
           <div class="rightTop" style="display: flex">
             <img
+              v-if="isSuper"
               src="./icon/admin.png"
               alt=""
               style="height: 30px; width: 30px"
@@ -36,14 +48,19 @@
                 overflow: hidden;
               "
               @mouseover="this.style.color = blue"
+              v-if="isSuper"
               >超级管理
             </el-button>
+            <!-- 应江哥要求，其他页面点击头像进入个人中心，而个人中心点击头像刷新页面，home函数实现 -->
             <div class="block" style="height: 35px; overflow: hidden">
-              <el-avatar
-                :size="35"
-                :src="circleUrl"
-                style="vertical-align: middle"
-              ></el-avatar>
+              <span @click="home"
+                ><el-avatar
+                  :size="35"
+                  :src="circleUrl"
+                  style="vertical-align: middle"
+                  :click="home"
+                ></el-avatar
+              ></span>
               <el-dropdown trigger="click">
                 <span
                   class="el-dropdown-link"
@@ -83,6 +100,7 @@
                           class="el-icon-arrow-down el-icon--right"
                         ></i>
                       </span>
+                      <!-- 贺节介建议这里的下拉框改成向左拉开，不过我不会 -->
                       <el-dropdown-menu slot="dropdown">
                         <el-dropdown-item command="学生创新创业实践中心"
                           >学生创新创业实践中心</el-dropdown-item
@@ -129,15 +147,20 @@
 </template>
 
 <script>
+// 这里的bus是我为了从个人中心页面传值到home页面写的一个vue实例
+import bus from '../../compentents/bus'
 import axios from 'axios'
 import myLayoutVue from '../../compentents/myLayout.vue'
 export default {
   name: 'home',
+
   components: {
     myLayoutVue
   },
   data() {
     return {
+      isSuper: true,
+
       isCollapse: false,
       asideWidth: 200,
       menuList: [
@@ -191,7 +214,8 @@ export default {
       cookie: '',
       organizationName: '',
       organizationId: '',
-      isSuper: true
+      // isSuper: false,
+      isPersonal: false
     }
   },
   methods: {
@@ -230,15 +254,37 @@ export default {
     },
     superAdmin() {
       this.$router.push('/superAdmin')
+    },
+    home() {
+      if (this.isPersonal) {
+        location.reload()
+      } else {
+        this.$router.push('/home/personalInfo')
+      }
+    },
+    // 个人中心顶部左侧返回的实现，还没想到咋实现
+    goBack() {
+      console.log('go back')
     }
   },
-  created() {}
+  created() {
+    if (this.permission == 'superAdmin') {
+      this.isSuper = true
+    }
+    bus.$on('pass', (data) => {
+      this.isPersonal = data.isPersonal
+      this.isSuper = data.isSuper
+      console.log(this.isPersonal)
+    })
+  }
 }
 </script>
 
 <style lang="less" scoped>
 .home {
+  position: absolute;
   height: 100%;
+  width: 100%;
 }
 .menuTitle {
   color: white;
@@ -246,5 +292,15 @@ export default {
   height: 60px;
   line-height: 60px;
   text-align: center;
+}
+.color-change:hover {
+  color: #409eff !important;
+}
+.el-dropdown-link:hover {
+  color: #409eff !important;
+}
+.el-dropdown-link {
+  cursor: pointer;
+  color: black;
 }
 </style>

@@ -143,6 +143,8 @@
 </template>
 
 <script>
+// 这里的bus是我为了从个人中心页面传值到home页面写的一个vue实例
+import bus from '../../../compentents/bus'
 import axios from 'axios'
 export default {
   name: 'personalInfo',
@@ -189,7 +191,7 @@ export default {
       cookie: '',
       organizationName: '',
       organizationId: '',
-      isSuper: false,
+
       rules1: {
         password: [
           { required: true, message: '请输入原密码', trigger: 'blur' },
@@ -201,7 +203,8 @@ export default {
       rules2: {
         phone: [
           { required: true, message: '请输入原手机号', trigger: 'blur' },
-          { message: '原手机号不正确', trigger: 'blur' }
+          { message: '原手机号不正确', trigger: 'blur' },
+          { min: 11, max: 11, message: '长度为11个字符', trigger: 'blur' }
         ],
         newPhone: [
           { required: true, message: '请输入新手机号', trigger: 'blur' },
@@ -217,6 +220,10 @@ export default {
       dialogForm1Visible: false,
       dialogForm2Visible: false,
       dialogForm3Visible: false,
+      isForm: {
+        isSuper: false,
+        isPersonal: true
+      },
       pwdForm: {
         password: '88888888',
         newPassword: '',
@@ -232,15 +239,6 @@ export default {
     }
   },
   methods: {
-    handleOpen(key, keyPath) {
-      console.log(key, keyPath)
-    },
-    handleClose(key, keyPath) {
-      console.log(key, keyPath)
-    },
-    goBack() {
-      console.log('go back')
-    },
     changePass(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
@@ -295,45 +293,7 @@ export default {
         }
       })
     },
-    changeOrganization(command) {
-      alert(command)
-      axios({
-        method: 'post',
-        baseURL: 'https://mmt-dev.sipcoj.com',
-        url: '/login/change',
-        data: command,
-        headers: {
-          'content-type': 'application/json'
-        }
-      }).then((val) => {
-        this.loginOrganizationName = val.data.data.loginOrganizationName
-        this.loginOrganizationId = val.data.data.loginOrganizationId
-        this.organizations = val.data.data.organizations
-        this.permission = val.data.data.permission
-        this.phone = val.data.data.phone
-        this.name = val.data.data.name
-      })
-    },
-    quitLogin() {
-      alert('按下退出登录')
-      axios({
-        method: 'delete',
-        baseURL: 'https://mmt-dev.sipcoj.com',
-        url: '/logout',
 
-        headers: {
-          'content-type': 'application/json'
-        }
-      }).then((val) => {
-        alert(val.data.data.message)
-      })
-    },
-    superAdmin() {
-      this.$router.push('/superAdmin')
-    },
-    home() {
-      location.reload()
-    },
     getLoginStatus() {
       const url = '/login-status'
       this.$http
@@ -360,18 +320,18 @@ export default {
   created() {
     this.getLoginStatus()
     if (this.permission == 'superAdmin') {
-      this.isSuper = true
+      this.isForm.isSuper = true
     }
+    bus.$emit('pass', this.isForm)
+  },
+  beforeDestroy() {
+    this.isForm.isPersonal = false
+    bus.$emit('pass', this.isForm)
   }
 }
 </script>
 
 <style lang="less" scoped>
-.el-header {
-  color: #ffffff;
-  height: 100%;
-}
-
 .el-footer {
   background-color: #b3c0d1;
   color: #333;
@@ -379,15 +339,8 @@ export default {
   line-height: 60px;
 }
 
-.el-aside {
-  background-color: #282e38;
-  color: white;
-  text-align: center;
-  line-height: 100%;
-}
-
 .el-main {
-  background-color: #f0f2f7;
+  background-color: #e9eef3;
   color: #333;
   padding: 5%;
   line-height: 40px;
@@ -405,16 +358,7 @@ body > .el-container {
 .el-container:nth-child(7) .el-aside {
   line-height: 320px;
 }
-.homeWrap {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-}
-.main_container {
-  height: 100%;
-}
+
 .el-row {
   height: 100%;
 }
