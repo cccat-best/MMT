@@ -279,35 +279,33 @@ export default {
     // 测试cookie
     co() {
       // 发请求模板，待删除，防止后面更改需求，先不删
-        axios({
-          method: 'post',
-          url: 'http://114.132.71.147:38080/login/b',
-          data: {
-            studentId:20200001,
-            password: 123456
-          }
-        }).then(
-          (res) => {
-            this.$message.success(res.data.message)
-          },
-          (err) => {
-            this.$message.error(err)
-          }
-        )
-        axios({
-          method: 'get',
-          url: 'http://114.132.71.147:38080/set-cookie/b',
-        }).then(
-          (res) => {
-            this.$message.success(res.data.message)
-          },
-          (err) => {
-            this.$message.error(err)
-          }
-        )
+      axios({
+        method: 'post',
+        url: 'http://114.132.71.147:38080/login/b',
+        data: {
+          studentId: 20200001,
+          password: 123456
+        }
+      }).then(
+        (res) => {
+          this.$message.success(res.data.message)
+        },
+        (err) => {
+          this.$message.error(err)
+        }
+      )
+      axios({
+        method: 'get',
+        url: 'http://114.132.71.147:38080/set-cookie/b'
+      }).then(
+        (res) => {
+          this.$message.success(res.data.message)
+        },
+        (err) => {
+          this.$message.error(err)
+        }
+      )
     },
-
-
 
     // 批量修改同步
     batchOperateChange(datalist) {
@@ -650,7 +648,7 @@ export default {
   line-height: 2.95vh;
   // color: black;
 }
-.content{
+.content {
   // 暂定900px
   min-width: 900px;
 }
