@@ -310,6 +310,8 @@ export default {
       // console.log(this.currentPage)
       // 分页并根据已有order排序
       this.orderChange(this.tableData, this.currentPage)
+      // 再来一次权限排序，顺序改回去，
+      this.orderChange(this.tableData, this.currentPage)
       // 根据已有permissionSelect筛选
       this.filterChangeData(this.permissionSelect)
 
@@ -337,6 +339,9 @@ export default {
       this.currentPage = this.currentPage < 1 ? 1 : this.currentPage
 
       // 分页并根据已有order排序
+      this.orderChange(this.tableData, this.currentPage)
+      // 再来一次权限排序，顺序改回去，
+      // 由于未知原因，权限排序是可以局部安学号排序的
       this.orderChange(this.tableData, this.currentPage)
       // 根据已有permissionSelect筛选
       this.filterChangeData(this.permissionSelect)

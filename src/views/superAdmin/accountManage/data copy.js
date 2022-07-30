@@ -1,13 +1,13 @@
 let data = [
   {
     name: '猫猫',
-    permission: 'commitee',
+    permission: 'member',
     phone: 13222221131,
     studentId: '20210001'
   },
   {
     name: '熊二',
-    permission: 'commitee',
+    permission: 'member',
     phone: 143114242421,
     studentId: '20210002'
   },
@@ -37,13 +37,13 @@ let data = [
   },
   {
     name: '小虎',
-    permission: 'member',
+    permission: 'commitee',
     phone: 13666666666,
     studentId: '20210007'
   },
   {
     name: '盖虎',
-    permission: 'member',
+    permission: 'commitee',
     phone: 13666666666,
     studentId: '20210008'
   },
