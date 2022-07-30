@@ -282,7 +282,6 @@ export default {
 
 <style lang="less" scoped>
 .home {
-  position: absolute;
   height: 100%;
   width: 100%;
 }
