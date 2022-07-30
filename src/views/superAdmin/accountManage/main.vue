@@ -2,7 +2,7 @@
   <div>
     <!-- 测试更新数据 -->
     <button @click="de">
-      测试更新数据，删掉了前三个数据，后面完工时记得删掉这个
+      测试更新数据，后面完工时记得删掉这个
     </button>
     <!--  -->
 
@@ -205,6 +205,7 @@
 import axios from 'axios'
 //引入表单全部数据
 import data from './data.js'
+import data2 from './data copy.js'
 // 引入clipBoard
 import clipBoard from './clipboard.vue'
 //引入弹窗
@@ -259,10 +260,14 @@ export default {
   methods: {
     // 测试数据更新时，表单数据是否同步更新了
     de() {
+      // this.$message.success(
+      //   '测试更新数据，删掉了前三个数据，后面完工时记得删掉这个'
+      // )
       this.$message.success(
-        '测试更新数据，删掉了前三个数据，后面完工时记得删掉这个'
+        '测试更新数据，后面完工时记得删掉这个'
       )
-      this.tableData = this.tableData.slice(3)
+      // this.tableData = this.tableData.slice(3)
+      this.tableData=data2
       this.orderChange(this.tableData)
     },
 
