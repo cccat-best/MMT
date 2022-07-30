@@ -92,24 +92,24 @@ export default {
     },
     // 验证是否需要获取验证码
     beforeGetInvitationCode() {
-      if (this.nowTime == '') {
-        this.$message.success('第一次')
+      // if (this.nowTime == '') {
+        // this.$message.success('第一次')
         this.getNowTime()
         this.getInvitationCodeRequest()
-      }
+      // }
       // 10分钟之内不能重发
-      else {
-        this.nowTimeCheck = new Date()
-        // console.log(this.nowTimeCheck - this.nowTime)
-        //600000是10分钟
-        if (this.nowTimeCheck - this.nowTime < 600000) {
-          this.$message.error('10分钟之内不能重发,记得删掉这个')
-        } else {
-          this.$message.success('在10分钟之外,可以发请求了,记得删掉这个')
-          this.getNowTime()
-          this.getInvitationCodeRequest()
-        }
-      }
+      // else {
+      //   this.nowTimeCheck = new Date()
+      //   // console.log(this.nowTimeCheck - this.nowTime)
+      //   //600000是10分钟
+      //   if (this.nowTimeCheck - this.nowTime < 600000) {
+      //     this.$message.error('10分钟之内不能重发,记得删掉这个')
+      //   } else {
+      //     this.$message.success('在10分钟之外,可以发请求了,记得删掉这个')
+      //     this.getNowTime()
+      //     this.getInvitationCodeRequest()
+        // }
+      // }
     },
     // 实验HTTP请求，使用百度的随便一个接口,待删除
     hello() {

@@ -281,7 +281,7 @@ export default {
       // 发请求模板，待删除，防止后面更改需求，先不删
       axios({
         method: 'post',
-        url: 'http://114.132.71.147:38080/login/b',
+        url: 'https://mmt-dev.sipcoj.com/login/b',
         data: {
           studentId: 20200001,
           password: 123456
@@ -296,7 +296,7 @@ export default {
       )
       axios({
         method: 'get',
-        url: 'http://114.132.71.147:38080/set-cookie/b'
+        url: 'https://mmt-dev.sipcoj.com/set-cookie/b'
       }).then(
         (res) => {
           this.$message.success(res.data.message)
