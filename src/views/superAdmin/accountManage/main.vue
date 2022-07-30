@@ -190,11 +190,11 @@
       background
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
-      :current-page="page.currentPage"
+      :current-page.sync="currentPage"
       :page-sizes="[10, 20, 30, 40]"
-      :page-size="page.pageSize"
+      :page-size.sync="pagesize"
       layout="total, sizes, prev, pager, next, jumper"
-      :total="page.total"
+      :total="total"
     >
     </el-pagination>
   </div>
@@ -223,11 +223,9 @@ export default {
 
       // 页码
       tableList: [], //当前页展示数据
-      page: {
-        currentPage: 1, // 当前页码
-        pagesize: 10, // 每页条数，默认10
-        total: 100
-      },
+      currentPage: 1, // 当前页码
+      pagesize: 10, // 每页条数，默认10
+      total: 100,
       // 表格数据
       tableData: [...data], //模拟数据，发请求会获取数据覆盖它
       tableDataChange: [], //排序、筛选之后的数据
@@ -277,26 +275,65 @@ export default {
     batchOperateDelete(studentListData) {
       // console.log('批量删除同步')
       console.log(studentListData)
-      // this.tableData.filter(()=>{
+      // 遍历要删除的数组名单
+      // 看看要不要写箭头函数
+      studentListData.forEach((element) => {
+        // 找到每个名单元素对应index
+        // console.log(element)
+        const deleteIndex = this.tableData.findIndex((item) => {
+          // 看看要不要写===
+          console.log(item.studentId===element.studentId)
+          return item.studentId == element.studentId
+        })
+        // console.log(deleteIndex)
+        // 如果是deleteIndex-1，会删掉最后一条
+        // 所以注意要及时关闭弹窗，否则继续点确认会误删
+        this.tableData.splice(deleteIndex, 1)
+        // console.log(this.tableData[0])
+      })
+      // 对currentPage做一个判断
+      // 如果整页没删完，保持在当前页，如果删完了返回上一页（除非删的是第一页）
+      console.log('=============length')
+      // console.log(studentListData.length)
+      const totalPage = Math.ceil((this.total - 1) / this.pagesize) // 总页数
+      let pagelength = this.pagesize
+      if (this.currentPage == totalPage) {
+        pagelength = this.total - (this.currentPage - 1) * this.pagesize
+      }
+      if (studentListData.length == pagelength) {
+        this.currentPage = this.currentPage - 1
+      }
+      this.currentPage = this.currentPage < 1 ? 1 : this.currentPage
 
+      // console.log(studentListData.length == this.pagesize)
+      // console.log(this.currentPage)
+      // 分页并根据已有order排序
+      this.orderChange(this.tableData, this.currentPage)
+      // 根据已有permissionSelect筛选
+      this.filterChangeData(this.permissionSelect)
+
+      // this.tableData.filter(()=>{
       // })
     },
     //单行删除同步,达到页面删除效果，仅靠发请求是没办法从视觉上删除的
     deleteAlign(index) {
       // console.log("单行删除同步")
-      const deleteIndex =
-        (this.page.currentPage - 1) * this.page.pagesize + index
+      const deleteIndex = (this.currentPage - 1) * this.pagesize + index
       // 删一个
       this.tableData.splice(deleteIndex, 1)
       // 同步更新
       // 为了在删除最后一页的最后一条数据时能成功跳转回最后一页的上一页
-      const totalPage = Math.ceil((this.page.total - 1) / this.page.pagesize) // 总页数
-      this.page.currentPage =
-        this.page.currentPage > totalPage ? totalPage : this.page.currentPage
-      this.page.currentPage =
-        this.page.currentPage < 1 ? 1 : this.page.currentPage
+      // const totalPage = Math.ceil((this.total - 1) / this.pagesize) // 总页数
+      const frontOne = this.pagesize * (this.currentPage - 1)
+      if (frontOne == this.total - 1) {
+        this.currentPage--
+      }
+      // this.currentPage =
+      //   this.currentPage > totalPage ? totalPage : this.currentPage
+      this.currentPage = this.currentPage < 1 ? 1 : this.currentPage
+
       // 分页并根据已有order排序
-      this.orderChange(this.tableData, this.page.currentPage)
+      this.orderChange(this.tableData, this.currentPage)
       // 根据已有permissionSelect筛选
       this.filterChangeData(this.permissionSelect)
     },
@@ -347,7 +384,7 @@ export default {
         }
       }
       // 渲染排序后的数据，分页
-      this.page.currentPage = currentPage == undefined ? 1 : currentPage
+      this.currentPage = currentPage == undefined ? 1 : currentPage
       this.tableDataChange = datalist
       this.pageCutDouwn(this.tableDataChange)
     },
@@ -422,7 +459,8 @@ export default {
         this.tableDataChange = this.tableData
       }
       // 渲染筛选后数据
-      this.page.currentPage = 1
+      // 考虑不周，不应该直接返回第一页
+      // this.currentPage = 1
       this.pageCutDouwn(this.tableDataChange)
     },
 
@@ -531,15 +569,15 @@ export default {
     },
     //修改页容量
     handleSizeChange(val) {
-      this.page.pagesize = val
+      this.pagesize = val
       // 回到第一页
-      this.page.currentPage = 1
+      this.currentPage = 1
       // console.log(`每页: ${val}`)
       this.pageCutDouwn(this.tableDataChange)
     },
     // 修改到第几页
     handleCurrentChange(val) {
-      this.page.currentPage = val
+      this.currentPage = val
       // console.log(`当前页: ${val}`)
       this.pageCutDouwn(this.tableDataChange)
     },
@@ -547,10 +585,10 @@ export default {
     pageCutDouwn(tableDataChange) {
       this.tableList = tableDataChange.filter(
         (item, index) =>
-          index < this.page.currentPage * this.page.pagesize &&
-          index >= this.page.pagesize * (this.page.currentPage - 1)
+          index < this.currentPage * this.pagesize &&
+          index >= this.pagesize * (this.currentPage - 1)
       )
-      this.page.total = tableDataChange.length
+      this.total = tableDataChange.length
     }
   }
 }
