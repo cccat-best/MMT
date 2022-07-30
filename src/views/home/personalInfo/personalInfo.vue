@@ -145,7 +145,7 @@
 <script>
 // 这里的bus是我为了从个人中心页面传值到home页面写的一个vue实例
 import bus from '../../../compentents/bus'
-import axios from 'axios'
+
 export default {
   name: 'personalInfo',
 
