@@ -282,7 +282,7 @@ export default {
         // console.log(element)
         const deleteIndex = this.tableData.findIndex((item) => {
           // 看看要不要写===
-          console.log(item.studentId===element.studentId)
+          console.log(item.studentId === element.studentId)
           return item.studentId == element.studentId
         })
         // console.log(deleteIndex)

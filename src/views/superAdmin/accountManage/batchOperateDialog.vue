@@ -93,7 +93,7 @@ export default {
       )
       console.log('--------仅供测试同步批量删除更新========')
       this.$emit('myBatchOperateDelete', studentListData)
-      this.dialogVisibleDelete=false
+      this.dialogVisibleDelete = false
     },
 
     // 批量修改
@@ -145,7 +145,7 @@ export default {
         item.permission = this.permission
       })
       this.$emit('myBatchOperateChange', 114514)
-      this.dialogVisible=false
+      this.dialogVisible = false
     }
   }
 }
