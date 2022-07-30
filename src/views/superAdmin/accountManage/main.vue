@@ -1,9 +1,7 @@
 <template>
   <div>
     <!-- 测试更新数据 -->
-    <button @click="de">
-      测试更新数据，后面完工时记得删掉这个
-    </button>
+    <button @click="de">测试更新数据，后面完工时记得删掉这个</button>
     <!--  -->
 
     <!-- 批量操作 -->
@@ -263,11 +261,9 @@ export default {
       // this.$message.success(
       //   '测试更新数据，删掉了前三个数据，后面完工时记得删掉这个'
       // )
-      this.$message.success(
-        '测试更新数据，后面完工时记得删掉这个'
-      )
+      this.$message.success('测试更新数据，后面完工时记得删掉这个')
       // this.tableData = this.tableData.slice(3)
-      this.tableData=data2
+      this.tableData = data2
       this.orderChange(this.tableData)
     },
 
