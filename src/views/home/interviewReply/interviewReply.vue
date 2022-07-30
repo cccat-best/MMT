@@ -1,11 +1,13 @@
 <template>
-  <div class="big">
-    <div class="top">
-      <filterFigure></filterFigure>
-      <rightTop></rightTop>
-    </div>
-    <div class="bottom">
-      <replyList></replyList>
+  <div class="bbig">
+    <div class="big">
+      <div class="top">
+        <filterFigure></filterFigure>
+        <rightTop></rightTop>
+      </div>
+      <div class="bottom">
+        <replyList></replyList>
+      </div>
     </div>
   </div>
 </template>
@@ -26,6 +28,10 @@ export default {
 </script>
 
 <style scoped>
+.bbig {
+  display: flex;
+  justify-content: center;
+}
 .big {
   height: 100%;
   width: 1260px;

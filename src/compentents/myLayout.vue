@@ -77,7 +77,7 @@ export default {
     meunItemActiveColor: {
       type: String,
       required: false,
-      default: 'green'
+      default: '#02a7f0'
     },
     // 选择是否需要侧边栏
     isAside: {

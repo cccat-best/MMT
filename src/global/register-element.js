@@ -8,13 +8,9 @@ import {
   Table,
   Container,
   Header,
-  Aside,
   Main,
-  Icon,
-  Menu,
-  Submenu,
-  MenuItem,
-  MenuItemGroup,
+  Footer,
+  Aside,
   Row,
   Col,
   TableColumn,
@@ -39,10 +35,15 @@ import {
   Avatar,
   Dropdown,
   DropdownMenu,
-  DropdownItem
+  DropdownItem,
+  Menu,
+  MenuItem,
+  Icon
 } from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 const components = [
+  MenuItem,
+  Menu,
   DropdownItem,
   DropdownMenu,
   Dropdown,
@@ -58,13 +59,9 @@ const components = [
   TableColumn,
   Container,
   Header,
-  Aside,
   Main,
-  Icon,
-  Menu,
-  Submenu,
-  MenuItem,
-  MenuItemGroup,
+  Footer,
+  Aside,
   Row,
   Col,
   TableColumn,
@@ -89,7 +86,8 @@ const components = [
   FormItem,
   Tabs,
   TabPane,
-  InputNumber
+  InputNumber,
+  Icon
 ]
 export default function (Vue) {
   for (const component of components) {
