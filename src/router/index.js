@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import login from '../views/login/login.vue'
+import personalInfo from '../views/home/personalInfo/personalInfo.vue'
 Vue.use(VueRouter)
 const routes = [
   {
@@ -28,6 +29,15 @@ const routes = [
         path: 'reply',
         component: () =>
           import('../views/home/interviewReply/interviewReply.vue')
+      },
+      // {
+      //   path: 'personalInfo',
+      //   component: () =>
+      //     import('../views/home/personalIofo/personalIofo.vue')
+      // },
+      {
+        path: 'personalInfo',
+        component: personalInfo
       }
     ]
   },

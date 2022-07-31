@@ -303,6 +303,7 @@ export default {
     },
     getCurrentRow(row) {
       this.$bus.$emit('selectionName', row.name)
+      this.$bus.$emit('selectionStudentId', row.studentId)
       this.$bus.$emit('selectiondepartmentName', row.departmentName)
     }
   },

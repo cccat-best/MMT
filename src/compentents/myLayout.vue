@@ -21,7 +21,6 @@
               :index="item.id"
               v-for="(item, index) in menuItemList"
               :key="index"
-              @click="handleMenuItemClick(item)"
               :route="item.pagePath"
             >
               <el-icon :class="['iconfont', item.iconClass]"></el-icon>
@@ -78,7 +77,7 @@ export default {
     meunItemActiveColor: {
       type: String,
       required: false,
-      default: 'green'
+      default: '#02a7f0'
     },
     // 选择是否需要侧边栏
     isAside: {
@@ -108,12 +107,7 @@ export default {
   data() {
     return {}
   },
-  methods: {
-    handleMenuItemClick(item) {
-      console.log(item)
-      this.$route.push(item.pagePath)
-    }
-  }
+  methods: {}
 }
 </script>
 
