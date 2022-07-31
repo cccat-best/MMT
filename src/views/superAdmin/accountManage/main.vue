@@ -335,7 +335,7 @@ export default {
       showactive2: 0, //第二个按钮
 
       // 关键字搜索
-      organizationId: 0, ////组织名不知道，需要询问////////////////////////
+      organizationId: 2, ////组织名不知道，需要询问////////////////////////
       searchWord: '',
       data: '', //发请求的data
       order: 'asc', //排序顺序，默认升序
@@ -395,14 +395,16 @@ export default {
       // 发请求模板，待删除，防止后面更改需求，先不删
       axios({
         method: 'post',
-        url: 'http://114.132.71.147:38080/login/b',
+        // url: 'http://114.132.71.147:38080/login/b',
+        url: 'https://api.yuleng.top:38080/login/b',
         data: {
-          studentId: 20200002,
-          password: 123456
+          studentId: '20200002',
+          password: '123456'
         }
       }).then(
         (res) => {
-          this.$message.success(res.data.message)
+          this.$message.success(res)
+          console.log(res)
         },
         (err) => {
           this.$message.error(err)
@@ -419,6 +421,19 @@ export default {
           this.$message.error(err)
         }
       )
+      axios({
+        method: 'post',
+        url: 'https://api.yuleng.top:38080/account/manage/all',
+        data: {
+          organizationId:2
+        }
+      }).then(
+        (res) => {
+          this.$message.success(res.data.message)
+        },
+        (err) => {
+          this.$message.error(err)
+        })
     },
 
     //图标变色,第一个
