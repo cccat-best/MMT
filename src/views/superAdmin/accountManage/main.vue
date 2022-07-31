@@ -24,83 +24,95 @@
     <!-- 批量操作 -->
     <div class="seach-header">
       <div>
-        <el-button
-          size="small"
-          class="batchButton"
-          icon="el-icon-edit"
+        <button
+          :class="[showactive1 == 0 ? 'batchButton' : 'activeBatchButton']"
           @click="showDialogVisible"
           :disabled="this.multipleSelection.length == 0"
         >
-          批量修改
-          <!-- <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 48 48"
-            width="28"
-            height="28"
-            style="
-              border-color: rgba(187, 187, 187, 1);
-              border-width: 0px;
-              border-style: solid;
-            "
-            filter="none"
+          <div
+            style="display: flex; justify-content: center"
+            @mouseenter="changeColor"
+            @mouseleave="changeColor"
           >
-            <g>
-              <rect
-                width="48"
-                height="48"
-                fill="rgba(16.065,16.065,16.065,1)"
-                fill-opacity="0.01"
-                stroke="none"
-              ></rect>
-              <path
-                d="M42 26V40C42 41.1046 41.1046 42 40 42H8C6.89543 42 6 41.1046 6 40V8C6 6.89543 6.89543 6 8 6L22 6"
-                stroke="rgba(16.065,16.065,16.065,1)"
-                stroke-width="4"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                fill="none"
-              ></path>
-              <path
-                d="M14 26.7199V34H21.3172L42 13.3081L34.6951 6L14 26.7199Z"
-                fill="none"
-                stroke="rgba(16.065,16.065,16.065,1)"
-                stroke-width="4"
-                stroke-linejoin="round"
-              ></path>
-            </g>
-          </svg> -->
-          <!-- <svg-icon iconClass="hello" /> -->
-        </el-button>
+            <div>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 48 48"
+                width="23"
+                height="23"
+                style="
+                  border-color: rgba(187, 187, 187, 1);
+                  border-width: 0px;
+                  border-style: solid;
+                "
+                filter="none"
+              >
+                <g>
+                  <rect
+                    width="48"
+                    height="48"
+                    fill="rgba(16.065,16.065,16.065,1)"
+                    fill-opacity="0.01"
+                    stroke="none"
+                  ></rect>
+                  <path
+                    d="M42 26V40C42 41.1046 41.1046 42 40 42H8C6.89543 42 6 41.1046 6 40V8C6 6.89543 6.89543 6 8 6L22 6"
+                    :stroke="this.batchColorChange1"
+                    stroke-width="4"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    fill="none"
+                  ></path>
+                  <path
+                    d="M14 26.7199V34H21.3172L42 13.3081L34.6951 6L14 26.7199Z"
+                    fill="none"
+                    :stroke="this.batchColorChange1"
+                    stroke-width="4"
+                    stroke-linejoin="round"
+                  ></path>
+                </g>
+              </svg>
+            </div>
+            <div style="font-size: 17px; margin-left: 5px">批量修改</div>
+          </div>
+        </button>
       </div>
       <div>
-        <!-- <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 32 32"
-          width="28"
-          height="28"
-          style="
-            border-color: rgba(187, 187, 187, 1);
-            border-width: 0px;
-            border-style: solid;
-          "
-          filter="none"
-        >
-          <g>
-            <path
-              d="M8.032 28.64c0.032 0.768 0.64 1.376 1.408 1.376h13.152c0.736 0 1.376-0.608 1.408-1.376l0.928-19.84h-17.856l0.96 19.84zM18.976 13.728c0-0.288 0.256-0.544 0.576-0.544h0.928c0.32 0 0.576 0.256 0.576 0.544v11.36c0 0.288-0.288 0.544-0.576 0.544h-0.928c-0.32 0-0.576-0.256-0.576-0.544v-11.36zM14.976 13.728c0-0.288 0.256-0.544 0.576-0.544h0.928c0.297 0.009 0.535 0.247 0.544 0.543l0 0.001v11.36c-0.009 0.297-0.247 0.535-0.543 0.544l-0.001 0h-0.928c-0.32 0-0.576-0.256-0.576-0.544v-11.36zM10.976 13.728c0-0.288 0.256-0.544 0.576-0.544h0.896c0.32 0 0.576 0.256 0.576 0.544v11.36c0 0.288-0.256 0.544-0.576 0.544h-0.896c-0.32 0-0.576-0.256-0.576-0.544v-11.36zM25.568 3.456h-6.080v-1.152c0-0.16-0.128-0.32-0.288-0.32h-6.368c-0.16 0-0.32 0.16-0.32 0.32v1.152h-6.048c-0.48 0-0.896 0.384-0.896 0.864v2.784h20.864v-2.784c0-0.001 0-0.003 0-0.004 0-0.475-0.385-0.86-0.86-0.86-0.001 0-0.003 0-0.004 0h0z"
-              fill="rgba(16.065,16.065,16.065,1)"
-            ></path>
-          </g>
-        </svg> -->
-        <el-button
-          size="small"
-          class="batchButton"
-          icon="el-icon-delete"
+        <button
+          :class="[showactive2 == 0 ? 'batchButton' : 'activeBatchButton']"
           @click="deleteDialogVisible"
           :disabled="this.multipleSelection.length == 0"
         >
-          批量删除</el-button
-        >
+          <div
+            style="display: flex; justify-content: center"
+            @mouseenter="changeColor2"
+            @mouseleave="changeColor2"
+          >
+            <div>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 32 32"
+                width="23"
+                height="23"
+                style="
+                  border-color: rgba(187, 187, 187, 1);
+                  border-width: 0px;
+                  border-style: solid;
+                "
+                filter="none"
+              >
+                <g>
+                  <path
+                    d="M8.032 28.64c0.032 0.768 0.64 1.376 1.408 1.376h13.152c0.736 0 1.376-0.608 1.408-1.376l0.928-19.84h-17.856l0.96 19.84zM18.976 13.728c0-0.288 0.256-0.544 0.576-0.544h0.928c0.32 0 0.576 0.256 0.576 0.544v11.36c0 0.288-0.288 0.544-0.576 0.544h-0.928c-0.32 0-0.576-0.256-0.576-0.544v-11.36zM14.976 13.728c0-0.288 0.256-0.544 0.576-0.544h0.928c0.297 0.009 0.535 0.247 0.544 0.543l0 0.001v11.36c-0.009 0.297-0.247 0.535-0.543 0.544l-0.001 0h-0.928c-0.32 0-0.576-0.256-0.576-0.544v-11.36zM10.976 13.728c0-0.288 0.256-0.544 0.576-0.544h0.896c0.32 0 0.576 0.256 0.576 0.544v11.36c0 0.288-0.256 0.544-0.576 0.544h-0.896c-0.32 0-0.576-0.256-0.576-0.544v-11.36zM25.568 3.456h-6.080v-1.152c0-0.16-0.128-0.32-0.288-0.32h-6.368c-0.16 0-0.32 0.16-0.32 0.32v1.152h-6.048c-0.48 0-0.896 0.384-0.896 0.864v2.784h20.864v-2.784c0-0.001 0-0.003 0-0.004 0-0.475-0.385-0.86-0.86-0.86-0.001 0-0.003 0-0.004 0h0z"
+                    :fill="this.batchColorChange2"
+                    :stroke="none"
+                  ></path>
+                </g>
+              </svg>
+            </div>
+            <div style="font-size: 17px; margin-left: 5px">批量删除</div>
+          </div>
+        </button>
       </div>
 
       <!-- 搜索区域 -->
@@ -119,8 +131,8 @@
     <el-table
       stripe
       tooltip-effect="dark"
-      style="width: 100%"
-      height="400px"
+      style="color: #666690; font-size: 15px"
+      height="65.7vh"
       ref="multipleTable"
       :data="tableList"
       @sort-change="sortTableFun"
@@ -132,16 +144,10 @@
       @selection-change="handleSelectionChange"
     >
       <!-- 注意上面有tableList -->
-      <el-table-column type="selection" width="55" fixed> </el-table-column>
-      <el-table-column
-        prop="studentId"
-        label="学号"
-        sortable="custom"
-        width="120"
-        fixed
-      >
+      <el-table-column type="selection" fixed> </el-table-column>
+      <el-table-column prop="studentId" label="学号" sortable="custom" fixed>
       </el-table-column>
-      <el-table-column prop="name" label="姓名" width="120"> </el-table-column>
+      <el-table-column prop="name" label="姓名"> </el-table-column>
       <!-- :filter-multiple="false"过滤器单选 -->
       <!-- :filter-method="filterPermission" 前端过滤 -->
       <el-table-column
@@ -154,39 +160,126 @@
         ]"
         column-key="permission"
         :filter-multiple="false"
-        width="120"
       >
       </el-table-column>
-      <el-table-column prop="phone" label="手机号" width="120">
+      <el-table-column prop="phone" label="手机号">
         <!-- 脱敏显示 -->
         <template slot-scope="scope">
           {{ scope.row.phone | replacestar }}
         </template>
       </el-table-column>
-      <el-table-column label="修改账号" fixed="right">
+      <el-table-column label="修改账号">
         <!-- 单次删除需要scope来传数据 -->
         <template slot-scope="scope">
-          <el-button size="mini" @click="DialogVisibleChangeAccount(scope.row)"
-            >修改账号</el-button
+          <el-button
+            type="text"
+            class="buttonMove"
+            @click="DialogVisibleChangeAccount(scope.row)"
           >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 48 48"
+              width="23"
+              height="23"
+              style="
+                border-color: rgba(187, 187, 187, 1);
+                border-width: 0px;
+                border-style: solid;
+              "
+              filter="none"
+            >
+              <g>
+                <rect
+                  width="48"
+                  height="48"
+                  fill="rgba(16.065,16.065,16.065,1)"
+                  fill-opacity="0.01"
+                  stroke="none"
+                ></rect>
+                <path
+                  d="M42 26V40C42 41.1046 41.1046 42 40 42H8C6.89543 42 6 41.1046 6 40V8C6 6.89543 6.89543 6 8 6L22 6"
+                  stroke="#666666"
+                  stroke-width="4"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  fill="none"
+                ></path>
+                <path
+                  d="M14 26.7199V34H21.3172L42 13.3081L34.6951 6L14 26.7199Z"
+                  fill="none"
+                  stroke="#666666"
+                  stroke-width="4"
+                  stroke-linejoin="round"
+                ></path>
+              </g>
+            </svg>
+          </el-button>
         </template>
       </el-table-column>
-      <el-table-column label="修改密码" fixed="right">
-        <template slot-scope="scope">
-          <el-button size="mini" @click="handleKeyEdit(scope.row)"
-            >修改密码</el-button
-          >
-        </template>
-      </el-table-column>
-
-      <el-table-column label="删除账号" fixed="right">
+      <el-table-column label="修改密码">
         <template slot-scope="scope">
           <el-button
             size="mini"
-            type="danger"
-            @click="handleDelete(scope.$index, scope.row)"
-            >删除</el-button
+            type="text"
+            class="buttonMove"
+            @click="handleKeyEdit(scope.row)"
           >
+            <div>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="64 64 896 896"
+                width="23"
+                height="23"
+                style="
+                  border-color: rgba(187, 187, 187, 1);
+                  border-width: 0px;
+                  border-style: solid;
+                "
+                filter="none"
+              >
+                <g>
+                  <path
+                    d="M832 464h-68V240c0-70.7-57.3-128-128-128H388c-70.7 0-128 57.3-128 128v224h-68c-17.7 0-32 14.3-32 32v384c0 17.7 14.3 32 32 32h640c17.7 0 32-14.3 32-32V496c0-17.7-14.3-32-32-32zM332 240c0-30.9 25.1-56 56-56h248c30.9 0 56 25.1 56 56v224H332V240zm460 600H232V536h560v304zM484 701v53c0 4.4 3.6 8 8 8h40c4.4 0 8-3.6 8-8v-53a48.01 48.01 0 1 0-56 0z"
+                    fill="#666666"
+                  ></path>
+                </g>
+              </svg>
+            </div>
+          </el-button>
+        </template>
+      </el-table-column>
+
+      <el-table-column label="删除账号">
+        <template slot-scope="scope">
+          <el-button
+            size="medium"
+            type="text"
+            class="buttonMove"
+            @click="handleDelete(scope.$index, scope.row)"
+          >
+            <div>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 32 32"
+                width="23"
+                height="23"
+                style="
+                  border-color: rgba(187, 187, 187, 1);
+                  border-width: 0px;
+                  border-style: solid;
+                "
+                filter="none"
+              >
+                <g>
+                  <path
+                    d="M8.032 28.64c0.032 0.768 0.64 1.376 1.408 1.376h13.152c0.736 0 1.376-0.608 1.408-1.376l0.928-19.84h-17.856l0.96 19.84zM18.976 13.728c0-0.288 0.256-0.544 0.576-0.544h0.928c0.32 0 0.576 0.256 0.576 0.544v11.36c0 0.288-0.288 0.544-0.576 0.544h-0.928c-0.32 0-0.576-0.256-0.576-0.544v-11.36zM14.976 13.728c0-0.288 0.256-0.544 0.576-0.544h0.928c0.297 0.009 0.535 0.247 0.544 0.543l0 0.001v11.36c-0.009 0.297-0.247 0.535-0.543 0.544l-0.001 0h-0.928c-0.32 0-0.576-0.256-0.576-0.544v-11.36zM10.976 13.728c0-0.288 0.256-0.544 0.576-0.544h0.896c0.32 0 0.576 0.256 0.576 0.544v11.36c0 0.288-0.256 0.544-0.576 0.544h-0.896c-0.32 0-0.576-0.256-0.576-0.544v-11.36zM25.568 3.456h-6.080v-1.152c0-0.16-0.128-0.32-0.288-0.32h-6.368c-0.16 0-0.32 0.16-0.32 0.32v1.152h-6.048c-0.48 0-0.896 0.384-0.896 0.864v2.784h20.864v-2.784c0-0.001 0-0.003 0-0.004 0-0.475-0.385-0.86-0.86-0.86-0.001 0-0.003 0-0.004 0h0z"
+                    fill="#666666"
+                    stroke="none"
+                  ></path>
+                </g>
+              </svg>
+            </div>
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -235,6 +328,12 @@ import batchOperateDialog from './dialog/batchOperateDialog.vue' //批量修改
 export default {
   data() {
     return {
+      // 批量修改图标颜色
+      batchColorChange1: '#666666', //第一个按钮
+      batchColorChange2: '#666666', //第二个按钮
+      showactive1: 0, //第一个按钮
+      showactive2: 0, //第二个按钮
+
       // 关键字搜索
       organizationId: 0, ////组织名不知道，需要询问////////////////////////
       searchWord: '',
@@ -296,9 +395,9 @@ export default {
       // 发请求模板，待删除，防止后面更改需求，先不删
       axios({
         method: 'post',
-        url: 'https://mmt-dev.sipcoj.com/login/b',
+        url: 'http://114.132.71.147:38080/login/b',
         data: {
-          studentId: 20200001,
+          studentId: 20200002,
           password: 123456
         }
       }).then(
@@ -320,6 +419,23 @@ export default {
           this.$message.error(err)
         }
       )
+    },
+
+    //图标变色,第一个
+    changeColor() {
+      if (this.batchColorChange1 == '#666666')
+        this.batchColorChange1 = 'rgba(47.94,128.01,255,1)'
+      else this.batchColorChange1 = '#666666'
+      if (this.showactive1 == 0) this.showactive1 = 1
+      else this.showactive1 = 0
+    },
+    // 第二个
+    changeColor2() {
+      if (this.batchColorChange2 == '#666666')
+        this.batchColorChange2 = 'rgba(47.94,128.01,255,1)'
+      else this.batchColorChange2 = '#666666'
+      if (this.showactive2 == 0) this.showactive2 = 1
+      else this.showactive2 = 0
     },
 
     // 批量修改同步
@@ -478,6 +594,7 @@ export default {
           // 因为请求访问权限异常，res.data.studentList在返回信息中为undefined
           if (res.data.studentList == undefined) {
             // 用造的假数据顶上
+            this.$message.success(res.data.message)
           } else {
             this.tableData = res.data.studentList
             this.total = res.data.total
@@ -686,9 +803,23 @@ export default {
   // height: 34.4px;
   margin-left: 20px;
 }
+//
 .batchButton {
   margin: 0 10px;
   font-size: medium;
+  color: #666666;
+  border: none;
+}
+.activeBatchButton {
+  margin: 0 10px;
+  font-size: medium;
+  color: rgba(47.94, 128.01, 255, 1);
+  border: none;
+}
+//
+// 使图标对齐文字
+.buttonMove {
+  margin-left: 20px;
 }
 .search {
   width: 40vh;
