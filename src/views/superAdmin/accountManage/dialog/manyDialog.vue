@@ -6,6 +6,7 @@
       title="修改账号"
       :visible.sync="DialogVisibleChangeAccount"
       width="30%"
+      class="changeAccountDialog"
     >
       <el-form
         status-icon
@@ -39,14 +40,14 @@
       </span>
     </el-dialog>
     <!--修改密码弹窗-->
-    <el-dialog title="修改密码" :visible.sync="dialogVisibleKey" width="30%">
+    <el-dialog title="修改密码" :visible.sync="dialogVisibleKey" width="25%" class="changeAccountDialog">
       <el-form
         :model="ruleForm"
         status-icon
         :rules="rulesPassword"
         ref="ruleForm"
         label-position="left"
-        label-width="100px"
+        label-width="77px"
         class="demo-ruleForm"
       >
         <el-form-item label="新密码" prop="pass">
@@ -79,9 +80,11 @@
       title="删除账号"
       :visible.sync="dialogVisibleDeleteAlign"
       width="30%"
+      class="changeAccountDialog"
     >
-      <div>确定删除吗?</div>
-      <div>确定删除后的信息无法恢复</div>
+      <div style="font-size:16px">确定删除吗?</div>
+      <br>
+      <div style="font-size:16px">确定删除后的信息无法恢复</div>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisibleDeleteAlign = false">取 消</el-button>
         <el-button type="primary" @click="handleDialogVisibleDeleteAlign"
@@ -370,4 +373,8 @@ export default {
 }
 </script>
 
-<style scoped></style>
+<style lang="less" scoped>
+.changeAccountDialog{
+  min-width: 1100px;
+}
+</style>

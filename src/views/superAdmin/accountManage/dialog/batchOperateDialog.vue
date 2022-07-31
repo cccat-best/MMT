@@ -2,9 +2,10 @@
   <!-- 以下包括批量删除、批量修改权限弹窗 -->
   <div>
     <!--批量删除弹窗-->
-    <el-dialog title="删除账号" :visible.sync="dialogVisibleDelete" width="30%">
-      <div>确定删除吗?</div>
-      <div>确定删除后的信息无法恢复</div>
+    <el-dialog title="删除账号" :visible.sync="dialogVisibleDelete" width="30%" class="leastWidth">
+      <div style="font-size:16px">确定删除吗?</div>
+      <br>
+      <div style="font-size:16px">确定删除后的信息无法恢复</div>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisibleDelete = false">取 消</el-button>
         <el-button type="primary" @click="handleDialogVisibleDelete"
@@ -15,17 +16,20 @@
     <!-- 修改权限弹窗 -->
     <el-dialog
       :visible.sync="dialogVisible"
-      width="40%"
+      width="25%"
       top="5vh"
       title="修改权限"
+      class="leastWidth"
     >
       <!-- 选择权限列表 -->
       <div style="width: 70%; margin: 0 auto; display: flex">
         <div class="yhqx">用户权限</div>
         <!-- 勾选 -->
-        <el-radio-group v-model="permission">
-          <el-radio label="commitee">commitee</el-radio>
-          <el-radio label="member">member</el-radio>
+        <el-radio-group v-model="permission" >
+          <div class="radioGroup">
+          <el-radio label="commitee" class="radioGroupCommitee">commitee</el-radio>
+          <el-radio label="member" class="radioGroupMember">member</el-radio>
+          </div>
         </el-radio-group>
       </div>
       <template #footer>
@@ -151,4 +155,23 @@ export default {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+/* 最小宽度，防止样式垮了 */
+.leastWidth{
+  min-width: 1200px;
+}
+/* 单选上下摆放*/
+.radioGroup{
+  display: flex;
+  flex-direction: column;
+}
+.radioGroupCommitee{
+  position: relative;
+  left: 20px;
+  bottom: 20px;
+  font-size: 20px;
+}
+.radioGroupMember{
+  font-size: 20px;
+}
+</style>
