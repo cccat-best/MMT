@@ -102,20 +102,12 @@
                       </span>
                       <!-- 贺节介建议这里的下拉框改成向左拉开，不过我不会 -->
                       <el-dropdown-menu slot="dropdown">
-                        <el-dropdown-item command="学生创新创业实践中心"
-                          >学生创新创业实践中心</el-dropdown-item
-                        >
-                        <el-dropdown-item command="b" divided
-                          >学生会</el-dropdown-item
-                        >
-                        <el-dropdown-item command="c" divided
-                          >团委</el-dropdown-item
-                        >
-                        <el-dropdown-item command="d" divided
-                          >党建办</el-dropdown-item
-                        >
-                        <el-dropdown-item command="e" divided
-                          >学生事务服务中心</el-dropdown-item
+                        <el-dropdown-item
+                          :command="item.name"
+                          v-for="(item, index) in organizations"
+                          :key="index"
+                          divided
+                          >{{ item.name }}</el-dropdown-item
                         >
                       </el-dropdown-menu>
                     </el-dropdown>
@@ -220,7 +212,6 @@ export default {
   },
   methods: {
     changeOrganization(command) {
-      alert(command)
       axios({
         method: 'post',
         baseURL: 'https://mmt-dev.sipcoj.com',
@@ -239,7 +230,6 @@ export default {
       })
     },
     quitLogin() {
-      alert('按下退出登录')
       axios({
         method: 'delete',
         baseURL: 'https://mmt-dev.sipcoj.com',
@@ -256,15 +246,19 @@ export default {
       this.$router.push('/superAdmin')
     },
     home() {
-      if (this.isPersonal) {
-        location.reload()
-      } else {
+      if (!this.isPersonal) {
         this.$router.push('/home/personalInfo')
       }
+      //这里是为了实现个人中心页面侧边栏不激活，不太优雅，希望不会被骂QAQ
+      let asideItem = document.getElementsByClassName('el-menu-item')
+
+      for (let i = 0; i < asideItem.length; i++) {
+        asideItem[i].style = 'color:white'
+      }
     },
-    // 个人中心顶部左侧返回的实现，还没想到咋实现
+    // 个人中心顶部左侧返回的实现
     goBack() {
-      console.log('go back')
+      this.$router.go(-1)
     }
   },
   created() {
@@ -274,7 +268,6 @@ export default {
     bus.$on('pass', (data) => {
       this.isPersonal = data.isPersonal
       this.isSuper = data.isSuper
-      console.log(this.isPersonal)
     })
   }
 }
@@ -283,7 +276,6 @@ export default {
 <style lang="less" scoped>
 .home {
   height: 100%;
-  width: 100%;
 }
 .menuTitle {
   color: white;
@@ -301,5 +293,24 @@ export default {
 .el-dropdown-link {
   cursor: pointer;
   color: black;
+}
+:deep(.el-menu-item .iconfont) {
+  width: 0px;
+}
+.back-botton {
+  color: black;
+  ::v-deep .el-page-header__title {
+    font-size: 14px;
+    font-weight: 500;
+    color: black;
+    &:hover {
+      color: #409eff !important;
+    }
+  }
+  ::v-deep .el-icon-back {
+    &:hover {
+      color: #409eff !important;
+    }
+  }
 }
 </style>

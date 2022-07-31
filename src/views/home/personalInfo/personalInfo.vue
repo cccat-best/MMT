@@ -197,8 +197,14 @@ export default {
           { required: true, message: '请输入原密码', trigger: 'blur' },
           { message: '原密码不正确', trigger: 'blur' }
         ],
-        newPassword: [{ validator: validatePass1, trigger: 'blur' }],
-        confirmNewPassword: [{ validator: validatePass2, trigger: 'blur' }]
+        newPassword: [
+          { validator: validatePass1, trigger: 'blur' },
+          { min: 6, max: 16, message: '长度为6-16个字符', trigger: 'blur' }
+        ],
+        confirmNewPassword: [
+          { validator: validatePass2, trigger: 'blur' },
+          { min: 6, max: 16, message: '长度为6-16个字符', trigger: 'blur' }
+        ]
       },
       rules2: {
         phone: [
@@ -221,7 +227,7 @@ export default {
       dialogForm2Visible: false,
       dialogForm3Visible: false,
       isForm: {
-        isSuper: false,
+        isSuper: true,
         isPersonal: true
       },
       pwdForm: {
@@ -252,7 +258,6 @@ export default {
               console.log(err)
             })
         } else {
-          alert('验证不通过')
           return false
         }
       })
@@ -270,7 +275,6 @@ export default {
               console.log(err)
             })
         } else {
-          alert('验证不通过')
           return false
         }
       })
@@ -288,7 +292,6 @@ export default {
               console.log(err)
             })
         } else {
-          alert('验证不通过')
           return false
         }
       })
@@ -393,5 +396,8 @@ body > .el-container {
 }
 .el-menu-item:hover {
   color: #409eff !important;
+}
+:deep(.el-menu-item span) {
+  color: white;
 }
 </style>
