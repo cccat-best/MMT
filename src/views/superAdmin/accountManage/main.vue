@@ -425,7 +425,7 @@ export default {
         method: 'post',
         url: 'https://api.yuleng.top:38080/account/manage/all',
         data: {
-          organizationId:2
+          organizationId: 2
         }
       }).then(
         (res) => {
@@ -433,7 +433,8 @@ export default {
         },
         (err) => {
           this.$message.error(err)
-        })
+        }
+      )
     },
 
     //图标变色,第一个
