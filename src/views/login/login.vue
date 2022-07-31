@@ -65,7 +65,7 @@ export default {
     },
     goLogin() {
       this.$http
-        .post('http://127.0.0.1:38080/login/b', this.loginForm)
+        .post('api/login/b', this.loginForm)
         .then((res) => {
           console.log(res.data.code)
         })

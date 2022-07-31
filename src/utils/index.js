@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-let baseURL = 'https://mmt-dev.sipcoj.com'
+let baseURL = ''
 
 const $http = axios.create({
   baseURL
