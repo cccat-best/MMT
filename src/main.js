@@ -5,9 +5,6 @@ import store from './store'
 import registerElement from './global/register-element'
 import './global/global.less'
 import './global/iconfont.css'
-import axios from 'axios'
-
-Vue.prototype.$axios = axios
 
 // 注册vue-clipboard2插件，并全局使用
 import VueClipboard from 'vue-clipboard2'
@@ -20,7 +17,6 @@ Vue.filter('replacestar', function (value) {
   return str
 })
 Vue.config.productionTip = false
-;('./global/register-element')
 
 // 注册Element
 Vue.use(registerElement)
