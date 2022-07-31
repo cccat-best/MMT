@@ -43,12 +43,12 @@ export default{
     },
     gotoEdit(){
       this.$router.push({
-        path:'/informationBasicEdit'
+        path:'/superAdmin/informationSet/basicInformation/informationBasicEdit'
       })
     },
     gotoSaved(){
       this.$router.push({
-        path:'/informationBasicSaved'
+        path:'/superAdmin/informationSet/basicInformation/informationBasicSaved'
       })
     }
   },

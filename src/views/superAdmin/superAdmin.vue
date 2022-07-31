@@ -1,53 +1,17 @@
 <template>
-  <div>
-    <el-container class="home-container">
-      <!-- 侧边栏 -->
-      <el-aside width="200px">
-        <div class="aside-title">MMT</div>
-        <div
-          :class="['aside-item', asideShow == 1 ? 'asideactive' : '']"
-          @click="
-          asideShow = 1
-          gotosuperAdmin()
-          "
-
-        >
-          <i class="el-icon-s-home aside-item-icon"></i>
-          面试面板
-        </div>
-        <div
-          :class="['aside-item', asideShow == 2 ? 'asideactive' : '']"
-          @click="
-            asideShow = 2
-            gotoInformationSet()
-          "
-        >
-          <i class="el-icon-picture aside-item-icon"></i>
-          宣传信息设置
-        </div>
-        <div
-          :class="['aside-item', asideShow == 3 ? 'asideactive' : '']"
-          @click="
-            asideShow = 3
-            gotoPross()
-          "
-        >
-          <i class="el-icon-takeaway-box aside-item-icon"></i>
-          面试流程设置
-        </div>
-        <div
-          :class="['aside-item', asideShow == 4 ? 'asideactive' : '']"
-          @click="asideShow = 4"
-        >
-          <i class="el-icon-s-custom aside-item-icon"></i>
-          组织管理
-        </div>
-      </el-aside>
-      <!-- 这段可能会引发bug，注释掉了就 -->
-      <!-- interviewProcess -->
-      <el-container>
-        <!-- 头部 -->
-        <el-header>
+  <div class="super-content">
+    <layout
+      :menuItemList="menuItemList"
+      asideBgColor="#282e38"
+      menuItemColor="#a4a6aa"
+      meunItemActiveColor="#f57d2d"
+      :defaultActiveItem="defaultActiveItem"
+    >
+      <!-- 侧边栏标题 -->
+      <div slot="asideTitle" class="aside-title">MMT</div>
+      <!-- 头部 -->
+      <template slot="header">
+        <div class="header">
           <div class="header-left">
             <i class="el-icon-s-unfold"></i>
             科技协会
@@ -56,111 +20,103 @@
             <i class="el-icon-s-fold"></i>
             退出超级管理
           </div>
-        </el-header>
-        <!-- 主体 -->
-        <el-main>
-          <router-view></router-view>
-        </el-main>
-      </el-container>
-    </el-container>
+        </div>
+      </template>
+      <!-- 主体 -->
+      <template slot="main">
+        <router-view></router-view>
+      </template>
+    </layout>
   </div>
 </template>
+
 <script>
+import layout from '@/compentents/myLayout.vue'
 export default {
+  components: { layout },
   data() {
     return {
-      //控制侧边栏激活样式
-      asideShow: 1
+      defaultActiveItem: '1',
+      menuItemList: [
+        {
+          iconClass: 'el-icon-s-home',
+          id: '1',
+          pagePath: '/superAdmin/interviewTable',
+          title: '面试面板'
+        },
+        {
+          iconClass: 'el-icon-picture',
+          id: '2',
+          pagePath: '/superAdmin/informationSet',
+          title: '宣传信息设置'
+        },
+        {
+          iconClass: 'el-icon-takeaway-box',
+          id: '3',
+          pagePath: '/superAdmin/process',
+          title: '面试流程设置'
+        },
+        {
+          iconClass: 'el-icon-s-custom',
+          id: '4',
+          pagePath: '/superAdmin/accountManage',
+          title: '组织管理'
+        }
+      ]
     }
   },
-  methods: {
-    gotoPross() {
-      this.$router.push({
-        path: '/process'
+  created() {
+    // 解决defaultActiveItem 刷新问题
+    if (this.$route.path === '/superAdmin/interviewTable')
+      this.defaultActiveItem = '1'
+    if (this.$route.path === '/superAdmin/informationSet')
+      this.defaultActiveItem = '2'
+    if (this.$route.path === '/superAdmin/process') this.defaultActiveItem = '3'
+    if (this.$route.path === '/superAdmin/accountManage')
+      this.defaultActiveItem = '4'
+  },
+  methods:{
+    getCookie() {
+      this.$http.post('/login/b',{
+studentId:"20200002",
+password:"123456"
+})
+      .then((res)=>{
+        console.log('cookie',res);
       })
-    },
-    //跳转到宣传信息设置界面
-    gotoInformationSet(){
-      this.$router.push({
-        path:'/basicInformation'
-      })
-    },
-    //跳转到superAdmin界面
-    gotosuperAdmin(){
-      // console.log(this.$router)
-      this.$router.push({
-        path:'/superAdmin'
+      .catch((err) =>{
+        console.log(err);
       })
     }
-  }
+  },
+  mounted() {
+    this.getCookie()
+  },
 }
 </script>
+
 <style lang="less" scoped>
-.el-header {
-  height: 50px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: rgb(253, 255, 254);
-  border-bottom: 1px solid #efefef;
-}
-.home-container {
-  height: 100vh;
-}
-.el-aside {
-  background-color: rgb(40, 48, 57);
-  text-align: center;
-  display: flex;
-  flex-direction: column;
+.super-content {
+  min-width: 900px;
+  height: 100%;
   .aside-title {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
     color: white;
-    font-size: 18px;
+    height: 65px;
+    width: 200px;
     text-align: center;
+    line-height: 65px;
+    font-size: 20px;
+  }
+  .header {
     height: 60px;
-  }
-  .aside-item {
-    cursor: pointer;
     display: flex;
-    // justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    font-size: 14px;
-    text-align: center;
-    height: 40px;
-    color: rgb(148, 151, 161);
-    padding-top: 5px;
-    padding-left: 15px;
-    .aside-item-icon {
-      padding-right: 10px;
-    }
+    background-color: rgb(253, 255, 254);
   }
-  .asideactive {
-    color: rgb(225, 120, 52);
-    background-color: rgb(62, 68, 76);
+  /deep/.el-menu-item {
+    display: flex;
+    align-items: center;
   }
-}
-
-.el-main {
-  // overflow: hidden;
-  background-color: #e9eef3;
-  color: #333;
-  text-align: center;
-  line-height: 160px;
-}
-
-body > .el-container {
-  margin-bottom: 40px;
-}
-
-.el-container:nth-child(5) .el-aside,
-.el-container:nth-child(6) .el-aside {
-  line-height: 260px;
-}
-
-.el-container:nth-child(7) .el-aside {
-  line-height: 320px;
 }
 </style>

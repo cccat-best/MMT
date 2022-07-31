@@ -21,7 +21,6 @@
               :index="item.id"
               v-for="(item, index) in menuItemList"
               :key="index"
-              @clikc="handleMenuItemClick(item)"
               :route="item.pagePath"
             >
               <el-icon :class="['iconfont', item.iconClass]"></el-icon>
@@ -78,7 +77,7 @@ export default {
     meunItemActiveColor: {
       type: String,
       required: false,
-      default: 'green'
+      default: '#02a7f0'
     },
     // 选择是否需要侧边栏
     isAside: {
@@ -108,11 +107,7 @@ export default {
   data() {
     return {}
   },
-  methods: {
-    handleMenuItemClick(item) {
-      this.$route.push(item.pagePath)
-    }
-  }
+  methods: {}
 }
 </script>
 
@@ -133,7 +128,8 @@ export default {
   background-color: #e9eef3;
   color: #333;
   text-align: center;
-  line-height: 160px;
+  // 这段代码导致el表格会出现表头很高
+  // line-height: 160px;
 }
 
 body > .el-container {

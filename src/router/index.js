@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import login from '../views/login/login.vue'
+import personalInfo from '../views/home/personalInfo/personalInfo.vue'
 Vue.use(VueRouter)
 const routes = [
   {
@@ -25,89 +26,74 @@ const routes = [
   //     }
   //   ]
   // },
+
   {
     path: '/home',
-    component: () => import('../views/home/home.vue')
+    component: () => import('../views/home/home.vue'),
+    children: [
+      {
+        path: 'arrangement',
+        component: () =>
+          import('../views/home/interviewArrangement/interviewArrangement.vue')
+      },
+      {
+        path: 'reply',
+        component: () =>
+          import('../views/home/interviewReply/interviewReply.vue')
+      },
+      // {
+      //   path: 'personalInfo',
+      //   component: () =>
+      //     import('../views/home/personalIofo/personalIofo.vue')
+      // },
+      {
+        path: 'personalInfo',
+        component: personalInfo
+      },
+      {
+        path:'interviewMain',
+        component:()=>import('../views/home/interviewMain/interviewMain.vue')
+      }
+    ]
   },
+
   {
     path: '/superAdmin',
     component: () => import('../views/superAdmin/superAdmin.vue'),
     children: [
-      {
-        path: '/process',
-        component: () =>
-          import('../views/superAdmin/interviewProcess/main.vue'),
-        children: [
-          {
-            path: '/',
-            redirect: '/signup'
-          },
-          {
-            path: '/signup',
-            component: () =>
-              import(
-                '../views/superAdmin/interviewProcess/signupOrInterview/signup.vue'
-              )
-          },
-          {
-            path: '/interview1',
-            component: () =>
-              import(
-                '../views/superAdmin/interviewProcess/signupOrInterview/interview1.vue'
-              )
-          },
-          {
-            path: '/interview2',
-            component: () =>
-              import(
-                '../views/superAdmin/interviewProcess/signupOrInterview/interview2.vue'
-              )
-          },
-          {
-            path: '/interview3',
-            component: () =>
-              import(
-                '../views/superAdmin/interviewProcess/signupOrInterview/interview3.vue'
-              )
-          },
-          {
-            path: '/interview4',
-            component: () =>
-              import(
-                '../views/superAdmin/interviewProcess/signupOrInterview/interview4.vue'
-              )
-          }
-        ]
+      {        //面试流程页面
+        path: 'process',
+        component: () => import('../views/superAdmin/interviewProcess/main.vue')
       },
       //东睿的宣传信息路由
       {
-        path: '/informationSet',
+        path: 'informationSet',
         component: () =>
         import('../views/superAdmin/informationSet/informationSetMain.vue'),
         children:[
           {
-            path:'/basicInformation',
+            path:'basicInformation',
             component:()=>import('../views/superAdmin/informationSet/informationSetInner/informationBasic.vue'),
             children:[
               {
-                path:'/informationBasicSaved',
+                path:'informationBasicSaved',
                 comments:()=>import('../views/superAdmin/informationSet/informationSetInner/informationBasicSaved.vue')
               },
               {
-                path:'/informationBasicEdit',
+                path:'informationBasicEdit',
                 comments:()=>import('../views/superAdmin/informationSet/informationSetInner/informationBasicEdit.vue')
               },
             ]
           },
           {
-            path:'/association',
+            path:'association',
             component:()=>import('../views/superAdmin/informationSet/informationSetInner/association.vue')
           },
           {
-            path:'/recruiting',
+            path:'recruiting',
             component:()=>import('../views/superAdmin/informationSet/informationSetInner/recruiting.vue')
           }
-        ]
+        ],
       }
     ]
   }

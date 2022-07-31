@@ -43,17 +43,17 @@ export default{
   methods: {
     gotoBasic(){
       this.$router.push({
-        path:'/informationBasicSaved'
+        path:'/superAdmin/informationSet/basicInformation'
       })
     },
     gotoAssociation(){
       this.$router.push({
-        path:'/association'
+        path:'/superAdmin/informationSet/association'
       })
     },
     gotoRecruiting(){
       this.$router.push({
-        path:'/recruiting'
+        path:'/superAdmin/informationSet/recruiting'
       })
     }
   },
