@@ -191,21 +191,21 @@
       </el-table-column>
     </el-table>
     <!-- 生成邀请码 -->
-      <el-button type="primary" class="makeJoinKey" @click="DialogVisibleJoin"
-        >生成邀请码</el-button
-      >
-      <!-- 邀请码，可一键复制 -->
-      <clipBoard ref="clipBoard" />
-      <!-- 引入修改账号、修改密码、删除弹窗 -->
-      <!-- deleteAlign自定义事件，单行删除同步 -->
-      <manyDialog ref="manyDialog" @deleteAlign="deleteAlign" />
-      <!-- 批量操作弹窗 -->
-      <!-- 自定义事件，批量删除和修改同步 -->
-      <batchOperateDialog
-        ref="batchOperateDialog"
-        @myBatchOperateChange="batchOperateChange"
-        @myBatchOperateDelete="batchOperateDelete"
-      />
+    <el-button type="primary" class="makeJoinKey" @click="DialogVisibleJoin"
+      >生成邀请码</el-button
+    >
+    <!-- 邀请码，可一键复制 -->
+    <clipBoard ref="clipBoard" />
+    <!-- 引入修改账号、修改密码、删除弹窗 -->
+    <!-- deleteAlign自定义事件，单行删除同步 -->
+    <manyDialog ref="manyDialog" @deleteAlign="deleteAlign" />
+    <!-- 批量操作弹窗 -->
+    <!-- 自定义事件，批量删除和修改同步 -->
+    <batchOperateDialog
+      ref="batchOperateDialog"
+      @myBatchOperateChange="batchOperateChange"
+      @myBatchOperateDelete="batchOperateDelete"
+    />
     <!-- 页码 -->
     <el-pagination
       background
@@ -659,10 +659,10 @@ export default {
 </script>
 <style lang="less" scoped>
 // * {
-  // line-height: 15px;
-  // line-height: 2.8vh;
+// line-height: 15px;
+// line-height: 2.8vh;
 
-  // color: black;
+// color: black;
 // }
 
 // main面板的样式
