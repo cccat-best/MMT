@@ -3,11 +3,20 @@
     <!-- 测试更新数据 -->
     <div
       @click="de"
-      style="float: left; height: 5px; width: 150px; margin-right: 10px"
+      style="
+        float: left;
+        height: 5px;
+        width: 150px;
+        margin-right: 10px;
+        color: blue;
+      "
     >
       测试更新数据,后面完工时记得删掉这个
     </div>
-    <div @click="co" style="float: left; height: 5px; width: 150px">
+    <div
+      @click="co"
+      style="float: left; height: 5px; width: 150px; color: blue"
+    >
       测试cookie,后面完工时记得删掉这个
     </div>
     <!--  -->
@@ -15,52 +24,56 @@
     <!-- 批量操作 -->
     <div class="seach-header">
       <div>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 48 48"
-          width="28"
-          height="28"
-          style="
-            border-color: rgba(187, 187, 187, 1);
-            border-width: 0px;
-            border-style: solid;
-          "
-          filter="none"
-        >
-          <g>
-            <rect
-              width="48"
-              height="48"
-              fill="rgba(16.065,16.065,16.065,1)"
-              fill-opacity="0.01"
-              stroke="none"
-            ></rect>
-            <path
-              d="M42 26V40C42 41.1046 41.1046 42 40 42H8C6.89543 42 6 41.1046 6 40V8C6 6.89543 6.89543 6 8 6L22 6"
-              stroke="rgba(16.065,16.065,16.065,1)"
-              stroke-width="4"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              fill="none"
-            ></path>
-            <path
-              d="M14 26.7199V34H21.3172L42 13.3081L34.6951 6L14 26.7199Z"
-              fill="none"
-              stroke="rgba(16.065,16.065,16.065,1)"
-              stroke-width="4"
-              stroke-linejoin="round"
-            ></path>
-          </g>
-        </svg>
         <el-button
           size="mini"
+          class="batchButton"
+          icon="el-icon-edit"
           @click="showDialogVisible"
           :disabled="this.multipleSelection.length == 0"
-          >批量修改</el-button
         >
+          批量修改
+          <!-- <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 48 48"
+            width="28"
+            height="28"
+            style="
+              border-color: rgba(187, 187, 187, 1);
+              border-width: 0px;
+              border-style: solid;
+            "
+            filter="none"
+          >
+            <g>
+              <rect
+                width="48"
+                height="48"
+                fill="rgba(16.065,16.065,16.065,1)"
+                fill-opacity="0.01"
+                stroke="none"
+              ></rect>
+              <path
+                d="M42 26V40C42 41.1046 41.1046 42 40 42H8C6.89543 42 6 41.1046 6 40V8C6 6.89543 6.89543 6 8 6L22 6"
+                stroke="rgba(16.065,16.065,16.065,1)"
+                stroke-width="4"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                fill="none"
+              ></path>
+              <path
+                d="M14 26.7199V34H21.3172L42 13.3081L34.6951 6L14 26.7199Z"
+                fill="none"
+                stroke="rgba(16.065,16.065,16.065,1)"
+                stroke-width="4"
+                stroke-linejoin="round"
+              ></path>
+            </g>
+          </svg> -->
+          <!-- <svg-icon iconClass="hello" /> -->
+        </el-button>
       </div>
       <div>
-        <svg
+        <!-- <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 32 32"
           width="28"
@@ -78,12 +91,15 @@
               fill="rgba(16.065,16.065,16.065,1)"
             ></path>
           </g>
-        </svg>
+        </svg> -->
         <el-button
           size="mini"
+          class="batchButton"
+          icon="el-icon-delete"
           @click="deleteDialogVisible"
           :disabled="this.multipleSelection.length == 0"
-          >批量删除</el-button
+        >
+          批量删除</el-button
         >
       </div>
 
@@ -92,8 +108,9 @@
         v-model="searchWord"
         type="search"
         @change="searchKeyWord"
-        style="width: 300px; margin: 10px"
-        size="mini"
+        class="searchInput"
+        size="small"
+        prefix-icon="el-icon-search"
         placeholder="搜索学号、姓名"
       ></el-input>
     </div>
@@ -209,7 +226,7 @@
 <script>
 //引入axios
 import axios from 'axios'
-//引入表单全部数据
+//引入表单全部数据,这是模拟数据，后期应该会删掉
 import data from './data.js'
 import data2 from './data copy.js'
 // 引入clipBoard
@@ -645,22 +662,32 @@ export default {
 <style lang="less" scoped>
 * {
   // line-height: 15px;
-  line-height: 2.95vh;
+  line-height: 2.9vh;
   // color: black;
 }
+// main面板的样式
 .content {
   // 暂定900px
   min-width: 900px;
+  min-height: 500px;
 }
+// 包含批量操作，搜索的div
 .seach-header {
   display: flex;
   justify-content: flex-end;
-  margin: 0;
+  align-items: center;
+  margin-bottom: 10px;
   padding: 0%;
   // height: 100px;
 }
-button {
+.searchInput {
+  width: 300px;
+  // display: block;
+  // height: 34.4px;
   margin-left: 20px;
+}
+.batchButton {
+  margin: 0 10px;
 }
 .search {
   width: 40vh;
@@ -668,6 +695,8 @@ button {
 }
 .makeJoinKey {
   display: flex;
+  margin-left: 20px;
+  margin-top: 5px;
 }
 .yhqx {
   margin-right: 20px;

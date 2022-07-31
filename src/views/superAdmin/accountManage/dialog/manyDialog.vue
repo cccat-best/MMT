@@ -179,7 +179,7 @@ export default {
         name: [
           { required: true, message: '必填项', trigger: ['blur', 'change'] },
           {
-            min: 1,
+            min: 2,
             max: 5,
             message: '请填写真实姓名',
             trigger: ['blur', 'change']
