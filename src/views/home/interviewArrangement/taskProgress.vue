@@ -41,7 +41,7 @@ export default {
     this.$http
       .get(url, params)
       .then((response) => {
-        console.log(response)
+        // console.log(response)
         this.total = response.data.data.totalStu
         this.done = response.data.data.informedStu
       })
