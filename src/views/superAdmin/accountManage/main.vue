@@ -25,7 +25,7 @@
     <div class="seach-header">
       <div>
         <el-button
-          size="mini"
+          size="small"
           class="batchButton"
           icon="el-icon-edit"
           @click="showDialogVisible"
@@ -93,7 +93,7 @@
           </g>
         </svg> -->
         <el-button
-          size="mini"
+          size="small"
           class="batchButton"
           icon="el-icon-delete"
           @click="deleteDialogVisible"
@@ -191,7 +191,6 @@
       </el-table-column>
     </el-table>
     <!-- 生成邀请码 -->
-    <div>
       <el-button type="primary" class="makeJoinKey" @click="DialogVisibleJoin"
         >生成邀请码</el-button
       >
@@ -207,7 +206,6 @@
         @myBatchOperateChange="batchOperateChange"
         @myBatchOperateDelete="batchOperateDelete"
       />
-    </div>
     <!-- 页码 -->
     <el-pagination
       background
@@ -660,11 +658,13 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-* {
+// * {
   // line-height: 15px;
-  line-height: 2.9vh;
+  // line-height: 2.8vh;
+
   // color: black;
-}
+// }
+
 // main面板的样式
 .content {
   // 暂定900px
@@ -688,15 +688,16 @@ export default {
 }
 .batchButton {
   margin: 0 10px;
+  font-size: medium;
 }
 .search {
   width: 40vh;
   height: 100px;
 }
 .makeJoinKey {
-  display: flex;
-  margin-left: 20px;
-  margin-top: 5px;
+  position: relative;
+  right: 45%;
+  top: 20px;
 }
 .yhqx {
   margin-right: 20px;
