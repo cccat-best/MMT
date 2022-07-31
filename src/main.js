@@ -17,11 +17,13 @@ Vue.filter('replacestar', function (value) {
   return str
 })
 Vue.config.productionTip = false
-
+import { get, post } from './utils/index'
+Vue.prototype.$http = {
+  get,
+  post
+}
 // 注册Element
 Vue.use(registerElement)
-
-import {} from 'element-ui'
 
 Vue.config.productionTip = false
 new Vue({
@@ -32,9 +34,3 @@ new Vue({
     Vue.prototype.$bus = this //安装全局事件总线
   }
 }).$mount('#app')
-
-import { get, post } from './utils/index'
-Vue.prototype.$http = {
-  get,
-  post
-}
