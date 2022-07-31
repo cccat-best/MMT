@@ -1,6 +1,11 @@
 <template id="demo">
   <!-- 以下是邀请码弹窗的实现 -->
-  <el-dialog title="邀请码" :visible.sync="DialogVisibleJoin" width="30%" class="leastWidth">
+  <el-dialog
+    title="邀请码"
+    :visible.sync="DialogVisibleJoin"
+    width="30%"
+    class="leastWidth"
+  >
     <!-- <el-divider></el-divider> -->
     <div style="display: inline-flex">
       <div style="font-size: medium; margin: auto 1vw">邀请码：</div>
@@ -158,7 +163,7 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-.leastWidth{
+.leastWidth {
   min-width: 1200px;
 }
 .invitationCode {
