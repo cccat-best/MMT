@@ -30,12 +30,14 @@ export default {
 
 <style scoped>
 .big {
-  height: 600px;
-  width: 1260px;
+  height: 620px;
+  width: 1280px;
   display: flex;
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
+  background-color: white;
+  border-radius: 10px;
 }
 .right {
   height: 100%;

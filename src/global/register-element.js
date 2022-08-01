@@ -1,4 +1,6 @@
 import {
+  Option,
+  Select,
   Radio,
   TimePicker,
   DatePicker,
@@ -43,6 +45,8 @@ import {
 } from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 const components = [
+  Option,
+  Select,
   DropdownItem,
   DropdownMenu,
   Dropdown,

@@ -4,30 +4,46 @@
       <div class="partText">
         <div class="ttext">按部门查看 &nbsp; &nbsp;</div>
         <div class="udText" style="margin-bottom: 20px">
-          <el-row style="margin-bottom: 10px">
-            <el-button plain size="small" ref="partAll">全部</el-button
-            ><el-button plain size="small">文艺部</el-button
-            ><el-button plain size="small">文艺部</el-button
-            ><el-button plain size="small">文艺部</el-button>
-          </el-row>
-          <el-row>
-            <el-button plain size="small">文艺部</el-button>
-            <el-button plain size="small">文艺部</el-button>
+          <el-row
+            type="flex"
+            justify="start"
+            style="flex-wrap: wrap; margin-left: 3px"
+          >
+            <el-button
+              @click="clDepartment"
+              style="margin: 0 10px 10px 0"
+              ref="depBtn"
+              class="depBtn"
+              plain
+              size="small"
+              v-for="(item, i) in department"
+              :key="item.id"
+              :id="item.id"
+              >{{ item.name }}</el-button
+            >
           </el-row>
         </div>
       </div>
       <div class="partText">
         <div class="ttext">按场地查看 &nbsp; &nbsp;</div>
         <div class="udText">
-          <el-row style="margin-bottom: 10px">
-            <el-button plain size="small">全部</el-button
-            ><el-button plain size="small">7-115</el-button
-            ><el-button plain size="small">7-115</el-button
-            ><el-button plain size="small">7-115</el-button>
-          </el-row>
-          <el-row>
-            <el-button plain size="small">7-115</el-button>
-            <el-button plain size="small">7-115</el-button>
+          <el-row
+            type="flex"
+            justify="start"
+            style="flex-wrap: wrap; margin-left: 3px"
+          >
+            <el-button
+              @click="clRoom"
+              style="margin: 0 10px 10px 0"
+              plain
+              class="roomBtn"
+              size="small"
+              ref="roomBtn"
+              v-for="(item, index) in room"
+              :key="item.id"
+              :id="item.id"
+              >{{ item.name }}</el-button
+            >
           </el-row>
         </div>
       </div>
@@ -77,7 +93,11 @@ export default {
       fail: 10,
       pending: 30,
       undo: 25,
-      chartTotal: 85
+      chartTotal: 85,
+      department: [],
+      room: [],
+      departmentId: 0,
+      roomId: 0
     }
   },
   mounted() {
@@ -141,14 +161,62 @@ export default {
           }
         ]
       })
+    },
+    clDepartment() {
+      let depBtn = document.querySelectorAll('.depBtn')
+      depBtn.forEach((e) => {
+        e.classList.remove('clBtn')
+      })
+      document.activeElement.classList.add('clBtn')
+      this.departmentId = document.activeElement.id
+      console.log(this.departmentId)
+    },
+    clRoom() {
+      let roomBtn = document.querySelectorAll('.roomBtn')
+      roomBtn.forEach((e) => {
+        e.classList.remove('clBtn')
+      })
+      document.activeElement.classList.add('clBtn')
+      this.roomId = document.activeElement.id
+      console.log(this.roomId)
     }
+  },
+  created() {
+    let admissionId = 2
+    let url1 = `/interview-reply/department/${admissionId}`
+    this.$http
+      .get(url1)
+      .then((response) => {
+        let department = response.data.data.department
+        department.forEach((element) => {
+          this.department.push(element)
+        })
+        // console.log(this.department)
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+
+    let url2 = `/interview-reply/room/${admissionId}`
+    this.$http
+      .get(url2)
+      .then((response) => {
+        let room = response.data.data.room
+        room.forEach((element) => {
+          this.room.push(element)
+        })
+        // console.log(this.room)
+      })
+      .catch((error) => {
+        console.log(error)
+      })
   }
 }
 </script>
 
 <style scoped>
 .bigLeft {
-  width: 940px;
+  width: 980px;
   height: 100%;
   background-color: white;
   border-radius: 10px;
@@ -172,11 +240,6 @@ export default {
   flex-direction: column;
   align-items: center;
 }
-.udText {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
 .partText {
   display: flex;
   flex-direction: row;
@@ -184,5 +247,13 @@ export default {
 .ttext {
   font-size: 14px;
   padding-top: 5px;
+  padding-left: 0;
+  width: 100px;
+  height: 30px;
+  margin-right: 2px;
+}
+.clBtn {
+  border-color: #40a9ff;
+  color: #40a9ff;
 }
 </style>

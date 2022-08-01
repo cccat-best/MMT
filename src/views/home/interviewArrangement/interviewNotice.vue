@@ -4,7 +4,12 @@
       <el-date-picker
         v-model="dateTime"
         type="datetime"
-        style="width: 230px"
+        style="
+          width: 230px;
+          border-radius: 5px;
+          box-shadow: 1px 1px 3px 1px #e5e9f2;
+          margin-bottom: 0px;
+        "
         size="small"
         @change="dateTimeValue"
         placeholder="请选择日期时间"
@@ -80,53 +85,58 @@ export default {
     },
     queding() {
       // 确定保存message
-      var form3 = {
-        studentId: this.studentId,
-        startTime: this.timestamp,
-        address: this.address
-      }
+      // var form3 = {
+      //   studentId: this.studentId,
+      //   startTime: this.timestamp,
+      //   address: this.address
+      //   // studentId: 20200002,
+      //   // startTime: 123456789,
+      //   // address: '时光小镇'
+      // }
       // const url3 = '/interview-arrangement/arrangeNotice'
       // let post3 = this.$http.post(url3, form3)
       // post3
       //   .then((res) => {
-      //     console.log(res)
+      //     console.log('保存成功', res)
       //   })
       //   .catch((err) => {
       //     console.log(err)
       //   })
 
-      //确定获取模板
-      // const url1 = '/interview-arrangement/getNotice'
-      // let params = {
-      //   type: 1
-      // }
-      // this.$http
-      //   .get(url1, params)
-      //   .then((response) => {
-      //     // console.log(response)
-      //     this.messageTemplate = response.data.data.messageTemplate
-      //     console.log(this.messageTemplate)
-      //   })
-      //   .catch((error) => {
-      //     console.log(error)
-      //   })
-
-      // 确定发送请求
-      var form2 = {
-        message: 'post message',
-        organizationId: 2,
-        studentId: this.studentId
+      // 确定获取模板
+      const url1 = '/interview-arrangement/getNotice'
+      let params = {
+        type: 3
       }
-      // const url2 = '/interview-arrangement/postNotice'
-      // let post2 = this.$http.post(url2, form2)
-      // post2
-      //   .then((res) => {
-      //     console.log(res)
-      //   })
-      //   .catch((err) => {
-      //     console.log(err)
-      //   })
-      console.log(form3, form2)
+      this.$http
+        .get(url1, params)
+        .then((response) => {
+          console.log('获取模板成功', response)
+          this.messageTemplate = response.data.data.messageTemplate
+            .replace(/{template}/, this.name)
+            .replace(/{template}/, this.departmentName)
+            .replace(/{template}/, this.order)
+          console.log(this.messageTemplate)
+          // 确定发送请求
+          // var form2 = {
+          //   message: this.messageTemplate,
+          //   organizationId: 2,
+          //   // studentId: this.studentId
+          //   studentId: 20200002
+          // }
+          // const url2 = '/interview-arrangement/postNotice'
+          // let post2 = this.$http.post(url2, form2)
+          // post2
+          //   .then((res) => {
+          //     console.log('发送成功', res)
+          //   })
+          //   .catch((err) => {
+          //     console.log(err)
+          //   })
+        })
+        .catch((error) => {
+          console.log(error)
+        })
     }
   },
   mounted() {
@@ -161,9 +171,10 @@ export default {
   height: 220px;
   border: solid;
   border-width: 1px;
-  border-color: rgb(192, 196, 204);
+  border-color: #e5e9f2;
   background-color: #fff;
   border-radius: 5px;
+  box-shadow: 1px 1px 3px 1px #e5e9f2;
 }
 .p0 {
   text-indent: 0em;

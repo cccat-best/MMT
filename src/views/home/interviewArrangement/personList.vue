@@ -3,7 +3,7 @@
     <!-- 面试次序 -->
     <div class="dingwei">
       <div>
-        <div class="btn-group" @click="pdBtn">
+        <div class="btn-group" @click="pdBtn" style="border-radius: 40%">
           <button type="button" class="btn btn1 btn0" ref="btn1" autofocus>
             一面
           </button>
@@ -21,6 +21,7 @@
           placeholder="请输入关键字"
           suffix-icon="el-icon-search"
           v-model="search"
+          style="border-radius: 5px; box-shadow: 1px 1px 3px 1px #e5e9f2"
         >
         </el-input>
       </div>
@@ -28,13 +29,18 @@
         :data="
           tables.slice((currentPage - 1) * pagesize, currentPage * pagesize)
         "
+        :header-cell-style="{ 'text-align': 'center' }"
         height="50%"
         border
-        style="width: 600px; border-radius: 8px"
+        ref="table"
+        style="
+          width: 600px;
+          border-radius: 8px;
+          box-shadow: 2px 2px 4px 2px #e5e9f2;
+        "
         :row-style="{ height: 0 + 'px' }"
-        :cell-style="{ padding: 0 + 'px' }"
+        :cell-style="{ padding: 0 + 'px', 'text-align': 'center' }"
       >
-        >
         <el-table-column label="" width="50">
           <template slot-scope="scope">
             <el-radio
@@ -172,9 +178,16 @@ export default {
       ]
     }
   },
+  watch: {
+    search() {
+      console.log(this.$refs.table)
+      // this.total = this.$refs.table.data.length
+    }
+  },
   computed: {
     // 模糊搜索
     tables: function () {
+      this.currentPage = 1
       const search = this.search
       if (search) {
         // filter() 方法创建一个新的数组，新数组中的元素是通过检查指定数组中符合条件的所有元素。
@@ -306,35 +319,35 @@ export default {
       this.$bus.$emit('selectionStudentId', row.studentId)
       this.$bus.$emit('selectiondepartmentName', row.departmentName)
     }
-  },
-  created() {
-    //一面数据发送请求，初始页面渲染
-    let url = '/interview-arrangement/info/like'
-    let params = {
-      admissionId: 20212803
-    }
-    this.$http
-      .get(url, params)
-      .then((response) => {
-        // console.log(response)
-        this.tableData = []
-        this.total = response.data.data.total
-        this.student0 = response.data.data.infoBackParamList
-        for (let i = 0; i < this.total; i++) {
-          this.tableData.push({
-            key: i.toString(),
-            studentId: ` ${this.student0[i].studentId}`,
-            name: ` ${this.student0[i].studentName}`,
-            class: ` ${this.student0[i].className}`,
-            departmentName: ` ${this.student0[i].departmentName}`,
-            status: ` ${this.student0[i].status}`
-          })
-        }
-      })
-      .catch((error) => {
-        console.log(error)
-      })
   }
+  // created() {
+  //   //一面数据发送请求，初始页面渲染
+  //   let url = '/interview-arrangement/info/like'
+  //   let params = {
+  //     admissionId: 20212803
+  //   }
+  //   this.$http
+  //     .get(url, params)
+  //     .then((response) => {
+  //       // console.log(response)
+  //       this.tableData = []
+  //       this.total = response.data.data.total
+  //       this.student0 = response.data.data.infoBackParamList
+  //       for (let i = 0; i < this.total; i++) {
+  //         this.tableData.push({
+  //           key: i.toString(),
+  //           studentId: ` ${this.student0[i].studentId}`,
+  //           name: ` ${this.student0[i].studentName}`,
+  //           class: ` ${this.student0[i].className}`,
+  //           departmentName: ` ${this.student0[i].departmentName}`,
+  //           status: ` ${this.student0[i].status}`
+  //         })
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.log(error)
+  //     })
+  // }
 }
 </script>
 

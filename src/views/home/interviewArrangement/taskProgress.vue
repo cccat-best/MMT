@@ -9,6 +9,7 @@
         :width="160"
         :percentage="percentage"
         :format="format"
+        style="box-shadow: 1px 1px 3px 1px #e5e9f2; border-radius: 50%"
       ></el-progress>
     </div>
     <div>已通知/总人数：{{ done }} / {{ total }}</div>
@@ -30,25 +31,25 @@ export default {
       this.percentage = (this.done / this.total) * 100
       return `任务进度条`
     }
-  },
+  }
 
   //任务进度表发送请求，初始页面渲染
-  created() {
-    let url = '/interview-arrangement/data'
-    let params = {
-      admissionId: 20212803
-    }
-    this.$http
-      .get(url, params)
-      .then((response) => {
-        // console.log(response)
-        this.total = response.data.data.totalStu
-        this.done = response.data.data.informedStu
-      })
-      .catch((error) => {
-        console.log(error)
-      })
-  }
+  // created() {
+  //   let url = '/interview-arrangement/data'
+  //   let params = {
+  //     admissionId: 20212803
+  //   }
+  //   this.$http
+  //     .get(url, params)
+  //     .then((response) => {
+  //       // console.log(response)
+  //       this.total = response.data.data.totalStu
+  //       this.done = response.data.data.informedStu
+  //     })
+  //     .catch((error) => {
+  //       console.log(error)
+  //     })
+  // }
 }
 </script>
 <style scoped>
