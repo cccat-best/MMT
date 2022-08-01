@@ -336,9 +336,10 @@ export default {
                 // 如果修改成功，把修改内容同步到AccountFormCheck
                 this.changeBackUpdateAlign()
                 this.$message.success('修改成功')
+                // 写在if里没成功别退弹窗，写在异步里，防止影响观感
+                this.DialogVisibleChangeAccount = false
               }
-              // 写在if里没成功别退弹窗，写在异步里，防止影响观感
-              this.DialogVisibleChangeAccount = false
+              else this.$message.error(res.data.message)
               this.isError = false
             },
             (err) => {

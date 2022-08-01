@@ -38,6 +38,11 @@ const routes = [
       {
         path: 'personalInfo',
         component: personalInfo
+      },
+      {
+        path: 'dataBoard',
+        component: ()=>
+          import('../views/home/dataBoard/dataBoardView/main.vue')
       }
     ]
   },

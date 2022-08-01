@@ -133,9 +133,6 @@
       tooltip-effect="dark"
       style="color: #666690; font-size: 15px"
       height="65.7vh"
-      :row-style="{height: '0'}"
-      :cell-style="{padding: '0px'}"
-      :header-cell-style="{color: '#666666'}"
       ref="multipleTable"
       :data="tableList"
       @sort-change="sortTableFun"
@@ -319,13 +316,13 @@
 
 <script>
 //引入表单全部数据,这是模拟数据，后期应该会删掉
-import data from './data.js'
-import data2 from './data copy.js'
+import data from '../../../superAdmin/accountManage/data'
+import data2 from '../../../superAdmin/accountManage/data copy'
 // 引入clipBoard
-import clipBoard from './dialog/clipboard.vue'
+// import clipBoard from './dialog/clipboard.vue'
 //引入弹窗
-import manyDialog from './dialog/manyDialog.vue' //单行修改
-import batchOperateDialog from './dialog/batchOperateDialog.vue' //批量修改
+// import manyDialog from './dialog/manyDialog.vue' //单行修改
+// import batchOperateDialog from './dialog/batchOperateDialog.vue' //批量修改
 export default {
   data() {
     return {
@@ -357,9 +354,9 @@ export default {
   },
   // 注册组件（一键复制）
   components: {
-    clipBoard,
-    manyDialog,
-    batchOperateDialog
+    // clipBoard,
+    // manyDialog,
+    // batchOperateDialog
   },
   created() {
     //获取数据
@@ -608,9 +605,6 @@ export default {
       this.permissionSelect = data.permission[0]
       // 传permission
       this.filterChangeData(data.permission[0])
-      // 仅自行触发的筛选跳转到第一页
-      this.currentPage=1
-      this.pageCutDouwn(this.tableDataChange)
     },
     // 对数组筛选
     filterChangeData(permission) {
@@ -772,13 +766,6 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-// * {
-// line-height: 15px;
-// line-height: 2.8vh;
-
-// color: black;
-// }
-
 // main面板的样式
 .content {
   // 暂定900px
