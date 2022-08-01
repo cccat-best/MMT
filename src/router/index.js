@@ -41,7 +41,7 @@ const routes = [
       },
       {
         path: 'dataBoard',
-        component: ()=>
+        component: () =>
           import('../views/home/dataBoard/dataBoardView/main.vue')
       }
     ]

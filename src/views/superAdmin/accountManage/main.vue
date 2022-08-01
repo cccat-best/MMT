@@ -133,9 +133,9 @@
       tooltip-effect="dark"
       style="color: #666690; font-size: 15px"
       height="65.7vh"
-      :row-style="{height: '0'}"
-      :cell-style="{padding: '0px'}"
-      :header-cell-style="{color: '#666666'}"
+      :row-style="{ height: '0' }"
+      :cell-style="{ padding: '0px' }"
+      :header-cell-style="{ color: '#666666' }"
       ref="multipleTable"
       :data="tableList"
       @sort-change="sortTableFun"
@@ -609,7 +609,7 @@ export default {
       // 传permission
       this.filterChangeData(data.permission[0])
       // 仅自行触发的筛选跳转到第一页
-      this.currentPage=1
+      this.currentPage = 1
       this.pageCutDouwn(this.tableDataChange)
     },
     // 对数组筛选
