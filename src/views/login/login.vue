@@ -3,7 +3,7 @@
     <el-main class="content">
       <!-- 左侧icon和文本 -->
       <div class="left-icon">
-        <el-image :src="url" :fit="fill" class="icon-img"></el-image>
+        <el-image :src="url"  class="icon-img"></el-image>
         <div class="icon-text">MMT</div>
       </div>
       <!-- 右侧信息框 -->
@@ -13,7 +13,7 @@
         :rules="rules"
         ref="loginForm"
         label-width="100px"
-        hide-required-asterisk="true"
+        :hide-required-asterisk="hideRequired"
       >
         <p class="login-text">登录</p>
         <el-form-item label="账号" class="id" prop="studentId">
@@ -34,7 +34,7 @@
           </el-input>
         </el-form-item>
         <div class="forget-text">忘记密码？</div>
-        <el-button class="login-btn" @click="goLogin()">登陆 </el-button>
+        <el-button class="login-btn" @click="goLogin()">登录</el-button>
         <div class="footer">
           <div class="no-id">没有账号？</div>
           <div class="register" @click="goRegister()">注册</div>
@@ -49,6 +49,7 @@ export default {
   data() {
     return {
       url: require('@../../../public/sipc.png'),
+      hideRequired:true,
       loginForm: {
         studentId: '',
         password: ''
@@ -64,20 +65,22 @@ export default {
       this.$router.push('/register')
     },
     goLogin() {
-      this.$http
-        .post('http://127.0.0.1:38080/login/b', this.loginForm)
-        .then((res) => {
-          console.log(res.data.code)
+      let loginPost = this.$http.post('https://api.yuleng.top:38080/login/b', this.loginForm)
+        loginPost.then(res =>{
+          if(res.data.code === '00000'){
+            console.log('yes');
+            this.$router.push('/home')
+          }
         })
-        .catch(function (error) {
-          console.log(error)
+        .catch(err => {
+          console.log(err);
         })
     }
   },
   components: {}
 }
 </script>
-<style scoped>
+<style lang="less" scoped>
 .father {
   display: flex;
   width: 100%;
@@ -130,21 +133,25 @@ export default {
   text-align: left;
   font-family: Arial-400;
 }
-.id >>> .el-form-item__label,
-.psw >>> .el-form-item__label {
+.id,.psw{
+  width: 300px;
+
+}
+.id /deep/ .el-form-item__label,
+.psw /deep/ .el-form-item__label {
   color: rgba(51, 51, 51, 100);
   font-size: 18px;
   font-family: Arial-400;
 }
 
-.input-id >>> .el-input__inner,
-.input-psw >>> .el-input__inner {
+.input-id /deep/ .el-input__inner,
+.input-psw /deep/ .el-input__inner {
   border: none;
   border-radius: 0;
   border-bottom: 1px solid #797979;
   padding: 0;
   margin-right: 10px;
-  width: 240px;
+  margin-left: 20px;
 }
 .forget-text {
   margin-top: 18px;
@@ -155,8 +162,8 @@ export default {
   font-size: 17px;
   font-family: Arial-400;
 }
-.el-form >>> .el-form-item__error {
-  margin-left: 8px;
+.el-form /deep/ .el-form-item__error {
+  margin-left: 22px;
 }
 .login-btn {
   margin-top: 15px;

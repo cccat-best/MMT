@@ -7,7 +7,6 @@ import './global/global.less'
 import './global/iconfont.css'
 // 引入axios
 import axios from 'axios'
-
 // 使用axios
 Vue.prototype.$http = axios
 Vue.config.productionTip = false
@@ -18,3 +17,10 @@ new Vue({
   store,
   render: (h) => h(App)
 }).$mount('#app')
+
+import {get , post} from './utils/index'
+Vue.prototype.$http = {
+  get,
+  post
+}
+
