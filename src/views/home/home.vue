@@ -219,6 +219,69 @@ export default {
     }
   },
   methods: {
+    handleOpen(key, keyPath) {
+      console.log(key, keyPath)
+    },
+    handleClose(key, keyPath) {
+      console.log(key, keyPath)
+    },
+    goBack() {
+      console.log('go back')
+    },
+    changePass(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          const url = '/account/revise/password'
+          this.$http
+            .post(url, this.pwdForm)
+            .then((res) => {
+              console.log(res.message)
+            })
+            .catch((err) => {
+              console.log(err, '密码错误')
+            })
+        } else {
+          alert('验证不通过')
+          return false
+        }
+      })
+    },
+    changePhone(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          const url = '/account/revise/phone'
+          this.$http
+            .post(url, this.phoneForm)
+            .then((res) => {
+              console.log(res.message)
+            })
+            .catch((err) => {
+              console.log(err, '手机号错误')
+            })
+        } else {
+          alert('验证不通过')
+          return false
+        }
+      })
+    },
+    joinClub(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          const url = '/invitation-code/club'
+          this.$http
+            .post(url, this.jmoForm)
+            .then((res) => {
+              console.log(res.message)
+            })
+            .catch((err) => {
+              console.log(err, '邀请码错误')
+            })
+        } else {
+          alert('验证不通过')
+          return false
+        }
+      })
+    },
     changeOrganization(command) {
       alert(command)
       axios({
@@ -263,7 +326,8 @@ export default {
       }
     },
     // 个人中心顶部左侧返回的实现，还没想到咋实现
-    goBack() {
+
+    gotoBack() {
       console.log('go back')
     }
   },
@@ -302,6 +366,7 @@ export default {
   cursor: pointer;
   color: black;
 }
+
 :deep(.el-menu-item .iconfont) {
   width: 0px;
 }

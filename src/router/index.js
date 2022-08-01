@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import login from '../views/login/login.vue'
+import personalInfo from '../views/home/personalInfo/personalInfo.vue'
 Vue.use(VueRouter)
 const routes = [
   {
@@ -20,10 +21,6 @@ const routes = [
     component: () => import('../views/home/home.vue'),
     children: [
       {
-        path: 'personalInfo',
-        component: () => import('../views/home/personalInfo/personalInfo.vue')
-      },
-      {
         path: 'arrangement',
         component: () =>
           import('../views/home/interviewArrangement/interviewArrangement.vue')
@@ -36,6 +33,17 @@ const routes = [
       {
         path: 'resultInform',
         component: () => import('../views/home/interviewReply/resultInform.vue')
+      },
+
+      // {
+      //   path: 'personalInfo',
+      //   component: () =>
+      //     import('../views/home/personalIofo/personalIofo.vue')
+      // },
+      {
+        path: 'personalInfo',
+        component: personalInfo
+
       }
     ]
   },
