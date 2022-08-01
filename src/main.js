@@ -18,9 +18,8 @@ new Vue({
   render: (h) => h(App)
 }).$mount('#app')
 
-import {get , post} from './utils/index'
+import { get, post } from './utils/index'
 Vue.prototype.$http = {
   get,
   post
 }
-

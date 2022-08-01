@@ -3,7 +3,7 @@
     <el-main class="content">
       <!-- 左侧icon和文本 -->
       <div class="left-icon">
-        <el-image :src="url"  class="icon-img"></el-image>
+        <el-image :src="url" class="icon-img"></el-image>
         <div class="icon-text">MMT</div>
       </div>
       <!-- 右侧信息框 -->
@@ -98,7 +98,7 @@ export default {
     }
     return {
       url: require('@../../../public/sipc.png'),
-      hideRequired:true,
+      hideRequired: true,
       registerForm: {
         studentId: '',
         name: '',
@@ -131,12 +131,13 @@ export default {
     },
     toRegister() {
       let registerPost = this.$http.post('/register/b', this.registerForm)
-      registerPost.then(res => {
-        console.log(res);
-      })
-      .catch(err => {
-        console.log(err);
-      })
+      registerPost
+        .then((res) => {
+          console.log(res)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
     }
   },
   components: {}

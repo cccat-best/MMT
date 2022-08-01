@@ -3,7 +3,7 @@
     <el-main class="content">
       <!-- 左侧icon和文本 -->
       <div class="left-icon">
-        <el-image :src="url"  class="icon-img"></el-image>
+        <el-image :src="url" class="icon-img"></el-image>
         <div class="icon-text">MMT</div>
       </div>
       <!-- 右侧信息框 -->
@@ -49,7 +49,7 @@ export default {
   data() {
     return {
       url: require('@../../../public/sipc.png'),
-      hideRequired:true,
+      hideRequired: true,
       loginForm: {
         studentId: '',
         password: ''
@@ -65,15 +65,19 @@ export default {
       this.$router.push('/register')
     },
     goLogin() {
-      let loginPost = this.$http.post('https://api.yuleng.top:38080/login/b', this.loginForm)
-        loginPost.then(res =>{
-          if(res.data.code === '00000'){
-            console.log('yes');
+      let loginPost = this.$http.post(
+        'https://api.yuleng.top:38080/login/b',
+        this.loginForm
+      )
+      loginPost
+        .then((res) => {
+          if (res.data.code === '00000') {
+            console.log('yes')
             this.$router.push('/home')
           }
         })
-        .catch(err => {
-          console.log(err);
+        .catch((err) => {
+          console.log(err)
         })
     }
   },
@@ -133,9 +137,9 @@ export default {
   text-align: left;
   font-family: Arial-400;
 }
-.id,.psw{
+.id,
+.psw {
   width: 300px;
-
 }
 .id /deep/ .el-form-item__label,
 .psw /deep/ .el-form-item__label {
