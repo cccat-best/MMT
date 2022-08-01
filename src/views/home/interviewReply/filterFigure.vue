@@ -16,7 +16,7 @@
               class="depBtn"
               plain
               size="small"
-              v-for="(item, i) in department"
+              v-for="item in department"
               :key="item.id"
               :id="item.id"
               >{{ item.name }}</el-button
@@ -39,7 +39,7 @@
               class="roomBtn"
               size="small"
               ref="roomBtn"
-              v-for="(item, index) in room"
+              v-for="item in room"
               :key="item.id"
               :id="item.id"
               >{{ item.name }}</el-button

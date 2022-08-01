@@ -180,14 +180,12 @@ export default {
   },
   watch: {
     search() {
-      console.log(this.$refs.table)
-      // this.total = this.$refs.table.data.length
+      this.currentPage = 1
     }
   },
   computed: {
     // 模糊搜索
     tables: function () {
-      this.currentPage = 1
       const search = this.search
       if (search) {
         // filter() 方法创建一个新的数组，新数组中的元素是通过检查指定数组中符合条件的所有元素。

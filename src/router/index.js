@@ -21,8 +21,7 @@ const routes = [
     children: [
       {
         path: 'personalInfo',
-        component: () =>
-          import('../views/home/personalInfo/personalInfo.vue')
+        component: () => import('../views/home/personalInfo/personalInfo.vue')
       },
       {
         path: 'arrangement',
@@ -32,12 +31,11 @@ const routes = [
       {
         path: 'reply',
         component: () =>
-          import('../views/home/interviewReply/interviewReply.vue'),
+          import('../views/home/interviewReply/interviewReply.vue')
       },
       {
         path: 'resultInform',
-        component: () =>
-          import('../views/home/interviewReply/resultInform.vue')
+        component: () => import('../views/home/interviewReply/resultInform.vue')
       }
     ]
   },
