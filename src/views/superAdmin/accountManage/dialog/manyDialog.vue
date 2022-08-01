@@ -41,7 +41,7 @@
     </el-dialog>
     <!--修改密码弹窗-->
     <el-dialog
-    @close="clearPassWord"
+      @close="clearPassWord"
       title="修改密码"
       :visible.sync="dialogVisibleKey"
       width="25%"
@@ -208,31 +208,31 @@ export default {
     // 删除当前行账号
     handleDialogVisibleDeleteAlign() {
       // console.log(this.formLabelAlign.studentId);
-      this.$http.post('api/account/manage/delete',
-      {
+      this.$http
+        .post('api/account/manage/delete', {
           organizationId: this.organizationId,
           studentList: [
             {
               studentId: this.formLabelAlign.studentId
             }
           ]
-        }).then(
-        (res) => {
-          if (res.data.code=='00000') {
-           this.$message.success("删除成功")
-          // 单行删除同步，达到页面删除效果，仅靠发请求是没办法从视觉上删除的
-          this.$emit('deleteAlign', this.deleteIndex)
+        })
+        .then(
+          (res) => {
+            if (res.data.code == '00000') {
+              this.$message.success('删除成功')
+              // 单行删除同步，达到页面删除效果，仅靠发请求是没办法从视觉上删除的
+              this.$emit('deleteAlign', this.deleteIndex)
+            } else this.$message.error(res.data.message)
+            // 关闭弹窗
+            this.dialogVisibleDeleteAlign = false
+          },
+          (err) => {
+            this.$message.error(err)
+            // 关闭弹窗
+            this.dialogVisibleDeleteAlign = false
           }
-          else this.$message.error(res.data.message)
-          // 关闭弹窗
-      this.dialogVisibleDeleteAlign = false
-        },
-        (err) => {
-          this.$message.error(err)
-          // 关闭弹窗
-      this.dialogVisibleDeleteAlign = false
-        }
-      )
+        )
     },
     // 验证已修改数据，放入postData中
     // 情况是有修改的记录修改，没有修改记录null,全部要发到请求中
@@ -267,13 +267,13 @@ export default {
 
       // 不太好，应该每次比较index，不同就重置
     },
-    clearPassWord(){
-      (this.ruleForm.pass = ''), (this.ruleForm.checkPass = '')
+    clearPassWord() {
+      ;(this.ruleForm.pass = ''), (this.ruleForm.checkPass = '')
     },
     // 发提交修改请求,最后把isErrorPass重置
     postAxios() {
-      this.$http.post('api/account/manage/revise',
-        {
+      this.$http
+        .post('api/account/manage/revise', {
           organizationId: this.organizationId,
           studentList: [
             {
@@ -286,23 +286,23 @@ export default {
               studentNumber: this.formLabelAlign.studentId
             }
           ]
-        }
-      ).then(
-        (res) => {
-          if (res.data.code=='00000') {
-           this.$message.success('已修改密码')
-           // 校验通过才能退出弹窗，写在异步里，防止影响观感
-        this.dialogVisibleKey=false
-          }else this.$message.error(res.data.message)
-          this.isErrorPass = false
-        },
-        (err) => {
-          this.$message.error(err)
-          // 校验通过才能退出弹窗，写在异步里，防止影响观感
-        this.dialogVisibleKey=false
-          this.isErrorPass = false
-        }
-      )
+        })
+        .then(
+          (res) => {
+            if (res.data.code == '00000') {
+              this.$message.success('已修改密码')
+              // 校验通过才能退出弹窗，写在异步里，防止影响观感
+              this.dialogVisibleKey = false
+            } else this.$message.error(res.data.message)
+            this.isErrorPass = false
+          },
+          (err) => {
+            this.$message.error(err)
+            // 校验通过才能退出弹窗，写在异步里，防止影响观感
+            this.dialogVisibleKey = false
+            this.isErrorPass = false
+          }
+        )
     },
     // 提交账户修改
     handleDialogVisibleChangeAccount() {
@@ -315,8 +315,8 @@ export default {
         // this.postAxios()
         // 相比于上面的修改密码，这里发请求没有传password参数
         // 避免checkPass数据污染，乱改密码
-        this.$http.post('api/account/manage/revise',
-          {
+        this.$http
+          .post('api/account/manage/revise', {
             organizationId: this.organizationId,
             studentList: [
               {
@@ -329,24 +329,25 @@ export default {
                 studentNumber: this.AccountFormCheck.studentId
               }
             ]
-          }).then(
-          (res) => {
-            if (res.data.code == '00000') {
-              // 如果修改成功，把修改内容同步到AccountFormCheck
-              this.changeBackUpdateAlign()
-              this.$message.success('修改成功')
+          })
+          .then(
+            (res) => {
+              if (res.data.code == '00000') {
+                // 如果修改成功，把修改内容同步到AccountFormCheck
+                this.changeBackUpdateAlign()
+                this.$message.success('修改成功')
+              }
+              // 写在if里没成功别退弹窗，写在异步里，防止影响观感
+              this.DialogVisibleChangeAccount = false
+              this.isError = false
+            },
+            (err) => {
+              this.$message.error(err)
+              // 写在if里没成功别退弹窗，写在异步里，防止影响观感
+              this.DialogVisibleChangeAccount = false
+              this.isError = false
             }
-            // 写在if里没成功别退弹窗，写在异步里，防止影响观感
-        this.DialogVisibleChangeAccount=false
-            this.isError = false
-          },
-          (err) => {
-            this.$message.error(err)
-            // 写在if里没成功别退弹窗，写在异步里，防止影响观感
-        this.DialogVisibleChangeAccount=false
-            this.isError = false
-          }
-        )
+          )
       }
     },
     // 如果账号修改成功，把修改内容同步到AccountFormCheck
@@ -359,11 +360,15 @@ export default {
       this.AccountFormCheck.studentId = this.formLabelAlign.studentId
     },
     // 看看是不是修改了
-    findSame(){
+    findSame() {
       if (this.AccountFormCheck.name == this.formLabelAlign.name) {
-        if (this.AccountFormCheck.permission == this.formLabelAlign.permission) {
+        if (
+          this.AccountFormCheck.permission == this.formLabelAlign.permission
+        ) {
           if (this.AccountFormCheck.phone == this.formLabelAlign.phone) {
-            if (this.AccountFormCheck.studentId == this.formLabelAlign.studentId) {
+            if (
+              this.AccountFormCheck.studentId == this.formLabelAlign.studentId
+            ) {
               return true
             }
           }
@@ -375,8 +380,9 @@ export default {
     findError() {
       if (this.findSame()) {
         this.$message.error('您没有修改哦')
-      }
-      else if (!/^20[1-9][0-9][0-9]{4}$/.test(this.formLabelAlign.studentId)) {
+      } else if (
+        !/^20[1-9][0-9][0-9]{4}$/.test(this.formLabelAlign.studentId)
+      ) {
         this.$message.error('学号长度为8')
       } else if (!/^[\u4E00-\u9FA5]{2,5}$/.test(this.formLabelAlign.name)) {
         this.$message.error('请输入真实姓名')

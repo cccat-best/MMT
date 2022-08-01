@@ -361,14 +361,8 @@ export default {
   created() {
     //获取数据
     this.searchKeyWord()
-    // 在没有请求成功时，以此获取模拟数据并渲染分页，成功后最好删掉
-    this.$message.success(
-      '在没有请求成功时，以此获取模拟数据并渲染分页，成功后最好删掉'
-    )
+    //渲染并分页
     this.orderChange(this.tableData)
-    //渲染数据
-    // this.page.currentPage = 1
-    // this.pageCutDouwn()
   },
   // mounted() {
   // 通过Vue自带的$on去为子组件添加自定义事件
@@ -391,22 +385,23 @@ export default {
     // 测试cookie
     co() {
       // 发请求模板，待删除，防止后面更改需求，先不删
-      this.$http.post('api/login/b',{
+      this.$http
+        .post('api/login/b', {
           studentId: '20200002',
           password: '123456'
-        }).then(
+        })
+        .then(
+          (res) => {
+            this.$message.success('post获取cookie正常' + res)
+            console.log(res)
+          },
+          (err) => {
+            this.$message.error(err)
+          }
+        )
+      this.$http.get('api/set-cookie/b').then(
         (res) => {
-          this.$message.success("post获取cookie正常"+res)
-          console.log(res)
-        },
-        (err) => {
-          this.$message.error(err)
-        }
-      )
-      this.$http.get('api/set-cookie/b')
-      .then(
-        (res) => {
-          this.$message.success("get获取cookie正常"+res.data.message)
+          this.$message.success('get获取cookie正常' + res.data.message)
         },
         (err) => {
           this.$message.error(err)
@@ -585,8 +580,7 @@ export default {
         }
       }
       // 发请求
-      this.$http.post('api/account/manage/all',this.data)
-      .then(
+      this.$http.post('api/account/manage/all', this.data).then(
         (res) => {
           // 因为请求访问权限异常，res.data.studentList在返回信息中为undefined
           if (res.data.data.studentList == undefined) {
@@ -617,7 +611,7 @@ export default {
       if (permission == 'committee') {
         // console.log(permission=="committee")
         // console.log(this.tableData[0].permission=="committee")
-        this.$message.success(permission)
+        // this.$message.success(permission)
         // 只改变tableDataChange，保证能够还原，不会越筛越少
         this.tableDataChange = this.tableData.filter((element) => {
           // console.log(element.permission=="committee")
@@ -625,7 +619,7 @@ export default {
         })
         // console.log(this.tableData)
       } else if (permission == 'member') {
-        this.$message.success(permission)
+        // this.$message.success(permission)
         this.tableDataChange = this.tableData.filter((element) => {
           // console.log(element.permission=="committee")
           return element.permission == 'member'
@@ -633,7 +627,7 @@ export default {
       } else {
         // permission结果为undefined,因为element-ui自动生成这个选项，我也不知道怎么给它加value值
         // console.log(permission)
-        this.$message.error('全部')
+        // this.$message.error('全部')
         this.tableDataChange = this.tableData
       }
       // 渲染筛选后数据

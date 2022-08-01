@@ -4,7 +4,7 @@ let baseURL = ''
 
 const $http = axios.create({
   baseURL,
-  withCredentails:true
+  withCredentails: true
 })
 
 export const get = (url, params) => {
