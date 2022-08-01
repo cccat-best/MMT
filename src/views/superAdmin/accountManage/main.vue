@@ -119,7 +119,7 @@
       <el-input
         v-model="searchWord"
         type="search"
-        @change="searchKeyWord"
+        @input="searchKeyWord"
         class="searchInput"
         size="small"
         prefix-icon="el-icon-search"
@@ -155,7 +155,7 @@
         label="用户权限"
         sortable="custom"
         :filters="[
-          { text: 'commitee', value: 'commitee' },
+          { text: 'committee', value: 'committee' },
           { text: 'member', value: 'member' }
         ]"
         column-key="permission"
@@ -315,8 +315,6 @@
 </template>
 
 <script>
-//引入axios
-import axios from 'axios'
 //引入表单全部数据,这是模拟数据，后期应该会删掉
 import data from './data.js'
 import data2 from './data copy.js'
@@ -393,48 +391,36 @@ export default {
     // 测试cookie
     co() {
       // 发请求模板，待删除，防止后面更改需求，先不删
-      axios({
-        method: 'post',
-        // url: 'http://114.132.71.147:38080/login/b',
-        url: 'https://api.yuleng.top:38080/login/b',
-        data: {
+      this.$http.post('api/login/b',{
           studentId: '20200002',
           password: '123456'
-        }
-      }).then(
+        }).then(
         (res) => {
-          this.$message.success(res)
+          this.$message.success("post获取cookie正常"+res)
           console.log(res)
         },
         (err) => {
           this.$message.error(err)
         }
       )
-      axios({
-        method: 'get',
-        url: 'https://mmt-dev.sipcoj.com/set-cookie/b'
-      }).then(
+      this.$http.get('api/set-cookie/b')
+      .then(
         (res) => {
-          this.$message.success(res.data.message)
+          this.$message.success("get获取cookie正常"+res.data.message)
         },
         (err) => {
           this.$message.error(err)
         }
       )
-      axios({
-        method: 'post',
-        url: 'https://api.yuleng.top:38080/account/manage/all',
-        data: {
-          organizationId: 2
-        }
-      }).then(
-        (res) => {
-          this.$message.success(res.data.message)
-        },
-        (err) => {
-          this.$message.error(err)
-        }
-      )
+      // this.$http.post('api/account/manage/all',{organizationId: 2})
+      // .then(
+      //   (res) => {
+      //     this.$message.success("搜索获取全部信息正常"+res.data.message)
+      //   },
+      //   (err) => {
+      //     this.$message.error(err)
+      //   }
+      // )
     },
 
     //图标变色,第一个
@@ -585,8 +571,6 @@ export default {
       this.pageCutDouwn(this.tableDataChange)
     },
 
-    // url
-    // https://mmt-dev.sipcoj.com/
     //关键字搜索
     searchKeyWord() {
       // 判断字符串是否为空
@@ -601,19 +585,16 @@ export default {
         }
       }
       // 发请求
-      axios({
-        method: 'post',
-        url: 'https://mmt-dev.sipcoj.com/account/manage/all',
-        data: this.data
-      }).then(
+      this.$http.post('api/account/manage/all',this.data)
+      .then(
         (res) => {
           // 因为请求访问权限异常，res.data.studentList在返回信息中为undefined
-          if (res.data.studentList == undefined) {
+          if (res.data.data.studentList == undefined) {
             // 用造的假数据顶上
             this.$message.success(res.data.message)
           } else {
-            this.tableData = res.data.studentList
-            this.total = res.data.total
+            this.tableData = res.data.data.studentList
+            this.total = res.data.data.total
           }
           // 通知所有相关项更新数据，因为他们使用tableDataChange而不是tableData
           this.orderChange(this.tableData)
@@ -633,20 +614,20 @@ export default {
     },
     // 对数组筛选
     filterChangeData(permission) {
-      if (permission == 'commitee') {
-        // console.log(permission=="commitee")
-        // console.log(this.tableData[0].permission=="commitee")
+      if (permission == 'committee') {
+        // console.log(permission=="committee")
+        // console.log(this.tableData[0].permission=="committee")
         this.$message.success(permission)
         // 只改变tableDataChange，保证能够还原，不会越筛越少
         this.tableDataChange = this.tableData.filter((element) => {
-          // console.log(element.permission=="commitee")
-          return element.permission == 'commitee'
+          // console.log(element.permission=="committee")
+          return element.permission == 'committee'
         })
         // console.log(this.tableData)
       } else if (permission == 'member') {
         this.$message.success(permission)
         this.tableDataChange = this.tableData.filter((element) => {
-          // console.log(element.permission=="commitee")
+          // console.log(element.permission=="committee")
           return element.permission == 'member'
         })
       } else {

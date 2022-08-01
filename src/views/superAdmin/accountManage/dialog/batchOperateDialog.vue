@@ -32,8 +32,8 @@
         <!-- 勾选 -->
         <el-radio-group v-model="permission">
           <div class="radioGroup">
-            <el-radio label="commitee" class="radioGroupCommitee"
-              >commitee</el-radio
+            <el-radio label="committee" class="radioGroupCommitee"
+              >committee</el-radio
             >
             <el-radio label="member" class="radioGroupMember">member</el-radio>
           </div>
@@ -52,8 +52,6 @@
 </template>
 
 <script>
-//引入axios
-import axios from 'axios'
 export default {
   name: 'batchOperateDialog',
   data() {
@@ -80,31 +78,31 @@ export default {
         }
       }
       // console.log(studentListData);
-      axios({
-        method: 'post',
-        url: 'https://mmt-dev.sipcoj.com/account/manage/delete',
-        data: {
-          organizationId: this.organizationId,
-          studentList: studentListData
-        }
+      this.$http.post('api/account/manage/delete',
+      {
+        organizationId: this.organizationId,
+        studentList: studentListData
       }).then(
         (res) => {
-          if (res.data.code == '200') {
-            this.$message.success(res.data.message)
+          if (res.data.code == '00000') {
+            this.$message.success('删除成功')
             // 同步更新页面权限数据
             this.$emit('myBatchOperateDelete', studentListData)
           } else {
             this.$message.error(res.data.message)
-            console.log('code: ' + res.data.code)
+            // console.log('code: ' + res.data.code)
           }
+          // 关闭弹窗
+          this.dialogVisibleDelete = false
         },
         (err) => {
           this.$message.error(err)
+          // 关闭弹窗
+          this.dialogVisibleDelete = false
         }
       )
-      console.log('--------仅供测试同步批量删除更新========')
-      this.$emit('myBatchOperateDelete', studentListData)
-      this.dialogVisibleDelete = false
+      // console.log('--------仅供测试同步批量删除更新========')
+      // this.$emit('myBatchOperateDelete', studentListData)
     },
 
     // 批量修改
@@ -125,17 +123,14 @@ export default {
       }
       // console.log('点击批量修改')
       // console.log(ListData)
-      axios({
-        method: 'post',
-        url: 'https://mmt-dev.sipcoj.com/account/manage/revise',
-        data: {
-          organizationId: this.organizationId,
-          studentList: ListData
-        }
+      this.$http.post('api/account/manage/revise',
+      {
+        organizationId: this.organizationId,
+        studentList: ListData
       }).then(
         (res) => {
-          if (res.data.code == '200') {
-            this.$message.success(res.data.message)
+          if (res.data.code == '00000') {
+            this.$message.success('修改完成')
             // 同步更新页面权限数据
             this.multipleSelection.forEach((item) => {
               item.permission = this.permission
@@ -144,19 +139,22 @@ export default {
           } else {
             this.$message.error(res.data.message)
           }
+          // 关闭弹窗
+          this.dialogVisible = false
         },
         (err) => {
           this.$message.error(err)
+          // 关闭弹窗
+          this.dialogVisible = false
         }
       )
       // 仅供测试
-      console.log('测试批量修改权限后，同步更新页面权限数据')
-      // 同步更新页面权限数据，multipleSelection好像也是引用
-      this.multipleSelection.forEach((item) => {
-        item.permission = this.permission
-      })
-      this.$emit('myBatchOperateChange', 114514)
-      this.dialogVisible = false
+      // console.log('测试批量修改权限后，同步更新页面权限数据')
+      // // 同步更新页面权限数据，multipleSelection好像也是引用
+      // this.multipleSelection.forEach((item) => {
+      //   item.permission = this.permission
+      // })
+      // this.$emit('myBatchOperateChange', 114514)
     }
   }
 }
