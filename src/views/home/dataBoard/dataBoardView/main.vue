@@ -55,7 +55,6 @@
         ({ prop: 'studentId', order: 'ascending' },
         { prop: 'permission', order: 'ascending' })
       "
-      @selection-change="handleSelectionChange"
     >
       <!-- 注意上面有tableList -->
       <el-table-column label="ID" align="center" width="70px">
@@ -73,7 +72,17 @@
       </el-table-column>
       <el-table-column prop="name" label="姓名" width="100px" align="center">
       </el-table-column>
-      <el-table-column prop="class" label="班级" width="120px" align="center">
+      <el-table-column
+        prop="className"
+        label="班级"
+        width="120px"
+        align="center"
+        :filters="[
+          { text: '信安1班', value: 'committee' },
+          { text: '信安2班', value: 'member' }
+        ]"
+        :filter-multiple="false"
+      >
       </el-table-column>
       <el-table-column prop="phone" label="手机号" width="120px" align="center">
         <!-- 脱敏显示 -->
@@ -175,42 +184,9 @@
             class="buttonMove"
             @click="DialogVisibleChangeAccount(scope.row)"
           >
-            <svg
-              class="svgColor1"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 48 48"
-              width="23"
-              height="23"
-              style="
-                border-color: rgba(187, 187, 187, 1);
-                border-width: 0px;
-                border-style: solid;
-              "
-              filter="none"
-            >
-              <g>
-                <rect
-                  width="48"
-                  height="48"
-                  fill="rgba(16.065,16.065,16.065,1)"
-                  fill-opacity="0.01"
-                  stroke="none"
-                ></rect>
-                <path
-                  d="M42 26V40C42 41.1046 41.1046 42 40 42H8C6.89543 42 6 41.1046 6 40V8C6 6.89543 6.89543 6 8 6L22 6"
-                  stroke-width="4"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  fill="none"
-                ></path>
-                <path
-                  d="M14 26.7199V34H21.3172L42 13.3081L34.6951 6L14 26.7199Z"
-                  fill="none"
-                  stroke-width="4"
-                  stroke-linejoin="round"
-                ></path>
-              </g>
-            </svg>
+            <div class="changeicon">
+              <i class="el-icon-edit-outline"></i>
+            </div>
           </el-button>
         </template>
       </el-table-column>
@@ -222,27 +198,8 @@
             class="buttonMove"
             @click="handleDelete(scope.$index, scope.row)"
           >
-            <div>
-              <svg
-                class="svgColor"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 32 32"
-                width="23"
-                height="23"
-                style="
-                  border-color: rgba(187, 187, 187, 1);
-                  border-width: 0px;
-                  border-style: solid;
-                "
-                filter="none"
-              >
-                <g>
-                  <path
-                    d="M8.032 28.64c0.032 0.768 0.64 1.376 1.408 1.376h13.152c0.736 0 1.376-0.608 1.408-1.376l0.928-19.84h-17.856l0.96 19.84zM18.976 13.728c0-0.288 0.256-0.544 0.576-0.544h0.928c0.32 0 0.576 0.256 0.576 0.544v11.36c0 0.288-0.288 0.544-0.576 0.544h-0.928c-0.32 0-0.576-0.256-0.576-0.544v-11.36zM14.976 13.728c0-0.288 0.256-0.544 0.576-0.544h0.928c0.297 0.009 0.535 0.247 0.544 0.543l0 0.001v11.36c-0.009 0.297-0.247 0.535-0.543 0.544l-0.001 0h-0.928c-0.32 0-0.576-0.256-0.576-0.544v-11.36zM10.976 13.728c0-0.288 0.256-0.544 0.576-0.544h0.896c0.32 0 0.576 0.256 0.576 0.544v11.36c0 0.288-0.256 0.544-0.576 0.544h-0.896c-0.32 0-0.576-0.256-0.576-0.544v-11.36zM25.568 3.456h-6.080v-1.152c0-0.16-0.128-0.32-0.288-0.32h-6.368c-0.16 0-0.32 0.16-0.32 0.32v1.152h-6.048c-0.48 0-0.896 0.384-0.896 0.864v2.784h20.864v-2.784c0-0.001 0-0.003 0-0.004 0-0.475-0.385-0.86-0.86-0.86-0.001 0-0.003 0-0.004 0h0z"
-                    stroke="none"
-                  ></path>
-                </g>
-              </svg>
+            <div class="changeicon">
+              <i class="el-icon-document"></i>
             </div>
           </el-button>
         </template>
@@ -265,7 +222,7 @@
 
 <script>
 //引入表单全部数据,这是模拟数据，后期应该会删掉
-import data from '../../../superAdmin/accountManage/data'
+import data from '../dataBoardView/data'
 import data2 from '../../../superAdmin/accountManage/data copy'
 export default {
   data() {
@@ -296,7 +253,7 @@ export default {
       multipleSelection: []
     }
   },
-  // 注册组件（一键复制）
+  // 注册组件
   components: {},
   created() {
     //获取数据
@@ -335,23 +292,6 @@ export default {
           }
         )
     },
-    //图标变色,第一个
-    changeColor() {
-      if (this.batchColorChange1 == '#666666')
-        this.batchColorChange1 = 'rgba(47.94,128.01,255,1)'
-      else this.batchColorChange1 = '#666666'
-      if (this.showactive1 == 0) this.showactive1 = 1
-      else this.showactive1 = 0
-    },
-    // 第二个
-    changeColor2() {
-      if (this.batchColorChange2 == '#666666')
-        this.batchColorChange2 = 'rgba(47.94,128.01,255,1)'
-      else this.batchColorChange2 = '#666666'
-      if (this.showactive2 == 0) this.showactive2 = 1
-      else this.showactive2 = 0
-    },
-
     // // 批量修改同步
     // batchOperateChange(datalist) {
     //   // console.log('批量修改同步')
@@ -557,35 +497,6 @@ export default {
       this.pageCutDouwn(this.tableDataChange)
     },
 
-    //修改账号表单校验、发请求模板，待删除，防止后面更改需求，先不删
-    // findError() {
-    //   if (!/^20[1-9][0-9][0-9]{4}$/.test(this.sendData.stdId)) {
-    //     this.$message.error('学号长度为8')
-    //   } else if (!/^[\u4E00-\u9FA5]{2,5}$/.test(this.sendData.stdName)) {
-    //     this.$message.error('请输入真实姓名')
-    //   } else if (!/^(1[3-9][0-9])[0-9]{8}$/.test(this.sendData.stdPhone)) {
-    //     this.$message.error('电话不符合规范')
-    //   } else this.ifError = true
-    // },
-    //发请求模板，待删除，防止后面更改需求，先不删
-    // postData() {
-    //   this.findError() //校验数据
-    //   if (this.ifError) {
-    //     axios({
-    //       method: 'post',
-    //       url: 'http://47.94.90.140:8000/post',
-    //       data: this.sendData
-    //     }).then(
-    //       (res) => {
-    //         this.$message.success(res.data.message)
-    //       },
-    //       (err) => {
-    //         this.$message.error(err)
-    //       }
-    //     )
-    //   }
-    // },
-
     // 批量操作，先传输选中数据
     pushMultipleSelectionData() {
       this.$refs.batchOperateDialog.multipleSelection = this.multipleSelection
@@ -690,7 +601,6 @@ export default {
 // * {
 // line-height: 15px;
 // line-height: 2.8vh;
-
 // color: black;
 // }
 
@@ -700,7 +610,7 @@ export default {
   min-width: 900px;
   min-height: 500px;
 }
-// 包含批量操作，搜索的div
+// 包含搜索的div
 .seach-header {
   display: flex;
   justify-content: flex-end;
@@ -715,57 +625,24 @@ export default {
   // height: 34.4px;
   margin-left: 20px;
 }
-//
-.batchButton {
-  margin: 0 10px;
-  font-size: medium;
-  color: #666666;
-  border: none;
-}
-.activeBatchButton {
-  margin: 0 10px;
-  font-size: medium;
-  color: rgba(47.94, 128.01, 255, 1);
-  border: none;
-}
-// 图标hover变色
-.svgColor {
-  fill: currentColor;
-  color: #666666;
-}
-.svgColor:hover {
-  fill: currentColor;
-  color: #069db8;
-}
-// 修改账号，特殊
-.svgColor1 g {
-  stroke: #666666;
-}
-.svgColor1:hover g {
-  stroke: #069db8;
-}
-//
-// 使图标对齐文字
-.buttonMove {
-  margin-left: 20px;
-}
 .search {
   width: 40vh;
   height: 100px;
 }
-.makeJoinKey {
-  position: relative;
-  right: 45%;
-  top: 20px;
+// icon变色
+.changeicon {
+  font-size: 25px;
+  color: #a1a3a9;
 }
-.yhqx {
-  margin-right: 20px;
+.changeicon:hover {
+  font-size: 25px;
+  color: #409eff;
 }
 .el-table {
   padding: 0px;
   color: #666690;
   font-size: 15px;
-
+  // 滚动条，暂时只兼容chrome
   /deep/ .el-table__body-wrapper::-webkit-scrollbar {
     width: 15px; /*滚动条宽度*/
     height: 14px; /*滚动条高度*/
