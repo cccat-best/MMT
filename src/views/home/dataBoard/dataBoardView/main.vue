@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <!-- 测试更新数据 -->
-    <div
+    <!-- <div
       @click="de"
       style="
         float: left;
@@ -18,104 +18,11 @@
       style="float: left; height: 5px; width: 150px; color: blue"
     >
       测试cookie,后面完工时记得删掉这个
-    </div>
+    </div> -->
     <!--  -->
 
-    <!-- 批量操作 -->
+    <!-- 搜索区域 -->
     <div class="seach-header">
-      <div>
-        <button
-          :class="[showactive1 == 0 ? 'batchButton' : 'activeBatchButton']"
-          @click="showDialogVisible"
-          :disabled="this.multipleSelection.length == 0"
-        >
-          <div
-            style="display: flex; justify-content: center"
-            @mouseenter="changeColor"
-            @mouseleave="changeColor"
-          >
-            <div>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 48 48"
-                width="23"
-                height="23"
-                style="
-                  border-color: rgba(187, 187, 187, 1);
-                  border-width: 0px;
-                  border-style: solid;
-                "
-                filter="none"
-              >
-                <g>
-                  <rect
-                    width="48"
-                    height="48"
-                    fill="rgba(16.065,16.065,16.065,1)"
-                    fill-opacity="0.01"
-                    stroke="none"
-                  ></rect>
-                  <path
-                    d="M42 26V40C42 41.1046 41.1046 42 40 42H8C6.89543 42 6 41.1046 6 40V8C6 6.89543 6.89543 6 8 6L22 6"
-                    :stroke="this.batchColorChange1"
-                    stroke-width="4"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    fill="none"
-                  ></path>
-                  <path
-                    d="M14 26.7199V34H21.3172L42 13.3081L34.6951 6L14 26.7199Z"
-                    fill="none"
-                    :stroke="this.batchColorChange1"
-                    stroke-width="4"
-                    stroke-linejoin="round"
-                  ></path>
-                </g>
-              </svg>
-            </div>
-            <div style="font-size: 17px; margin-left: 5px">批量修改</div>
-          </div>
-        </button>
-      </div>
-      <div>
-        <button
-          :class="[showactive2 == 0 ? 'batchButton' : 'activeBatchButton']"
-          @click="deleteDialogVisible"
-          :disabled="this.multipleSelection.length == 0"
-        >
-          <div
-            style="display: flex; justify-content: center"
-            @mouseenter="changeColor2"
-            @mouseleave="changeColor2"
-          >
-            <div>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 32 32"
-                width="23"
-                height="23"
-                style="
-                  border-color: rgba(187, 187, 187, 1);
-                  border-width: 0px;
-                  border-style: solid;
-                "
-                filter="none"
-              >
-                <g>
-                  <path
-                    d="M8.032 28.64c0.032 0.768 0.64 1.376 1.408 1.376h13.152c0.736 0 1.376-0.608 1.408-1.376l0.928-19.84h-17.856l0.96 19.84zM18.976 13.728c0-0.288 0.256-0.544 0.576-0.544h0.928c0.32 0 0.576 0.256 0.576 0.544v11.36c0 0.288-0.288 0.544-0.576 0.544h-0.928c-0.32 0-0.576-0.256-0.576-0.544v-11.36zM14.976 13.728c0-0.288 0.256-0.544 0.576-0.544h0.928c0.297 0.009 0.535 0.247 0.544 0.543l0 0.001v11.36c-0.009 0.297-0.247 0.535-0.543 0.544l-0.001 0h-0.928c-0.32 0-0.576-0.256-0.576-0.544v-11.36zM10.976 13.728c0-0.288 0.256-0.544 0.576-0.544h0.896c0.32 0 0.576 0.256 0.576 0.544v11.36c0 0.288-0.256 0.544-0.576 0.544h-0.896c-0.32 0-0.576-0.256-0.576-0.544v-11.36zM25.568 3.456h-6.080v-1.152c0-0.16-0.128-0.32-0.288-0.32h-6.368c-0.16 0-0.32 0.16-0.32 0.32v1.152h-6.048c-0.48 0-0.896 0.384-0.896 0.864v2.784h20.864v-2.784c0-0.001 0-0.003 0-0.004 0-0.475-0.385-0.86-0.86-0.86-0.001 0-0.003 0-0.004 0h0z"
-                    :fill="this.batchColorChange2"
-                    :stroke="none"
-                  ></path>
-                </g>
-              </svg>
-            </div>
-            <div style="font-size: 17px; margin-left: 5px">批量删除</div>
-          </div>
-        </button>
-      </div>
-
-      <!-- 搜索区域 -->
       <el-input
         v-model="searchWord"
         type="search"
@@ -133,6 +40,9 @@
       tooltip-effect="dark"
       style="color: #666690; font-size: 15px"
       height="65.7vh"
+      :row-style="{ height: '0' }"
+      :cell-style="{ padding: '0px' }"
+      :header-cell-style="{ background: '#282e38',color: '#ffffff' }"
       ref="multipleTable"
       :data="tableList"
       @sort-change="sortTableFun"
@@ -177,6 +87,7 @@
             @click="DialogVisibleChangeAccount(scope.row)"
           >
             <svg
+              class="svgColor1"
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 48 48"
               width="23"
@@ -198,7 +109,6 @@
                 ></rect>
                 <path
                   d="M42 26V40C42 41.1046 41.1046 42 40 42H8C6.89543 42 6 41.1046 6 40V8C6 6.89543 6.89543 6 8 6L22 6"
-                  stroke="#666666"
                   stroke-width="4"
                   stroke-linecap="round"
                   stroke-linejoin="round"
@@ -207,7 +117,6 @@
                 <path
                   d="M14 26.7199V34H21.3172L42 13.3081L34.6951 6L14 26.7199Z"
                   fill="none"
-                  stroke="#666666"
                   stroke-width="4"
                   stroke-linejoin="round"
                 ></path>
@@ -226,6 +135,7 @@
           >
             <div>
               <svg
+                class="svgColor"
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="64 64 896 896"
                 width="23"
@@ -240,7 +150,6 @@
                 <g>
                   <path
                     d="M832 464h-68V240c0-70.7-57.3-128-128-128H388c-70.7 0-128 57.3-128 128v224h-68c-17.7 0-32 14.3-32 32v384c0 17.7 14.3 32 32 32h640c17.7 0 32-14.3 32-32V496c0-17.7-14.3-32-32-32zM332 240c0-30.9 25.1-56 56-56h248c30.9 0 56 25.1 56 56v224H332V240zm460 600H232V536h560v304zM484 701v53c0 4.4 3.6 8 8 8h40c4.4 0 8-3.6 8-8v-53a48.01 48.01 0 1 0-56 0z"
-                    fill="#666666"
                   ></path>
                 </g>
               </svg>
@@ -259,6 +168,7 @@
           >
             <div>
               <svg
+                class="svgColor"
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 32 32"
                 width="23"
@@ -273,7 +183,6 @@
                 <g>
                   <path
                     d="M8.032 28.64c0.032 0.768 0.64 1.376 1.408 1.376h13.152c0.736 0 1.376-0.608 1.408-1.376l0.928-19.84h-17.856l0.96 19.84zM18.976 13.728c0-0.288 0.256-0.544 0.576-0.544h0.928c0.32 0 0.576 0.256 0.576 0.544v11.36c0 0.288-0.288 0.544-0.576 0.544h-0.928c-0.32 0-0.576-0.256-0.576-0.544v-11.36zM14.976 13.728c0-0.288 0.256-0.544 0.576-0.544h0.928c0.297 0.009 0.535 0.247 0.544 0.543l0 0.001v11.36c-0.009 0.297-0.247 0.535-0.543 0.544l-0.001 0h-0.928c-0.32 0-0.576-0.256-0.576-0.544v-11.36zM10.976 13.728c0-0.288 0.256-0.544 0.576-0.544h0.896c0.32 0 0.576 0.256 0.576 0.544v11.36c0 0.288-0.256 0.544-0.576 0.544h-0.896c-0.32 0-0.576-0.256-0.576-0.544v-11.36zM25.568 3.456h-6.080v-1.152c0-0.16-0.128-0.32-0.288-0.32h-6.368c-0.16 0-0.32 0.16-0.32 0.32v1.152h-6.048c-0.48 0-0.896 0.384-0.896 0.864v2.784h20.864v-2.784c0-0.001 0-0.003 0-0.004 0-0.475-0.385-0.86-0.86-0.86-0.001 0-0.003 0-0.004 0h0z"
-                    fill="#666666"
                     stroke="none"
                   ></path>
                 </g>
@@ -287,18 +196,6 @@
     <el-button type="primary" class="makeJoinKey" @click="DialogVisibleJoin"
       >生成邀请码</el-button
     >
-    <!-- 邀请码，可一键复制 -->
-    <clipBoard ref="clipBoard" />
-    <!-- 引入修改账号、修改密码、删除弹窗 -->
-    <!-- deleteAlign自定义事件，单行删除同步 -->
-    <manyDialog ref="manyDialog" @deleteAlign="deleteAlign" />
-    <!-- 批量操作弹窗 -->
-    <!-- 自定义事件，批量删除和修改同步 -->
-    <batchOperateDialog
-      ref="batchOperateDialog"
-      @myBatchOperateChange="batchOperateChange"
-      @myBatchOperateDelete="batchOperateDelete"
-    />
     <!-- 页码 -->
     <el-pagination
       background
@@ -318,11 +215,6 @@
 //引入表单全部数据,这是模拟数据，后期应该会删掉
 import data from '../../../superAdmin/accountManage/data'
 import data2 from '../../../superAdmin/accountManage/data copy'
-// 引入clipBoard
-// import clipBoard from './dialog/clipboard.vue'
-//引入弹窗
-// import manyDialog from './dialog/manyDialog.vue' //单行修改
-// import batchOperateDialog from './dialog/batchOperateDialog.vue' //批量修改
 export default {
   data() {
     return {
@@ -354,9 +246,6 @@ export default {
   },
   // 注册组件（一键复制）
   components: {
-    // clipBoard,
-    // manyDialog,
-    // batchOperateDialog
   },
   created() {
     //获取数据
@@ -364,11 +253,6 @@ export default {
     //渲染并分页
     this.orderChange(this.tableData)
   },
-  // mounted() {
-  // 通过Vue自带的$on去为子组件添加自定义事件
-  // this.$refs.batchOperateDialog.$on('myBatchOperateChange',batchOperateChange)
-  // this.$refs.batchOperateDialog.$on('myBatchOperateDelete',batchOperateDelete)
-  // },
   methods: {
     // 测试数据更新时，表单数据是否同步更新了
     de() {
@@ -399,25 +283,7 @@ export default {
             this.$message.error(err)
           }
         )
-      this.$http.get('api/set-cookie/b').then(
-        (res) => {
-          this.$message.success('get获取cookie正常' + res.data.message)
-        },
-        (err) => {
-          this.$message.error(err)
-        }
-      )
-      // this.$http.post('api/account/manage/all',{organizationId: 2})
-      // .then(
-      //   (res) => {
-      //     this.$message.success("搜索获取全部信息正常"+res.data.message)
-      //   },
-      //   (err) => {
-      //     this.$message.error(err)
-      //   }
-      // )
     },
-
     //图标变色,第一个
     changeColor() {
       if (this.batchColorChange1 == '#666666')
@@ -435,15 +301,15 @@ export default {
       else this.showactive2 = 0
     },
 
-    // 批量修改同步
-    batchOperateChange(datalist) {
-      // console.log('批量修改同步')
-      console.log(datalist)
-    },
+    // // 批量修改同步
+    // batchOperateChange(datalist) {
+    //   // console.log('批量修改同步')
+    //   console.log(datalist)
+    // },
     // 批量删除同步
     batchOperateDelete(studentListData) {
       // console.log('批量删除同步')
-      console.log(studentListData)
+      // console.log(studentListData)
       // 遍历要删除的数组名单
       // 看看要不要写箭头函数
       studentListData.forEach((element) => {
@@ -451,7 +317,7 @@ export default {
         // console.log(element)
         const deleteIndex = this.tableData.findIndex((item) => {
           // 看看要不要写===
-          console.log(item.studentId === element.studentId)
+          // console.log(item.studentId === element.studentId)
           return item.studentId == element.studentId
         })
         // console.log(deleteIndex)
@@ -462,7 +328,7 @@ export default {
       })
       // 对currentPage做一个判断
       // 如果整页没删完，保持在当前页，如果删完了返回上一页（除非删的是第一页）
-      console.log('=============length')
+      // console.log('=============length')
       // console.log(studentListData.length)
       const totalPage = Math.ceil((this.total - 1) / this.pagesize) // 总页数
       let pagelength = this.pagesize
@@ -605,6 +471,9 @@ export default {
       this.permissionSelect = data.permission[0]
       // 传permission
       this.filterChangeData(data.permission[0])
+      // 仅自行触发的筛选跳转到第一页
+      this.currentPage = 1
+      this.pageCutDouwn(this.tableDataChange)
     },
     // 对数组筛选
     filterChangeData(permission) {
@@ -691,7 +560,7 @@ export default {
     handleSelectionChange(val) {
       this.multipleSelection = val
       /////////////////直接获取选中数据///////////////////////////
-      console.log(this.multipleSelection)
+      // console.log(this.multipleSelection)
     },
     //修改账号弹窗
     DialogVisibleChangeAccount(data) {
@@ -714,7 +583,7 @@ export default {
     },
     //删除 弹窗
     handleDelete(index, data) {
-      console.log(data)
+      // console.log(data)
       // console.log(data.__ob__)
       // console.log(index)
       this.$refs.manyDialog.dialogVisibleDeleteAlign = true
@@ -766,6 +635,13 @@ export default {
 }
 </script>
 <style lang="less" scoped>
+// * {
+// line-height: 15px;
+// line-height: 2.8vh;
+
+// color: black;
+// }
+
 // main面板的样式
 .content {
   // 暂定900px
@@ -799,6 +675,22 @@ export default {
   font-size: medium;
   color: rgba(47.94, 128.01, 255, 1);
   border: none;
+}
+// 图标hover变色
+.svgColor {
+  fill: currentColor;
+  color: #666666;
+}
+.svgColor:hover {
+  fill: currentColor;
+  color: #069db8;
+}
+// 修改账号，特殊
+.svgColor1 g {
+  stroke: #666666;
+}
+.svgColor1:hover g {
+  stroke: #069db8;
 }
 //
 // 使图标对齐文字
