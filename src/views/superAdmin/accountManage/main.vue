@@ -1,23 +1,26 @@
 <template>
   <div class="content">
+    <div class="top-content">
+      <i class="el-icon-s-custom top-content-icon"></i>
+      账号管理
+    </div>
     <!-- 测试更新数据 -->
     <div
       @click="de"
       style="
-        float: left;
+      position:fixed
+      left:50px
         height: 5px;
         width: 150px;
         margin-right: 10px;
         color: blue;
       "
-    >
-      测试更新数据,后面完工时记得删掉这个
+    >数据
     </div>
     <div
       @click="co"
-      style="float: left; height: 5px; width: 150px; color: blue"
-    >
-      测试cookie,后面完工时记得删掉这个
+      style="height: 5px;position:fixed; left:500px;width: 150px; color: blue"
+    >cookie
     </div>
     <!--  -->
 
@@ -792,6 +795,25 @@ export default {
   // 暂定900px
   min-width: 900px;
   min-height: 500px;
+  .top-content {
+    position: absolute;
+    display: flex;
+    height: 25px;
+    margin-left: 15px;
+    line-height: 25px;
+    font-size: 20px;
+    color: #f57d2d;
+    background-color: #e9eef3;
+    .top-content-icon {
+      margin-top: 2px;
+      margin-right: 7px;
+    }
+    .top-title {
+      text-align: center;
+      font-size: 20px;
+      color: orange;
+    }
+  }
 }
 // 包含批量操作，搜索的div
 .seach-header {
