@@ -38,7 +38,7 @@
     <el-table
       stripe
       tooltip-effect="dark"
-      style="color: #666690; font-size: 15px"
+      class="el-table"
       height="72.2vh"
       :row-style="{ height: '0' }"
       :cell-style="{ padding: '0px' }"
@@ -761,7 +761,26 @@ export default {
 .yhqx {
   margin-right: 20px;
 }
-el-table {
+.el-table {
   padding: 0px;
+  color: #666690;
+  font-size: 15px;
+
+/deep/ .el-table__body-wrapper::-webkit-scrollbar {
+  width: 15px; /*滚动条宽度*/
+  height: 14px; /*滚动条高度*/
+}
+/deep/ .el-table__body-wrapper::-webkit-scrollbar-track {
+  border-radius: 8px; /*滚动条的背景区域的圆角*/
+  background-color: #ffffff; /*滚动条的背景颜色*/
+}
+/deep/ .el-table__body-wrapper::-webkit-scrollbar-corner {
+  background-color: #ffffff;
+}
+/deep/ .el-table__body-wrapper::-webkit-scrollbar-thumb {
+  border-radius: 8px; /*滚动条的圆角*/
+  background-color: #a1a3a9; /*滚动条的背景颜色*/
+  // rgba(24,144,255,0.50)
+}
 }
 </style>
