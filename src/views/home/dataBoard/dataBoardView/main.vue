@@ -39,10 +39,14 @@
       stripe
       tooltip-effect="dark"
       style="color: #666690; font-size: 15px"
-      height="65.7vh"
+      height="72.2vh"
       :row-style="{ height: '0' }"
       :cell-style="{ padding: '0px' }"
-      :header-cell-style="{ background: '#282e38', color: '#ffffff' }"
+      :header-cell-style="{
+        background: '#282e38',
+        color: '#ffffff',
+        padding: '5px'
+      }"
       ref="multipleTable"
       :data="tableList"
       @sort-change="sortTableFun"
@@ -54,16 +58,24 @@
       @selection-change="handleSelectionChange"
     >
       <!-- 注意上面有tableList -->
-      <el-table-column label="ID" width="120px" fixed>
+      <el-table-column label="ID" align="center" width="70px">
         <template slot-scope="scope">
-          {{ scope.$index+1+(currentPage-1)*pagesize }}
+          {{ scope.$index + 1 + (currentPage - 1) * pagesize }}
         </template>
       </el-table-column>
-      <el-table-column prop="studentId" label="学号" sortable="custom" fixed>
+      <el-table-column
+        prop="studentId"
+        label="学号"
+        width="100px"
+        align="center"
+        sortable="custom"
+      >
       </el-table-column>
-      <el-table-column prop="name" label="姓名"> </el-table-column>
-      <el-table-column prop="class" label="班级"> </el-table-column>
-      <el-table-column prop="phone" label="手机号">
+      <el-table-column prop="name" label="姓名" width="100px" align="center">
+      </el-table-column>
+      <el-table-column prop="class" label="班级" width="120px" align="center">
+      </el-table-column>
+      <el-table-column prop="phone" label="手机号" width="120px" align="center">
         <!-- 脱敏显示 -->
         <template slot-scope="scope">
           {{ scope.row.phone | replacestar }}
@@ -72,6 +84,8 @@
       <!-- :filter-multiple="false"过滤器单选 -->
       <!-- :filter-method="filterPermission" 前端过滤 -->
       <el-table-column
+        width="160px"
+        align="center"
         prop="permission"
         label="社团志愿次序"
         sortable="custom"
@@ -84,6 +98,8 @@
       >
       </el-table-column>
       <el-table-column
+        width="160px"
+        align="center"
         prop="permission"
         label="部门志愿次序"
         sortable="custom"
@@ -96,6 +112,8 @@
       >
       </el-table-column>
       <el-table-column
+        width="160px"
+        align="center"
         prop="permission"
         label="当前志愿部门"
         sortable="custom"
@@ -107,7 +125,49 @@
         :filter-multiple="false"
       >
       </el-table-column>
-      <el-table-column label="修改账号">
+      <el-table-column
+        width="160px"
+        align="center"
+        prop="permission"
+        label="当前志愿状态"
+        sortable="custom"
+        :filters="[
+          { text: 'committee', value: 'committee' },
+          { text: 'member', value: 'member' }
+        ]"
+        column-key="permission"
+        :filter-multiple="false"
+      >
+      </el-table-column>
+      <el-table-column
+        width="180px"
+        align="center"
+        prop="permission"
+        label="下一场面试时间"
+        sortable="custom"
+        :filters="[
+          { text: 'committee', value: 'committee' },
+          { text: 'member', value: 'member' }
+        ]"
+        column-key="permission"
+        :filter-multiple="false"
+      >
+      </el-table-column>
+      <el-table-column
+        width="180px"
+        align="center"
+        prop="permission"
+        label="下一场面试地点"
+        sortable="custom"
+        :filters="[
+          { text: 'committee', value: 'committee' },
+          { text: 'member', value: 'member' }
+        ]"
+        column-key="permission"
+        :filter-multiple="false"
+      >
+      </el-table-column>
+      <el-table-column label="修改" align="center" fixed="right">
         <!-- 单次删除需要scope来传数据 -->
         <template slot-scope="scope">
           <el-button
@@ -154,40 +214,7 @@
           </el-button>
         </template>
       </el-table-column>
-      <el-table-column label="修改密码">
-        <template slot-scope="scope">
-          <el-button
-            size="mini"
-            type="text"
-            class="buttonMove"
-            @click="handleKeyEdit(scope.row)"
-          >
-            <div>
-              <svg
-                class="svgColor"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="64 64 896 896"
-                width="23"
-                height="23"
-                style="
-                  border-color: rgba(187, 187, 187, 1);
-                  border-width: 0px;
-                  border-style: solid;
-                "
-                filter="none"
-              >
-                <g>
-                  <path
-                    d="M832 464h-68V240c0-70.7-57.3-128-128-128H388c-70.7 0-128 57.3-128 128v224h-68c-17.7 0-32 14.3-32 32v384c0 17.7 14.3 32 32 32h640c17.7 0 32-14.3 32-32V496c0-17.7-14.3-32-32-32zM332 240c0-30.9 25.1-56 56-56h248c30.9 0 56 25.1 56 56v224H332V240zm460 600H232V536h560v304zM484 701v53c0 4.4 3.6 8 8 8h40c4.4 0 8-3.6 8-8v-53a48.01 48.01 0 1 0-56 0z"
-                  ></path>
-                </g>
-              </svg>
-            </div>
-          </el-button>
-        </template>
-      </el-table-column>
-
-      <el-table-column label="删除账号">
+      <el-table-column label="简历" align="center" fixed="right">
         <template slot-scope="scope">
           <el-button
             size="medium"
@@ -221,10 +248,6 @@
         </template>
       </el-table-column>
     </el-table>
-    <!-- 生成邀请码 -->
-    <el-button type="primary" class="makeJoinKey" @click="DialogVisibleJoin"
-      >生成邀请码</el-button
-    >
     <!-- 页码 -->
     <el-pagination
       background

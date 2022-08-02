@@ -147,10 +147,17 @@
       @selection-change="handleSelectionChange"
     >
       <!-- 注意上面有tableList -->
-      <el-table-column type="selection" fixed> </el-table-column>
-      <el-table-column prop="studentId" label="学号" sortable="custom" fixed>
+      <el-table-column type="selection" align="center" fixed> </el-table-column>
+      <el-table-column
+        prop="studentId"
+        label="学号"
+        sortable="custom"
+        align="center"
+        fixed
+      >
       </el-table-column>
-      <el-table-column prop="name" label="姓名"> </el-table-column>
+      <el-table-column prop="name" label="姓名" align="center">
+      </el-table-column>
       <!-- :filter-multiple="false"过滤器单选 -->
       <!-- :filter-method="filterPermission" 前端过滤 -->
       <el-table-column
@@ -165,13 +172,13 @@
         :filter-multiple="false"
       >
       </el-table-column>
-      <el-table-column prop="phone" label="手机号">
+      <el-table-column prop="phone" label="手机号" align="center">
         <!-- 脱敏显示 -->
         <template slot-scope="scope">
           {{ scope.row.phone | replacestar }}
         </template>
       </el-table-column>
-      <el-table-column label="修改账号">
+      <el-table-column label="修改账号" align="center">
         <!-- 单次删除需要scope来传数据 -->
         <template slot-scope="scope">
           <el-button
@@ -218,7 +225,7 @@
           </el-button>
         </template>
       </el-table-column>
-      <el-table-column label="修改密码">
+      <el-table-column label="修改密码" align="center">
         <template slot-scope="scope">
           <el-button
             size="mini"
@@ -251,7 +258,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="删除账号">
+      <el-table-column label="删除账号" align="center">
         <template slot-scope="scope">
           <el-button
             size="medium"
@@ -832,9 +839,9 @@ export default {
 }
 //
 // 使图标对齐文字
-.buttonMove {
-  margin-left: 20px;
-}
+// .buttonMove {
+// margin-left: 20px;
+// }
 .search {
   width: 40vh;
   height: 100px;
