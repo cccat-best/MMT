@@ -15,12 +15,20 @@
         margin-right: 10px;
         color: blue;
       "
-    >数据
+    >
+      数据
     </div>
     <div
       @click="co"
-      style="height: 5px;position:fixed; left:500px;width: 150px; color: blue"
-    >cookie
+      style="
+        height: 5px;
+        position: fixed;
+        left: 500px;
+        width: 150px;
+        color: blue;
+      "
+    >
+      cookie
     </div>
     <!--  -->
 
