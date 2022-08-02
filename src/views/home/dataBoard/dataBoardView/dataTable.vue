@@ -70,8 +70,10 @@
         sortable="custom"
       >
       </el-table-column>
+      <!-- 姓名 -->
       <el-table-column prop="name" label="姓名" width="100px" align="center">
       </el-table-column>
+      <!-- 班级 -->
       <el-table-column
         prop="className"
         label="班级"
@@ -92,6 +94,7 @@
       </el-table-column>
       <!-- :filter-multiple="false"过滤器单选 -->
       <!-- :filter-method="filterPermission" 前端过滤 -->
+      <!-- 社团志愿次序 -->
       <el-table-column
         width="160px"
         align="center"
@@ -106,6 +109,7 @@
         :filter-multiple="false"
       >
       </el-table-column>
+      <!-- 部门志愿次序 -->
       <el-table-column
         width="160px"
         align="center"
@@ -120,6 +124,7 @@
         :filter-multiple="false"
       >
       </el-table-column>
+      <!-- 当前志愿部门 -->
       <el-table-column
         width="160px"
         align="center"
@@ -134,6 +139,7 @@
         :filter-multiple="false"
       >
       </el-table-column>
+      <!-- 当前志愿状态 -->
       <el-table-column
         width="160px"
         align="center"
@@ -148,6 +154,7 @@
         :filter-multiple="false"
       >
       </el-table-column>
+      <!-- 下一场面试时间 -->
       <el-table-column
         width="180px"
         align="center"
@@ -162,6 +169,7 @@
         :filter-multiple="false"
       >
       </el-table-column>
+      <!-- 下一场面试地点 -->
       <el-table-column
         width="180px"
         align="center"
@@ -176,6 +184,7 @@
         :filter-multiple="false"
       >
       </el-table-column>
+      <!-- 修改 -->
       <el-table-column label="修改" align="center" fixed="right">
         <!-- 单次删除需要scope来传数据 -->
         <template slot-scope="scope">
@@ -190,6 +199,7 @@
           </el-button>
         </template>
       </el-table-column>
+      <!-- 简历 -->
       <el-table-column label="简历" align="center" fixed="right">
         <template slot-scope="scope">
           <el-button
