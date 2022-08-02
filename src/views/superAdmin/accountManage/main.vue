@@ -328,6 +328,8 @@ import batchOperateDialog from './dialog/batchOperateDialog.vue' //批量修改
 export default {
   data() {
     return {
+      // 补一个未知报错bug,不知道哪来的none未定义
+      none: 0,
       // 批量修改图标颜色
       batchColorChange1: '#666666', //第一个按钮
       batchColorChange2: '#666666', //第二个按钮

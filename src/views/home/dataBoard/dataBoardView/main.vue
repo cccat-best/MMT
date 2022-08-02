@@ -54,15 +54,26 @@
       @selection-change="handleSelectionChange"
     >
       <!-- 注意上面有tableList -->
-      <el-table-column type="selection" fixed> </el-table-column>
+      <el-table-column label="ID" width="120px" fixed>
+        <template slot-scope="scope">
+          {{ scope.$index+1+(currentPage-1)*pagesize }}
+        </template>
+      </el-table-column>
       <el-table-column prop="studentId" label="学号" sortable="custom" fixed>
       </el-table-column>
       <el-table-column prop="name" label="姓名"> </el-table-column>
+      <el-table-column prop="class" label="班级"> </el-table-column>
+      <el-table-column prop="phone" label="手机号">
+        <!-- 脱敏显示 -->
+        <template slot-scope="scope">
+          {{ scope.row.phone | replacestar }}
+        </template>
+      </el-table-column>
       <!-- :filter-multiple="false"过滤器单选 -->
       <!-- :filter-method="filterPermission" 前端过滤 -->
       <el-table-column
         prop="permission"
-        label="用户权限"
+        label="社团志愿次序"
         sortable="custom"
         :filters="[
           { text: 'committee', value: 'committee' },
@@ -72,11 +83,29 @@
         :filter-multiple="false"
       >
       </el-table-column>
-      <el-table-column prop="phone" label="手机号">
-        <!-- 脱敏显示 -->
-        <template slot-scope="scope">
-          {{ scope.row.phone | replacestar }}
-        </template>
+      <el-table-column
+        prop="permission"
+        label="部门志愿次序"
+        sortable="custom"
+        :filters="[
+          { text: 'committee', value: 'committee' },
+          { text: 'member', value: 'member' }
+        ]"
+        column-key="permission"
+        :filter-multiple="false"
+      >
+      </el-table-column>
+      <el-table-column
+        prop="permission"
+        label="当前志愿部门"
+        sortable="custom"
+        :filters="[
+          { text: 'committee', value: 'committee' },
+          { text: 'member', value: 'member' }
+        ]"
+        column-key="permission"
+        :filter-multiple="false"
+      >
       </el-table-column>
       <el-table-column label="修改账号">
         <!-- 单次删除需要scope来传数据 -->
@@ -454,6 +483,7 @@ export default {
           } else {
             this.tableData = res.data.data.studentList
             this.total = res.data.data.total
+            console.log(this.tableData)
           }
           // 通知所有相关项更新数据，因为他们使用tableDataChange而不是tableData
           this.orderChange(this.tableData)
