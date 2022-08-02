@@ -42,7 +42,7 @@
       height="65.7vh"
       :row-style="{ height: '0' }"
       :cell-style="{ padding: '0px' }"
-      :header-cell-style="{ background: '#282e38',color: '#ffffff' }"
+      :header-cell-style="{ background: '#282e38', color: '#ffffff' }"
       ref="multipleTable"
       :data="tableList"
       @sort-change="sortTableFun"
@@ -245,8 +245,7 @@ export default {
     }
   },
   // 注册组件（一键复制）
-  components: {
-  },
+  components: {},
   created() {
     //获取数据
     this.searchKeyWord()
