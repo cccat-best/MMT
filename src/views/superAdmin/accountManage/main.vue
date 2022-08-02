@@ -887,14 +887,14 @@ export default {
 .el-table {
   padding: 0px;
   //修改表格的滚动条
- /deep/.el-table__body-wrapper::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
-}
-//滚动条的滑块
-/deep/.el-table__body-wrapper::-webkit-scrollbar-thumb {
-  background-color: #a1a3a9;
-  border-radius: 8px;
-}
+  /deep/.el-table__body-wrapper::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  //滚动条的滑块
+  /deep/.el-table__body-wrapper::-webkit-scrollbar-thumb {
+    background-color: #a1a3a9;
+    border-radius: 8px;
+  }
 }
 </style>
