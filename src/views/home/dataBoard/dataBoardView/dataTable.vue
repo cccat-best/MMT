@@ -47,7 +47,7 @@
         color: '#ffffff',
         padding: '5px'
       }"
-      ref="multipleTable"
+      ref="filterTable"
       :data="tableList"
       @sort-change="sortTableFun"
       @filter-change="filterChange"
@@ -237,12 +237,6 @@ import data2 from '../../../superAdmin/accountManage/data copy'
 export default {
   data() {
     return {
-      // 批量修改图标颜色
-      batchColorChange1: '#666666', //第一个按钮
-      batchColorChange2: '#666666', //第二个按钮
-      showactive1: 0, //第一个按钮
-      showactive2: 0, //第二个按钮
-
       // 关键字搜索
       organizationId: 2, ////组织名不知道，需要询问////////////////////////
       searchWord: '',
@@ -258,13 +252,9 @@ export default {
       total: 100,
       // 表格数据
       tableData: [...data], //模拟数据，发请求会获取数据覆盖它
-      tableDataChange: [], //排序、筛选之后的数据
-      //多选选中记录,只能记录单页，需要改进
-      multipleSelection: []
+      tableDataChange: [] //排序、筛选之后的数据
     }
   },
-  // 注册组件
-  components: {},
   created() {
     //获取数据
     this.searchKeyWord()
