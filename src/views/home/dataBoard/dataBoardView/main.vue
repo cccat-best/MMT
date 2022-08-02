@@ -78,7 +78,7 @@
       <el-table-column prop="phone" label="手机号" width="120px" align="center">
         <!-- 脱敏显示 -->
         <template slot-scope="scope">
-          {{ scope.row.phone | replacestar }}
+          {{ scope.row.phone }}
         </template>
       </el-table-column>
       <!-- :filter-multiple="false"过滤器单选 -->
