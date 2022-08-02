@@ -296,9 +296,9 @@
     <manyDialog ref="manyDialog" @deleteAlign="deleteAlign" />
     <!-- 批量操作弹窗 -->
     <!-- 自定义事件，批量删除和修改同步 -->
+    <!-- @myBatchOperateChange="batchOperateChange" -->
     <batchOperateDialog
       ref="batchOperateDialog"
-      @myBatchOperateChange="batchOperateChange"
       @myBatchOperateDelete="batchOperateDelete"
     />
     <!-- 页码 -->
@@ -401,14 +401,14 @@ export default {
             this.$message.error(err)
           }
         )
-      this.$http.get('api/set-cookie/b').then(
-        (res) => {
-          this.$message.success('get获取cookie正常' + res.data.message)
-        },
-        (err) => {
-          this.$message.error(err)
-        }
-      )
+      // this.$http.get('api/set-cookie/b').then(
+      //   (res) => {
+      //     this.$message.success('get获取cookie正常' + res.data.message)
+      //   },
+      //   (err) => {
+      //     this.$message.error(err)
+      //   }
+      // )
       // this.$http.post('api/account/manage/all',{organizationId: 2})
       // .then(
       //   (res) => {
@@ -437,15 +437,15 @@ export default {
       else this.showactive2 = 0
     },
 
-    // 批量修改同步
-    batchOperateChange(datalist) {
-      // console.log('批量修改同步')
-      console.log(datalist)
-    },
+    // // 批量修改同步
+    // batchOperateChange(datalist) {
+    //   // console.log('批量修改同步')
+    //   console.log(datalist)
+    // },
     // 批量删除同步
     batchOperateDelete(studentListData) {
       // console.log('批量删除同步')
-      console.log(studentListData)
+      // console.log(studentListData)
       // 遍历要删除的数组名单
       // 看看要不要写箭头函数
       studentListData.forEach((element) => {
@@ -453,7 +453,7 @@ export default {
         // console.log(element)
         const deleteIndex = this.tableData.findIndex((item) => {
           // 看看要不要写===
-          console.log(item.studentId === element.studentId)
+          // console.log(item.studentId === element.studentId)
           return item.studentId == element.studentId
         })
         // console.log(deleteIndex)
@@ -464,7 +464,7 @@ export default {
       })
       // 对currentPage做一个判断
       // 如果整页没删完，保持在当前页，如果删完了返回上一页（除非删的是第一页）
-      console.log('=============length')
+      // console.log('=============length')
       // console.log(studentListData.length)
       const totalPage = Math.ceil((this.total - 1) / this.pagesize) // 总页数
       let pagelength = this.pagesize
@@ -696,7 +696,7 @@ export default {
     handleSelectionChange(val) {
       this.multipleSelection = val
       /////////////////直接获取选中数据///////////////////////////
-      console.log(this.multipleSelection)
+      // console.log(this.multipleSelection)
     },
     //修改账号弹窗
     DialogVisibleChangeAccount(data) {
@@ -719,7 +719,7 @@ export default {
     },
     //删除 弹窗
     handleDelete(index, data) {
-      console.log(data)
+      // console.log(data)
       // console.log(data.__ob__)
       // console.log(index)
       this.$refs.manyDialog.dialogVisibleDeleteAlign = true

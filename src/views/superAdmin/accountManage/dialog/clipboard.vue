@@ -56,7 +56,7 @@ export default {
   data() {
     return {
       //邀请码
-      invitationCode: 'abcdefg',
+      invitationCode: 'ABCDEFG',
       //邀请码弹窗判断
       DialogVisibleJoin: false,
       // 当前时间
