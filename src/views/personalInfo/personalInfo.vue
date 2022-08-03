@@ -139,7 +139,7 @@
             >
             <el-button
               type="primary"
-              @click="dialogForm3Visible = true"
+              @click="joinClubVisible = true"
               style="margin-top: 10px"
               >加入更多组织</el-button
             >
@@ -169,7 +169,7 @@
               >
               <el-col :span="6"
                 ><div class="">
-                  <el-button type="text" @click="dialogForm2Visible = true"
+                  <el-button type="text" @click="changePhoneVisible = true"
                     >修改手机号</el-button
                   >
                 </div></el-col
@@ -179,20 +179,21 @@
               ><el-col :span="6"><div class="">密码</div></el-col>
               <el-col :span="6"
                 ><div class="">
-                  <el-button type="text" @click="dialogForm1Visible = true"
+                  <el-button type="text" @click="changePassVisible = true"
                     >更改密码</el-button
                   >
                 </div></el-col
               ></el-col
             >
-            <el-button type="primary" @click="getInvitationCodeRequest()"
+            <!-- 获取邀请码，为了方便测试写的 -->
+            <!-- <el-button type="primary" @click="getInvitationCodeRequest()"
               >生成邀请码</el-button
-            >
+            > -->
           </el-row>
         </div>
 
         <!-- 修改密码弹出框 -->
-        <el-dialog title="更改密码" :visible.sync="dialogForm1Visible">
+        <el-dialog title="更改密码" :visible.sync="changePassVisible">
           <el-form :model="pwdForm" ref="pwdForm" :rules="rules1">
             <el-form-item label="原密码" prop="password">
               <el-input
@@ -219,14 +220,14 @@
             </el-form-item>
           </el-form>
           <div slot="footer" class="dialog-footer">
-            <el-button @click="dialogForm1Visible = false">取 消</el-button>
+            <el-button @click="changePassVisible = false">取 消</el-button>
             <el-button type="primary" @click="changePass('pwdForm')"
               >确 定</el-button
             >
           </div>
         </el-dialog>
         <!-- 更改手机号弹出框 -->
-        <el-dialog title="修改手机号" :visible.sync="dialogForm2Visible">
+        <el-dialog title="修改手机号" :visible.sync="changePhoneVisible">
           <el-form :model="phoneForm" ref="phoneForm" :rules="rules2">
             <el-form-item label="原手机号" prop="phone">
               <el-input v-model="phoneForm.phone" autocomplete="off"></el-input>
@@ -240,14 +241,14 @@
             </el-form-item>
           </el-form>
           <div slot="footer" class="dialog-footer">
-            <el-button @click="dialogForm2Visible = false">取 消</el-button>
+            <el-button @click="changePhoneVisible = false">取 消</el-button>
             <el-button type="primary" @click="changePhone('phoneForm')"
               >确 定</el-button
             >
           </div>
         </el-dialog>
         <!-- 加入组织弹出框 -->
-        <el-dialog title="加入更多组织" :visible.sync="dialogForm3Visible">
+        <el-dialog title="加入更多组织" :visible.sync="joinClubVisible">
           <el-form :model="jmoForm" ref="jmoForm" :rules="rules3">
             <el-form-item label="组织邀请码" prop="invitationCode">
               <el-input
@@ -257,7 +258,7 @@
             </el-form-item>
           </el-form>
           <div slot="footer" class="dialog-footer">
-            <el-button @click="dialogForm3Visible = false">取 消</el-button>
+            <el-button @click="joinClubVisible = false">取 消</el-button>
             <el-button type="primary" @click="joinClub('jmoForm')"
               >确 定</el-button
             >
@@ -301,31 +302,32 @@ export default {
       squareUrl:
         'https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png',
       sizeList: ['large', 'medium', 'small'],
-      studentId: '20212403',
-      name: '李政东',
-      phone: '19179755936',
-      organizations: [
-        {
-          id: 3,
-          name: '科技协会',
-          description: null,
-          avatarUrl: null
-        },
-        {
-          id: 2,
-          name: '学生会',
-          description: null,
-          avatarUrl: null
-        }
-      ],
-
-      loginOrganizationName: '科技协会',
-      loginOrganizationId: '2',
+      studentId: '',
+      name: '',
+      phone: '',
+      organizations: [],
+      loginOrganizationName: '',
+      loginOrganizationId: '',
       permission: '',
       cookie: '',
       organizationName: '',
       organizationId: '',
-
+      changePassVisible: false,
+      changePhoneVisible: false,
+      joinClubVisible: false,
+      isSuper: false,
+      pwdForm: {
+        password: '',
+        newPassword: '',
+        confirmNewPassword: ''
+      },
+      phoneForm: {
+        phone: '',
+        newPhone: ''
+      },
+      jmoForm: {
+        invitationCode: ''
+      },
       rules1: {
         password: [
           { required: true, message: '请输入原密码', trigger: 'blur' },
@@ -356,69 +358,71 @@ export default {
           { required: true, message: '请输入邀请码', trigger: 'blur' },
           { message: '邀请码不正确', trigger: 'blur' }
         ]
-      },
-      dialogForm1Visible: false,
-      dialogForm2Visible: false,
-      dialogForm3Visible: false,
-      isSuper: false,
-
-      pwdForm: {
-        password: '',
-        newPassword: '',
-        confirmNewPassword: ''
-      },
-      phoneForm: {
-        phone: '',
-        newPhone: ''
-      },
-      jmoForm: {
-        invitationCode: ''
       }
     }
   },
   async created() {
     await this.getLoginStatus()
+    if (this.permission == 'super_admin') {
+      this.isSuper = true
+    }
+    // let x = document.getElementsByClassName('.el-dropdown-menu__item')
+    // x[0].style = ''
+    // console.log(x)
   },
 
   methods: {
-    getLoginStatus() {
+    async getLoginStatus() {
       const url = '/api/login-status'
-      this.$http
-        .get(url)
-        .then((res) => {
-          this.loginOrganizationName = res.data.data.loginOrganizationName
-          this.loginOrganizationId = res.data.data.loginOrganizationId
-          this.organizations = res.data.data.organizations
-          this.permission = res.data.data.permission
-          this.phone = res.data.data.phone
-          this.name = res.data.data.name
-          this.studentId = res.data.data.studentId
-          if (this.permission == 'super_admin') {
-            this.isSuper = true
-          } else {
-            this.isSuper = false
+      try {
+        let { data: res } = await this.$http.get(url)
+        switch (res.code) {
+          case '00000': {
+            let { data } = res
+            this.loginOrganizationName = data.loginOrganizationName
+            this.organizationId = data.loginOrganizationId
+            this.organizations = data.organizations
+            this.permission = data.permission
+            this.phone = data.phone
+            this.name = data.name
+            this.studentId = data.studentId
+            break
           }
-        })
-        .catch((err) => {
-          console.log(err)
-        })
+          default: {
+            throw new Error(JSON.stringify(res))
+          }
+        }
+      } catch (err) {
+        console.log('出错了', err.message)
+      }
     },
-    changeOrganization(command) {
+    async changeOrganization(command) {
       const organization = {
         organization: command
       }
       const url = '/api/login/change'
-      this.$http.post(url, organization).then((res) => {
-        this.loginOrganizationName = res.data.data.loginOrganizationName
-        this.loginOrganizationId = res.data.data.loginOrganizationId
-        this.organizations = res.data.data.organizations
-        this.permission = res.data.data.permission
-        this.phoneForm.phone = res.data.data.phone
-        this.name = res.data.data.name
-        this.studentId = res.data.data.studentId
-      })
+      try {
+        let { data: res } = await this.$http.post(url, organization)
+        switch (res.code) {
+          case '00000': {
+            let { data } = res
+            this.loginOrganizationName = data.loginOrganizationName
+            this.organizationId = data.loginOrganizationId
+            this.organizations = data.organizations
+            this.permission = data.permission
+            this.phone = data.phone
+            this.name = data.name
+            this.studentId = data.studentId
+            break
+          }
+          default: {
+            throw new Error(JSON.stringify(res))
+          }
+        }
+      } catch (err) {
+        console.log('出错了', err.message)
+      }
     },
-
     quitLogin() {
       axios({
         method: 'delete',
@@ -442,19 +446,19 @@ export default {
     goBack() {
       this.$router.go(-1)
     },
-
-    getInvitationCodeRequest() {
-      this.$http.get('api/organization/invitation-code').then(
-        (res) => {
-          if (res.data.code == '00000') {
-            this.invitationCode = res.data.data.invitationCode
-          }
-        },
-        (err) => {
-          this.$message.error(err)
-        }
-      )
-    },
+    //获取邀请码，为了方便测试写的
+    // getInvitationCodeRequest() {
+    //   this.$http.get('api/organization/invitation-code').then(
+    //     (res) => {
+    //       if (res.data.code == '00000') {
+    //         this.invitationCode = res.data.data.invitationCode
+    //       }
+    //     },
+    //     (err) => {
+    //       this.$message.error(err)
+    //     }
+    //   )
+    // },
     changePass(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
@@ -466,12 +470,12 @@ export default {
                 location.reload()
                 alert('修改成功')
               } else {
-                this.dialogForm1Visible = false
+                this.changePassVisible = false
                 alert(res.data.message)
               }
             })
             .catch((err) => {
-              console.log(err.data.message)
+              console.log('出错了', err.message)
             })
         } else {
           return false
@@ -489,12 +493,12 @@ export default {
                 location.reload()
                 alert('修改成功')
               } else {
-                this.dialogForm2Visible = false
+                this.changePhoneVisible = false
                 alert(res.data.message)
               }
             })
             .catch((err) => {
-              console.log(err.data.message)
+              console.log('出错了', err.message)
             })
         } else {
           return false
@@ -512,12 +516,12 @@ export default {
                 location.reload()
                 alert('加入成功')
               } else {
-                this.dialogForm3Visible = false
+                this.joinClubVisible = false
                 alert(res.data.message)
               }
             })
             .catch((err) => {
-              console.log(err.data.message)
+              console.log('出错了', err.message)
             })
         } else {
           return false

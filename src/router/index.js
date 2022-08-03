@@ -29,13 +29,12 @@ const routes = [
         path: 'reply',
         component: () =>
           import('../views/home/interviewReply/interviewReply.vue')
-      },
-
+      }
     ]
   },
   {
-    path:'/personalInfo',
-    component: () => import('../views/personalInfo/personalInfo.vue'),
+    path: '/personalInfo',
+    component: () => import('../views/personalInfo/personalInfo.vue')
   },
   {
     path: '/superAdmin',
