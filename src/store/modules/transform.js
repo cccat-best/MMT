@@ -13,7 +13,7 @@ export default {
       state.all = item
     },
     // 清除函数
-    clearData() {
+    clearData(state) {
       state.all.Id = ''
       state.all.psw = ''
     }

@@ -84,6 +84,7 @@ export default {
     console.log(this.all.psw)
     this.loginForm.studentId = this.all.Id
     this.loginForm.password = this.all.psw
+
   },
   methods: {
     goRegister() {
