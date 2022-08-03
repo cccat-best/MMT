@@ -20,12 +20,12 @@
 <script>
 export default {
   name: 'changeDialog',
-  data(){
+  data() {
     return {
       // 控制修改界面弹窗
       changeDialogVisible: false,
       // 学号,由主页传过来
-      studentId:'',
+      studentId: ''
     }
   }
 }

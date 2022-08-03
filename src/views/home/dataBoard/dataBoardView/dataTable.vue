@@ -279,9 +279,9 @@ export default {
     this.orderChange(this.tableData)
   },
   components: {
-  // mySelectHeader
-  resumeDialog,
-  changeDialog,
+    // mySelectHeader
+    resumeDialog,
+    changeDialog
   },
   methods: {
     ...mapMutations('dataBoard', [
@@ -293,15 +293,15 @@ export default {
       'updateNextTimeFilter'
     ]),
     // 修改弹窗
-    openChangeDialog(data){
-      this.$refs.changeDialog.changeDialogVisible=true
+    openChangeDialog(data) {
+      this.$refs.changeDialog.changeDialogVisible = true
       console.log(data)
-      this.$refs.changeDialog.studentId=true
+      this.$refs.changeDialog.studentId = true
     },
     // 简历弹窗
-    openResumeDialog(){
-      this.$refs.resumeDialog.resumeDialogVisible=true
-      this.$refs.resumeDialog.studentId=true
+    openResumeDialog() {
+      this.$refs.resumeDialog.resumeDialogVisible = true
+      this.$refs.resumeDialog.studentId = true
       console.log(data)
     },
     // 测试数据更新时，表单数据是否同步更新了

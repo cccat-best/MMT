@@ -20,12 +20,12 @@
 <script>
 export default {
   name: 'resumeDialog',
-  data(){
+  data() {
     return {
       // 控制简历界面弹窗
       resumeDialogVisible: false,
       // 学号,由主页传过来
-      studentId:'',
+      studentId: ''
     }
   }
 }
