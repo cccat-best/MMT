@@ -44,6 +44,7 @@
   </el-container>
 </template>
 <script>
+import { mapMutations } from 'vuex'
 import { mapState } from 'vuex'
 export default {
   name: 'Login',
@@ -63,29 +64,18 @@ export default {
     }
   },
   watch: {
-    // all: {
-    //   handler(newVal,oldVal) {
-    //     console.log(newVal);
-    //     console.log(oldVal);
-    //     this.loginForm.studentId = this.all.Id
-    //     this.loginForm.password = this.all.psw
-    //   },
-    //   deep: true
-    // }
-    // '$store.state.all':function(newVal){
-    //     console.log(newVal);
-    // }
+
   },
   computed: {
-    ...mapState('transform', ['all'])
+    ...mapState('transform', ['all']),
   },
   mounted() {
-    console.log(this.all.Id)
-    console.log(this.all.psw)
     this.loginForm.studentId = this.all.Id
     this.loginForm.password = this.all.psw
+    this.clearData()
   },
   methods: {
+    ...mapMutations('transform', ['clearData']),
     goRegister() {
       this.$router.push('/register')
     },
