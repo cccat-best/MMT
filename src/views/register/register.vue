@@ -130,7 +130,7 @@ export default {
     },
     toRegister() {
       this.$http
-        .post('http://127.0.0.1:38080/register/b', this.registerForm)
+        .post('http://127.0.0.1:38080/register', this.registerForm)
         .then((res) => {
           console.log(res.data.code)
         })
