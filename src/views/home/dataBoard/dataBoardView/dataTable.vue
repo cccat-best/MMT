@@ -1,9 +1,11 @@
 <template>
   <div class="content">
     <!-- 测试更新数据 -->
-    <!-- <div
+    <div
       @click="de"
       style="
+      position:fixed
+      left:50px
         float: left;
         height: 5px;
         width: 150px;
@@ -11,14 +13,14 @@
         color: blue;
       "
     >
-      测试更新数据,后面完工时记得删掉这个
-    </div>
+      测试
+      <!-- </div>
     <div
       @click="co"
       style="float: left; height: 5px; width: 150px; color: blue"
     >
-      测试cookie,后面完工时记得删掉这个
-    </div> -->
+    cookie -->
+    </div>
     <!--  -->
 
     <!-- 搜索区域 -->
@@ -71,20 +73,22 @@
       >
       </el-table-column>
       <!-- 姓名 -->
-      <el-table-column prop="name" label="姓名" width="100px" align="center">
+      <el-table-column
+        prop="name"
+        label="姓名"
+        width="100px"
+        align="center"
+        sortable="custom"
+      >
       </el-table-column>
       <!-- 班级 -->
-      <el-table-column
-        prop="className"
-        label="班级"
-        width="120px"
-        align="center"
-        :filters="[
-          { text: '信安1班', value: 'committee' },
-          { text: '信安2班', value: 'member' }
-        ]"
-        :filter-multiple="false"
-      >
+      <el-table-column prop="className" width="120px" align="center">
+        <template slot="header">
+          <my-select-header
+            :filterCondition="classNameFilter"
+            :myLabel="classNameLabel"
+          ></my-select-header>
+        </template>
       </el-table-column>
       <el-table-column prop="phone" label="手机号" width="120px" align="center">
         <!-- 脱敏显示 -->
@@ -92,23 +96,17 @@
           {{ scope.row.phone }}
         </template>
       </el-table-column>
-      <!-- :filter-multiple="false"过滤器单选 -->
-      <!-- :filter-method="filterPermission" 前端过滤 -->
+
       <!-- 社团志愿次序 -->
-      <el-table-column
-        width="160px"
-        align="center"
-        prop="permission"
-        label="社团志愿次序"
-        sortable="custom"
-        :filters="[
-          { text: 'committee', value: 'committee' },
-          { text: 'member', value: 'member' }
-        ]"
-        column-key="permission"
-        :filter-multiple="false"
-      >
+      <el-table-column width="160px" align="center" prop="organizationOrder">
+        <template slot="header">
+          <my-select-header
+            :filterCondition="organizationOrderFilter"
+            :myLabel="organizationOrderLabel"
+          ></my-select-header>
+        </template>
       </el-table-column>
+
       <!-- 部门志愿次序 -->
       <el-table-column
         width="160px"
@@ -116,14 +114,11 @@
         prop="permission"
         label="部门志愿次序"
         sortable="custom"
-        :filters="[
-          { text: 'committee', value: 'committee' },
-          { text: 'member', value: 'member' }
-        ]"
+        :filters.sync="departmentOrderFilter"
         column-key="permission"
-        :filter-multiple="false"
       >
       </el-table-column>
+
       <!-- 当前志愿部门 -->
       <el-table-column
         width="160px"
@@ -139,6 +134,7 @@
         :filter-multiple="false"
       >
       </el-table-column>
+
       <!-- 当前志愿状态 -->
       <el-table-column
         width="160px"
@@ -154,6 +150,7 @@
         :filter-multiple="false"
       >
       </el-table-column>
+
       <!-- 下一场面试时间 -->
       <el-table-column
         width="180px"
@@ -169,6 +166,7 @@
         :filter-multiple="false"
       >
       </el-table-column>
+
       <!-- 下一场面试地点 -->
       <el-table-column
         width="180px"
@@ -184,6 +182,7 @@
         :filter-multiple="false"
       >
       </el-table-column>
+
       <!-- 修改 -->
       <el-table-column label="修改" align="center" fixed="right">
         <!-- 单次删除需要scope来传数据 -->
@@ -199,6 +198,7 @@
           </el-button>
         </template>
       </el-table-column>
+
       <!-- 简历 -->
       <el-table-column label="简历" align="center" fixed="right">
         <template slot-scope="scope">
@@ -215,6 +215,7 @@
         </template>
       </el-table-column>
     </el-table>
+
     <!-- 页码 -->
     <el-pagination
       background
@@ -234,7 +235,20 @@
 //引入表单全部数据,这是模拟数据，后期应该会删掉
 import data from '../dataBoardView/data'
 import data2 from '../../../superAdmin/accountManage/data copy'
+import mySelectHeader from './selectHeader.vue'
+import { mapState } from 'vuex'
 export default {
+  name: 'dataBoardTable',
+  computed: {
+    ...mapState('dataBoard', [
+      'classNameFilter',
+      'organizationOrderFilter',
+      'departmentOrderFilter',
+      'interviewStatusFilter',
+      'nextPlaceFilter',
+      'nextTimeFilter'
+    ])
+  },
   data() {
     return {
       // 关键字搜索
@@ -252,7 +266,16 @@ export default {
       total: 100,
       // 表格数据
       tableData: [...data], //模拟数据，发请求会获取数据覆盖它
-      tableDataChange: [] //排序、筛选之后的数据
+      tableDataChange: [], //排序、筛选之后的数据
+
+      // 表头名
+      classNameLabel: '班级',
+      organizationOrderLabel: '社团志愿次序',
+      departmentOrderLabel: '部门志愿次序',
+      wishDepartmentLabel: '部门志愿筛选项',
+      interviewStatus: '当前志愿状态',
+      nextPlaceLabel: '下一场面试地点',
+      nextTimeLabel: '下一次面试时间'
     }
   },
   created() {
@@ -260,6 +283,9 @@ export default {
     this.searchKeyWord()
     //渲染并分页
     this.orderChange(this.tableData)
+  },
+  components: {
+    mySelectHeader
   },
   methods: {
     // 测试数据更新时，表单数据是否同步更新了
@@ -270,9 +296,12 @@ export default {
       this.$message.success('测试更新数据，后面完工时记得删掉这个')
       // this.tableData = this.tableData.slice(3)
       this.tableData = data2
-      this.orderChange(this.tableData)
-      // 矫正顺序
-      this.orderChange(this.tableData)
+      // this.orderChange(this.tableData)
+      this.classNameFilter = [
+        { text: 'committee', value: 'committee' },
+        { text: 'member', value: 'member' },
+        { text: '筛选2', value: 'member' }
+      ]
     },
     // 测试cookie
     co() {
