@@ -91,10 +91,6 @@
         </template>
       </el-table-column>
       <el-table-column prop="phone" label="手机号" width="120px" align="center">
-        <!-- 脱敏显示 -->
-        <template slot-scope="scope">
-          {{ scope.row.phone }}
-        </template>
       </el-table-column>
 
       <!-- 社团志愿次序 -->
@@ -113,7 +109,6 @@
         align="center"
         prop="permission"
         label="部门志愿次序"
-        sortable="custom"
         :filters.sync="departmentOrderFilter"
         column-key="permission"
       >
@@ -125,13 +120,6 @@
         align="center"
         prop="permission"
         label="当前志愿部门"
-        sortable="custom"
-        :filters="[
-          { text: 'committee', value: 'committee' },
-          { text: 'member', value: 'member' }
-        ]"
-        column-key="permission"
-        :filter-multiple="false"
       >
       </el-table-column>
 
@@ -141,13 +129,11 @@
         align="center"
         prop="permission"
         label="当前志愿状态"
-        sortable="custom"
         :filters="[
           { text: 'committee', value: 'committee' },
           { text: 'member', value: 'member' }
         ]"
         column-key="permission"
-        :filter-multiple="false"
       >
       </el-table-column>
 
@@ -321,89 +307,10 @@ export default {
           }
         )
     },
-    // // 批量修改同步
-    // batchOperateChange(datalist) {
-    //   // console.log('批量修改同步')
-    //   console.log(datalist)
-    // },
-    // 批量删除同步
-    batchOperateDelete(studentListData) {
-      // console.log('批量删除同步')
-      // console.log(studentListData)
-      // 遍历要删除的数组名单
-      // 看看要不要写箭头函数
-      studentListData.forEach((element) => {
-        // 找到每个名单元素对应index
-        // console.log(element)
-        const deleteIndex = this.tableData.findIndex((item) => {
-          // 看看要不要写===
-          // console.log(item.studentId === element.studentId)
-          return item.studentId == element.studentId
-        })
-        // console.log(deleteIndex)
-        // 如果是deleteIndex-1，会删掉最后一条
-        // 所以注意要及时关闭弹窗，否则继续点确认会误删
-        this.tableData.splice(deleteIndex, 1)
-        // console.log(this.tableData[0])
-      })
-      // 对currentPage做一个判断
-      // 如果整页没删完，保持在当前页，如果删完了返回上一页（除非删的是第一页）
-      // console.log('=============length')
-      // console.log(studentListData.length)
-      const totalPage = Math.ceil((this.total - 1) / this.pagesize) // 总页数
-      let pagelength = this.pagesize
-      if (this.currentPage == totalPage) {
-        pagelength = this.total - (this.currentPage - 1) * this.pagesize
-      }
-      if (studentListData.length == pagelength) {
-        this.currentPage = this.currentPage - 1
-      }
-      this.currentPage = this.currentPage < 1 ? 1 : this.currentPage
-
-      // console.log(studentListData.length == this.pagesize)
-      // console.log(this.currentPage)
-      // 分页并根据已有order排序
-      this.orderChange(this.tableData, this.currentPage)
-      // 再来一次权限排序，顺序改回去，
-      this.orderChange(this.tableData, this.currentPage)
-      // 根据已有permissionSelect筛选
-      this.filterChangeData(this.permissionSelect)
-
-      // this.tableData.filter(()=>{
-      // })
-    },
-    //单行删除同步,达到页面删除效果，仅靠发请求是没办法从视觉上删除的
-    deleteAlign(index) {
-      // console.log("单行删除同步")
-      const deleteIndex = (this.currentPage - 1) * this.pagesize + index
-      // 删一个
-      this.tableData.splice(deleteIndex, 1)
-      // console.log(deleteIndex)
-      // 如果是deleteIndex保持着，会删掉下一个顶上这个位置的那一条
-      // 所以要及时退出弹窗
-      // 同步更新
-      // 为了在删除最后一页的最后一条数据时能成功跳转回最后一页的上一页
-      // const totalPage = Math.ceil((this.total - 1) / this.pagesize) // 总页数
-      const frontOne = this.pagesize * (this.currentPage - 1)
-      if (frontOne == this.total - 1) {
-        this.currentPage--
-      }
-      // this.currentPage =
-      //   this.currentPage > totalPage ? totalPage : this.currentPage
-      this.currentPage = this.currentPage < 1 ? 1 : this.currentPage
-
-      // 分页并根据已有order排序
-      this.orderChange(this.tableData, this.currentPage)
-      // 再来一次权限排序，顺序改回去，
-      // 由于未知原因，权限排序是可以局部安学号排序的
-      this.orderChange(this.tableData, this.currentPage)
-      // 根据已有permissionSelect筛选
-      this.filterChangeData(this.permissionSelect)
-    },
-
     // 触发排序
     sortTableFun(column) {
       //用户点击这一列的上下排序按钮时，触发的函数
+      console.log(column)
       this.column = column.prop //该方法获取到当前列绑定的prop字段名赋值给一个变量，之后这个变量做为入参传给后端
       if (column.prop) {
         //该列有绑定prop字段走这个分支
@@ -525,80 +432,11 @@ export default {
       // this.currentPage = 1
       this.pageCutDouwn(this.tableDataChange)
     },
-
-    // 批量操作，先传输选中数据
-    pushMultipleSelectionData() {
-      this.$refs.batchOperateDialog.multipleSelection = this.multipleSelection
-    },
-    // 批量修改权限弹窗
-    showDialogVisible() {
-      // Object.assign(this.permission,data)
-      this.$refs.batchOperateDialog.dialogVisible = true
-      this.$refs.batchOperateDialog.organizationId = this.organizationId
-      this.pushMultipleSelectionData() //批量传输选中数据
-    },
-    //批量删除弹窗
-    deleteDialogVisible() {
-      this.$refs.batchOperateDialog.dialogVisibleDelete = true
-      this.$refs.batchOperateDialog.organizationId = this.organizationId
-      this.pushMultipleSelectionData() //批量传输选中数据
-    },
-    //邀请码弹窗
-    DialogVisibleJoin() {
-      this.$refs.clipBoard.DialogVisibleJoin = true
-      this.$refs.clipBoard.getInvitationCode()
-    },
-    //多选选中添加到记录中
-    handleSelectionChange(val) {
-      this.multipleSelection = val
-      /////////////////直接获取选中数据///////////////////////////
-      // console.log(this.multipleSelection)
-    },
-    //修改账号弹窗
-    DialogVisibleChangeAccount(data) {
-      // console.log(data)
-      //不够优雅，待改进
-      this.$refs.manyDialog.DialogVisibleChangeAccount = true
-      this.$refs.manyDialog.organizationId = this.organizationId
-      // 传值,这里AccountFormCheck和formLabelAlign是反的
-      this.$refs.manyDialog.AccountFormCheck = data
-      // 深拷贝同步副本
-      this.$refs.manyDialog.formLabelAlign = JSON.parse(
-        JSON.stringify(this.$refs.manyDialog.AccountFormCheck)
-      )
-    },
     //修改密码弹窗
     handleKeyEdit(data) {
       this.$refs.manyDialog.dialogVisibleKey = true
       this.$refs.manyDialog.organizationId = this.organizationId
       this.$refs.manyDialog.formLabelAlign = data
-    },
-    //删除 弹窗
-    handleDelete(index, data) {
-      // console.log(data)
-      // console.log(data.__ob__)
-      // console.log(index)
-      this.$refs.manyDialog.dialogVisibleDeleteAlign = true
-      this.$refs.manyDialog.organizationId = this.organizationId
-      this.$refs.manyDialog.deleteIndex = index
-      this.$refs.manyDialog.formLabelAlign.studentId = data.studentId
-      // this.$confirm('此操作将删除：' + data.name + '，是否继续？', '提示', {
-      //   confirmButtonText: '确定',
-      //   cancelButtonText: '取消',
-      //   type: 'warning'
-      // })
-      //   .then(() => {
-      //     this.$message({
-      //       type: 'info',
-      //       message: '已删除'
-      //     })
-      //   })
-      //   .catch(() => {
-      //     this.$message({
-      //       type: 'info',
-      //       message: '已取消删除'
-      //     })
-      //   })
     },
     //修改页容量
     handleSizeChange(val) {
