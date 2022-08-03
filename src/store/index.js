@@ -8,5 +8,5 @@ export default new Vuex.Store({
   state: {},
   mutations: {},
   actions: {},
-  modules: { problem , dataBoard }
+  modules: { problem, dataBoard }
 })
