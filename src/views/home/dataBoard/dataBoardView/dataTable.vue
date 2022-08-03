@@ -178,7 +178,7 @@
           <el-button
             type="text"
             class="buttonMove"
-            @click="DialogVisibleChangeAccount(scope.row)"
+            @click="openChangeDialog(scope.row)"
           >
             <div class="changeicon">
               <i class="el-icon-edit-outline"></i>
@@ -194,7 +194,7 @@
             size="medium"
             type="text"
             class="buttonMove"
-            @click="handleDelete(scope.$index, scope.row)"
+            @click="openResumeDialog(scope.row)"
           >
             <div class="changeicon">
               <i class="el-icon-document"></i>
@@ -203,7 +203,10 @@
         </template>
       </el-table-column>
     </el-table>
-
+    <!-- 修改弹窗组件 -->
+    <change-dialog ref="changeDialog"></change-dialog>
+    <!-- 简历弹窗组件 -->
+    <resume-dialog ref="resumeDialog"></resume-dialog>
     <!-- 页码 -->
     <el-pagination
       background
@@ -224,7 +227,9 @@
 import data from '../dataBoardView/data'
 import data2 from '../../../superAdmin/accountManage/data copy'
 // import mySelectHeader from './selectHeader.vue'
-import { mapState } from 'vuex'
+import changeDialog from '../components/changeDialog.vue'
+import resumeDialog from '../components/resumeDialog.vue'
+import { mapState, mapMutations } from 'vuex'
 export default {
   name: 'dataBoardTable',
   computed: {
@@ -255,7 +260,7 @@ export default {
       total: 100,
       // 表格数据
       tableData: [...data], //模拟数据，发请求会获取数据覆盖它
-      tableDataChange: [], //排序、筛选之后的数据
+      tableDataChange: [] //排序、筛选之后的数据
 
       // 表头名
       // classNameLabel: '班级',
@@ -273,10 +278,32 @@ export default {
     //渲染并分页
     this.orderChange(this.tableData)
   },
-  // components: {
+  components: {
   // mySelectHeader
-  // },
+  resumeDialog,
+  changeDialog,
+  },
   methods: {
+    ...mapMutations('dataBoard', [
+      'updateClassNameFilter',
+      'updateOrganizationOrderFilter',
+      'updateDepartmentOrderFilter',
+      'updateInterviewStatusFilter',
+      'updateNextPlaceFilter',
+      'updateNextTimeFilter'
+    ]),
+    // 修改弹窗
+    openChangeDialog(data){
+      this.$refs.changeDialog.changeDialogVisible=true
+      console.log(data)
+      this.$refs.changeDialog.studentId=true
+    },
+    // 简历弹窗
+    openResumeDialog(){
+      this.$refs.resumeDialog.resumeDialogVisible=true
+      this.$refs.resumeDialog.studentId=true
+      console.log(data)
+    },
     // 测试数据更新时，表单数据是否同步更新了
     de() {
       // this.$message.success(
@@ -286,11 +313,14 @@ export default {
       // this.tableData = this.tableData.slice(3)
       this.tableData = data2
       // this.orderChange(this.tableData)
-      this.classNameFilter = [
+      console.log(this.classNameFilter)
+      // 模拟更新过滤项
+      this.updateClassNameFilter([
         { text: 'committee', value: 'committee' },
         { text: 'member', value: 'member' },
         { text: '筛选2', value: 'member' }
-      ]
+      ])
+      console.log(this.classNameFilter)
     },
     // 测试cookie
     co() {
@@ -389,7 +419,7 @@ export default {
             // 用造的假数据顶上
             this.$message.success(res.data.message)
             // 成功后页面上回到第一页
-            this.currentPage=1
+            this.currentPage = 1
           } else {
             this.tableData = res.data.data.studentList
             this.total = res.data.data.total
