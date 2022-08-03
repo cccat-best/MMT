@@ -82,25 +82,39 @@
       >
       </el-table-column>
       <!-- 班级 -->
-      <el-table-column prop="className" width="120px" align="center">
-        <template slot="header">
+      <el-table-column
+        prop="className"
+        width="120px"
+        align="center"
+        label="班级"
+        :filters.sync="classNameFilter"
+        column-key="className"
+      >
+        <!-- <template slot="header">
           <my-select-header
             :filterCondition="classNameFilter"
             :myLabel="classNameLabel"
           ></my-select-header>
-        </template>
+        </template> -->
       </el-table-column>
       <el-table-column prop="phone" label="手机号" width="120px" align="center">
       </el-table-column>
 
       <!-- 社团志愿次序 -->
-      <el-table-column width="160px" align="center" prop="organizationOrder">
-        <template slot="header">
+      <el-table-column
+        width="160px"
+        align="center"
+        prop="organizationOrder"
+        label="社团志愿次序"
+        column-key="organizationOrder"
+        :filters.sync="organizationOrderFilter"
+      >
+        <!-- <template slot="header">
           <my-select-header
             :filterCondition="organizationOrderFilter"
             :myLabel="organizationOrderLabel"
           ></my-select-header>
-        </template>
+        </template> -->
       </el-table-column>
 
       <!-- 部门志愿次序 -->
@@ -129,10 +143,7 @@
         align="center"
         prop="permission"
         label="当前志愿状态"
-        :filters="[
-          { text: 'committee', value: 'committee' },
-          { text: 'member', value: 'member' }
-        ]"
+        :filters.sync="interviewStatusFilter"
         column-key="permission"
       >
       </el-table-column>
@@ -144,12 +155,8 @@
         prop="permission"
         label="下一场面试时间"
         sortable="custom"
-        :filters="[
-          { text: 'committee', value: 'committee' },
-          { text: 'member', value: 'member' }
-        ]"
+        :filters.sync="nextTimeFilter"
         column-key="permission"
-        :filter-multiple="false"
       >
       </el-table-column>
 
@@ -160,12 +167,8 @@
         prop="permission"
         label="下一场面试地点"
         sortable="custom"
-        :filters="[
-          { text: 'committee', value: 'committee' },
-          { text: 'member', value: 'member' }
-        ]"
+        :filters.sync="nextPlaceFilter"
         column-key="permission"
-        :filter-multiple="false"
       >
       </el-table-column>
 
@@ -221,7 +224,7 @@
 //引入表单全部数据,这是模拟数据，后期应该会删掉
 import data from '../dataBoardView/data'
 import data2 from '../../../superAdmin/accountManage/data copy'
-import mySelectHeader from './selectHeader.vue'
+// import mySelectHeader from './selectHeader.vue'
 import { mapState } from 'vuex'
 export default {
   name: 'dataBoardTable',
@@ -270,9 +273,9 @@ export default {
     //渲染并分页
     this.orderChange(this.tableData)
   },
-  components: {
-    mySelectHeader
-  },
+  // components: {
+  // mySelectHeader
+  // },
   methods: {
     // 测试数据更新时，表单数据是否同步更新了
     de() {

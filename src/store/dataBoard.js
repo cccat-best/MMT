@@ -3,12 +3,12 @@ export default {
   state: () => ({
     // 筛选选项
     classNameFilter: [
-      { className: '计算机1班', number: 5 },
-      { className: '计算机2班', number: 7 }
+      { text: '计算机1班      ' + 352 + '人', value: '计算机1班' },
+      { text: '计算机2班      ' + 322 + '人', value: '计算机2班' }
     ], // 班级筛选项
     organizationOrderFilter: [
-      { organizationOrder: '第一志愿', number: 2 },
-      { organizationOrder: '第二志愿', number: 3 }
+      { text: '第一志愿      ' + 152 + '人', value: '第一志愿' },
+      { text: '第二志愿      ' + 267 + '人', value: '第二志愿' }
     ], // 社团志愿次序筛选项
     departmentOrderFilter: [
       { text: '第一志愿      ' + 102 + '人', value: '第一志愿' },
