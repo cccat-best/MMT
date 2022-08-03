@@ -51,8 +51,8 @@ const routes = [
         component: personalInfo
       },
       {
-        path:'interviewMain',
-        component:()=>import('../views/home/interviewMain/interviewMain.vue')
+        path: 'interviewMain',
+        component: () => import('../views/home/interviewMain/interviewMain.vue')
       }
     ]
   },
@@ -61,7 +61,8 @@ const routes = [
     path: '/superAdmin',
     component: () => import('../views/superAdmin/superAdmin.vue'),
     children: [
-      {        //面试流程页面
+      {
+        //面试流程页面
         path: 'process',
         component: () => import('../views/superAdmin/interviewProcess/main.vue')
       },
@@ -69,31 +70,23 @@ const routes = [
       {
         path: 'informationSet',
         component: () =>
-        import('../views/superAdmin/informationSet/informationSetMain.vue'),
-        children:[
+          import('../views/superAdmin/informationSet/informationSetMain.vue'),
+        children: [
           {
-            path:'basicInformation',
-            component:()=>import('../views/superAdmin/informationSet/informationSetInner/informationBasic.vue'),
-            children:[
-              {
-                path:'informationBasicSaved',
-                comments:()=>import('../views/superAdmin/informationSet/informationSetInner/informationBasicSaved.vue')
-              },
-              {
-                path:'informationBasicEdit',
-                comments:()=>import('../views/superAdmin/informationSet/informationSetInner/informationBasicEdit.vue')
-              },
-            ]
+            path: 'informationSetEdit',
+            component: () =>
+              import(
+                '../views/superAdmin/informationSet/informationSetInner/informationBasicEdit.vue'
+              )
           },
           {
-            path:'association',
-            component:()=>import('../views/superAdmin/informationSet/informationSetInner/association.vue')
-          },
-          {
-            path:'recruiting',
-            component:()=>import('../views/superAdmin/informationSet/informationSetInner/recruiting.vue')
+            path: 'informationSetSaved',
+            component: () =>
+              import(
+                '../views/superAdmin/informationSet/informationSetInner/informationBasicSaved.vue'
+              )
           }
-        ],
+        ]
       }
     ]
   }

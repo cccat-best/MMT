@@ -47,7 +47,7 @@ export default {
         {
           iconClass: 'el-icon-picture',
           id: '2',
-          pagePath: '/superAdmin/informationSet',
+          pagePath: '/superAdmin/informationSet/informationSetSaved',
           title: '宣传信息设置'
         },
         {
@@ -69,29 +69,30 @@ export default {
     // 解决defaultActiveItem 刷新问题
     if (this.$route.path === '/superAdmin/interviewTable')
       this.defaultActiveItem = '1'
-    if (this.$route.path === '/superAdmin/informationSet')
+    if (this.$route.path === '/superAdmin/informationSet/informationSetSaved')
       this.defaultActiveItem = '2'
     if (this.$route.path === '/superAdmin/process') this.defaultActiveItem = '3'
     if (this.$route.path === '/superAdmin/accountManage')
       this.defaultActiveItem = '4'
   },
-  methods:{
+  methods: {
     getCookie() {
-      this.$http.post('/login/b',{
-studentId:"20200002",
-password:"123456"
-})
-      .then((res)=>{
-        console.log('cookie',res);
-      })
-      .catch((err) =>{
-        console.log(err);
-      })
+      this.$http
+        .post('/login/b', {
+          studentId: '20200002',
+          password: '123456'
+        })
+        .then((res) => {
+          console.log('cookie', res)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
     }
   },
   mounted() {
     this.getCookie()
-  },
+  }
 }
 </script>
 

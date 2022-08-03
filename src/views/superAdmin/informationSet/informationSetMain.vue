@@ -6,89 +6,184 @@
     </div>
     <div class="informationSetDown">
       <div class="informationSetDownNav">
-        <div :class="['informationSetDownNavInner', blue===1 ? 'informationSetDownNavInnerActive':'']"
-          @click="gotoBasic()
-          blue = 1
+        <div
+          :class="[
+            'informationSetDownNavInner',
+            blue === 1 ? 'informationSetDownNavInnerActive' : ''
+          ]"
+          @click="
+            blue = 1
+            goAnchor('#basicInformation')
           "
-        >基本信息</div>
-        <div :class="['informationSetDownNavInner', blue===2 ? 'informationSetDownNavInnerActive':'']"
-          @click="gotoAssociation()
-          blue = 2
+        >
+          基本信息
+        </div>
+        <div
+          :class="[
+            'informationSetDownNavInner',
+            blue === 2 ? 'informationSetDownNavInnerActive' : ''
+          ]"
+          @click="
+            goAnchor('#associations')
+            blue = 2
           "
-        >社团宣传</div>
-        <div :class="['informationSetDownNavInner', blue===3 ? 'informationSetDownNavInnerActive':'']"
-          @click="gotoRecruiting()
-          blue = 3
+        >
+          社团宣传
+        </div>
+        <div
+          :class="[
+            'informationSetDownNavInner',
+            blue === 3 ? 'informationSetDownNavInnerActive' : ''
+          ]"
+          @click="
+            // gotoRecruiting()
+            blue = 3
           "
-        >纳新部门</div>
+        >
+          纳新部门
+        </div>
       </div>
-      <router-view></router-view>
-      <!-- <div class="informationSetDownMain">
+      <div class="informationBasicMain">
+        <!-- 编辑保存页面的按钮 -->
+        <div
+          v-if="editable === false"
+          class="editBtn"
+          @click="
+            editable = !editable
+            gotoEdit()
+          "
+        >
+          <i class="el-icon-edit-outline"></i>
+          编辑页面
+        </div>
+        <div
+          v-if="editable === true"
+          class="editBtn"
+          @click="
+            editable = !editable
+            gotoSaved()
+          "
+        >
+          <i class="el-icon-document-checked"></i>
+          保存页面
+        </div>
+        <!-- 按钮到这里结束 -->
 
-      </div> -->
+        <!-- 测试请求 -->
+        <!-- <button @click="getCookie()">getCookie</button> -->
+
+        <!-- 下面是默认显示的信息（默认是不保存） -->
+        <router-view></router-view>
+      </div>
     </div>
   </div>
 </template>
 
-
 <script>
-
-export default{
+export default {
   data() {
     return {
       //状态变蓝色
-      blue:1,
+      blue: 1,
+      //用于存储社团信息
+      communityInformation: {},
+      //切换编辑页面和保存页面
+      editable: false
     }
   },
   methods: {
-    gotoBasic(){
+    getInformation() {},
+    gotoEdit() {
+      // console.log("执行了gotoEdit")
       this.$router.push({
-        path:'/superAdmin/informationSet/basicInformation'
+        path: '/superAdmin/informationSet/informationSetEdit'
       })
     },
-    gotoAssociation(){
+    gotoSaved() {
       this.$router.push({
-        path:'/superAdmin/informationSet/association'
+        path: '/superAdmin/informationSet/informationSetSaved'
       })
     },
-    gotoRecruiting(){
-      this.$router.push({
-        path:'/superAdmin/informationSet/recruiting'
+    //锚点跳转
+    goAnchor(selector) {
+      /*参数selector是id选择器（#anchor14）*/
+      document.querySelector(selector).scrollIntoView({
+        behavior: 'smooth'
       })
+    },
+    getCookie() {
+      // this.$http.get('api/set-cookie/b',{})
+      // .then(function (response) {
+      //   console.log(JSON.stringify(response.data));
+      // })
+      // .catch(function (error) {
+      //   console.log(error);
+      // });
+      this.$http
+        .get('api/set-cookie/b')
+        .then((res) => {
+          console.log(res)
+        })
+        .catch(function (err) {
+          console.log(err)
+        })
     }
-  },
+  }
 }
 </script>
 
 <style scoped>
-.informationSetMain{
+.informationSetMain {
   display: flex;
   flex-flow: column;
 }
-.informationSetUpFont{
+.informationSetUpFont {
   width: 100px;
   height: 30px;
   padding-top: 5px;
   line-height: 14px;
   color: #f57d2d;
 }
-.informationSetDownNav{
+.informationSetDownNav {
   display: flex;
   flex-direction: row;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);
 }
-.informationSetDownNavInner{
+.informationSetDownNavInner {
   padding: 15px;
-  margin-right:1px;
-  font-size:20px;
-  line-height:20px;
+  margin-right: 1px;
+  font-size: 20px;
+  line-height: 20px;
   color: rgb(118, 118, 118);
 }
-.informationSetDownNavInnerActive{
+.informationSetDownNavInnerActive {
   color: rgb(49, 129, 255);
 }
-.informationSetDown{
+.informationSetDown {
   background-color: white;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);
+}
+.informationBasicMain {
+  height: 80vh;
+  padding-left: 100px;
+  padding-right: 100px;
+  overflow-y: auto;
+}
+.informationBasicMain::-webkit-scrollbar {
+  width: 8px;
+  border-radius: 4px;
+  overflow-y: scroll;
+}
+.informationBasicMain::-webkit-scrollbar-thumb {
+  background: rgba(158, 158, 158, 0.381);
+}
+.editBtn {
+  width: 100px;
+  height: 40px;
+  line-height: 45px;
+  color: rgb(49, 129, 255);
+  margin-top: 35px;
+  margin-left: auto;
+  margin-right: 20px;
 }
 </style>
