@@ -36,7 +36,6 @@
       ></el-input>
     </div>
     <!-- 信息表单 -->
-    <!-- @sort-change="sortChange"排序 -->
     <el-table
       stripe
       tooltip-effect="dark"
@@ -241,10 +240,11 @@ export default {
   data() {
     return {
       // 关键字搜索
+      admissionId: 0, //纳新ID不知道，需要询问////////////////////////
       organizationId: 2, ////组织名不知道，需要询问////////////////////////
       searchWord: '',
-      data: '', //发请求的data
-      order: 'asc', //排序顺序，默认升序
+      postdata: '', //发请求的data
+      order: 'ascending', //排序顺序，默认升序
       column: 'permission', //排序变量，默认权限升序
       permissionSelect: null, //筛选变量
 
@@ -258,13 +258,13 @@ export default {
       tableDataChange: [], //排序、筛选之后的数据
 
       // 表头名
-      classNameLabel: '班级',
-      organizationOrderLabel: '社团志愿次序',
-      departmentOrderLabel: '部门志愿次序',
-      wishDepartmentLabel: '部门志愿筛选项',
-      interviewStatus: '当前志愿状态',
-      nextPlaceLabel: '下一场面试地点',
-      nextTimeLabel: '下一次面试时间'
+      // classNameLabel: '班级',
+      // organizationOrderLabel: '社团志愿次序',
+      // departmentOrderLabel: '部门志愿次序',
+      // wishDepartmentLabel: '部门志愿筛选项',
+      // interviewStatus: '当前志愿状态',
+      // nextPlaceLabel: '下一场面试地点',
+      // nextTimeLabel: '下一次面试时间'
     }
   },
   created() {
@@ -319,10 +319,10 @@ export default {
         //该列有绑定prop字段走这个分支
         if (column.order == 'ascending') {
           //当用户点击的是升序按钮，即ascending时
-          this.order = 'asc' //将order这个变量赋值为后端接口文档定义的升序的字段名，之后作为入参传给后端
+          this.order = 'ascending' //将order这个变量赋值为后端接口文档定义的升序的字段名，之后作为入参传给后端
         } else if (column.order == 'descending') {
           //当用户点击的是升序按钮，即descending时
-          this.order = 'desc' //将order这个变量赋值为后端接口文档定义的降序的字段名，之后作为入参传给后端
+          this.order = 'descending' //将order这个变量赋值为后端接口文档定义的降序的字段名，之后作为入参传给后端
         }
         this.orderChange(this.tableDataChange) //改变全部数据顺序
       }
@@ -366,29 +366,37 @@ export default {
     searchKeyWord() {
       // 判断字符串是否为空
       if (this.searchWord != '') {
-        this.data = {
+        this.postdata = {
+          admissionId: this.admissionId,
           organizationId: this.organizationId,
-          searchWord: this.searchWord
+          keyWord: this.searchWord,
+          pageNum: 1,
+          pageSize: this.pagesize
         }
       } else {
-        this.data = {
-          organizationId: this.organizationId
+        this.postdata = {
+          admissionId: this.admissionId,
+          organizationId: this.organizationId,
+          pageNum: 1,
+          pageSize: this.pagesize
         }
       }
       // 发请求
-      this.$http.post('api/account/manage/all', this.data).then(
+      this.$http.post('api/account/manage/all', this.postdata).then(
         (res) => {
           // 因为请求访问权限异常，res.data.studentList在返回信息中为undefined
           if (res.data.data.studentList == undefined) {
             // 用造的假数据顶上
             this.$message.success(res.data.message)
+            // 成功后页面上回到第一页
+            this.currentPage=1
           } else {
             this.tableData = res.data.data.studentList
             this.total = res.data.data.total
             console.log(this.tableData)
           }
           // 通知所有相关项更新数据，因为他们使用tableDataChange而不是tableData
-          this.orderChange(this.tableData)
+          // this.orderChange(this.tableData)
         },
         (err) => {
           this.$message.error('获取数据失败' + err)

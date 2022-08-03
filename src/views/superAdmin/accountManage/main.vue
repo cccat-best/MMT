@@ -605,9 +605,9 @@ export default {
       this.$http.post('api/account/manage/all', this.data).then(
         (res) => {
           // 因为请求访问权限异常，res.data.studentList在返回信息中为undefined
-          if (res.data.data.studentList == undefined) {
+          if (res.data.code == 'A0300') {
             // 用造的假数据顶上
-            this.$message.success(res.data.message)
+            this.$message.error(res.data.message)
           } else {
             this.tableData = res.data.data.studentList
             this.total = res.data.data.total
