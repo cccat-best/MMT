@@ -82,10 +82,21 @@
                     </span>
                     <!-- 贺节介建议这里的下拉框改成向左拉开，不过我不会 -->
                     <el-dropdown-menu slot="dropdown">
+                      <!-- 单独取出第一个元素，销掉多出的分割线 -->
+                      <!-- 防止name爆红 -->
+                      <el-dropdown-item
+                        v-if="this.organizations[0]"
+                        style="width: 140px"
+                        :command="this.organizations[0].name"
+                        >{{ this.organizations[0].name }}</el-dropdown-item
+                      >
                       <el-dropdown-item
                         style="width: 140px"
                         :command="item.name"
-                        v-for="(item, index) in organizations"
+                        v-for="(item, index) in organizations.slice(
+                          1,
+                          organizations.length
+                        )"
                         :key="index"
                         divided
                         >{{ item.name }}</el-dropdown-item
@@ -185,7 +196,7 @@
                 </div></el-col
               ></el-col
             >
-            <!-- 获取邀请码，为了方便测试写的 -->
+
             <!-- <el-button type="primary" @click="getInvitationCodeRequest()"
               >生成邀请码</el-button
             > -->
@@ -270,7 +281,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+// import axios from 'axios'
 export default {
   name: 'personalInfo',
 
@@ -366,9 +377,6 @@ export default {
     if (this.permission == 'super_admin') {
       this.isSuper = true
     }
-    // let x = document.getElementsByClassName('.el-dropdown-menu__item')
-    // x[0].style = ''
-    // console.log(x)
   },
 
   methods: {
@@ -423,19 +431,25 @@ export default {
         console.log('出错了', err.message)
       }
     },
-    quitLogin() {
-      axios({
-        method: 'delete',
-        baseURL: 'http://114.132.71.147:38080',
-        url: '/logout',
-
-        headers: {
-          'content-type': 'application/json'
+    async quitLogin() {
+      const url = '/api/logout'
+      try {
+        let { data: res } = await this.$http.get(url)
+        switch (res.code) {
+          case '00000': {
+            alert('退出登录成功')
+            this.$router.push('/login')
+            break
+          }
+          default: {
+            throw new Error(JSON.stringify(res))
+          }
         }
-      }).then((val) => {
-        alert(val.data.data.message)
-      })
+      } catch (err) {
+        console.log('出错了', err.message)
+      }
     },
+
     superAdmin() {
       this.$router.push('/superAdmin')
     },
@@ -446,7 +460,7 @@ export default {
     goBack() {
       this.$router.go(-1)
     },
-    //获取邀请码，为了方便测试写的
+    // 获取邀请码，为了方便测试写的
     // getInvitationCodeRequest() {
     //   this.$http.get('api/organization/invitation-code').then(
     //     (res) => {
