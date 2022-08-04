@@ -1,19 +1,19 @@
 <template>
   <div>
-    <el-dialog
+    <el-drawer
       title="提示"
       :visible.sync="resumeDialogVisible"
       width="30%"
       :before-close="handleClose"
     >
       <span>点击简历触发弹窗的内容</span>
-      <span slot="footer" class="dialog-footer">
+      <div class="demo-drawer__footer">
         <el-button @click="resumeDialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="resumeDialogVisible = false"
           >确 定</el-button
         >
-      </span>
-    </el-dialog>
+      </div>
+    </el-drawer>
   </div>
 </template>
 

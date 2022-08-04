@@ -38,7 +38,8 @@ import {
   DropdownItem,
   Menu,
   MenuItem,
-  Icon
+  Icon,
+  Drawer
 } from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 const components = [
@@ -87,7 +88,8 @@ const components = [
   Tabs,
   TabPane,
   InputNumber,
-  Icon
+  Icon,
+  Drawer
 ]
 export default function (Vue) {
   for (const component of components) {
