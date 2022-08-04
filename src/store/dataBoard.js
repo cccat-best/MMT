@@ -42,7 +42,7 @@ export default {
     updateDepartmentOrderFilter(state, data) {
       state.departmentOrderFilter = data
     }, //部门志愿次序
-    updateWishDepartmentFilter(state, data){
+    updateWishDepartmentFilter(state, data) {
       state.wishDepartmentFilter = data
     },
     // 当前志愿部门

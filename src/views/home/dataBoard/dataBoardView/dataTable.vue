@@ -280,23 +280,23 @@ export default {
       nextTime: [],
       // 排序，排序选择（姓名0、学号1、地点2、时间3），排序方式（1正序、2倒序）
       sort: [
-            {
-              sortCondition: 0,
-              sortModel: 1
-            },
-            {
-              sortCondition: 1,
-              sortModel: 1
-            },
-            {
-              sortCondition: 2,
-              sortModel: 1
-            },
-            {
-              sortCondition: 3,
-              sortModel: 1
-            }
-          ],
+        {
+          sortCondition: 0,
+          sortModel: 1
+        },
+        {
+          sortCondition: 1,
+          sortModel: 1
+        },
+        {
+          sortCondition: 2,
+          sortModel: 1
+        },
+        {
+          sortCondition: 3,
+          sortModel: 1
+        }
+      ]
     }
   },
   created() {
@@ -372,12 +372,12 @@ export default {
     sortTableFun(data) {
       // console.log(data)
       let name = data.prop
-      let sortvalue;
-      if (data.order=='ascending') {
-        sortvalue=1
+      let sortvalue
+      if (data.order == 'ascending') {
+        sortvalue = 1
       }
-      if (data.order=='descending') {
-        sortvalue=2
+      if (data.order == 'descending') {
+        sortvalue = 2
       }
       switch (name) {
         case 'stuNum':
@@ -568,9 +568,7 @@ export default {
         )
     },
     // 获取所有筛选项
-    requestFilterItem(){
-
-    },
+    requestFilterItem() {},
     //修改页容量
     handleSizeChange(val) {
       this.pagesize = val
