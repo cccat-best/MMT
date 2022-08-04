@@ -246,8 +246,8 @@ export default {
       // 计时器
       timerUpdate: null,
       // 关键字搜索
-      admissionId: 20200001, //纳新ID不知道，需要询问////////////////////////
-      organizationId: 1, ////组织名不知道，需要询问////////////////////////
+      admissionId: 1, //纳新ID不知道，需要询问////////////////////////
+      organizationId: 12, ////组织名不知道，需要询问////////////////////////
       searchWord: '',
       // 筛选勾选的请求信息的数组
       className: [],
@@ -297,16 +297,16 @@ export default {
     }
   },
   // 定时更新数据和筛选项
-  // mounted(){
-  //   this.requestFilterItem()
-  //   this.timerUpdate = setInterval(() => {
-  //     setTimeout(this.requestFilterItem,0)
-  //   }, 1000*60);
-  // },
-  // beforeDestroy(){
-  //   clearInterval(this.timerUpdate)
-  //   this.timerUpdate= null
-  // },
+  mounted(){
+    this.requestFilterItem()
+    this.timerUpdate = setInterval(() => {
+      setTimeout(this.requestFilterItem,0)
+    }, 1000*60);
+  },
+  beforeDestroy(){
+    clearInterval(this.timerUpdate)
+    this.timerUpdate= null
+  },
   created() {
     //获取数据
     this.searchKeyWord()
@@ -352,11 +352,32 @@ export default {
       console.log(this.classNameFilter)
       // 模拟更新过滤项
       this.updateClassNameFilter([
-        { text: 'committee', value: 'committee' },
-        { text: 'member', value: 'member' },
-        { text: '筛选2', value: 'member' }
+        { className: 'committee', number: 114 },
+        { className: 'member', number: 514 },
+        { className: '筛选2', number: 1919 }
       ])
       console.log(this.classNameFilter)
+      // 获取班级
+      this.$http
+        .get(
+          'http://43.142.146.75:38080/data-panel/class?admissionId=' +
+            this.admissionId +
+            '&organizationId=' +
+            this.organizationId
+        )
+        .then(
+          (res) => {
+            if (res.data.code == '00000') {
+              this.updateClassNameFilter(res.data.data)
+              this.$message.success(res.data.message)
+            } else {
+              this.$message.error(res.data.message)
+            }
+          },
+          (err) => {
+            this.$message.error('获取数据失败' + err)
+          }
+        )
     },
     // 测试cookie
     co() {
