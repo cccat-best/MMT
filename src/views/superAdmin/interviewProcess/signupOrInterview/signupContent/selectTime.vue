@@ -60,13 +60,12 @@ export default {
     }
   }
   .block {
-    width: 660px;
+    width: 100%;
     margin-top: 10px;
-    margin-left: 30px;
     display: flex;
     .time-select {
       height: 100%;
-      width: 100%;
+      width: 80%;
       margin-top: 60px;
     }
   }

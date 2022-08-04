@@ -1,4 +1,6 @@
 import {
+  Option,
+  Select,
   Radio,
   TimePicker,
   DatePicker,
@@ -35,15 +37,12 @@ import {
   Avatar,
   Dropdown,
   DropdownMenu,
-  DropdownItem,
-  Menu,
-  MenuItem,
-  Icon
+  DropdownItem
 } from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 const components = [
-  MenuItem,
-  Menu,
+  Option,
+  Select,
   DropdownItem,
   DropdownMenu,
   Dropdown,
@@ -86,8 +85,9 @@ const components = [
   FormItem,
   Tabs,
   TabPane,
-  InputNumber,
-  Icon
+  TableColumn,
+  Tabs,
+  InputNumber
 ]
 export default function (Vue) {
   for (const component of components) {

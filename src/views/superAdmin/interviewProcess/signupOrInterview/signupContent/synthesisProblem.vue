@@ -19,7 +19,7 @@
               <span class="freeView-name">{{ item1.description }}</span>
             </div>
             <!-- 展示选项 -->
-            <select class="freeView-select" v-show="item1.selection">
+            <select style="width: 166.4px" v-show="item1.selection">
               <option
                 selected="selected"
                 disabled="disabled"
@@ -35,11 +35,7 @@
               </option>
             </select>
             <!--  展示input框-->
-            <input
-              type="text"
-              v-show="!item1.selection"
-              class="freeView-input"
-            />
+            <input type="text" v-show="!item1.selection" />
           </div>
         </div>
       </div>
@@ -67,13 +63,12 @@
           <div v-show="chooseAdd === 1">
             <el-input
               type="textarea"
-              :rows="4"
+              :rows="2"
               placeholder="请输入问题上限50个字"
               v-model="text1"
               maxlength="50"
               show-word-limit
               style="margin: 10px 0"
-              resize="none"
             >
             </el-input>
           </div>
@@ -153,7 +148,6 @@
 
 <script>
 import { mapState } from 'vuex'
-import axios from 'axios'
 export default {
   data() {
     return {
@@ -210,7 +204,6 @@ export default {
       if (index !== -1) {
         this.form.domains.splice(index, 1)
       }
-      this.$refs.synthPopover.updatePopper()
     },
     addDomain() {
       if (this.form.domains.length === 4) {
@@ -219,7 +212,6 @@ export default {
       this.form.domains.push({
         value: ''
       })
-      this.$refs.synthPopover.updatePopper()
     },
     //添加自定义选择
     addChoseList() {
@@ -238,36 +230,36 @@ export default {
         )
       ) {
         let que = {
-          //是单选
+          //不是单选
           selection: true,
           description: this.text2
         }
         let option = {
-          a: null,
-          b: null,
-          c: null,
-          d: null
+          A: null,
+          B: null,
+          C: null,
+          D: null
         }
         //选项赋值 后端需要ABCD形式方便发送请求 后面有时间会改成三元运算
         if (this.form.domains[0]) {
-          option.a = this.form.domains[0].value
+          option.A = this.form.domains[0].value
         } else {
-          option.a = null
+          option.A = null
         }
         if (this.form.domains[1]) {
-          option.b = this.form.domains[1].value
+          option.B = this.form.domains[1].value
         } else {
-          option.b = null
+          option.B = null
         }
         if (this.form.domains[2]) {
-          option.c = this.form.domains[2].value
+          option.C = this.form.domains[2].value
         } else {
-          option.c = null
+          option.C = null
         }
         if (this.form.domains[3]) {
-          option.d = this.form.domains[3].value
+          option.D = this.form.domains[3].value
         } else {
-          option.d = null
+          option.D = null
         }
         que.option = option
         this.comprehensiveQuestionsList.push(que)
@@ -354,21 +346,48 @@ export default {
           //开始结束时间必填
           if (this.time.length == 0)
             return this.$message.error('请确认填写是否填写了开始截至时间')
+          // 解决综合问题的顺序
+          let i = 1
+          this.comprehensiveQuestionsList.forEach((p) => {
+            p.questionOrder = i
+            i++
+          })
+          //解决部门问题的顺序
+          //得到所有部门id
+          let sectionId = this.departmentQuestionsList.map(
+            (p) => p.departmentId
+          )
+          let departmentList = []
+          //id去重
+          sectionId = [...new Set(sectionId)]
+          //把相同部门问题 放入temp 给问题排序
+          for (let a = 0; a < sectionId.length; a++) {
+            let i = 1
+            let temp = []
+            temp = this.departmentQuestionsList.filter(
+              (p) => p.departmentId === sectionId[a]
+            )
+            temp.forEach((item) => {
+              item.questionOrder = i
+              i++
+              departmentList.push(item)
+            })
+          }
+          // 数据打包
           const qustionList = {
-            userId: 2,
-            organizationId: 2,
+            organizationId: sessionStorage.getItem('loginOrganizationId'),
             startTime: this.time[0],
             endTime: this.time[1],
             generalQuestions: this.generalQuestions,
             questionsList: this.questionsList,
             maxDepartment: this.maxDepartment,
-            departmentQuestionsList: this.departmentQuestionsList,
+            departmentQuestionsList: departmentList,
             allocated: this.allocated,
             comprehensiveQuestionsList: this.comprehensiveQuestionsList
           }
           console.log(qustionList)
           //调用函数发送请求
-          // this.sendTo(qustionList)
+          this.sendTo(qustionList)
         })
         .catch(() => {
           this.$message({
@@ -378,30 +397,21 @@ export default {
         })
     },
     async sendTo(qustionList) {
-      // const res = await axios.post(
-      //   'http://119.29.27.252:38080/organization/interview/sign',
-      //   {
-      //     data: JSON.stringify(qustionList)
-      //   },
-      //   {
-      //     headers: {
-      //       'Access-Control-Allow-Origin': '*', //解决cors头问题
-      //       'Access-Control-Allow-Credentials': 'true' //解决session问题
-      //     },
-      //     withCredentials: true
-      //   }
-      // )
-      axios
-        .post(
-          'http://119.29.27.252:38080/organization/interview/sign',
-          qustionList
-        )
+      this.$http
+        .post('api/organization/interview/sign', qustionList)
         .then((res) => {
-          console.log('res=>', res)
-          if (res.data.code !== '00000') return this.$message.error('提交失败')
+          if (res.data.code !== '00000')
+            return this.$message.error('提交失败' + res.data.message)
           return this.$message.success('提交成功')
         })
-        .catch((err) => err)
+      //   axios.post('http://119.29.27.252:38080/organization/interview/sign',JSON.stringify(qustionList))
+      //   .then(res => {
+      //     console.log(res)
+      //   })
+      //   .catch(err => {
+      //     console.error(err);
+      //   })
+      // console.log('这是结果', res)
     }
   }
 }
@@ -453,9 +463,10 @@ export default {
           border-radius: 5px;
           border: 1px solid #0f2d2d;
           height: 18px;
+          width: 166px;
         }
         .freeView-select {
-          width: 165.4px;
+          width: 167px;
           border-radius: 5px;
           border: 1px solid #0f2d2d;
           height: 20px;

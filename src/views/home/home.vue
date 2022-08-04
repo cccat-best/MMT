@@ -160,7 +160,11 @@ export default {
       this.$router.push('/superAdmin')
     },
     home() {
-      this.$router.push('/personalInfo')
+      if (this.isPersonal) {
+        location.reload()
+      } else {
+        this.$router.push('/personalInfo')
+      }
     }
   }
 }
@@ -187,23 +191,8 @@ export default {
   cursor: pointer;
   color: black;
 }
+
 :deep(.el-menu-item .iconfont) {
   width: 0px;
-}
-.back-botton {
-  color: black;
-  ::v-deep .el-page-header__title {
-    font-size: 14px;
-    font-weight: 500;
-    color: black;
-    &:hover {
-      color: #409eff !important;
-    }
-  }
-  ::v-deep .el-icon-back {
-    &:hover {
-      color: #409eff !important;
-    }
-  }
 }
 </style>

@@ -16,7 +16,7 @@
             <span class="freeView-name">{{ item1.description }}</span>
           </div>
           <!-- 展示选项 -->
-          <select class="freeView-select" v-show="item1.selection">
+          <select style="width: 166.4px" v-show="item1.selection">
             <option
               selected="selected"
               disabled="disabled"
@@ -32,7 +32,7 @@
             </option>
           </select>
           <!--  展示input框-->
-          <input type="text" v-show="!item1.selection" class="freeView-input" />
+          <input type="text" v-show="!item1.selection" />
         </div>
       </div>
     </div>
@@ -61,9 +61,9 @@
           <el-input
             type="textarea"
             :rows="2"
-            placeholder="请输入问题上限50个字"
+            placeholder="请输入问题上限20个字"
             v-model="text1"
-            maxlength="50"
+            maxlength="20"
             show-word-limit
             style="margin: 10px 0"
           >
@@ -74,9 +74,9 @@
           <el-input
             type="textarea"
             :rows="2"
-            placeholder="请输入问题上限50个字"
+            placeholder="请输入问题上限20个字"
             v-model="text2"
-            maxlength="50"
+            maxlength="20"
             show-word-limit
             style="margin: 10px 0"
           >
@@ -97,7 +97,7 @@
                 <el-input
                   v-model="domain.value"
                   style="margin-right: 5px"
-                  maxlength="50"
+                  maxlength="20"
                 ></el-input
                 ><el-button @click.prevent="removeDomain(domain)"
                   >删除</el-button
@@ -346,11 +346,12 @@ export default {
       }
     }
     .freeView-input {
+      width: 166px;
       border-radius: 5px;
       border: 1px solid #0f2d2d;
     }
     .freeView-select {
-      width: 165.4px;
+      width: 167px;
       border-radius: 5px;
       border: 1px solid #0f2d2d;
     }
@@ -358,7 +359,7 @@ export default {
 }
 .add-qus {
   display: flex;
-  margin-top: 10px;
+  margin-top: 20px;
   padding-left: 25px;
   .add-botton {
     color: white;
