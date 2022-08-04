@@ -17,7 +17,19 @@ const routes = [
   },
   {
     path: '/home',
-    component: () => import('../views/home/home.vue')
+    component: () => import('../views/home/home.vue'),
+    children: [
+      {
+        path: 'arrangement',
+        component: () =>
+          import('../views/home/interviewArrangement/interviewArrangement.vue')
+      },
+      {
+        path: 'reply',
+        component: () =>
+          import('../views/home/interviewReply/interviewReply.vue')
+      }
+    ]
   },
   {
     path: '/superAdmin',
@@ -27,6 +39,10 @@ const routes = [
         //面试流程页面
         path: 'process',
         component: () => import('../views/superAdmin/interviewProcess/main.vue')
+      },
+      {
+        path: 'accountManage',
+        component: () => import('../views/superAdmin/accountManage/main.vue')
       }
     ]
   }
