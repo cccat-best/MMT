@@ -55,6 +55,11 @@ const routes = [
     component: () => import('../views/superAdmin/superAdmin.vue'),
     children: [
       {
+        // 账号管理页面
+        path: 'accountManage',
+        component: () => import('../views/superAdmin/accountManage/main.vue')
+      },
+      {
         //面试流程页面
         path: 'process',
         component: () => import('../views/superAdmin/interviewProcess/main.vue')
