@@ -47,22 +47,8 @@
             @click="removeChoose(item1)"
           ></i>
           <span class="freeView-name">{{ item1.description }}</span>
-<<<<<<< HEAD
-          <input type="text" />
-        </div>
-        <!-- 自定义选择问题展示 -->
-        <div
-          class="freeView-item"
-          v-for="(item2, i2) in chooseList"
-          :key="'c' + i2"
-        >
-          <i
-            class="el-icon-remove"
-            style="color: #1597db"
-            @click="removeChose(item2)"
-          ></i>
-          <span class="freeView-name">{{ item2.description }}</span>
-          <select style="width: 166.4px">
+          <!-- 选择or文字 -->
+          <select class="freeView-select" v-show="item1.selection">
             <option
               selected="selected"
               disabled="disabled"
@@ -70,37 +56,15 @@
               value=""
             ></option>
             <option
-              v-for="(item3, index3) in item2.option"
-              :key="'op' + index3"
-              v-show="item3 != null"
+              v-for="(item2, index2) in item1.option"
+              :key="'op' + index2"
+              v-show="item2 != null"
             >
-              {{ item3 }}
+              {{ item2 }}
             </option>
           </select>
-=======
-          <!-- 选择or文字 -->
-          <select class="freeView-select" v-show="item1.selection">
-              <option
-                selected="selected"
-                disabled="disabled"
-                style="display: none"
-                value=""
-              ></option>
-              <option
-                v-for="(item2, index2) in item1.option"
-                :key="'op' + index2"
-                v-show="item2 != null"
-              >
-                {{ item2 }}
-              </option>
-            </select>
-            <!--  展示input框-->
-            <input
-              type="text"
-              v-show="!item1.selection"
-              class="freeView-input"
-            />
->>>>>>> dengyi
+          <!--  展示input框-->
+          <input type="text" v-show="!item1.selection" class="freeView-input" />
         </div>
       </div>
       <!-- 预设问题面板 -->
@@ -291,7 +255,7 @@ export default {
         }
       ],
       //自定义问题
-      BaseList:[]
+      BaseList: []
     }
   },
   methods: {
@@ -427,10 +391,10 @@ export default {
         .forEach((p) => {
           generalQuestions.push(p.description)
         })
-      let questionsList =this.BaseList
+      let questionsList = this.BaseList
       // 给问题排序
-      let i = 1;
-      questionsList.forEach(p => {
+      let i = 1
+      questionsList.forEach((p) => {
         p.questionOrder = i
         i++
       })
@@ -574,8 +538,6 @@ export default {
         margin: 10px 10px;
         width: 200px;
       }
-<<<<<<< HEAD
-=======
       .freeView-input {
         width: 166px;
         border-radius: 5px;
@@ -586,7 +548,6 @@ export default {
         border-radius: 5px;
         border: 1px solid #0f2d2d;
       }
->>>>>>> dengyi
     }
   }
 }
