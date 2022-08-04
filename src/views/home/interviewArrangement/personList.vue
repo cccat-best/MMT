@@ -3,10 +3,8 @@
     <!-- 面试次序 -->
     <div class="dingwei">
       <div>
-        <div class="btn-group" @click="pdBtn">
-          <button type="button" class="btn btn1 btn0" ref="btn1" autofocus>
-            一面
-          </button>
+        <div class="btn-group" @click="pdBtn" style="border-radius: 40%">
+          <button type="button" class="btn btn1 btn0" ref="btn1">一面</button>
           <button type="button" class="btn btn2" ref="btn2">二面</button>
           <button type="button" class="btn btn3" ref="btn3">三面</button>
         </div>
@@ -21,6 +19,7 @@
           placeholder="请输入关键字"
           suffix-icon="el-icon-search"
           v-model="search"
+          style="border-radius: 5px; box-shadow: 1px 1px 3px 1px #e5e9f2"
         >
         </el-input>
       </div>
@@ -28,13 +27,18 @@
         :data="
           tables.slice((currentPage - 1) * pagesize, currentPage * pagesize)
         "
+        :header-cell-style="{ 'text-align': 'center' }"
         height="50%"
         border
-        style="width: 600px; border-radius: 8px"
+        ref="table"
+        style="
+          width: 630px;
+          border-radius: 8px;
+          box-shadow: 2px 2px 4px 2px #e5e9f2;
+        "
         :row-style="{ height: 0 + 'px' }"
-        :cell-style="{ padding: 0 + 'px' }"
+        :cell-style="{ padding: 0 + 'px', 'text-align': 'center' }"
       >
-        >
         <el-table-column label="" width="50">
           <template slot-scope="scope">
             <el-radio
@@ -55,12 +59,38 @@
         </el-table-column>
         <el-table-column prop="studentId" label="学号" width="100">
         </el-table-column>
-        <el-table-column prop="name" label="姓名" width="80"> </el-table-column>
+        <el-table-column prop="name" label="姓名" width="90"> </el-table-column>
         <el-table-column prop="class" label="班级" width="100">
         </el-table-column>
-        <el-table-column prop="departmentName" label="面试部门" width="110">
+        <el-table-column prop="departmentName" label="面试部门" width="140">
+          <template slot-scope="scope" style="position: relative">
+            <span>{{ scope.row.departmentName[0].name }}</span>
+            <el-dropdown
+              trigger="click"
+              style="position: absolute; top: 10px; right: 10px"
+            >
+              <span
+                style="
+                  cursor: pointer;
+                  width: 0;
+                  border: 4px solid;
+                  border-color: #333 transparent transparent transparent;
+                  margin-left: 10px;
+                  margin-top: 2px;
+                "
+              ></span>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item
+                  @click.native="changeDepartment(scope.row)"
+                  v-for="(item, index) in scope.row.departmentName"
+                  :key="index"
+                  >{{ item.name }}</el-dropdown-item
+                >
+              </el-dropdown-menu>
+            </el-dropdown>
+          </template>
         </el-table-column>
-        <el-table-column prop="status" label="通知状态" witch="80">
+        <el-table-column prop="status" label="通知状态" witch="70">
         </el-table-column>
       </el-table>
       <div class="foot">
@@ -96,80 +126,228 @@ export default {
           studentId: 20220001,
           name: '卢小1',
           class: '大数据1班',
-          departmentName: '学生事务中心',
+          departmentName: [
+            {
+              name: '外联部',
+              id: 3
+            },
+            {
+              name: '新媒体部',
+              id: 2
+            },
+            {
+              name: '学生事务中心',
+              id: 1
+            }
+          ],
           status: '已通知'
         },
         {
           studentId: 20220002,
           name: '卢小2',
           class: '大数据1班',
-          departmentName: '学生事务中心',
+          departmentName: [
+            {
+              name: '学生事务中心',
+              id: 1
+            },
+            {
+              name: '外联部',
+              id: 3
+            },
+            {
+              name: '新媒体部',
+              id: 2
+            }
+          ],
           status: '已通知'
         },
         {
           studentId: 20220003,
           name: '卢小3',
           class: '大数据1班',
-          departmentName: '学生事务中心',
+          departmentName: [
+            {
+              name: '外联部',
+              id: 3
+            },
+            {
+              name: '新媒体部',
+              id: 2
+            },
+            {
+              name: '学生事务中心',
+              id: 1
+            }
+          ],
           status: '已通知'
         },
         {
           studentId: 20220004,
           name: '卢小4',
           class: '大数据1班',
-          departmentName: '学生事务中心',
+          departmentName: [
+            {
+              name: '学生事务中心',
+              id: 1
+            },
+            {
+              name: '外联部',
+              id: 3
+            },
+            {
+              name: '新媒体部',
+              id: 2
+            }
+          ],
           status: '已通知'
         },
         {
           studentId: 20220005,
           name: '卢小5',
           class: '大数据1班',
-          departmentName: '学生事务中心',
+          departmentName: [
+            {
+              name: '外联部',
+              id: 3
+            },
+            {
+              name: '新媒体部',
+              id: 2
+            },
+            {
+              name: '学生事务中心',
+              id: 1
+            }
+          ],
           status: '已通知'
         },
         {
           studentId: 20220006,
           name: '卢小6',
           class: '大数据1班',
-          departmentName: '学生事务中心',
+          departmentName: [
+            {
+              name: '学生事务中心',
+              id: 1
+            },
+            {
+              name: '外联部',
+              id: 3
+            },
+            {
+              name: '新媒体部',
+              id: 2
+            }
+          ],
           status: '已通知'
         },
         {
           studentId: 20220007,
           name: '卢小7',
           class: '大数据1班',
-          departmentName: '学生事务中心',
+          departmentName: [
+            {
+              name: '外联部',
+              id: 3
+            },
+            {
+              name: '新媒体部',
+              id: 2
+            },
+            {
+              name: '学生事务中心',
+              id: 1
+            }
+          ],
           status: '已通知'
         },
         {
           studentId: 20220008,
           name: '卢小8',
           class: '大数据1班',
-          departmentName: '学生事务中心',
+          departmentName: [
+            {
+              name: '学生事务中心',
+              id: 1
+            },
+            {
+              name: '外联部',
+              id: 3
+            },
+            {
+              name: '新媒体部',
+              id: 2
+            }
+          ],
           status: '已通知'
         },
         {
           studentId: 20220009,
           name: '卢小9',
           class: '大数据1班',
-          departmentName: '学生事务中心',
+          departmentName: [
+            {
+              name: '外联部',
+              id: 3
+            },
+            {
+              name: '新媒体部',
+              id: 2
+            },
+            {
+              name: '学生事务中心',
+              id: 1
+            }
+          ],
           status: '已通知'
         },
         {
           studentId: 20220010,
           name: '卢小10',
           class: '大数据1班',
-          departmentName: '学生事务中心',
+          departmentName: [
+            {
+              name: '学生事务中心',
+              id: 1
+            },
+            {
+              name: '外联部',
+              id: 3
+            },
+            {
+              name: '新媒体部',
+              id: 2
+            }
+          ],
           status: '已通知'
         },
         {
           studentId: 20220011,
           name: '卢小11',
           class: '大数据1班',
-          departmentName: '学生事务中心',
+          departmentName: [
+            {
+              name: '外联部',
+              id: 3
+            },
+            {
+              name: '新媒体部',
+              id: 2
+            },
+            {
+              name: '学生事务中心',
+              id: 1
+            }
+          ],
           status: '未通知'
         }
       ]
+    }
+  },
+  watch: {
+    search() {
+      this.currentPage = 1
     }
   },
   computed: {
@@ -192,6 +370,9 @@ export default {
     }
   },
   methods: {
+    changeDepartment(e) {
+      console.log(e)
+    },
     indexMethod(index) {
       return (this.currentPage - 1) * this.pagesize + index + 1
     },
@@ -207,7 +388,7 @@ export default {
         this.order = '一面'
 
         //一面数据发送请求
-        let url = '/interview-arrangement/info/like'
+        let url = 'api/interview-arrangement/info/like'
         let params = {
           admissionId: 20212803
         }
@@ -239,7 +420,7 @@ export default {
         this.order = '二面'
 
         //二面数据发送请求
-        let url = '/interview-arrangement/info/like'
+        let url = 'api/interview-arrangement/info/like'
         let params = {
           admissionId: 20212803,
           round: 2
@@ -272,7 +453,7 @@ export default {
         this.order = '三面'
 
         //三面数据发送请求
-        let url = '/interview-arrangement/info/like'
+        let url = 'api/interview-arrangement/info/like'
         let params = {
           admissionId: 20212803,
           round: 3
@@ -302,39 +483,39 @@ export default {
       this.$bus.$emit('order', this.order)
     },
     getCurrentRow(row) {
-      this.$bus.$emit('selectionName', row.name)
-      this.$bus.$emit('selectionStudentId', row.studentId)
+      this.$bus.$emit('selectionName1', row.name)
+      this.$bus.$emit('selectionStudentId1', row.studentId)
       this.$bus.$emit('selectiondepartmentName', row.departmentName)
     }
-  },
-  created() {
-    //一面数据发送请求，初始页面渲染
-    let url = '/interview-arrangement/info/like'
-    let params = {
-      admissionId: 20212803
-    }
-    this.$http
-      .get(url, params)
-      .then((response) => {
-        // console.log(response)
-        this.tableData = []
-        this.total = response.data.data.total
-        this.student0 = response.data.data.infoBackParamList
-        for (let i = 0; i < this.total; i++) {
-          this.tableData.push({
-            key: i.toString(),
-            studentId: ` ${this.student0[i].studentId}`,
-            name: ` ${this.student0[i].studentName}`,
-            class: ` ${this.student0[i].className}`,
-            departmentName: ` ${this.student0[i].departmentName}`,
-            status: ` ${this.student0[i].status}`
-          })
-        }
-      })
-      .catch((error) => {
-        console.log(error)
-      })
   }
+  // created() {
+  //   //一面数据发送请求，初始页面渲染
+  //   let url = 'api/interview-arrangement/info/like'
+  //   let params = {
+  //     admissionId: 20212803
+  //   }
+  //   this.$http
+  //     .get(url, params)
+  //     .then((response) => {
+  //       // console.log(response)
+  //       this.tableData = []
+  //       this.total = response.data.data.total
+  //       this.student0 = response.data.data.infoBackParamList
+  //       for (let i = 0; i < this.total; i++) {
+  //         this.tableData.push({
+  //           key: i.toString(),
+  //           studentId: ` ${this.student0[i].studentId}`,
+  //           name: ` ${this.student0[i].studentName}`,
+  //           class: ` ${this.student0[i].className}`,
+  //           departmentName: ` ${this.student0[i].departmentName}`,
+  //           status: ` ${this.student0[i].status}`
+  //         })
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.log(error)
+  //     })
+  // }
 }
 </script>
 

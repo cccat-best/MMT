@@ -80,7 +80,7 @@
                     <el-avatar
                       :size="50"
                       :src="circleUrl"
-                      style="vertical-align: middle"
+                      style="vertical-align: middle; cursor: pointer"
                     ></el-avatar>
 
                     <div
@@ -206,6 +206,19 @@ export default {
       }
     }
   },
+  mounted() {
+    this.$http
+      .post('api/login/b', {
+        studentId: '20200001',
+        password: '123456'
+      })
+      .then((res) => {
+        console.log('cookie:', res)
+      })
+      .catch(function (error) {
+        console.log(error)
+      })
+  },
   methods: {
     getLoginStatus() {
       const url = '/api/login-status'
@@ -257,7 +270,16 @@ export default {
       this.$router.push('/superAdmin')
     },
     home() {
-      this.$router.push('/personalInfo')
+      if (this.isPersonal) {
+        location.reload()
+      } else {
+        this.$router.push('/home/personalInfo')
+      }
+    },
+    // 个人中心顶部左侧返回的实现，还没想到咋实现
+
+    gotoBack() {
+      console.log('go back')
     }
   },
   created() {
@@ -290,23 +312,8 @@ export default {
   cursor: pointer;
   color: black;
 }
+
 :deep(.el-menu-item .iconfont) {
   width: 0px;
-}
-.back-botton {
-  color: black;
-  ::v-deep .el-page-header__title {
-    font-size: 14px;
-    font-weight: 500;
-    color: black;
-    &:hover {
-      color: #409eff !important;
-    }
-  }
-  ::v-deep .el-icon-back {
-    &:hover {
-      color: #409eff !important;
-    }
-  }
 }
 </style>
