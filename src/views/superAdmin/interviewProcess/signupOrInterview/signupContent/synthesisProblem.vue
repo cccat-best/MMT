@@ -153,7 +153,6 @@
 
 <script>
 import { mapState } from 'vuex'
-import axios from 'axios'
 export default {
   data() {
     return {
@@ -354,21 +353,48 @@ export default {
           //开始结束时间必填
           if (this.time.length == 0)
             return this.$message.error('请确认填写是否填写了开始截至时间')
+          // 解决综合问题的顺序
+          let i = 1
+          this.comprehensiveQuestionsList.forEach((p) => {
+            p.questionOrder = i
+            i++
+          })
+          //解决部门问题的顺序
+          //得到所有部门id
+          let sectionId = this.departmentQuestionsList.map(
+            (p) => p.departmentId
+          )
+          let departmentList = []
+          //id去重
+          sectionId = [...new Set(sectionId)]
+          //把相同部门问题 放入temp 给问题排序
+          for (let a = 0; a < sectionId.length; a++) {
+            let i = 1
+            let temp = []
+            temp = this.departmentQuestionsList.filter(
+              (p) => p.departmentId === sectionId[a]
+            )
+            temp.forEach((item) => {
+              item.questionOrder = i
+              i++
+              departmentList.push(item)
+            })
+          }
+          // 数据打包
           const qustionList = {
-            userId: 2,
-            organizationId: 2,
+            organizationId: sessionStorage.getItem('loginOrganizationId'),
             startTime: this.time[0],
             endTime: this.time[1],
             generalQuestions: this.generalQuestions,
             questionsList: this.questionsList,
             maxDepartment: this.maxDepartment,
-            departmentQuestionsList: this.departmentQuestionsList,
+            departmentQuestionsList: departmentList,
             allocated: this.allocated,
             comprehensiveQuestionsList: this.comprehensiveQuestionsList
           }
           console.log(qustionList)
           //调用函数发送请求
-          // this.sendTo(qustionList)
+          this.sendTo(qustionList)
         })
         .catch(() => {
           this.$message({
@@ -378,27 +404,11 @@ export default {
         })
     },
     async sendTo(qustionList) {
-      // const res = await axios.post(
-      //   'http://119.29.27.252:38080/organization/interview/sign',
-      //   {
-      //     data: JSON.stringify(qustionList)
-      //   },
-      //   {
-      //     headers: {
-      //       'Access-Control-Allow-Origin': '*', //解决cors头问题
-      //       'Access-Control-Allow-Credentials': 'true' //解决session问题
-      //     },
-      //     withCredentials: true
-      //   }
-      // )
-      axios
-        .post(
-          'http://119.29.27.252:38080/organization/interview/sign',
-          qustionList
-        )
+      this.$http
+        .post('api/organization/interview/sign', qustionList)
         .then((res) => {
-          console.log('res=>', res)
-          if (res.data.code !== '00000') return this.$message.error('提交失败')
+          if (res.data.code !== '00000')
+            return this.$message.error('提交失败' + res.data.message)
           return this.$message.success('提交成功')
         })
         .catch((err) => err)
@@ -453,9 +463,10 @@ export default {
           border-radius: 5px;
           border: 1px solid #0f2d2d;
           height: 18px;
+          width: 166px;
         }
         .freeView-select {
-          width: 165.4px;
+          width: 167px;
           border-radius: 5px;
           border: 1px solid #0f2d2d;
           height: 20px;

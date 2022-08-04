@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import login from '../views/login/login.vue'
-import personalInfo from '../views/home/personalInfo/personalInfo.vue'
 Vue.use(VueRouter)
 const routes = [
   {
@@ -29,20 +28,6 @@ const routes = [
         path: 'reply',
         component: () =>
           import('../views/home/interviewReply/interviewReply.vue')
-      },
-      {
-        path: 'resultInform',
-        component: () => import('../views/home/interviewReply/resultInform.vue')
-      },
-
-      // {
-      //   path: 'personalInfo',
-      //   component: () =>
-      //     import('../views/home/personalIofo/personalIofo.vue')
-      // },
-      {
-        path: 'personalInfo',
-        component: personalInfo
       }
     ]
   },
@@ -54,6 +39,10 @@ const routes = [
         //面试流程页面
         path: 'process',
         component: () => import('../views/superAdmin/interviewProcess/main.vue')
+      },
+      {
+        path: 'accountManage',
+        component: () => import('../views/superAdmin/accountManage/main.vue')
       }
     ]
   }

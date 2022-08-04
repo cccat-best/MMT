@@ -11,7 +11,12 @@
         <div
           v-if="!isPersonal"
           class="leftTop"
-          style="height: 20px; overflow: hidden; margin-left: 20px"
+          style="
+            height: 20px;
+            overflow: hidden;
+            margin-left: 20px;
+            text-align: start;
+          "
         >
           {{ loginOrganizationName }}
         </div>
