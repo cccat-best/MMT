@@ -243,33 +243,12 @@ export default {
   },
   data() {
     return {
+      // 计时器
+      timerUpdate: null,
       // 关键字搜索
       admissionId: 20200001, //纳新ID不知道，需要询问////////////////////////
       organizationId: 1, ////组织名不知道，需要询问////////////////////////
       searchWord: '',
-      postdata: '', //发请求的data
-      order: 'ascending', //排序顺序，默认升序
-      column: 'hello', //排序变量，默认权限升序
-      permissionSelect: null, //筛选变量
-
-      // 页码
-      tableList: [], //当前页展示数据
-      currentPage: 1, // 当前页码
-      pagesize: 10, // 每页条数，默认10
-      total: 100,
-      // 表格数据
-      tableData: [...data], //模拟数据，发请求会获取数据覆盖它
-      tableDataChange: [], //排序、筛选之后的数据
-
-      // 表头名
-      // classNameLabel: '班级',
-      // organizationOrderLabel: '社团志愿次序',
-      // departmentOrderLabel: '部门志愿次序',
-      // wishDepartmentLabel: '部门志愿筛选项',
-      // interviewStatus: '当前志愿状态',
-      // nextPlaceLabel: '下一场面试地点',
-      // nextTimeLabel: '下一次面试时间'
-
       // 筛选勾选的请求信息的数组
       className: [],
       organizationOrder: [],
@@ -296,9 +275,38 @@ export default {
           sortCondition: 3,
           sortModel: 1
         }
-      ]
+      ],
+      postdata: '', //发请求的data
+      // 页码
+      tableList: [], //当前页展示数据
+      currentPage: 1, // 当前页码
+      pagesize: 10, // 每页条数，默认10
+      total: 100,
+      // 表格数据
+      tableData: [...data], //模拟数据，发请求会获取数据覆盖它
+      tableDataChange: [] //排序、筛选之后的数据
+
+      // 表头名
+      // classNameLabel: '班级',
+      // organizationOrderLabel: '社团志愿次序',
+      // departmentOrderLabel: '部门志愿次序',
+      // wishDepartmentLabel: '部门志愿筛选项',
+      // interviewStatus: '当前志愿状态',
+      // nextPlaceLabel: '下一场面试地点',
+      // nextTimeLabel: '下一次面试时间'
     }
   },
+  // 定时更新数据和筛选项
+  // mounted(){
+  //   this.requestFilterItem()
+  //   this.timerUpdate = setInterval(() => {
+  //     setTimeout(this.requestFilterItem,0)
+  //   }, 1000*60);
+  // },
+  // beforeDestroy(){
+  //   clearInterval(this.timerUpdate)
+  //   this.timerUpdate= null
+  // },
   created() {
     //获取数据
     this.searchKeyWord()
@@ -568,7 +576,150 @@ export default {
         )
     },
     // 获取所有筛选项
-    requestFilterItem() {},
+    requestFilterItem() {
+      // 顺便更新数据
+      this.searchKeyWord()
+      // 获取班级
+      this.$http
+        .get(
+          'api/data-panel/class?admissionId=' +
+            this.admissionId +
+            '&organizationId=' +
+            this.organizationId
+        )
+        .then(
+          (res) => {
+            if (res.data.code == '00000') {
+              this.updateClassNameFilter(res.data.data)
+            } else {
+              this.$message.error(res.data.message)
+            }
+          },
+          (err) => {
+            this.$message.error('获取数据失败' + err)
+          }
+        )
+      // 获取社团志愿次序
+      this.$http
+        .get(
+          'api/data-panel/organization-order?admissionId=' +
+            this.admissionId +
+            '&organizationId=' +
+            this.organizationId
+        )
+        .then(
+          (res) => {
+            if (res.data.code == '00000') {
+              this.updateOrganizationOrderFilter(res.data.data)
+            } else {
+              this.$message.error(res.data.message)
+            }
+          },
+          (err) => {
+            this.$message.error('获取数据失败' + err)
+          }
+        )
+      // 获取部门志愿次序
+      this.$http
+        .get(
+          'api/data-panel/department-order?admissionId=' +
+            this.admissionId +
+            '&organizationId=' +
+            this.organizationId
+        )
+        .then(
+          (res) => {
+            if (res.data.code == '00000') {
+              this.updateDepartmentOrderFilter(res.data.data)
+            } else {
+              this.$message.error(res.data.message)
+            }
+          },
+          (err) => {
+            this.$message.error('获取数据失败' + err)
+          }
+        )
+      // 获取当前志愿状态
+      this.$http
+        .get(
+          'api/data-panel/interview-status?admissionId=' +
+            this.admissionId +
+            '&organizationId=' +
+            this.organizationId
+        )
+        .then(
+          (res) => {
+            if (res.data.code == '00000') {
+              this.updateInterviewStatusFilter(res.data.data)
+            } else {
+              this.$message.error(res.data.message)
+            }
+          },
+          (err) => {
+            this.$message.error('获取数据失败' + err)
+          }
+        )
+      // 获取下一场面试地点
+      this.$http
+        .get(
+          'api/data-panel/next-place?admissionId=' +
+            this.admissionId +
+            '&organizationId=' +
+            this.organizationId
+        )
+        .then(
+          (res) => {
+            if (res.data.code == '00000') {
+              this.updateNextPlaceFilter(res.data.data)
+            } else {
+              this.$message.error(res.data.message)
+            }
+          },
+          (err) => {
+            this.$message.error('获取数据失败' + err)
+          }
+        )
+      // 获取下一次面试时间
+      this.$http
+        .get(
+          'api/data-panel/next-time?admissionId=' +
+            this.admissionId +
+            '&organizationId=' +
+            this.organizationId
+        )
+        .then(
+          (res) => {
+            if (res.data.code == '00000') {
+              this.updateNextTimeFilter(res.data.data)
+            } else {
+              this.$message.error(res.data.message)
+            }
+          },
+          (err) => {
+            this.$message.error('获取数据失败' + err)
+          }
+        )
+      // 获取当前部门志愿
+      this.$http
+        .get(
+          'api/data-panel/wish-department?admissionId=' +
+            this.admissionId +
+            '&organizationId=' +
+            this.organizationId
+        )
+        .then(
+          (res) => {
+            if (res.data.code == '00000') {
+              this.updateWishDepartmentFilter(res.data.data)
+            } else {
+              this.$message.error(res.data.message)
+            }
+          },
+          (err) => {
+            this.$message.error('获取数据失败' + err)
+          }
+        )
+    },
     //修改页容量
     handleSizeChange(val) {
       this.pagesize = val
