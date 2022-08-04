@@ -11,7 +11,7 @@
         <div class="must-item" v-for="(must, index) in mustList" :key="index">
           <div class="must-star">*</div>
           <div class="must-name">{{ must.description }}</div>
-          <div class="must-input"><input type="text" /></div>
+          <div><input type="text" class="must-input" /></div>
         </div>
       </div>
       <!-- 可选问题 -->
@@ -29,7 +29,7 @@
             @click="item.isShow = !item.isShow"
           ></i>
           <span class="choose-name">{{ item.description }}</span>
-          <input type="text" />
+          <input type="text" class="choose-input" />
         </div>
       </div>
       <!-- 自定义问题展示 -->
@@ -49,22 +49,26 @@
           <span class="freeView-name">{{ item1.description }}</span>
           <!-- 选择or文字 -->
           <select class="freeView-select" v-show="item1.selection">
-            <option
-              selected="selected"
-              disabled="disabled"
-              style="display: none"
-              value=""
-            ></option>
-            <option
-              v-for="(item2, index2) in item1.option"
-              :key="'op' + index2"
-              v-show="item2 != null"
-            >
-              {{ item2 }}
-            </option>
-          </select>
-          <!--  展示input框-->
-          <input type="text" v-show="!item1.selection" class="freeView-input" />
+              <option
+                selected="selected"
+                disabled="disabled"
+                style="display: none"
+                value=""
+              ></option>
+              <option
+                v-for="(item2, index2) in item1.option"
+                :key="'op' + index2"
+                v-show="item2 != null"
+              >
+                {{ item2 }}
+              </option>
+            </select>
+            <!--  展示input框-->
+            <input
+              type="text"
+              v-show="!item1.selection"
+              class="freeView-input"
+            />
         </div>
       </div>
       <!-- 预设问题面板 -->
@@ -220,7 +224,7 @@ export default {
         },
         {
           isShow: true,
-          description: '手机号'
+          description: '电话'
         }
       ],
       //预设问题
@@ -255,7 +259,7 @@ export default {
         }
       ],
       //自定义问题
-      BaseList: []
+      BaseList:[]
     }
   },
   methods: {
@@ -391,10 +395,10 @@ export default {
         .forEach((p) => {
           generalQuestions.push(p.description)
         })
-      let questionsList = this.BaseList
+      let questionsList =this.BaseList
       // 给问题排序
-      let i = 1
-      questionsList.forEach((p) => {
+      let i = 1;
+      questionsList.forEach(p => {
         p.questionOrder = i
         i++
       })
@@ -443,9 +447,13 @@ export default {
           margin-left: 5px;
         }
         .must-name {
-          width: 50px;
+          width: 30px;
           margin-left: 3px;
           margin-right: 5px;
+        }
+        .must-input {
+          border-radius: 5px;
+          border: 1px solid #0f2d2d;
         }
       }
     }
@@ -461,14 +469,20 @@ export default {
         .choose-name {
           margin-left: 3px;
           margin-right: 5px;
-          width: 50px;
+          width: 30px;
+        }
+        .choose-input {
+          margin-left: 2px;
+          border-radius: 5px;
+          border: 1px solid #0f2d2d;
         }
       }
     }
     .yushe-content {
       display: flex;
       flex-direction: column;
-      margin-top: 40px;
+      margin-top: 26px;
+      margin-left: 5px;
       width: 660px;
       height: 168px;
       margin-bottom: 30px;
@@ -490,6 +504,7 @@ export default {
           border-radius: 5px;
           line-height: 25px;
           margin-right: 10px;
+          cursor: pointer;
         }
         padding-bottom: 20px;
         border-bottom: 1px solid #efefef;

@@ -10,7 +10,8 @@ const getters = {}
 const mutations = {
   tranformAll(state, item) {
     state.all = item
-  }
+  },
+
 }
 //用于响应
 const actions = {}
