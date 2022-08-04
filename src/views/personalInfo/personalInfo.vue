@@ -7,11 +7,7 @@
         justify="space-between"
         style="height: 100%; overflow: hidden"
       >
-        <el-page-header
-          @back="goBack"
-          :content="this.loginOrganizationName"
-          class="back-botton"
-        >
+        <el-page-header @back="goBack" content="个人中心" class="back-botton">
         </el-page-header>
 
         <div class="rightTop" style="display: flex">
@@ -204,7 +200,11 @@
         </div>
 
         <!-- 修改密码弹出框 -->
-        <el-dialog title="更改密码" :visible.sync="changePassVisible">
+        <el-dialog
+          title="更改密码"
+          :visible.sync="changePassVisible"
+          class="visible-box"
+        >
           <el-form :model="pwdForm" ref="pwdForm" :rules="rules1">
             <el-form-item label="原密码" prop="password">
               <el-input
@@ -554,6 +554,20 @@ export default {
 </script>
 
 <style lang="less" scoped>
+:deep(.el-dialog__footer) {
+  text-align: center;
+}
+:deep(.el-dialog) {
+  width: 400px;
+}
+.el-input {
+  width: 250px;
+}
+.visible-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .border {
   width: 100%;
   height: 100%;
