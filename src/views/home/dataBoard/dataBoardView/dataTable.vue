@@ -297,15 +297,15 @@ export default {
     }
   },
   // 定时更新数据和筛选项
-  mounted(){
+  mounted() {
     this.requestFilterItem()
     this.timerUpdate = setInterval(() => {
-      setTimeout(this.requestFilterItem,0)
-    }, 1000*60);
+      setTimeout(this.requestFilterItem, 0)
+    }, 1000 * 60)
   },
-  beforeDestroy(){
+  beforeDestroy() {
     clearInterval(this.timerUpdate)
-    this.timerUpdate= null
+    this.timerUpdate = null
   },
   created() {
     //获取数据
