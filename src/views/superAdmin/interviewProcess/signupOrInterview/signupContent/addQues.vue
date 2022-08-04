@@ -16,7 +16,7 @@
             <span class="freeView-name">{{ item1.description }}</span>
           </div>
           <!-- 展示选项 -->
-          <select class="freeView-select" v-show="item1.selection">
+          <select style="width: 166.4px" v-show="item1.selection">
             <option
               selected="selected"
               disabled="disabled"
@@ -32,7 +32,7 @@
             </option>
           </select>
           <!--  展示input框-->
-          <input type="text" v-show="!item1.selection" class="freeView-input" />
+          <input type="text" v-show="!item1.selection" />
         </div>
       </div>
     </div>
@@ -345,20 +345,11 @@ export default {
         text-overflow: ellipsis;
       }
     }
-    .freeView-input {
-      border-radius: 5px;
-      border: 1px solid #0f2d2d;
-    }
-    .freeView-select {
-      width: 165.4px;
-      border-radius: 5px;
-      border: 1px solid #0f2d2d;
-    }
   }
 }
 .add-qus {
   display: flex;
-  margin-top: 10px;
+  margin-top: 20px;
   padding-left: 25px;
   .add-botton {
     color: white;

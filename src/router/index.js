@@ -65,6 +65,10 @@ const routes = [
 const router = new VueRouter({
   routes
 })
+const VueRouterPush = VueRouter.prototype.push
+VueRouter.prototype.push = function push(to) {
+  return VueRouterPush.call(this, to).catch((err) => err)
+}
 export default router
 // 路由守卫
 //添加路由守卫:：通过判断来决定当前的路由跳转到底能不能进行，这种守卫，只要进行路由的跳转就会自动的触发，不能人为调用

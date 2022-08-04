@@ -11,7 +11,7 @@
         <div class="must-item" v-for="(must, index) in mustList" :key="index">
           <div class="must-star">*</div>
           <div class="must-name">{{ must.description }}</div>
-          <div><input type="text" class="must-input" /></div>
+          <div class="must-input"><input type="text" /></div>
         </div>
       </div>
       <!-- 可选问题 -->
@@ -29,7 +29,7 @@
             @click="item.isShow = !item.isShow"
           ></i>
           <span class="choose-name">{{ item.description }}</span>
-          <input type="text" class="choose-input" />
+          <input type="text" />
         </div>
       </div>
       <!-- 自定义问题展示 -->
@@ -47,7 +47,7 @@
             @click="removeTextChoose(item1)"
           ></i>
           <span class="freeView-name">{{ item1.description }}</span>
-          <input type="text" class="freeView-input" />
+          <input type="text" />
         </div>
         <!-- 自定义选择问题展示 -->
         <div
@@ -61,7 +61,7 @@
             @click="removeChose(item2)"
           ></i>
           <span class="freeView-name">{{ item2.description }}</span>
-          <select class="freeView-select">
+          <select style="width: 166.4px">
             <option
               selected="selected"
               disabled="disabled"
@@ -231,7 +231,7 @@ export default {
         },
         {
           isShow: true,
-          description: '电话'
+          description: '手机号'
         }
       ],
       //预设问题
@@ -455,13 +455,9 @@ export default {
           margin-left: 5px;
         }
         .must-name {
-          width: 30px;
+          width: 50px;
           margin-left: 3px;
           margin-right: 5px;
-        }
-        .must-input {
-          border-radius: 5px;
-          border: 1px solid #0f2d2d;
         }
       }
     }
@@ -477,20 +473,14 @@ export default {
         .choose-name {
           margin-left: 3px;
           margin-right: 5px;
-          width: 30px;
-        }
-        .choose-input {
-          margin-left: 2px;
-          border-radius: 5px;
-          border: 1px solid #0f2d2d;
+          width: 50px;
         }
       }
     }
     .yushe-content {
       display: flex;
       flex-direction: column;
-      margin-top: 26px;
-      margin-left: 5px;
+      margin-top: 40px;
       width: 660px;
       height: 168px;
       margin-bottom: 30px;
@@ -512,7 +502,6 @@ export default {
           border-radius: 5px;
           line-height: 25px;
           margin-right: 10px;
-          cursor: pointer;
         }
         padding-bottom: 20px;
         border-bottom: 1px solid #efefef;
@@ -560,15 +549,6 @@ export default {
         display: flex;
         margin: 10px 10px;
         width: 200px;
-      }
-      .freeView-input {
-        border-radius: 5px;
-        border: 1px solid #0f2d2d;
-      }
-      .freeView-select {
-        width: 165.4px;
-        border-radius: 5px;
-        border: 1px solid #0f2d2d;
       }
     }
   }

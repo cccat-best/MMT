@@ -79,6 +79,7 @@ export default {
         `http://119.29.27.252:38080/organization/department-id?organizationId=${organizationId}&userId=${userId}`
       )
       //判断是否请求成功
+      alert('请求了')
       if (res.code != '00000')
         return this.$message.error('部门请求失败' + res.message)
       this.departmentCount = res.data.departmentList.length

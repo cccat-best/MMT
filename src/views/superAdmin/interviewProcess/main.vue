@@ -10,37 +10,19 @@
       <!-- 导航区（一面二面。。） -->
       <div class="nav">
         <el-tabs v-model="activeName" @tab-click="handleClick">
-          <!-- 报名页 -->
           <el-tab-pane label="报名" name="first" class="body"
             ><signup></signup
           ></el-tab-pane>
-          <!-- 1-4面 -->
-          <el-tab-pane
-            label="一面"
-            name="second"
-            class="body"
-            v-if="roundCount >= 1"
+          <el-tab-pane label="一面" name="second" class="body" v-if="true"
             ><interview round="1"></interview
           ></el-tab-pane>
-          <el-tab-pane
-            label="二面"
-            name="third"
-            class="body"
-            v-if="roundCount >= 2"
+          <el-tab-pane label="二面" name="third" class="body" v-if="true"
             ><interview round="2"></interview
           ></el-tab-pane>
-          <el-tab-pane
-            label="三面"
-            name="fourth"
-            class="body"
-            v-if="roundCount >= 3"
+          <el-tab-pane label="三面" name="fourth" class="body" v-if="true"
             ><interview round="3"></interview
           ></el-tab-pane>
-          <el-tab-pane
-            label="四面"
-            name="fiveth"
-            class="body"
-            v-if="roundCount >= 4"
+          <el-tab-pane label="四面" name="fifth" class="body" v-if="true"
             ><interview round="4"></interview
           ></el-tab-pane>
         </el-tabs>
@@ -56,11 +38,7 @@
             :max="4"
             label="描述文字"
           ></el-input-number>
-          <el-button
-            type="primary"
-            plain
-            style="margin-left: 20px"
-            @click="changeRound"
+          <el-button type="primary" plain style="margin-left: 20px"
             >确定</el-button
           >
           <el-button slot="reference">选择面试总数</el-button>
@@ -78,15 +56,13 @@
 <script>
 import signup from './signupOrInterview/signup.vue'
 import interview from './signupOrInterview/interview.vue'
-import axios from 'axios'
 export default {
   data() {
     return {
       // 次导航选中的
       activeName: 'first',
       //计数器的数字
-      num: 0,
-      roundCount: 0
+      num: 1
     }
   },
   components: { signup, interview },
@@ -94,42 +70,7 @@ export default {
     // 切换次导航触发事件
     handleClick(tab, event) {
       console.log(tab, event)
-    },
-    changeRound() {
-      let obj = {
-        userId: 2,
-        organizationId: 2,
-        rounds: this.num
-      }
-      axios
-        .post('http://119.29.27.252:38080/organization/interview/round', obj)
-        .then((res) => {
-          console.log('res=>', res)
-        })
-        .catch((err) => err)
-      //重新获取面试轮数
-      // setTimeout(() => {
-      //   this.getRound()
-      // },1000)
-      this.roundCount = this.num
-    },
-    //得到几面
-    async getRound() {
-      const organizationId = 2
-      const userId = 2
-      const { data: res } = await axios.get(
-        `http://119.29.27.252:38080/organization/interview/round?organizationId=${organizationId}&userId=${userId}`
-      )
-      if (res.data.round === null) {
-        this.roundCount = 0
-      } else {
-        this.roundCount = res.data.round
-      }
-      console.log(res)
     }
-  },
-  mounted() {
-    this.getRound()
   }
 }
 </script>
