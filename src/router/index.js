@@ -29,9 +29,23 @@ const routes = [
         path: 'reply',
         component: () =>
           import('../views/home/interviewReply/interviewReply.vue')
+      },
+      // {
+      //   path: 'personalInfo',
+      //   component: () =>
+      //     import('../views/home/personalIofo/personalIofo.vue')
+      // },
+      // {
+      //   path: 'personalInfo',
+      //   component: personalInfo
+      // },
+      {
+        path: 'interviewMain',
+        component: () => import('../views/home/interviewMain/interviewMain.vue')
       }
     ]
   },
+
   {
     path: '/personalInfo',
     component: () => import('../views/personalInfo/personalInfo.vue')
@@ -44,6 +58,28 @@ const routes = [
         //面试流程页面
         path: 'process',
         component: () => import('../views/superAdmin/interviewProcess/main.vue')
+      },
+      //东睿的宣传信息路由
+      {
+        path: 'informationSet',
+        component: () =>
+          import('../views/superAdmin/informationSet/informationSetMain.vue'),
+        children: [
+          {
+            path: 'informationSetEdit',
+            component: () =>
+              import(
+                '../views/superAdmin/informationSet/informationSetInner/informationBasicEdit.vue'
+              )
+          },
+          {
+            path: 'informationSetSaved',
+            component: () =>
+              import(
+                '../views/superAdmin/informationSet/informationSetInner/informationBasicSaved.vue'
+              )
+          }
+        ]
       }
     ]
   }
