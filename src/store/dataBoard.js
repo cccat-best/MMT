@@ -33,6 +33,7 @@ export default {
   }),
   mutations: {
     //更新筛选项
+    //班级
     updateClassNameFilter(state, data) {
       let newData = data.map((item) => {
         return {
@@ -41,62 +42,68 @@ export default {
         }
       })
       state.classNameFilter = newData
-    }, //班级
+    },
+    //社团志愿次序
     updateOrganizationOrderFilter(state, data) {
       let newData = data.map((item) => {
         return {
-          text: item.className + ' ' + '--' + item.number + '人',
-          value: item.className
+          text: item.organizationOrder + ' ' + '--' + item.number + '人',
+          value: item.organizationOrder
         }
       })
       state.organizationOrderFilter = newData
-    }, //社团志愿次序
+    },
+    //部门志愿次序
     updateDepartmentOrderFilter(state, data) {
       let newData = data.map((item) => {
         return {
-          text: item.className + ' ' + '--' + item.number + '人',
-          value: item.className
+          text: item.departmentOrder + ' ' + '--' + item.number + '人',
+          value: item.departmentOrder
         }
       })
       state.departmentOrderFilter = newData
-    }, //部门志愿次序
+    },
+
+    // 当前志愿部门
     updateWishDepartmentFilter(state, data) {
       let newData = data.map((item) => {
         return {
-          text: item.className + ' ' + '--' + item.number + '人',
-          value: item.className
+          text: item.wishDepartment + ' ' + '--' + item.number + '人',
+          value: item.wishDepartment
         }
       })
       state.wishDepartmentFilter = newData
     },
-    // 当前志愿部门
+    //当前志愿状态
     updateInterviewStatusFilter(state, data) {
       let newData = data.map((item) => {
         return {
-          text: item.className + ' ' + '--' + item.number + '人',
-          value: item.className
+          text: item.interviewStatus + ' ' + '--' + item.number + '人',
+          value: item.interviewStatus
         }
       })
       state.interviewStatusFilter = newData
-    }, //当前志愿状态
+    },
+    //下一场面试地点
     updateNextPlaceFilter(state, data) {
       let newData = data.map((item) => {
         return {
-          text: item.className + ' ' + '--' + item.number + '人',
-          value: item.className
+          text: item.nextPlace + ' ' + '--' + item.number + '人',
+          value: item.nextPlace
         }
       })
       state.nextPlaceFilter = newData
-    }, //下一场面试地点
+    },
+    //下一次面试时间
     updateNextTimeFilter(state, data) {
       let newData = data.map((item) => {
         return {
-          text: item.className + ' ' + '--' + item.number + '人',
-          value: item.className
+          text: item.nextTime + ' ' + '--' + item.number + '人',
+          value: item.nextTime
         }
       })
       state.nextTimeFilter = newData
-    } //下一次面试时间
+    }
   },
   getters: {}
 }

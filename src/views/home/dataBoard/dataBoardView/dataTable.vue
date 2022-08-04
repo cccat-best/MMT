@@ -247,7 +247,7 @@ export default {
       timerUpdate: null,
       // 关键字搜索
       admissionId: 1, //纳新ID不知道，需要询问////////////////////////
-      organizationId: 12, ////组织名不知道，需要询问////////////////////////
+      organizationId: 1, ////组织名不知道，需要询问////////////////////////
       searchWord: '',
       // 筛选勾选的请求信息的数组
       className: [],
@@ -281,10 +281,7 @@ export default {
       tableList: [], //当前页展示数据
       currentPage: 1, // 当前页码
       pagesize: 10, // 每页条数，默认10
-      total: 100,
-      // 表格数据
-      tableData: [...data], //模拟数据，发请求会获取数据覆盖它
-      tableDataChange: [] //排序、筛选之后的数据
+      total: 100
 
       // 表头名
       // classNameLabel: '班级',
@@ -495,9 +492,9 @@ export default {
           } else if (res.data.code == 'A0400')
             this.$message.error(res.data.message)
           else {
-            this.tableData = res.data.data
-            this.total = res.tableData.length
-            console.log(this.tableData)
+            this.tableList = res.data.data
+            this.total = res.tableList.length
+            console.log(this.tableList)
             // 成功后页面上回到第一页
             this.currentPage = 1
           }
@@ -746,24 +743,22 @@ export default {
       this.pagesize = val
       // 回到第一页
       this.currentPage = 1
-      // console.log(`每页: ${val}`)
-      this.pageCutDouwn(this.tableDataChange)
+      this.searchKeyWord()
     },
     // 修改到第几页
     handleCurrentChange(val) {
       this.currentPage = val
-      // console.log(`当前页: ${val}`)
-      this.pageCutDouwn(this.tableDataChange)
-    },
-    // 具体分页操作
-    pageCutDouwn(tableDataChange) {
-      this.tableList = tableDataChange.filter(
-        (item, index) =>
-          index < this.currentPage * this.pagesize &&
-          index >= this.pagesize * (this.currentPage - 1)
-      )
-      this.total = tableDataChange.length
+      this.searchKeyWord()
     }
+    // 具体分页操作
+    // pageCutDouwn(tableDataChange) {
+    //   this.tableList = tableDataChange.filter(
+    //     (item, index) =>
+    //       index < this.currentPage * this.pagesize &&
+    //       index >= this.pagesize * (this.currentPage - 1)
+    //   )
+    //   this.total = tableDataChange.length
+    // }
   }
 }
 </script>
