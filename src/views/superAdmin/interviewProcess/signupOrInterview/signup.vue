@@ -131,7 +131,7 @@ export default {
     background-color: #fff;
     min-height: 438px;
     min-width: 817px;
-    height:calc(100vh - 60px - 40px - 25px - 70px - 30px);
+    height: calc(100vh - 60px - 40px - 25px - 70px - 30px);
     margin-top: 12px;
     -webkit-overflow-scrolling: touch;
     overflow-y: auto;
