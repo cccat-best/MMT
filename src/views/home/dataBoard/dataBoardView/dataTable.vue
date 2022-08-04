@@ -52,10 +52,6 @@
       :data="tableList"
       @sort-change="sortTableFun"
       @filter-change="filterChange"
-      :default-sort="
-        ({ prop: 'studentId', order: 'ascending' },
-        { prop: 'permission', order: 'ascending' })
-      "
     >
       <!-- 注意上面有tableList -->
       <el-table-column label="ID" align="center" width="70px">
@@ -64,7 +60,7 @@
         </template>
       </el-table-column>
       <el-table-column
-        prop="studentId"
+        prop="stuNum"
         label="学号"
         width="100px"
         align="center"
@@ -120,10 +116,10 @@
       <el-table-column
         width="160px"
         align="center"
-        prop="permission"
+        prop="departmentOrder"
         label="部门志愿次序"
         :filters.sync="departmentOrderFilter"
-        column-key="permission"
+        column-key="departmentOrder"
       >
       </el-table-column>
 
@@ -131,8 +127,10 @@
       <el-table-column
         width="160px"
         align="center"
-        prop="permission"
+        prop="wishDepartment"
         label="当前志愿部门"
+        column-key="wishDepartment"
+        :filters.sync="wishDepartmentFilter"
       >
       </el-table-column>
 
@@ -140,10 +138,10 @@
       <el-table-column
         width="160px"
         align="center"
-        prop="permission"
+        prop="interviewStatus"
         label="当前志愿状态"
         :filters.sync="interviewStatusFilter"
-        column-key="permission"
+        column-key="interviewStatus"
       >
       </el-table-column>
 
@@ -151,11 +149,11 @@
       <el-table-column
         width="180px"
         align="center"
-        prop="permission"
+        prop="nextTime"
         label="下一场面试时间"
         sortable="custom"
         :filters.sync="nextTimeFilter"
-        column-key="permission"
+        column-key="nextTime"
       >
       </el-table-column>
 
@@ -163,11 +161,11 @@
       <el-table-column
         width="180px"
         align="center"
-        prop="permission"
+        prop="nextPlace"
         label="下一场面试地点"
         sortable="custom"
         :filters.sync="nextPlaceFilter"
-        column-key="permission"
+        column-key="nextPlace"
       >
       </el-table-column>
 
@@ -237,6 +235,7 @@ export default {
       'classNameFilter',
       'organizationOrderFilter',
       'departmentOrderFilter',
+      'wishDepartmentFilter',
       'interviewStatusFilter',
       'nextPlaceFilter',
       'nextTimeFilter'
@@ -245,12 +244,12 @@ export default {
   data() {
     return {
       // 关键字搜索
-      admissionId: 0, //纳新ID不知道，需要询问////////////////////////
-      organizationId: 2, ////组织名不知道，需要询问////////////////////////
+      admissionId: 20200001, //纳新ID不知道，需要询问////////////////////////
+      organizationId: 1, ////组织名不知道，需要询问////////////////////////
       searchWord: '',
       postdata: '', //发请求的data
       order: 'ascending', //排序顺序，默认升序
-      column: 'permission', //排序变量，默认权限升序
+      column: 'hello', //排序变量，默认权限升序
       permissionSelect: null, //筛选变量
 
       // 页码
@@ -260,7 +259,7 @@ export default {
       total: 100,
       // 表格数据
       tableData: [...data], //模拟数据，发请求会获取数据覆盖它
-      tableDataChange: [] //排序、筛选之后的数据
+      tableDataChange: [], //排序、筛选之后的数据
 
       // 表头名
       // classNameLabel: '班级',
@@ -270,6 +269,34 @@ export default {
       // interviewStatus: '当前志愿状态',
       // nextPlaceLabel: '下一场面试地点',
       // nextTimeLabel: '下一次面试时间'
+
+      // 筛选勾选的请求信息的数组
+      className: [],
+      organizationOrder: [],
+      departmentOrder: [],
+      wishDepartment: [],
+      interviewStatus: [],
+      nextPlace: [],
+      nextTime: [],
+      // 排序，排序选择（姓名0、学号1、地点2、时间3），排序方式（1正序、2倒序）
+      sort: [
+            {
+              sortCondition: 0,
+              sortModel: 1
+            },
+            {
+              sortCondition: 1,
+              sortModel: 1
+            },
+            {
+              sortCondition: 2,
+              sortModel: 1
+            },
+            {
+              sortCondition: 3,
+              sortModel: 1
+            }
+          ],
     }
   },
   created() {
@@ -288,6 +315,7 @@ export default {
       'updateClassNameFilter',
       'updateOrganizationOrderFilter',
       'updateDepartmentOrderFilter',
+      'updateWishDepartmentFilter',
       'updateInterviewStatusFilter',
       'updateNextPlaceFilter',
       'updateNextTimeFilter'
@@ -341,21 +369,38 @@ export default {
         )
     },
     // 触发排序
-    sortTableFun(column) {
-      //用户点击这一列的上下排序按钮时，触发的函数
-      console.log(column)
-      this.column = column.prop //该方法获取到当前列绑定的prop字段名赋值给一个变量，之后这个变量做为入参传给后端
-      if (column.prop) {
-        //该列有绑定prop字段走这个分支
-        if (column.order == 'ascending') {
-          //当用户点击的是升序按钮，即ascending时
-          this.order = 'ascending' //将order这个变量赋值为后端接口文档定义的升序的字段名，之后作为入参传给后端
-        } else if (column.order == 'descending') {
-          //当用户点击的是升序按钮，即descending时
-          this.order = 'descending' //将order这个变量赋值为后端接口文档定义的降序的字段名，之后作为入参传给后端
-        }
-        this.orderChange(this.tableDataChange) //改变全部数据顺序
+    sortTableFun(data) {
+      // console.log(data)
+      let name = data.prop
+      let sortvalue;
+      if (data.order=='ascending') {
+        sortvalue=1
       }
+      if (data.order=='descending') {
+        sortvalue=2
+      }
+      switch (name) {
+        case 'stuNum':
+          this.sort[1].sortModel = sortvalue
+          console.log('stuNum sort')
+          // console.log(this.className)
+          break
+        case 'name':
+          this.sort[0].sortModel = sortvalue
+          console.log('name sort')
+          break
+        case 'nextTime':
+          this.sort[3] = sortvalue
+          console.log('nextTime sort')
+          break
+        case 'nextPlace':
+          this.sort[2] = sortvalue
+          console.log('nextPlace sort')
+          break
+      }
+      console.log(this.sort[0])
+      // console.log(this[Object.keys(data)[0]])
+      this.requestData()
     },
     // 排序，默认权限升序，并完成渲染分页
     orderChange(datalist, currentPage) {
@@ -412,15 +457,17 @@ export default {
         }
       }
       // 发请求
-      this.$http.post('api/account/manage/all', this.postdata).then(
+      this.$http.post('api/data-panel/all-information', this.postdata).then(
         (res) => {
           // 因为请求访问权限异常，res.data.studentList在返回信息中为undefined
           if (res.data.code == 'A0300') {
             // 用造的假数据顶上
             this.$message.error(res.data.message)
-          } else {
-            this.tableData = res.data.data.studentList
-            this.total = res.data.data.total
+          } else if (res.data.code == 'A0400')
+            this.$message.error(res.data.message)
+          else {
+            this.tableData = res.data.data
+            this.total = res.tableData.length
             console.log(this.tableData)
             // 成功后页面上回到第一页
             this.currentPage = 1
@@ -436,48 +483,93 @@ export default {
 
     // 触发筛选权限
     filterChange(data) {
-      // console.log(data.permission)
-      this.permissionSelect = data.permission[0]
-      // 传permission
-      this.filterChangeData(data.permission[0])
-      // 仅自行触发的筛选跳转到第一页
-      this.currentPage = 1
-      this.pageCutDouwn(this.tableDataChange)
-    },
-    // 对数组筛选
-    filterChangeData(permission) {
-      if (permission == 'committee') {
-        // console.log(permission=="committee")
-        // console.log(this.tableData[0].permission=="committee")
-        // this.$message.success(permission)
-        // 只改变tableDataChange，保证能够还原，不会越筛越少
-        this.tableDataChange = this.tableData.filter((element) => {
-          // console.log(element.permission=="committee")
-          return element.permission == 'committee'
-        })
-        // console.log(this.tableData)
-      } else if (permission == 'member') {
-        // this.$message.success(permission)
-        this.tableDataChange = this.tableData.filter((element) => {
-          // console.log(element.permission=="committee")
-          return element.permission == 'member'
-        })
-      } else {
-        // permission结果为undefined,因为element-ui自动生成这个选项，我也不知道怎么给它加value值
-        // console.log(permission)
-        // this.$message.error('全部')
-        this.tableDataChange = this.tableData
+      console.log(data)
+      // 取出修改的筛选的名字
+      let name = Object.keys(data)[0]
+      // 取出修改的筛选的值
+      let filtervalue = Object.values(data)[0]
+      // console.log(filtervalue)
+      // console.log(name)
+      // 根据筛选项更新传输的筛选数据，记得注释掉多余代码
+      switch (name) {
+        case 'className':
+          this.className = filtervalue
+          console.log('className ok')
+          // console.log(this.className)
+          break
+        case 'organizationOrder':
+          this.organizationOrder = filtervalue
+          console.log('organizationOrder ok')
+          break
+        case 'departmentOrder':
+          this.departmentOrder = filtervalue
+          console.log('departmentOrder ok')
+          break
+        case 'wishDepartment':
+          this.wishDepartment = filtervalue
+          console.log('wishDepartment ok')
+          break
+        case 'interviewStatus':
+          this.interviewStatus = filtervalue
+          console.log('interviewStatus ok')
+          break
+        case 'nextPlace':
+          this.nextPlace = filtervalue
+          console.log('nextPlace ok')
+          break
+        case 'nextTime':
+          this.nextTime = filtervalue
+          console.log('nextTime ok')
+          break
       }
-      // 渲染筛选后数据
-      // 考虑不周，不应该直接返回第一页
+      console.log(this[Object.keys(data)[0]])
+      this.requestData()
+      // 仅自行触发的筛选跳转到第一页
       // this.currentPage = 1
-      this.pageCutDouwn(this.tableDataChange)
     },
-    //修改密码弹窗
-    handleKeyEdit(data) {
-      this.$refs.manyDialog.dialogVisibleKey = true
-      this.$refs.manyDialog.organizationId = this.organizationId
-      this.$refs.manyDialog.formLabelAlign = data
+    requestData() {
+      // 下面是初步实现请求，后续要精简，把不必要的参数去除
+      this.$http
+        .post('api/data-panel/all-information', {
+          admissionId: this.admissionId,
+          organizationId: this.organizationId,
+          pageNum: this.currentPage,
+          pageSize: this.pagesize,
+          className: this.className,
+          organizationOrder: this.organizationOrder,
+          departmentOrder: this.departmentOrder,
+          wishDepartment: this.wishDepartment,
+          interviewStatus: this.interviewStatus,
+          nextPlace: this.nextPlace,
+          nextTime: this.nextTime,
+          sort: this.sort
+        })
+        .then(
+          (res) => {
+            // 因为请求访问权限异常，res.data.studentList在返回信息中为undefined
+            if (res.data.code == 'A0300') {
+              // 用造的假数据顶上
+              this.$message.error(res.data.message)
+            } else if (res.data.code == 'A0400')
+              this.$message.error(res.data.message)
+            else {
+              this.tableList = res.data.data
+              this.total = res.tableList.length
+              console.log(this.tableList)
+              // 成功后页面上回到第一页
+              this.currentPage = 1
+            }
+            // 通知所有相关项更新数据，因为他们使用tableDataChange而不是tableData
+            // this.orderChange(this.tableData)
+          },
+          (err) => {
+            this.$message.error('获取数据失败' + err)
+          }
+        )
+    },
+    // 获取所有筛选项
+    requestFilterItem(){
+
     },
     //修改页容量
     handleSizeChange(val) {

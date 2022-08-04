@@ -14,6 +14,10 @@ export default {
       { text: '第一志愿      ' + 102 + '人', value: '第一志愿' },
       { text: '第二志愿      ' + 57 + '人', value: '第二志愿' }
     ], // 部门志愿次序筛选项
+    wishDepartmentFilter: [
+      { text: '产品组      ' + 2 + '人', value: '产品组' },
+      { text: '安全组      ' + 5 + '人', value: '安全组' }
+    ], // 当前志愿部门筛选项
     interviewStatusFilter: [
       { text: '一面进行中      ' + 2 + '人', value: '一面进行中' },
       { text: '二面进行中      ' + 5 + '人', value: '二面进行中' }
@@ -38,6 +42,10 @@ export default {
     updateDepartmentOrderFilter(state, data) {
       state.departmentOrderFilter = data
     }, //部门志愿次序
+    updateWishDepartmentFilter(state, data){
+      state.wishDepartmentFilter = data
+    },
+    // 当前志愿部门
     updateInterviewStatusFilter(state, data) {
       state.interviewStatusFilter = data
     }, //当前志愿状态
