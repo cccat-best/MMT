@@ -11,7 +11,23 @@ import {
   MenuItem,
   MenuItemGroup,
   Row,
-  Col
+  Col,
+  DatePicker,
+  TimeSelect,
+  TimePicker,
+  Radio,
+  Checkbox,
+  Dialog,
+  Popover,
+  Input,
+  MessageBox,
+  Message,
+  Form,
+  FormItem,
+  InputNumber,
+  TableColumn,
+  Tabs,
+  TabPane
 } from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 const components = [
@@ -27,10 +43,29 @@ const components = [
   MenuItem,
   MenuItemGroup,
   Row,
-  Col
+  Col,
+  DatePicker,
+  TimeSelect,
+  TimePicker,
+  Radio,
+  Checkbox,
+  Dialog,
+  Popover,
+  Input,
+  Form,
+  FormItem,
+  InputNumber,
+  TableColumn,
+  Tabs,
+  TabPane
 ]
 export default function (Vue) {
   for (const component of components) {
     Vue.use(component)
   }
+  Vue.prototype.$msgbox = MessageBox
+  Vue.prototype.$alert = MessageBox.alert
+  Vue.prototype.$confirm = MessageBox.confirm
+  Vue.prototype.$prompt = MessageBox.prompt
+  Vue.prototype.$message = Message
 }
