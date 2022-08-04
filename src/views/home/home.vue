@@ -32,7 +32,7 @@
           <!-- 不过我感觉这个工作应该让登录进去后的第一个页面来做，似乎个人中心不是登录后的第一个页面？ -->
           <div class="rightTop" style="display: flex">
             <img
-              v-if="isSuper"
+              v-if="permission === 'super_admin'"
               src="./icon/admin.png"
               alt=""
               style="height: 30px; width: 30px"
@@ -48,7 +48,7 @@
                 overflow: hidden;
               "
               @mouseover="this.style.color = blue"
-              v-if="isSuper"
+              v-if="permission === 'super_admin'"
               >超级管理
             </el-button>
             <!-- 应江哥要求，其他页面点击头像进入个人中心，而个人中心点击头像刷新页面，home函数实现 -->
@@ -102,20 +102,13 @@
                       </span>
                       <!-- 贺节介建议这里的下拉框改成向左拉开，不过我不会 -->
                       <el-dropdown-menu slot="dropdown">
-                        <el-dropdown-item command="学生创新创业实践中心"
-                          >学生创新创业实践中心</el-dropdown-item
-                        >
-                        <el-dropdown-item command="b" divided
-                          >学生会</el-dropdown-item
-                        >
-                        <el-dropdown-item command="c" divided
-                          >团委</el-dropdown-item
-                        >
-                        <el-dropdown-item command="d" divided
-                          >党建办</el-dropdown-item
-                        >
-                        <el-dropdown-item command="e" divided
-                          >学生事务服务中心</el-dropdown-item
+                        <el-dropdown-item
+                          style="width: 140px"
+                          :command="item.name"
+                          v-for="(item, index) in organizations"
+                          :key="index"
+                          divided
+                          >{{ item.name }}</el-dropdown-item
                         >
                       </el-dropdown-menu>
                     </el-dropdown>
@@ -147,8 +140,6 @@
 </template>
 
 <script>
-// 这里的bus是我为了从个人中心页面传值到home页面写的一个vue实例
-import bus from '../../compentents/bus'
 import axios from 'axios'
 import myLayoutVue from '../../compentents/myLayout.vue'
 export default {
@@ -159,8 +150,6 @@ export default {
   },
   data() {
     return {
-      isSuper: true,
-
       isCollapse: false,
       asideWidth: 200,
       menuList: [
@@ -200,112 +189,61 @@ export default {
       squareUrl:
         'https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png',
       sizeList: ['large', 'medium', 'small'],
-      studentId: '20212403',
-      name: '古河渚',
-
-      organizations: [
-        { id: '2', name: '学生创新创业实践中心' },
-        { id: '3', name: '学生会' }
-      ],
-
-      loginOrganizationName: '学生创新创业实践中心',
+      studentId: '',
+      name: '',
+      organizations: [],
+      loginOrganizationName: '',
       loginOrganizationId: '',
       permission: '',
       cookie: '',
       organizationName: '',
       organizationId: '',
-      // isSuper: false,
-      isPersonal: false
+      isSuper: false,
+      isPersonal: false,
+      phoneForm: {
+        phone: '',
+        newPhone: ''
+      }
     }
   },
   methods: {
-    handleOpen(key, keyPath) {
-      console.log(key, keyPath)
-    },
-    handleClose(key, keyPath) {
-      console.log(key, keyPath)
-    },
-    goBack() {
-      console.log('go back')
-    },
-    changePass(formName) {
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          const url = '/account/revise/password'
-          this.$http
-            .post(url, this.pwdForm)
-            .then((res) => {
-              console.log(res.message)
-            })
-            .catch((err) => {
-              console.log(err, '密码错误')
-            })
-        } else {
-          alert('验证不通过')
-          return false
-        }
-      })
-    },
-    changePhone(formName) {
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          const url = '/account/revise/phone'
-          this.$http
-            .post(url, this.phoneForm)
-            .then((res) => {
-              console.log(res.message)
-            })
-            .catch((err) => {
-              console.log(err, '手机号错误')
-            })
-        } else {
-          alert('验证不通过')
-          return false
-        }
-      })
-    },
-    joinClub(formName) {
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          const url = '/invitation-code/club'
-          this.$http
-            .post(url, this.jmoForm)
-            .then((res) => {
-              console.log(res.message)
-            })
-            .catch((err) => {
-              console.log(err, '邀请码错误')
-            })
-        } else {
-          alert('验证不通过')
-          return false
-        }
-      })
+    getLoginStatus() {
+      const url = '/api/login-status'
+      this.$http
+        .get(url)
+        .then((res) => {
+          this.loginOrganizationName = res.data.data.loginOrganizationName
+          this.loginOrganizationId = res.data.data.loginOrganizationId
+          this.organizations = res.data.data.organizations
+          this.permission = res.data.data.permission
+          this.phone = res.data.data.phone
+          this.name = res.data.data.name
+          this.studentId = res.data.data.studentId
+        })
+        .catch((err) => {
+          console.log(err)
+        })
     },
     changeOrganization(command) {
-      alert(command)
-      axios({
-        method: 'post',
-        baseURL: 'https://mmt-dev.sipcoj.com',
-        url: '/login/change',
-        data: command,
-        headers: {
-          'content-type': 'application/json'
-        }
-      }).then((val) => {
-        this.loginOrganizationName = val.data.data.loginOrganizationName
-        this.loginOrganizationId = val.data.data.loginOrganizationId
-        this.organizations = val.data.data.organizations
-        this.permission = val.data.data.permission
-        this.phoneForm.phone = val.data.data.phone
-        this.name = val.data.data.name
+      const organization = {
+        organization: command
+      }
+      const url = '/api/login/change'
+      this.$http.post(url, organization).then((res) => {
+        this.loginOrganizationName = res.data.data.loginOrganizationName
+        this.loginOrganizationId = res.data.data.loginOrganizationId
+        this.organizations = res.data.data.organizations
+        this.permission = res.data.data.permission
+        this.phoneForm.phone = res.data.data.phone
+        this.name = res.data.data.name
+        this.studentId = res.data.data.studentId
       })
     },
+
     quitLogin() {
-      alert('按下退出登录')
       axios({
         method: 'delete',
-        baseURL: 'https://mmt-dev.sipcoj.com',
+        baseURL: 'http://114.132.71.147:38080',
         url: '/logout',
 
         headers: {
@@ -319,26 +257,14 @@ export default {
       this.$router.push('/superAdmin')
     },
     home() {
-      if (this.isPersonal) {
-        location.reload()
-      } else {
-        this.$router.push('/home/personalInfo')
-      }
-    },
-    // 个人中心顶部左侧返回的实现，还没想到咋实现
-    gotoBack() {
-      console.log('go back')
+      this.$router.push('/personalInfo')
     }
   },
   created() {
-    if (this.permission == 'superAdmin') {
+    this.getLoginStatus()
+    if (this.permission == 'super_admin') {
       this.isSuper = true
     }
-    bus.$on('pass', (data) => {
-      this.isPersonal = data.isPersonal
-      this.isSuper = data.isSuper
-      console.log(this.isPersonal)
-    })
   }
 }
 </script>
@@ -346,7 +272,6 @@ export default {
 <style lang="less" scoped>
 .home {
   height: 100%;
-  width: 100%;
 }
 .menuTitle {
   color: white;
@@ -364,5 +289,24 @@ export default {
 .el-dropdown-link {
   cursor: pointer;
   color: black;
+}
+:deep(.el-menu-item .iconfont) {
+  width: 0px;
+}
+.back-botton {
+  color: black;
+  ::v-deep .el-page-header__title {
+    font-size: 14px;
+    font-weight: 500;
+    color: black;
+    &:hover {
+      color: #409eff !important;
+    }
+  }
+  ::v-deep .el-icon-back {
+    &:hover {
+      color: #409eff !important;
+    }
+  }
 }
 </style>
