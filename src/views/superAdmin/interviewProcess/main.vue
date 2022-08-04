@@ -22,19 +22,31 @@
             v-if="roundCount >= 1"
             ><interview round="1"></interview
           ></el-tab-pane>
-          <el-tab-pane label="二面" name="third" class="body" v-if="true"
+          <el-tab-pane
+            label="二面"
+            name="third"
+            class="body"
+            v-if="roundCount >= 2"
             ><interview round="2"></interview
           ></el-tab-pane>
-          <el-tab-pane label="三面" name="fourth" class="body" v-if="true"
+          <el-tab-pane
+            label="三面"
+            name="fourth"
+            class="body"
+            v-if="roundCount >= 3"
             ><interview round="3"></interview
           ></el-tab-pane>
-          <el-tab-pane label="四面" name="fifth" class="body" v-if="true"
+          <el-tab-pane
+            label="四面"
+            name="fiveth"
+            class="body"
+            v-if="roundCount >= 4"
             ><interview round="4"></interview
           ></el-tab-pane>
         </el-tabs>
         <el-popover
           placement="bottom"
-          :width="280"
+          width="280"
           trigger="click"
           class="select"
         >
@@ -44,7 +56,11 @@
             :max="4"
             label="描述文字"
           ></el-input-number>
-          <el-button type="primary" plain style="margin-left: 20px"
+          <el-button
+            type="primary"
+            plain
+            style="margin-left: 20px"
+            @click="changeRound"
             >确定</el-button
           >
           <el-button slot="reference">选择面试总数</el-button>
@@ -68,7 +84,8 @@ export default {
       // 次导航选中的
       activeName: 'first',
       //计数器的数字
-      num: 1
+      num: 0,
+      roundCount: 0
     }
   },
   components: { signup, interview },
@@ -111,6 +128,9 @@ export default {
         this.roundCount = res.data.round
       }
     }
+  },
+  mounted() {
+    this.getRound()
   }
 }
 </script>
@@ -192,6 +212,26 @@ export default {
       height: calc(100vh - 60px - 40px - 25px - 70px);
       background-color: white;
     }
+  }
+  ::-webkit-scrollbar {
+    /*滚动条整体样式*/
+    width: 10px; /*高宽分别对应横竖滚动条的尺寸*/
+    height: 1px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    /*滚动条里面小方块*/
+    border-radius: 10px;
+    //background-color: #8c8c8c;
+    background-color: rgba(0, 0, 0, 0.25);
+  }
+
+  ::-webkit-scrollbar-track {
+    background-color: #f6f6f6;
+  }
+  ::-webkit-scrollbar-thumb,
+  ::-webkit-scrollbar-track {
+    border: 0;
   }
 }
 </style>
