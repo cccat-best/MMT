@@ -63,11 +63,9 @@ export default {
       }
     }
   },
-  watch: {
-
-  },
+  watch: {},
   computed: {
-    ...mapState('transform', ['all']),
+    ...mapState('transform', ['all'])
   },
   mounted() {
     this.loginForm.studentId = this.all.Id
