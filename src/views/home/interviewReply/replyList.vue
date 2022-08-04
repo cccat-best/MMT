@@ -182,7 +182,7 @@ export default {
       information: [
         {
           studentId: 20220001,
-          name: '卢小1',
+          studentName: '卢小1',
           questionScore: [
             {
               questionName: '规划能力',
@@ -198,7 +198,7 @@ export default {
         },
         {
           studentId: 20220002,
-          name: '卢小2',
+          studentName: '卢小2',
           questionScore: [
             {
               questionName: '规划能力',
@@ -214,7 +214,7 @@ export default {
         },
         {
           studentId: 20220003,
-          name: '卢小3',
+          studentName: '卢小3',
           questionScore: [
             {
               questionName: '规划能力',
@@ -230,7 +230,7 @@ export default {
         },
         {
           studentId: 20220004,
-          name: '卢小4',
+          studentName: '卢小4',
           questionScore: [
             {
               questionName: '规划能力',
@@ -246,7 +246,7 @@ export default {
         },
         {
           studentId: 20220005,
-          name: '卢小5',
+          studentName: '卢小5',
           questionScore: [
             {
               questionName: '规划能力',
@@ -262,7 +262,7 @@ export default {
         },
         {
           studentId: 20220006,
-          name: '卢小6',
+          studentName: '卢小6',
           questionScore: [
             {
               questionName: '规划能力',
@@ -278,7 +278,7 @@ export default {
         },
         {
           studentId: 20220007,
-          name: '卢小7',
+          studentName: '卢小7',
           questionScore: [
             {
               questionName: '规划能力',
@@ -294,7 +294,7 @@ export default {
         },
         {
           studentId: 20220008,
-          name: '卢小8',
+          studentName: '卢小8',
           questionScore: [
             {
               questionName: '规划能力',
@@ -310,7 +310,7 @@ export default {
         },
         {
           studentId: 20220009,
-          name: '卢小9',
+          studentName: '卢小9',
           questionScore: [
             {
               questionName: '规划能力',
@@ -326,7 +326,7 @@ export default {
         },
         {
           studentId: 20220010,
-          name: '卢小10',
+          studentName: '卢小10',
           questionScore: [
             {
               questionName: '规划能力',
@@ -342,7 +342,7 @@ export default {
         },
         {
           studentId: 20220011,
-          name: '卢小11',
+          studentName: '卢小11',
           questionScore: [
             {
               questionName: '规划能力',
