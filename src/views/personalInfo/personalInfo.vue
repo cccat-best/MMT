@@ -369,7 +369,11 @@ export default {
       })
     },
     home() {
-      location.reload()
+      if (this.isPersonal) {
+        location.reload()
+      } else {
+        this.$router.push('/personalInfo')
+      }
     },
     // 个人中心顶部左侧返回的实现
     goBack() {
