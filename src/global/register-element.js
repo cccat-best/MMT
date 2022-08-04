@@ -12,7 +12,6 @@ import {
   MenuItemGroup,
   Row,
   Col,
-
   DatePicker,
   TimeSelect,
   TimePicker,
@@ -31,8 +30,6 @@ import {
   TabPane,
   Select,
   Option,
-
-
   Progress,
   Pagination,
   Divider,
@@ -45,8 +42,6 @@ import {
   Dropdown,
   DropdownMenu,
   DropdownItem
-
-
 } from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 const components = [

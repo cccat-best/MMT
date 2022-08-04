@@ -254,23 +254,24 @@ export default {
       permissionSelect: null, //筛选变量
 
       // 页码
-      tableList: [{
-        studentId:'1',
-        name:'zhang',
-        className:'one',
-        phone:'123456',
-        organizationOrder:'1',
-        permission:'222',
-
-      },{
-        studentId:'1',
-        name:'zhang',
-        className:'one',
-        phone:'123456',
-        organizationOrder:'1',
-        permission:'222',
-
-      }], //当前页展示数据
+      tableList: [
+        {
+          studentId: '1',
+          name: 'zhang',
+          className: 'one',
+          phone: '123456',
+          organizationOrder: '1',
+          permission: '222'
+        },
+        {
+          studentId: '1',
+          name: 'zhang',
+          className: 'one',
+          phone: '123456',
+          organizationOrder: '1',
+          permission: '222'
+        }
+      ], //当前页展示数据
       currentPage: 1, // 当前页码
       pagesize: 10, // 每页条数，默认10
       total: 100,

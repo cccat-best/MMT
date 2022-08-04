@@ -18,10 +18,11 @@ const routes = [
   {
     path: '/home',
     component: () => import('../views/home/home.vue'),
-    children:[
+    children: [
       {
-        path:'onInterviewing',
-        component:()=>import('../views/home/onInterviewing/onInterviewing.vue')
+        path: 'onInterviewing',
+        component: () =>
+          import('../views/home/onInterviewing/onInterviewing.vue')
       },
       {
         path: 'dataBoard',
@@ -36,7 +37,7 @@ const routes = [
       {
         //面试流程页面
         path: 'process',
-        component: () => import('../views/superAdmin/interviewProcess/main.vue'),
+        component: () => import('../views/superAdmin/interviewProcess/main.vue')
       }
     ]
   }

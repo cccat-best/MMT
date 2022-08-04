@@ -63,7 +63,7 @@ export default {
     }
   },
   watch: {
-    all(){
+    all() {
       this.studentId = this.Id
       this.password = this.psw
     }
@@ -71,7 +71,7 @@ export default {
   computed: {
     // ...mapState('transform', ['Id', 'psw'])
     ...mapState({
-      transform:state=>state.transform.all
+      transform: (state) => state.transform.all
     })
   },
   methods: {

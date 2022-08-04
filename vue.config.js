@@ -1,14 +1,14 @@
 module.exports = {
   devServer: {
     proxy: {
-      "/api": {
-        target: "https://api.yuleng.top:38080",
+      '/api': {
+        target: 'https://api.yuleng.top:38080',
         pathRewrite: {
-          "^/api": "",
+          '^/api': ''
         },
         secure: false,
-        changeOrigin: true,
-      },
-    },
-  },
-};
+        changeOrigin: true
+      }
+    }
+  }
+}

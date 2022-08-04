@@ -7,7 +7,7 @@ import './global/global.less'
 ;('./global/register-element')
 
 import axios from 'axios'
-Vue.prototype.$axios=axios
+Vue.prototype.$axios = axios
 
 Vue.config.productionTip = false
 // 注册Element
@@ -18,8 +18,8 @@ new Vue({
   render: (h) => h(App)
 }).$mount('#app')
 
-import {get, post} from './utils/index'
-Vue.prototype.$http={
+import { get, post } from './utils/index'
+Vue.prototype.$http = {
   get,
   post
 }
