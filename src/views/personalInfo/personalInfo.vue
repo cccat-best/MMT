@@ -1,120 +1,13 @@
 <template>
   <el-container>
     <el-header>
-      <el-row
-        type="flex"
-        align="middle"
-        justify="space-between"
-        style="height: 100%; overflow: hidden"
-      >
-        <el-page-header @back="goBack" content="个人中心" class="back-botton">
-        </el-page-header>
-
-        <div class="rightTop" style="display: flex">
-          <img
-            v-if="this.isSuper"
-            src="../home/icon/admin.png"
-            alt=""
-            style="height: 30px; width: 30px"
-          />
-          <el-button
-            class="color-change"
-            type="text"
-            @click="superAdmin"
-            style="
-              color: black;
-              margin-right: 30px;
-              height: 40px;
-              overflow: hidden;
-            "
-            @mouseover="this.style.color = blue"
-            v-if="this.isSuper"
-            >超级管理
-          </el-button>
-          <!-- 应江哥要求，其他页面点击头像进入个人中心，而个人中心点击头像刷新页面，home函数实现 -->
-          <div class="block" style="height: 35px; overflow: hidden">
-            <span @click="home"
-              ><el-avatar
-                :size="35"
-                :src="circleUrl"
-                style="vertical-align: middle"
-                :click="home"
-              ></el-avatar
-            ></span>
-            <el-dropdown trigger="click">
-              <span
-                class="el-dropdown-link"
-                style="
-                  color: black;
-                  margin-left: 10px;
-                  cursor: pointer;
-                  height: 40px;
-                  overflow: hidden;
-                  margin-right: 10px;
-                "
-              >
-                {{ name }}<i class="el-icon-arrow-down el-icon--right"></i>
-              </span>
-              <el-dropdown-menu slot="dropdown">
-                <div style="text-align: center">
-                  <el-avatar
-                    :size="50"
-                    :src="circleUrl"
-                    style="vertical-align: middle"
-                  ></el-avatar>
-
-                  <div style="font-size: 10px; margin-top: 10px; height: 20px">
-                    {{ loginOrganizationName }}
-                  </div>
-                </div>
-
-                <el-dropdown-item divided>
-                  <el-dropdown
-                    @command="changeOrganization"
-                    style="width: 140px"
-                  >
-                    <span class="el-dropdown-link">
-                      切换社团<i class="el-icon-arrow-down el-icon--right"></i>
-                    </span>
-                    <!-- 贺节介建议这里的下拉框改成向左拉开，不过我不会 -->
-                    <el-dropdown-menu slot="dropdown">
-                      <!-- 单独取出第一个元素，销掉多出的分割线 -->
-                      <!-- 防止name爆红 -->
-                      <el-dropdown-item
-                        v-if="this.organizations[0]"
-                        style="width: 140px"
-                        :command="this.organizations[0].name"
-                        >{{ this.organizations[0].name }}</el-dropdown-item
-                      >
-                      <el-dropdown-item
-                        style="width: 140px"
-                        :command="item.name"
-                        v-for="(item, index) in organizations.slice(
-                          1,
-                          organizations.length
-                        )"
-                        :key="index"
-                        divided
-                        >{{ item.name }}</el-dropdown-item
-                      >
-                    </el-dropdown-menu>
-                  </el-dropdown>
-                </el-dropdown-item>
-
-                <el-dropdown-item divided>
-                  <el-button
-                    type="text"
-                    @click="quitLogin"
-                    class="el-dropdown-link"
-                    style="padding: 0px; margin: 0px"
-                    >退出登录</el-button
-                  >
-                </el-dropdown-item>
-              </el-dropdown-menu>
-            </el-dropdown>
-          </div>
-        </div>
-      </el-row>
+      <myhead
+        :isPersonal="isPersonal"
+        :isSuper="isSuper"
+        :name="name"
+        :organizations="organizations"
+        :loginOrganizationName="loginOrganizationName"
+      ></myhead>
     </el-header>
     <el-main>
       <div class="border">
@@ -282,9 +175,12 @@
 
 <script>
 // import axios from 'axios'
+import myhead from '../../compentents/head.vue'
 export default {
   name: 'personalInfo',
-
+  components: {
+    myhead
+  },
   data() {
     var validatePass1 = (rules1, value, callback) => {
       if (value === '') {
@@ -327,6 +223,7 @@ export default {
       changePhoneVisible: false,
       joinClubVisible: false,
       isSuper: false,
+      isPersonal: true,
       pwdForm: {
         password: '',
         newPassword: '',
@@ -399,10 +296,12 @@ export default {
           }
           default: {
             throw new Error(JSON.stringify(res))
+            // this.$message.error(JSON.stringify(res))
           }
         }
       } catch (err) {
         console.log('出错了', err.message)
+        this.$message.error('当前未登录或登录已失效')
       }
     },
     async changeOrganization(command) {
@@ -422,14 +321,20 @@ export default {
             this.phone = data.phone
             this.name = data.name
             this.studentId = data.studentId
+            this.$message({
+              message: '切换成功',
+              type: 'success'
+            })
             break
           }
           default: {
             throw new Error(JSON.stringify(res))
+            // this.$message.error(JSON.stringify(res))
           }
         }
       } catch (err) {
         console.log('出错了', err.message)
+        this.$message.error('当前未登录或登录已失效')
       }
     },
     async quitLogin() {
@@ -438,21 +343,30 @@ export default {
         let { data: res } = await this.$http.get(url)
         switch (res.code) {
           case '00000': {
-            alert('退出登录成功')
+            this.$message({
+              message: '退出登录成功',
+              type: 'success'
+            })
             this.$router.push('/login')
             break
           }
           default: {
             throw new Error(JSON.stringify(res))
+            // this.$message.error(JSON.stringify(res))
           }
         }
       } catch (err) {
         console.log('出错了', err.message)
+        this.$message.error('当前未登录或登录已失效')
       }
     },
 
     superAdmin() {
       this.$router.push('/superAdmin')
+      this.$message({
+        message: '已切换至超级管理',
+        type: 'success'
+      })
     },
     home() {
       location.reload()
@@ -483,14 +397,20 @@ export default {
             .then((res) => {
               if (res.data.code == '00000') {
                 location.reload()
-                alert('修改成功')
+
+                this.$message({
+                  message: '修改成功',
+                  type: 'success'
+                })
               } else {
                 this.changePassVisible = false
-                alert(res.data.message)
+
+                this.$message.error(res.data.message)
               }
             })
             .catch((err) => {
               console.log('出错了', err.message)
+              this.$message.error('当前未登录或登录已失效')
             })
         } else {
           return false
@@ -506,14 +426,20 @@ export default {
             .then((res) => {
               if (res.data.code == '00000') {
                 location.reload()
-                alert('修改成功')
+
+                this.$message({
+                  message: '修改成功',
+                  type: 'success'
+                })
               } else {
                 this.changePhoneVisible = false
-                alert(res.data.message)
+
+                this.$message.error(res.data.message)
               }
             })
             .catch((err) => {
               console.log('出错了', err.message)
+              this.$message.error('当前未登录或登录已失效')
             })
         } else {
           return false
@@ -529,14 +455,20 @@ export default {
             .then((res) => {
               if (res.data.code == '00000') {
                 location.reload()
-                alert('加入成功')
+
+                this.$message({
+                  message: '加入成功',
+                  type: 'success'
+                })
               } else {
                 this.joinClubVisible = false
-                alert(res.data.message)
+
+                this.$message.error(res.data.message)
               }
             })
             .catch((err) => {
               console.log('出错了', err.message)
+              this.$message.error('当前未登录或登录已失效')
             })
         } else {
           return false
@@ -576,6 +508,7 @@ export default {
   border-radius: 10px;
 }
 .el-container {
+  // min-width: 1200px;
   height: 100%;
 }
 
