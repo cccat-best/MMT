@@ -91,7 +91,7 @@ export default {
       required: false,
       default: true
     },
-    // 默认激活的菜单选项
+    // 当前激活菜单的index
     defaultActiveItem: {
       type: String,
       required: false,
@@ -106,8 +106,7 @@ export default {
   },
   data() {
     return {}
-  },
-  methods: {}
+  }
 }
 </script>
 

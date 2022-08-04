@@ -63,14 +63,15 @@ export default {
       }
     }
   },
-  watch: {},
+  watch: {
+    all() {
+      this.studentId = this.Id
+      this.password = this.psw
+    }
+  },
+  // ...mapState('transform', ['Id', 'psw'])
   computed: {
     ...mapState('transform', ['all'])
-  },
-  mounted() {
-    this.loginForm.studentId = this.all.Id
-    this.loginForm.password = this.all.psw
-    this.clearData()
   },
   methods: {
     ...mapMutations('transform', ['clearData']),
@@ -102,7 +103,10 @@ export default {
         })
     }
   },
-  components: {}
+  components: {},
+  mounted() {
+    console.log(this.all)
+  }
 }
 </script>
 <style lang="less" scoped>

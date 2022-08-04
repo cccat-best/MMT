@@ -63,6 +63,10 @@ const routes = [
         //面试流程页面
         path: 'process',
         component: () => import('../views/superAdmin/interviewProcess/main.vue')
+      },
+      {
+        path: 'accountManage',
+        component: () => import('../views/superAdmin/accountManage/main.vue')
       }
     ]
   }

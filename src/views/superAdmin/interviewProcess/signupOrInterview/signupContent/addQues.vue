@@ -61,9 +61,9 @@
           <el-input
             type="textarea"
             :rows="2"
-            placeholder="请输入问题上限50个字"
+            placeholder="请输入问题上限20个字"
             v-model="text1"
-            maxlength="50"
+            maxlength="20"
             show-word-limit
             style="margin: 10px 0"
           >
@@ -74,9 +74,9 @@
           <el-input
             type="textarea"
             :rows="2"
-            placeholder="请输入问题上限50个字"
+            placeholder="请输入问题上限20个字"
             v-model="text2"
-            maxlength="50"
+            maxlength="20"
             show-word-limit
             style="margin: 10px 0"
           >
@@ -97,7 +97,7 @@
                 <el-input
                   v-model="domain.value"
                   style="margin-right: 5px"
-                  maxlength="50"
+                  maxlength="20"
                 ></el-input
                 ><el-button @click.prevent="removeDomain(domain)"
                   >删除</el-button
@@ -344,6 +344,16 @@ export default {
         white-space: nowrap;
         text-overflow: ellipsis;
       }
+    }
+    .freeView-input {
+      width: 166px;
+      border-radius: 5px;
+      border: 1px solid #0f2d2d;
+    }
+    .freeView-select {
+      width: 167px;
+      border-radius: 5px;
+      border: 1px solid #0f2d2d;
     }
   }
 }
