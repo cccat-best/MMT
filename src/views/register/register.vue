@@ -3,7 +3,7 @@
     <el-main class="content">
       <!-- 左侧icon和文本 -->
       <div class="left-icon">
-        <el-image :src="url" :fit="fill" class="icon-img"></el-image>
+        <el-image :src="url" class="icon-img"></el-image>
         <div class="icon-text">MMT</div>
       </div>
       <!-- 右侧信息框 -->
@@ -13,7 +13,7 @@
         :rules="rules"
         ref="registerForm"
         label-width="100px"
-        hide-required-asterisk="true"
+        :hide-required-asterisk="true"
       >
         <p class="register-text">注册</p>
         <el-form-item label="学号" prop="studentId" class="stuId">

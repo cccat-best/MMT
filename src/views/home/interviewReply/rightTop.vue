@@ -48,6 +48,9 @@ export default {
   name: 'rightTop',
   data() {
     return {
+      departmentId: 0,
+      roomId: 0,
+      departmentName: '',
       centerDialogVisible: false,
       input: '',
       selectionStudentId: [],
@@ -72,17 +75,17 @@ export default {
     //更改通过状态
     submit() {
       this.centerDialogVisible = false
-      console.log(this.value)
-      console.log(this.selectionStudentId)
-      var changeForm = {
+      let changeForm = {
         studentId: this.selectionStudentId,
         status: this.value
       }
-      const url1 = '/interview-reply/status'
+      // console.log(changeForm)
+      const url1 = 'api/interview-reply/status'
       let post3 = this.$http.post(url1, changeForm)
       post3
         .then((res) => {
           console.log(res)
+          location.reload()
         })
         .catch((err) => {
           console.log(err)
@@ -98,8 +101,13 @@ export default {
       this.selectionStudentId = data
     })
   },
-  beforeCreate() {
+  beforeDestroy() {
     this.$bus.$off('selectionStudentId')
+  },
+  watch: {
+    input() {
+      this.$bus.$emit('input', this.input)
+    }
   }
 }
 </script>

@@ -43,7 +43,6 @@ const routes = [
       {
         path: 'personalInfo',
         component: personalInfo
-
       }
     ]
   },

@@ -50,7 +50,7 @@
     </div>
     <div class="bigChart">
       <div id="pie" ref="pie" style="width: 300px; height: 200px"></div>
-      <div class="chartTotal">共{{ chartTotal }}人</div>
+      <div class="total">共{{ total }}人</div>
     </div>
   </div>
 </template>
@@ -89,19 +89,17 @@ export default {
   name: 'filterFigure',
   data() {
     return {
-      pass: 20,
-      fail: 10,
-      pending: 30,
-      undo: 25,
-      chartTotal: 85,
+      win: 20,
+      pass: 10,
+      wait: 30,
+      nedit: 25,
+      total: 85,
       department: [],
       room: [],
       departmentId: 0,
+      departmentName: '',
       roomId: 0
     }
-  },
-  mounted() {
-    this.drawChar()
   },
   methods: {
     drawChar() {
@@ -136,19 +134,19 @@ export default {
             },
             data: [
               {
-                value: this.pass,
+                value: this.win,
                 name: '通过'
               },
               {
-                value: this.fail,
+                value: this.pass,
                 name: '失败'
               },
               {
-                value: this.pending,
+                value: this.wait,
                 name: '待定'
               },
               {
-                value: this.undo,
+                value: this.nedit,
                 name: '未操作'
               }
             ],
@@ -169,7 +167,12 @@ export default {
       })
       document.activeElement.classList.add('clBtn')
       this.departmentId = document.activeElement.id
+      this.departmentName = document.activeElement.innerText
       console.log(this.departmentId)
+      console.log(this.departmentName)
+      sessionStorage['departmentId'] = this.departmentId
+      sessionStorage['departmentName'] = this.departmentName
+      this.$bus.$emit('departmentId', this.departmentId)
     },
     clRoom() {
       let roomBtn = document.querySelectorAll('.roomBtn')
@@ -179,11 +182,31 @@ export default {
       document.activeElement.classList.add('clBtn')
       this.roomId = document.activeElement.id
       console.log(this.roomId)
+      sessionStorage['roomId'] = this.roomId
+      this.$bus.$emit('roomId', this.roomId)
     }
   },
   created() {
-    let admissionId = 2
-    let url1 = `/interview-reply/department/${admissionId}`
+    this.$bus.$on('win', (data) => {
+      this.win = data
+    }),
+      this.$bus.$on('pass', (data) => {
+        this.pass = data
+      }),
+      this.$bus.$on('wait', (data) => {
+        this.wait = data
+      }),
+      this.$bus.$on('nedit', (data) => {
+        this.nedit = data
+      }),
+      this.$bus.$on('total', (data) => {
+        this.total = data
+      })
+  },
+  mounted() {
+    this.drawChar()
+    let admissionId = 4
+    let url1 = `api/interview-reply/department/${admissionId}`
     this.$http
       .get(url1)
       .then((response) => {
@@ -197,7 +220,7 @@ export default {
         console.log(error)
       })
 
-    let url2 = `/interview-reply/room/${admissionId}`
+    let url2 = `api/interview-reply/room/${admissionId}`
     this.$http
       .get(url2)
       .then((response) => {
@@ -210,6 +233,13 @@ export default {
       .catch((error) => {
         console.log(error)
       })
+  },
+  beforeDestroy() {
+    this.$bus.$off('win')
+    this.$bus.$off('pass')
+    this.$bus.$off('wait')
+    this.$bus.$off('nedit')
+    this.$bus.$off('total')
   }
 }
 </script>

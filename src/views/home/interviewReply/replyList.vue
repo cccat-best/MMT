@@ -62,17 +62,18 @@
         </el-table-column>
         <el-table-column
           prop="status"
-          label="通知状态"
+          label="通过状态"
           width="100"
           :filters="[
             { text: '通过', value: 4 },
             { text: '失败', value: 2 },
-            { text: '待定', value: 1 }
+            { text: '待定', value: 1 },
+            { text: '未操作', value: 8 }
           ]"
           column-key="status"
           filter-placement="bottom-end"
         >
-          <template slot-scope="scope">
+          <template slot-scope="scope" style="position: relative">
             <span
               v-if="scope.row.status == 0"
               class="tag"
@@ -97,6 +98,30 @@
               style="background-color: #fbd53c"
               >&nbsp;待定&nbsp;</span
             >
+
+            <el-dropdown trigger="click" style="position: absolute; top: 10px">
+              <span
+                style="
+                  cursor: pointer;
+                  width: 0;
+                  border: 4px solid;
+                  border-color: #333 transparent transparent transparent;
+                  margin-left: 10px;
+                  margin-top: 2px;
+                "
+              ></span>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item @click.native="changeStatus2(scope.row)"
+                  >通过</el-dropdown-item
+                >
+                <el-dropdown-item @click.native="changeStatus1(scope.row)"
+                  >失败</el-dropdown-item
+                >
+                <el-dropdown-item @click.native="changeStatus3(scope.row)"
+                  >待定</el-dropdown-item
+                >
+              </el-dropdown-menu>
+            </el-dropdown>
           </template>
         </el-table-column>
       </el-table>
@@ -125,7 +150,7 @@
           <b>{{ item.questionName }}:&nbsp;&nbsp;</b>{{ item.score }}
         </el-row>
         <el-row> <b>面试总得分:&nbsp;&nbsp;</b>{{ detal.totalScore }} </el-row>
-        <el-row> <b>通知状态:&nbsp;&nbsp;</b>{{ pd(detal.status) }} </el-row>
+        <el-row> <b>通过状态:&nbsp;&nbsp;</b>{{ pd(detal.status) }} </el-row>
       </div>
     </el-dialog>
   </div>
@@ -136,6 +161,9 @@ export default {
   name: 'replyList',
   data() {
     return {
+      filterStatus: 0,
+      sortProp: '',
+      sortOrder: '',
       centerDialogVisible: false,
       detal: {},
       pagesize: 10,
@@ -143,6 +171,14 @@ export default {
       total: 11,
       multipleSelection: [],
       search: '',
+      departmentId: 0,
+      roomId: 0,
+      keyWord: '',
+      page: 1,
+      win: 4,
+      pass: 3,
+      wait: 3,
+      nedit: 1,
       information: [
         {
           studentId: 20220001,
@@ -150,14 +186,14 @@ export default {
           questionScore: [
             {
               questionName: '规划能力',
-              score: 80
+              score: 60
             },
             {
               questionName: '专业能力',
-              score: 90
+              score: 100
             }
           ],
-          totalScore: 85,
+          totalScore: 80,
           status: 0
         },
         {
@@ -182,14 +218,14 @@ export default {
           questionScore: [
             {
               questionName: '规划能力',
-              score: 80
+              score: 60
             },
             {
               questionName: '专业能力',
-              score: 90
+              score: 100
             }
           ],
-          totalScore: 85,
+          totalScore: 80,
           status: 3
         },
         {
@@ -214,14 +250,14 @@ export default {
           questionScore: [
             {
               questionName: '规划能力',
-              score: 80
+              score: 60
             },
             {
               questionName: '专业能力',
-              score: 90
+              score: 100
             }
           ],
-          totalScore: 85,
+          totalScore: 80,
           status: 1
         },
         {
@@ -246,14 +282,14 @@ export default {
           questionScore: [
             {
               questionName: '规划能力',
-              score: 80
+              score: 60
             },
             {
               questionName: '专业能力',
-              score: 90
+              score: 100
             }
           ],
-          totalScore: 85,
+          totalScore: 80,
           status: 2
         },
         {
@@ -278,14 +314,14 @@ export default {
           questionScore: [
             {
               questionName: '规划能力',
-              score: 80
+              score: 60
             },
             {
               questionName: '专业能力',
-              score: 90
+              score: 100
             }
           ],
-          totalScore: 85,
+          totalScore: 80,
           status: 1
         },
         {
@@ -310,14 +346,14 @@ export default {
           questionScore: [
             {
               questionName: '规划能力',
-              score: 80
+              score: 60
             },
             {
               questionName: '专业能力',
-              score: 90
+              score: 100
             }
           ],
-          totalScore: 85,
+          totalScore: 80,
           status: 2
         }
       ]
@@ -344,18 +380,201 @@ export default {
     current_change(currentPage) {
       this.currentPage = currentPage
       console.log(currentPage)
+      let params = {}
+      if (this.sortOrder == 'descending') {
+        params = {
+          organizationId: 1,
+          departmentId: this.departmentId,
+          roomId: this.roomId,
+          page: this.currentPage,
+          filterStatus: this.filterStatus
+        }
+      } else {
+        if (this.sortProp == 'studentId') {
+          params = {
+            organizationId: 1,
+            departmentId: this.departmentId,
+            roomId: this.roomId,
+            idSort: 1,
+            page: this.currentPage,
+            filterStatus: this.filterStatus
+          }
+        } else if (this.sortProp == 'totalScore') {
+          params = {
+            organizationId: 1,
+            departmentId: this.departmentId,
+            roomId: this.roomId,
+            scoreSort: 1,
+            page: this.currentPage,
+            filterStatus: this.filterStatus
+          }
+        } else {
+          params = {
+            organizationId: 1,
+            departmentId: this.departmentId,
+            roomId: this.roomId,
+            page: this.currentPage,
+            filterStatus: this.filterStatus
+          }
+        }
+      }
+      let url = 'http://118.195.251.126:38080/interview-reply/stu-info'
+      // let url = 'api/interview-reply/stu-info'
+
+      this.$http
+        .get(url, params)
+        .then((response) => {
+          console.log(response)
+          this.information = response.data.data.information
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+    },
+    changeStatus2(row) {
+      let studentId = []
+      studentId[0] = row.studentId
+      let sinForm = {
+        studentId: studentId,
+        status: 2
+      }
+      const url1 = 'api/interview-reply/status'
+      let post3 = this.$http.post(url1, sinForm)
+      post3
+        .then((res) => {
+          console.log(res.data.code)
+          if (res.data.code == '00000') {
+            row.status = 2
+          }
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+    changeStatus1(row) {
+      let studentId = []
+      studentId[0] = row.studentId
+      let sinForm = {
+        studentId: studentId,
+        status: 1
+      }
+      console.log(sinForm)
+      const url1 = 'api/interview-reply/status'
+      let post3 = this.$http.post(url1, sinForm)
+      post3
+        .then((res) => {
+          console.log(res.data.code)
+          if (res.data.code == '00000') {
+            row.status = 1
+          }
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+    changeStatus3(row) {
+      let studentId = []
+      studentId[0] = row.studentId
+      let sinForm = {
+        studentId: studentId,
+        status: 3
+      }
+      console.log(sinForm)
+      const url1 = 'http://118.195.251.126:38080/interview-reply/status'
+      // const url1 = 'api/interview-reply/status'
+      let post3 = this.$http.post(url1, sinForm)
+      post3
+        .then((res) => {
+          console.log(res.data.code)
+          if (res.data.code == '00000') {
+            row.status = 3
+          }
+        })
+        .catch((err) => {
+          console.log(err)
+        })
     },
     //排序
     sortChange(column) {
-      console.log('column', column)
-      console.log(column.prop)
-      console.log(column.order)
-      // ascending 升序
+      // sessionStorage['sortProp'] = column.prop
+      // sessionStorage['sortOrder'] = column.order
+      this.sortProp = column.prop
+      this.sortOrder = column.order
+      // ascending 升序/
+      let params1 = {}
+      if (this.sortOrder == 'descending') {
+        params1 = {
+          organizationId: 1,
+          departmentId: this.departmentId,
+          roomId: this.roomId,
+          filterStatus: this.filterStatus
+        }
+      } else {
+        if (this.sortProp == 'studentId') {
+          params1 = {
+            organizationId: 1,
+            departmentId: this.departmentId,
+            roomId: this.roomId,
+            idSort: 1,
+            filterStatus: this.filterStatus
+          }
+        } else if (this.sortProp == 'totalScore') {
+          params1 = {
+            organizationId: 1,
+            departmentId: this.departmentId,
+            roomId: this.roomId,
+            scoreSort: 1,
+            filterStatus: this.filterStatus
+          }
+        } else {
+          params1 = {
+            organizationId: 1,
+            departmentId: this.departmentId,
+            roomId: this.roomId,
+            filterStatus: this.filterStatus
+          }
+        }
+      }
+      let url = 'http://118.195.251.126:38080/interview-reply/stu-info'
+      // let url = 'api/interview-reply/stu-info'
+
+      this.$http
+        .get(url, params1)
+        .then((response) => {
+          console.log(response)
+          this.information = response.data.data.information
+        })
+        .catch((error) => {
+          console.log(error)
+        })
     },
     filterChange(filters) {
       let status = filters.status
       const sum = eval(status.join('+'))
+      this.filterStatus = sum
       console.log(sum)
+      let url = 'api/interview-reply/stu-info'
+      let params2 = {
+        organizationId: 1,
+        departmentId: this.departmentId,
+        roomId: this.roomId,
+        filterStatus: this.filterStatus,
+        page: 1
+      }
+      this.$http
+        .get(url, params2)
+        .then((response) => {
+          console.log(response)
+          this.win = response.data.data.win
+          this.pass = response.data.data.pass
+          this.wait = response.data.data.wait
+          this.nedit = response.data.data.nedit
+          this.total = this.win + this.pass + this.wait + this.nedit
+          this.information = response.data.data.information
+        })
+        .catch((error) => {
+          console.log(error)
+        })
     },
     handleSeclect(val) {
       this.multipleSelection = val
@@ -367,7 +586,7 @@ export default {
       })
       // console.log('name:', selectionName)
       // console.log('id:', selectionStudentId)
-      this.$bus.$emit('selectionName', selectionName)
+      // this.$bus.$emit('selectionName', selectionName)
       this.$bus.$emit('selectionStudentId', selectionStudentId)
     },
     resume(row) {
@@ -375,8 +594,111 @@ export default {
       this.centerDialogVisible = true
     }
   },
-  created() {},
-  computed: {}
+  mounted() {
+    // let url = 'http://118.195.251.126:38080/interview-reply/stu-info'
+    // // let url = 'api/interview-reply/stu-info'
+    // let params = {
+    //   organizationId: 1,
+    //   departmentId: this.departmentId,
+    //   roomId: this.roomId,
+    //   page: 1
+    // }
+    // this.$http
+    //   .get(url, params)
+    //   .then((response) => {
+    //     console.log(response)
+    //     this.win = response.data.data.win
+    //     this.pass = response.data.data.pass
+    //     this.wait = response.data.data.wait
+    //     this.nedit = response.data.data.nedit
+    //     this.total = this.win + this.pass + this.wait + this.nedit
+    //     this.$bus.$emit('win', this.win)
+    //     this.$bus.$emit('pass', this.pass)
+    //     this.$bus.$emit('wait', this.wait)
+    //     this.$bus.$emit('nedit', this.nedit)
+    //     this.$bus.$emit('total', this.total)
+    //     this.information = response.data.data.information
+    //   })
+    //   .catch((error) => {
+    //     console.log(error)
+    //   })
+  },
+  created() {
+    this.$bus.$on('departmentId', (data) => {
+      this.departmentId = data
+    }),
+      this.$bus.$on('roomId', (data) => {
+        this.roomId = data
+      }),
+      this.$bus.$on('input', (data) => {
+        this.keyWord = data
+      })
+  },
+  beforeDestroy() {
+    this.$bus.$off('departmentId')
+    this.$bus.$off('roomId')
+    this.$bus.$off('input')
+  },
+  computed: {},
+  watch: {
+    departmentId() {
+      let url = 'api/interview-reply/stu-info'
+      let params = {
+        organizationId: 1,
+        departmentId: this.departmentId,
+        roomId: this.roomId
+      }
+      this.$http
+        .get(url, params)
+        .then((response) => {
+          console.log(response)
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+    },
+    roomId() {
+      let url = 'api/interview-reply/stu-info'
+      let params = {
+        organizationId: 1,
+        departmentId: this.departmentId,
+        roomId: this.roomId
+      }
+      this.$http
+        .get(url, params)
+        .then((response) => {
+          console.log(response)
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+    },
+    keyWord() {
+      console.log(this.keyWord)
+      let url3 = 'http://118.195.251.126:38080/interview-reply/stu-search'
+      // let url3 = 'api/interview-reply/stu-search'
+      let params3 = {
+        keyWord: this.keyWord,
+        organizationId: 1,
+        departmentId: this.departmentId,
+        roomId: this.roomId
+      }
+      this.$http
+        .get(url3, params3)
+        .then((response) => {
+          console.log(response)
+          this.win = response.data.data.win
+          this.pass = response.data.data.pass
+          this.wait = response.data.data.wait
+          this.nedit = response.data.data.nedit
+          this.total = this.win + this.pass + this.wait + this.nedit
+          // this.information = response.data.data.information
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+    }
+  }
 }
 </script>
 

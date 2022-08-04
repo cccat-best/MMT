@@ -23,7 +23,7 @@
           </div>
           <div class="div">
             <el-row>
-              <el-button type="primary">发送</el-button>
+              <el-button type="primary" @click="submit()">发送</el-button>
               <el-button type="info" class="cancel">取消</el-button>
             </el-row>
           </div>
@@ -43,20 +43,32 @@ export default {
       selectTotal: 20,
       faultNum: 20,
       passNum: 30,
-      status: '通过'
+      status: '通过',
+      departmentId: 0,
+      roomId: 0
     }
   },
   methods: {
+    submit() {
+      if (
+        !sessionStorage['departmentName'] ||
+        sessionStorage['departmentName'] == '全部'
+      ) {
+        alert('发送失败！请在面试复盘界面选择具体部门！')
+      }
+    },
     fault() {
       this.selectTotal = this.faultNum
       this.status = '失败'
-      const url1 = '/interview-arrangement/getNotice'
+      const url1 = 'api/interview-arrangement/getNotice'
       let params = {
-        type: 2
+        type: 2,
+        organizationId: 1
       }
       this.$http
         .get(url1, params)
         .then((response) => {
+          console.log(response)
           this.message = response.data.data.messageTemplate
             .replace(/{template}/, this.name)
             .replace(/{template}/, this.departmentName)
@@ -70,17 +82,19 @@ export default {
     pass() {
       this.selectTotal = this.passNum
       this.status = '通过'
-      const url1 = '/interview-arrangement/getNotice'
+      const url1 = 'api/interview-arrangement/getNotice'
       let params = {
-        type: 3
+        type: 3,
+        organizationId: 1
       }
       this.$http
         .get(url1, params)
         .then((response) => {
+          console.log(response)
           this.message = response.data.data.messageTemplate
             .replace(/{template}/, this.name)
             .replace(/{template}/, this.departmentName)
-            .replace(/{template}/, '所有')
+            .replace(/{template}/, '')
           console.log(this.message)
         })
         .catch((error) => {
@@ -88,15 +102,41 @@ export default {
         })
     }
   },
+  mounted() {
+    let url0 = 'api/interview-reply/stu-info'
+    let params0 = {
+      organizationId: 1,
+      departmentId: this.departmentId,
+      roomId: 0
+    }
+    this.$http
+      .get(url0, params0)
+      .then((response) => {
+        console.log(response)
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+  },
   created() {
+    if (
+      sessionStorage['departmentName'] &&
+      sessionStorage['departmentName'] != '全部'
+    ) {
+      this.departmentName = sessionStorage['departmentName']
+      this.departmentId = sessionStorage['departmentId']
+      this.roomId = sessionStorage['roomId']
+    }
     this.status = '失败'
-    const url1 = '/interview-arrangement/getNotice'
+    const url1 = 'api/interview-arrangement/getNotice'
     let params = {
-      type: 2
+      type: 2,
+      organizationId: 1
     }
     this.$http
       .get(url1, params)
       .then((response) => {
+        console.log(response)
         this.message = response.data.data.messageTemplate
           .replace(/{template}/, this.name)
           .replace(/{template}/, this.departmentName)
@@ -106,7 +146,8 @@ export default {
       .catch((error) => {
         console.log(error)
       })
-  }
+  },
+  beforeDestroy() {}
 }
 </script>
 <style scoped>

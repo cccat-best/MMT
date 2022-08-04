@@ -35,7 +35,7 @@ export default {
 
   //任务进度表发送请求，初始页面渲染
   // created() {
-  //   let url = '/interview-arrangement/data'
+  //   let url = 'api/interview-arrangement/data'
   //   let params = {
   //     admissionId: 20212803
   //   }

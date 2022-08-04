@@ -218,6 +218,19 @@ export default {
       isPersonal: false
     }
   },
+  mounted() {
+    this.$http
+      .post('api/login/b', {
+        studentId: '20200001',
+        password: '123456'
+      })
+      .then((res) => {
+        console.log('cookie:', res)
+      })
+      .catch(function (error) {
+        console.log(error)
+      })
+  },
   methods: {
     handleOpen(key, keyPath) {
       console.log(key, keyPath)
