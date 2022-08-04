@@ -30,7 +30,7 @@
       >
         <!-- 部门名称 -->
         <div class="section-que-content-title">
-          部门{{i+1}}：{{ item.departmentName }}
+          部门{{ i + 1 }}：{{ item.departmentName }}
         </div>
         <!-- 问题展示区&&添加区 -->
         <addQues :departmentId="item.departmentId" ref="a"></addQues>
@@ -42,7 +42,6 @@
 <script>
 import addQues from './addQues.vue'
 import { mapMutations } from 'vuex'
-import axios from "axios";
 export default {
   //添加问题组件
   components: { addQues },
@@ -60,7 +59,6 @@ export default {
   },
   mounted() {
     this.getDeppartmentList()
-
   },
   methods: {
     ...mapMutations('problem', ['updateMaxDepartment', 'updateAllocated']),
@@ -68,20 +66,22 @@ export default {
       //保存最大可报部门数 是否调剂
       this.updateMaxDepartment(this.maxDepartment)
       this.updateAllocated(this.allocated)
-      //保存问题到vuex
+      //保存问题到vuex （动态给组件绑定了ref a数组代表每一个组件）
+      if (!this.$refs.a) return
       for (let i = 0; i < this.$refs.a.length; i++) {
         this.$refs.a[i].saveToVuex()
       }
     },
     async getDeppartmentList() {
-      const organizationId = 2
-      const userId = 2
-     const{data:res} =await axios.get(`http://119.29.27.252:38080/organization/department-id?organizationId=${organizationId}&userId=${userId}`)
+      const organizationId = sessionStorage.getItem('loginOrganizationId')
+      const { data: res } = await this.$http.get(
+        `api/organization/department-id?organizationId=${organizationId}`
+      )
       //判断是否请求成功
-      alert('请求了')
-      if(res.code != '00000') return this.$message.error('部门请求失败'+res.message)
-        this.departmentCount = res.data.departmentList.length
-        this.departmentList = res.data.departmentList
+      if (res.code != '00000') return this.$message.error('部门' + res.message)
+      //成功
+      this.departmentCount = res.data.departmentList.length
+      this.departmentList = res.data.departmentList
     }
   }
 }
@@ -89,7 +89,6 @@ export default {
 
 <style lang="less" scoped>
 .section {
-  overflow: hidden;
   .section-title {
     font-size: 30px;
     display: flex;
@@ -115,7 +114,7 @@ export default {
     }
     // 部门&&问题展示
     .section-que-content {
-      margin-top: 10px;
+      margin-top: 20px;
       .section-que-content-title {
         display: flex;
         font-size: 20px;

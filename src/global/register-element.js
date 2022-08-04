@@ -29,6 +29,24 @@ import {
   TableColumn,
   Tabs,
   TabPane,
+  Select,
+  Option,
+
+
+  Progress,
+  Pagination,
+  Divider,
+  Alert,
+  Tag,
+  RadioGroup,
+  Image,
+  PageHeader,
+  Avatar,
+  Dropdown,
+  DropdownMenu,
+  DropdownItem
+
+
 } from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 const components = [
@@ -59,6 +77,21 @@ const components = [
   TableColumn,
   Tabs,
   TabPane,
+  Select,
+  Option,
+
+  Progress,
+  Pagination,
+  Divider,
+  Alert,
+  Tag,
+  RadioGroup,
+  Image,
+  PageHeader,
+  Avatar,
+  Dropdown,
+  DropdownMenu,
+  DropdownItem
 ]
 export default function (Vue) {
   for (const component of components) {

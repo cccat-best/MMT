@@ -1,144 +1,248 @@
 <template>
-  <div>
-    <el-container class="home-container">
-      <!-- 侧边栏 -->
-      <el-aside width="200px">
-        <div class="aside-title">MMT</div>
-        <div
-          :class="['aside-item', asideShow == 1 ? 'asideactive' : '']"
-          @click="asideShow = 1"
-        >
-          <i class="el-icon-s-home aside-item-icon"></i>
-          面试面板
-        </div>
-        <div
-          :class="['aside-item', asideShow == 2 ? 'asideactive' : '']"
-          @click="asideShow = 2"
-        >
-          <i class="el-icon-picture aside-item-icon"></i>
-          宣传信息设置
-        </div>
-        <div
-          :class="['aside-item', asideShow == 3 ? 'asideactive' : '']"
-          @click="
-            asideShow = 3
-            gotoPross()
-          "
-        >
-          <i class="el-icon-takeaway-box aside-item-icon"></i>
-          面试流程设置
-        </div>
-        <div
-          :class="['aside-item', asideShow == 4 ? 'asideactive' : '']"
-          @click="asideShow = 4"
-        >
-          <i class="el-icon-s-custom aside-item-icon"></i>
-          组织管理
-        </div>
-      </el-aside>
-      <el-container>
-        <!-- 头部 -->
-        <el-header>
+  <div class="super-content">
+    <layout
+      :menuItemList="menuItemList"
+      asideBgColor="#282e38"
+      menuItemColor="#a4a6aa"
+      meunItemActiveColor="#f57d2d"
+      :defaultActiveItem="defaultActiveItem"
+    >
+      <!-- 侧边栏标题 -->
+      <div slot="asideTitle" class="aside-title">MMT</div>
+      <!-- 头部 -->
+      <template slot="header">
+        <div class="header">
           <div class="header-left">
-            <i class="el-icon-s-unfold"></i>
-            科技协会
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 48 48"
+              width="25"
+              height="25"
+              style="
+                border-color: rgba(187, 187, 187, 1);
+                border-width: 0px;
+                border-style: solid;
+              "
+              filter="none"
+            >
+              <g>
+                <rect
+                  width="48"
+                  height="48"
+                  fill="rgba(16.065,16.065,16.065,1)"
+                  fill-opacity="0.01"
+                  stroke="none"
+                ></rect>
+                <path
+                  d="M8 10.5H40"
+                  stroke="rgba(16.065,16.065,16.065,1)"
+                  stroke-width="4"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  fill="none"
+                ></path>
+                <path
+                  d="M24 19.5H40"
+                  stroke="rgba(16.065,16.065,16.065,1)"
+                  stroke-width="4"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  fill="none"
+                ></path>
+                <path
+                  d="M24 28.5H40"
+                  stroke="rgba(16.065,16.065,16.065,1)"
+                  stroke-width="4"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  fill="none"
+                ></path>
+                <path
+                  d="M8 37.5H40"
+                  stroke="rgba(16.065,16.065,16.065,1)"
+                  stroke-width="4"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  fill="none"
+                ></path>
+                <path
+                  d="M8 19L16 24L8 29V19Z"
+                  fill="none"
+                  stroke="rgba(16.065,16.065,16.065,1)"
+                  stroke-width="4"
+                  stroke-linejoin="round"
+                ></path>
+              </g>
+            </svg>
+            <span class="header-tip-left">{{organizationName}}</span>
           </div>
-          <div class="header-right">
-            <i class="el-icon-s-fold"></i>
-            退出超级管理
+          <div class="header-right" @click="exitAdmin">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 32 32"
+              width="25"
+              height="25"
+              style="
+                border-color: rgba(187, 187, 187, 1);
+                border-width: 0px;
+                border-style: solid;
+              "
+              filter="none"
+            >
+              <g>
+                <path
+                  d="M14 26h-6v-20h10v-2h-12v24h12v-2h-2z"
+                  fill="rgba(16.065,16.065,16.065,1)"
+                ></path>
+                <path
+                  d="M22.8 9.2l-1.6 1.6 4.4 4.2h-13.6v2h13.6l-4.4 4.2 1.6 1.6 6.6-6.8z"
+                  fill="rgba(16.065,16.065,16.065,1)"
+                ></path>
+              </g>
+            </svg>
+            <span class="header-tip-right">退出超级管理</span>
           </div>
-        </el-header>
-        <!-- 主体 -->
-        <el-main>
-          <router-view></router-view>
-        </el-main>
-      </el-container>
-    </el-container>
+        </div>
+      </template>
+      <!-- 主体 -->
+      <template slot="main">
+        <router-view></router-view>
+      </template>
+    </layout>
   </div>
 </template>
+
 <script>
+import layout from '@/compentents/myLayout.vue'
 export default {
+  components: { layout },
   data() {
     return {
-      //控制侧边栏激活样式
-      asideShow: 1
+      defaultActiveItem: '1',
+      menuItemList: [
+        {
+          iconClass: 'el-icon-s-home',
+          id: '1',
+          pagePath: '/superAdmin/interviewTable',
+          title: '面试面板'
+        },
+        {
+          iconClass: 'el-icon-picture',
+          id: '2',
+          pagePath: '/superAdmin/informationSet',
+          title: '宣传信息设置'
+        },
+        {
+          iconClass: 'el-icon-takeaway-box',
+          id: '3',
+          pagePath: '/superAdmin/process',
+          title: '面试流程设置'
+        },
+        {
+          iconClass: 'el-icon-s-custom',
+          id: '4',
+          pagePath: '/superAdmin/accountManage',
+          title: '组织管理'
+        }
+      ],
+      // 展示组织名
+      organizationName:''
     }
   },
+  created() {
+    // 解决defaultActiveItem 刷新问题
+    if (this.$route.path === '/superAdmin/interviewTable')
+      this.defaultActiveItem = '1'
+    if (this.$route.path === '/superAdmin/informationSet')
+      this.defaultActiveItem = '2'
+    if (this.$route.path === '/superAdmin/process') this.defaultActiveItem = '3'
+    if (this.$route.path === '/superAdmin/accountManage')
+      this.defaultActiveItem = '4'
+  },
   methods: {
-    gotoPross() {
-      this.$router.push({
-        path: '/superAdmin/process'
+    // 退出超级管理
+    exitAdmin() {
+      //弹窗判断
+      this.$confirm('是否确认退出？', '退出', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
       })
+      .then(() =>{
+      this.$router.push('/home')
+      })
+      .catch(() => {
+        this.$message({
+            type: 'info',
+            message: '已取消退出'
+          })
+      })
+
+
+    },
+  },
+  watch: {
+    //解决直接在地址栏输入链接跳转 菜单栏激活位置不对问题
+    // 监控路由变化
+    $route(to) {
+      if (to.path === '/superAdmin/interviewTable') this.defaultActiveItem = '1'
+      if (to.path === '/superAdmin/informationSet') this.defaultActiveItem = '2'
+      if (to.path === '/superAdmin/process') this.defaultActiveItem = '3'
+      if (to.path === '/superAdmin/accountManage') this.defaultActiveItem = '4'
     }
+  },
+  mounted() {
+    this.organizationName = sessionStorage.getItem('loginOrganizationName')
   }
 }
 </script>
+
 <style lang="less" scoped>
-.el-header {
-  height: 50px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: rgb(253, 255, 254);
-  border-bottom: 1px solid #efefef;
-}
-.home-container {
-  height: 100vh;
-}
-.el-aside {
-  background-color: rgb(40, 48, 57);
-  text-align: center;
-  display: flex;
-  flex-direction: column;
+.super-content {
+  min-width: 900px;
+  height: 100%;
   .aside-title {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
     color: white;
-    font-size: 18px;
+    height: 65px;
+    width: 200px;
     text-align: center;
+    line-height: 65px;
+    font-size: 20px;
+  }
+  .header {
     height: 60px;
-  }
-  .aside-item {
-    cursor: pointer;
     display: flex;
-    // justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    font-size: 14px;
-    text-align: center;
-    height: 40px;
-    color: rgb(148, 151, 161);
-    padding-top: 5px;
-    padding-left: 15px;
-    .aside-item-icon {
-      padding-right: 10px;
+    background-color: rgb(253, 255, 254);
+    font-size:16px ;
+    .header-left {
+      display: flex;
+      align-items: center;
+      .header-tip-left {
+      margin-left: 10px;
+      line-height: 10px;
+      font-size: 19px;
     }
+    }
+    .header-right {
+      display: flex;
+      align-items: center;
+      .header-tip-right {
+      margin-left: 10px;
+      line-height: 10px;
+      font-size: 17px;
+    }
+    &:hover {
+        cursor: pointer;
+        color: #4159fd;
+      }
+    }
+
   }
-  .asideactive {
-    color: rgb(225, 120, 52);
-    background-color: rgb(62, 68, 76);
+  /deep/.el-menu-item {
+    display: flex;
+    align-items: center;
   }
-}
-
-.el-main {
-  // overflow: hidden;
-  background-color: #e9eef3;
-  color: #333;
-  text-align: center;
-  line-height: 160px;
-}
-
-body > .el-container {
-  margin-bottom: 40px;
-}
-
-.el-container:nth-child(5) .el-aside,
-.el-container:nth-child(6) .el-aside {
-  line-height: 260px;
-}
-
-.el-container:nth-child(7) .el-aside {
-  line-height: 320px;
 }
 </style>

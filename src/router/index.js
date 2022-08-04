@@ -17,7 +17,17 @@ const routes = [
   },
   {
     path: '/home',
-    component: () => import('../views/home/home.vue')
+    component: () => import('../views/home/home.vue'),
+    children:[
+      {
+        path:'onInterviewing',
+        component:()=>import('../views/home/onInterviewing/onInterviewing.vue')
+      },
+      {
+        path: 'dataBoard',
+        component: () => import('../views/home/dataBoard/main.vue')
+      }
+    ]
   },
   {
     path: '/superAdmin',
@@ -34,8 +44,8 @@ const routes = [
 const router = new VueRouter({
   routes
 })
-const VueRouterPush = VueRouter.prototype.push
-VueRouter.prototype.push = function push (to) {
-  return VueRouterPush.call(this, to).catch(err => err)
-}
+// const VueRouterPush = VueRouter.prototype.push
+// VueRouter.prototype.push = function push (to) {
+//   return VueRouterPush.call(this, to).catch(err => err)
+// }
 export default router

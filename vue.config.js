@@ -1,14 +1,14 @@
 module.exports = {
   devServer: {
     proxy: {
-      '/api': {
-        // 要发送请求的服务器地址
-        target: 'ssss',
+      "/api": {
+        target: "https://api.yuleng.top:38080",
         pathRewrite: {
-          '^/api': ''
-        }
-      }
-    }
+          "^/api": "",
+        },
+        secure: false,
+        changeOrigin: true,
+      },
+    },
   },
-  lintOnSave: false
-}
+};
