@@ -346,6 +346,7 @@ export default {
         ],
         newPassword: [
           { validator: validatePass1, trigger: 'blur' },
+          { required: true, message: '请输入原密码', trigger: 'blur' },
           { min: 6, max: 16, message: '长度为6-16个字符', trigger: 'blur' }
         ],
         confirmNewPassword: [
