@@ -24,7 +24,8 @@
           >
           </el-input>
         </el-form-item>
-        <el-form-item label="密码" class="psw" prop="password" :error="err">
+        <!-- <el-form-item label="密码" class="psw" prop="password" :error="err"> -->
+        <el-form-item label="密码" class="psw" prop="password">
           <el-input
             placeholder="请输入密码"
             v-model="loginForm.password"
@@ -46,28 +47,17 @@
 <script>
 import { mapMutations } from 'vuex'
 import { mapState } from 'vuex'
+import loginData from './loginData'
 export default {
   name: 'Login',
   data() {
     return {
-      url: require('@../../../public/sipc.png'),
-      hideRequired: true,
-      err: '',
-      loginForm: {
-        studentId: '',
-        password: ''
-      },
-      rules: {
-        studentId: [{ required: true, message: '请输入学号', trigger: 'blur' }],
-        password: [{ required: true, message: '请输入密码', trigger: 'blur' }]
-      }
+      ...loginData.data()
     }
   },
-  watch: {
-
-  },
+  watch: {},
   computed: {
-    ...mapState('transform', ['all']),
+    ...mapState('transform', ['all'])
   },
   mounted() {
     this.loginForm.studentId = this.all.Id
@@ -80,28 +70,51 @@ export default {
       this.$router.push('/register')
     },
     goLogin() {
-      this.$http
-        .post('api/login/b', this.loginForm)
+      if (this.loginForm.studentId === '') {
+        this.$message({
+              showClose: true,
+              message: '请输入账号',
+              type: 'error'
+            })
+      } else if (this.loginForm.password === '') {
+        this.$message({
+              showClose: true,
+              message: '请输入密码',
+              type: 'error'
+            })
+      } else {
+        this.$http
+          .post('api/login/b', this.loginForm)
 
-        .then((res) => {
-          if (res.data.code === '00000') {
-            alert('欢迎你,' + res.data.data.name)
-            sessionStorage.setItem(
-              'loginOrganizationName',
-              res.data.data.loginOrganizationName
-            )
-            sessionStorage.setItem(
-              'loginOrganizationId',
-              res.data.data.loginOrganizationId
-            )
-            this.$router.push('/home')
-          } else {
-            this.err = res.data.message
-          }
-        })
-        .catch((err) => {
-          console.log(err)
-        })
+          .then((res) => {
+            if (res.data.code === '00000') {
+              this.$message.success('恭喜你，登录成功')
+              sessionStorage.setItem(
+                'loginOrganizationName',
+                res.data.data.loginOrganizationName
+              )
+              sessionStorage.setItem(
+                'loginOrganizationId',
+                res.data.data.loginOrganizationId
+              )
+              this.$router.push('/home')
+            } else {
+              this.$message({
+                showClose: true,
+                message: res.data.message,
+                type: 'error'
+              })
+            }
+          })
+          .catch((err) => {
+            console.log(err)
+            this.$message({
+              showClose: true,
+              message: err,
+              type: 'warning'
+            })
+          })
+      }
     }
   },
   components: {}

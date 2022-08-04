@@ -72,6 +72,7 @@
           <div class="right-text" @click="goLogin()">登录</div>
         </div>
       </el-form>
+      <!-- <el-button @click="creat()">生成邀请码test</el-button> -->
     </el-main>
   </el-container>
 </template>
@@ -131,31 +132,92 @@ export default {
     ...mapState('transform', ['all'])
   },
   methods: {
+    // test临时生成邀请码
+    // creat() {
+    //   this.$http.get('api/organization/invitation-code').then(
+    //     (res) => {
+    //       if (res.data.code == '00000') {
+    //         this.invitationCode = res.data.data.invitationCode
+    //         console.log(res.data.data.invitationCode)
+    //       }
+    //     },
+    //     (err) => {
+    //       this.$message.error(err)
+    //     }
+    //   )
+    // },
     ...mapMutations('transform', ['tranformAll']),
     goLogin() {
       this.$router.push('/Login')
     },
     toRegister() {
-      let registerPost = this.$http.post('api/register', this.registerForm)
-      registerPost
-        .then((res) => {
-          console.log(res)
-          if (res.data.code === '00000') {
-            alert('恭喜你！注册成功！')
-            // 存储账号密码 跳转登陆以后自动填充
-            // this.tranformAll(this.registerForm.studentId)
-            this.tranformAll({
-              //print 表示vuex的文件名
-              Id: this.registerForm.studentId,
-              psw: this.registerForm.password
+      if (this.registerForm.studentId === '') {
+        this.$message({
+                showClose: true,
+                message: '请输入账号',
+                type: 'error'
+              })
+      } else if (this.registerForm.name === '') {
+        this.$message({
+                showClose: true,
+                message: '请输入姓名',
+                type: 'error'
+              })
+      } else if (this.registerForm.password === '') {
+        this.$message({
+                showClose: true,
+                message: '请输入密码',
+                type: 'error'
+              })
+      } else if (this.registerForm.confirmPassword === '') {
+        this.$message({
+                showClose: true,
+                message: '请确认密码',
+                type: 'error'
+              })
+      } else if (this.registerForm.phone === '') {
+        this.$message({
+                showClose: true,
+                message: '请输入手机号',
+                type: 'error'
+              })
+      } else if (this.registerForm.invitationCode === '') {
+        this.$message({
+                showClose: true,
+                message: '请输入邀请码',
+                type: 'error'
+              })
+      } else {
+        let registerPost = this.$http.post('api/register', this.registerForm)
+        registerPost
+          .then((res) => {
+            console.log(res)
+            if (res.data.code === '00000') {
+              this.$message({
+                showClose: true,
+                message: '恭喜你，注册成功',
+                type: 'success'
+              })
+              // 存储账号密码 跳转登陆以后自动填充
+              // this.tranformAll(this.registerForm.studentId)
+              this.tranformAll({
+                //print 表示vuex的文件名
+                Id: this.registerForm.studentId,
+                psw: this.registerForm.password
+              })
+              this.$router.push('/login')
+            }
+
+          })
+          .catch((err) => {
+            console.log(err)
+            this.$message({
+              showClose: true,
+              message: err,
+              type: 'error'
             })
-            console.log(this.all)
-            this.$router.push('/login')
-          }
-        })
-        .catch((err) => {
-          console.log(err)
-        })
+          })
+      }
     }
   },
   components: {}
