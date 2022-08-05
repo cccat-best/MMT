@@ -2,9 +2,15 @@
   <!-- 以下包括批量删除、批量修改权限弹窗 -->
   <div>
     <!--批量删除弹窗-->
-    <el-dialog title="删除账号" :visible.sync="dialogVisibleDelete" width="30%">
-      <div>确定删除吗?</div>
-      <div>确定删除后的信息无法恢复</div>
+    <el-dialog
+      title="删除账号"
+      :visible.sync="dialogVisibleDelete"
+      width="30%"
+      class="leastWidth"
+    >
+      <div style="font-size: 16px">确定删除吗?</div>
+      <br />
+      <div style="font-size: 16px">确定删除后的信息无法恢复</div>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisibleDelete = false">取 消</el-button>
         <el-button type="primary" @click="handleDialogVisibleDelete"
@@ -15,9 +21,10 @@
     <!-- 修改权限弹窗 -->
     <el-dialog
       :visible.sync="dialogVisible"
-      width="40%"
+      width="25%"
       top="5vh"
       title="修改权限"
+      class="leastWidth"
     >
       <!-- 选择权限列表 -->
       <div style="width: 70%; margin: 0 auto; display: flex">
@@ -46,6 +53,7 @@
 
 <script>
 export default {
+  name: 'batchOperateDialog',
   data() {
     return {
       dialogVisibleDelete: false, //批量删除
@@ -97,6 +105,7 @@ export default {
       // console.log('--------仅供测试同步批量删除更新========')
       // this.$emit('myBatchOperateDelete', studentListData)
     },
+
     // 批量修改
     handleDialogVisibleChangePermission() {
       // 准备账号信息list
@@ -108,7 +117,9 @@ export default {
           // password: this.passWord, 修改账号不需要password
           permission: this.permission, //选中的权限
           phone: this.multipleSelection[index].phone,
-          studentId: this.multipleSelection[index].studentId
+          studentId: this.multipleSelection[index].studentId,
+          // studentNumber完全不影响，学号不修改，直接凑一个数据
+          studentNumber: this.multipleSelection[index].studentId
         }
       }
       // console.log('点击批量修改')
@@ -151,4 +162,23 @@ export default {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+/* 最小宽度，防止样式垮了 */
+.leastWidth {
+  min-width: 1200px;
+}
+/* 单选上下摆放*/
+.radioGroup {
+  display: flex;
+  flex-direction: column;
+}
+.radioGroupCommitee {
+  position: relative;
+  left: 20px;
+  bottom: 20px;
+  font-size: 20px;
+}
+.radioGroupMember {
+  font-size: 20px;
+}
+</style>
