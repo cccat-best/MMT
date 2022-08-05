@@ -35,8 +35,8 @@ const routes = [
         component: () => import('../views/home/interviewReply/resultInform.vue')
       },
       {
-        path: 'personalInfo',
-        component: () => import('../views/personalInfo/personalInfo.vue')
+        path: 'dataBoard',
+        component: () => import('../views/home/dataBoard/main.vue')
       }
     ]
   },
@@ -57,10 +57,6 @@ const routes = [
         //面试流程页面
         path: 'process',
         component: () => import('../views/superAdmin/interviewProcess/main.vue')
-      },
-      {
-        path: 'accountManage',
-        component: () => import('../views/superAdmin/accountManage/main.vue')
       }
     ]
   }

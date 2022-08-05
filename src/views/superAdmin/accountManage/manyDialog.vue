@@ -26,7 +26,7 @@
         </el-form-item>
         <el-form-item label="用户权限">
           <el-radio-group v-model="formLabelAlign.permission">
-            <el-radio label="commitee"></el-radio>
+            <el-radio label="committee"></el-radio>
             <el-radio label="member"></el-radio>
           </el-radio-group>
         </el-form-item>
@@ -39,7 +39,13 @@
       </span>
     </el-dialog>
     <!--修改密码弹窗-->
-    <el-dialog title="修改密码" :visible.sync="dialogVisibleKey" width="30%">
+    <el-dialog
+      @close="clearPassWord"
+      title="修改密码"
+      :visible.sync="dialogVisibleKey"
+      width="25%"
+      class="changeAccountDialog"
+    >
       <el-form
         :model="ruleForm"
         status-icon
@@ -93,8 +99,6 @@
 </template>
 
 <script>
-//引入axios
-import axios from 'axios'
 export default {
   data() {
     //二次确认密码
@@ -174,29 +178,36 @@ export default {
     // 删除当前行账号
     handleDialogVisibleDeleteAlign() {
       // console.log(this.formLabelAlign.studentId);
-      axios({
-        method: 'post',
-        url: 'https://mmt-dev.sipcoj.com/account/manage/delete',
-        data: {
+      this.$http
+        .post('api/account/manage/delete', {
           organizationId: this.organizationId,
           studentList: [
             {
               studentId: this.formLabelAlign.studentId
             }
           ]
-        }
-      }).then(
-        (res) => {
-          this.$message.success(res.data.message)
-        },
-        (err) => {
-          this.$message.error(err)
-        }
-      )
+        })
+        .then(
+          (res) => {
+            if (res.data.code == '00000') {
+              this.$message.success('删除成功')
+              // 单行删除同步，达到页面删除效果，仅靠发请求是没办法从视觉上删除的
+              this.$emit('deleteAlign', this.deleteIndex)
+            } else this.$message.error(res.data.message)
+            // 关闭弹窗
+            this.dialogVisibleDeleteAlign = false
+          },
+          (err) => {
+            this.$message.error(err)
+            // 关闭弹窗
+            this.dialogVisibleDeleteAlign = false
+          }
+        )
     },
     // 提交密码修改
     handleDialogVisibleKey() {
-      if (this.ruleForm.pass != '') {
+      this.findErrorPass() //校验数据
+      if (this.isErrorPass) {
         this.postAxios()
       } else {
         this.$message.error('密码不能为空')
@@ -204,15 +215,16 @@ export default {
       // 待完善
       // 共用一套密码pass来存储数据，存在问题，能否，每次都重置一下
       //////////////////////////////
-      ;(this.ruleForm.pass = ''), (this.ruleForm.checkPass = '')
+
       // 不太好，应该每次比较index，不同就重置
     },
-    // 发提交修改请求
+    clearPassWord() {
+      ;(this.ruleForm.pass = ''), (this.ruleForm.checkPass = '')
+    },
+    // 发提交修改请求,最后把isErrorPass重置
     postAxios() {
-      axios({
-        method: 'post',
-        url: 'https://mmt-dev.sipcoj.com/account/manage/revise',
-        data: {
+      this.$http
+        .post('api/account/manage/revise', {
           organizationId: this.organizationId,
           studentList: [
             {
@@ -223,15 +235,23 @@ export default {
               studentId: this.formLabelAlign.studentId
             }
           ]
-        }
-      }).then(
-        (res) => {
-          this.$message.success(res.data.message)
-        },
-        (err) => {
-          this.$message.error(err)
-        }
-      )
+        })
+        .then(
+          (res) => {
+            if (res.data.code == '00000') {
+              this.$message.success('已修改密码')
+              // 校验通过才能退出弹窗，写在异步里，防止影响观感
+              this.dialogVisibleKey = false
+            } else this.$message.error(res.data.message)
+            this.isErrorPass = false
+          },
+          (err) => {
+            this.$message.error(err)
+            // 校验通过才能退出弹窗，写在异步里，防止影响观感
+            this.dialogVisibleKey = false
+            this.isErrorPass = false
+          }
+        )
     },
     // 提交账户修改
     handleDialogVisibleChangeAccount() {
@@ -241,10 +261,8 @@ export default {
         // this.postAxios()
         // 相比于上面的修改密码，这里发请求没有传password参数
         // 避免checkPass数据污染，乱改密码
-        axios({
-          method: 'post',
-          url: 'https://mmt-dev.sipcoj.com/account/manage/revise',
-          data: {
+        this.$http
+          .post('api/account/manage/revise', {
             organizationId: this.organizationId,
             studentList: [
               {
@@ -254,22 +272,60 @@ export default {
                 studentId: this.formLabelAlign.studentId
               }
             ]
-          }
-        }).then(
-          (res) => {
-            this.$message.success(res.data.message)
-            this.isError = false
-          },
-          (err) => {
-            this.$message.error(err)
-            this.isError = false
-          }
-        )
+          })
+          .then(
+            (res) => {
+              if (res.data.code == '00000') {
+                // 如果修改成功，把修改内容同步到AccountFormCheck
+                this.changeBackUpdateAlign()
+                this.$message.success('修改成功')
+                // 写在if里没成功别退弹窗，写在异步里，防止影响观感
+                this.DialogVisibleChangeAccount = false
+              } else this.$message.error(res.data.message)
+              this.isError = false
+            },
+            (err) => {
+              this.$message.error(err)
+              // 写在if里没成功别退弹窗，写在异步里，防止影响观感
+              this.DialogVisibleChangeAccount = false
+              this.isError = false
+            }
+          )
       }
+    },
+    // 如果账号修改成功，把修改内容同步到AccountFormCheck
+    changeBackUpdateAlign() {
+      console.log(' 如果修改成功,把修改内容同步到AccountFormCheck')
+      // AccountFormCheck从主页传过来的是原对象的引用，可以直接在这里同步
+      this.AccountFormCheck.name = this.formLabelAlign.name
+      this.AccountFormCheck.permission = this.formLabelAlign.permission
+      this.AccountFormCheck.phone = this.formLabelAlign.phone
+      this.AccountFormCheck.studentId = this.formLabelAlign.studentId
+    },
+    // 看看是不是修改了
+    findSame() {
+      if (this.AccountFormCheck.name == this.formLabelAlign.name) {
+        if (
+          this.AccountFormCheck.permission == this.formLabelAlign.permission
+        ) {
+          if (this.AccountFormCheck.phone == this.formLabelAlign.phone) {
+            if (
+              this.AccountFormCheck.studentId == this.formLabelAlign.studentId
+            ) {
+              return true
+            }
+          }
+        }
+      }
+      return false
     },
     // 修改账号表单校验，待修改
     findError() {
-      if (!/^20[1-9][0-9][0-9]{4}$/.test(this.formLabelAlign.studentId)) {
+      if (this.findSame()) {
+        this.$message.error('您没有修改哦')
+      } else if (
+        !/^20[1-9][0-9][0-9]{4}$/.test(this.formLabelAlign.studentId)
+      ) {
         this.$message.error('学号长度为8')
       } else if (!/^[\u4E00-\u9FA5]{2,5}$/.test(this.formLabelAlign.name)) {
         this.$message.error('请输入真实姓名')
