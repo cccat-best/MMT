@@ -416,7 +416,7 @@ export default {
       this.orderChange(sortItem, sortvalue)
       // console.log(this.sort[0])
       // console.log(this[Object.keys(data)[0]])
-      this.currentPage=1
+      this.currentPage = 1
       this.requestData()
     },
     // 处理排序
@@ -848,6 +848,5 @@ export default {
   //   content: '11';
   //   visibility: hidden;
   // }
-
 }
 </style>
