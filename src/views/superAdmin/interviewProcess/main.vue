@@ -15,7 +15,11 @@
             ><signup></signup
           ></el-tab-pane>
           <!-- 1-4面 -->
-          <el-tab-pane label="一面" name="second" class="body" v-if="roundCount >= 1"
+          <el-tab-pane
+            label="一面"
+            name="second"
+            class="body"
+            v-if="roundCount >= 1"
             ><interview round="1"></interview
           ></el-tab-pane>
           <el-tab-pane
@@ -111,11 +115,13 @@ export default {
     //得到几面
     async getRound() {
       const organizationId = sessionStorage.getItem('loginOrganizationId')
-      const { data: res } = await this.$http.get(
-        `api/organization/interview/round?organizationId=${organizationId}`
-      ).catch((err) => err)
+      const { data: res } = await this.$http
+        .get(
+          `api/organization/interview/round?organizationId=${organizationId}`
+        )
+        .catch((err) => err)
       // 判断是否拿到请求信息
-      if(res.code != '00000') return this.$message.error(res.message)
+      if (res.code != '00000') return this.$message.error(res.message)
       if (res.data.round === null) {
         this.roundCount = 0
       } else {
@@ -133,7 +139,7 @@ export default {
 .content {
   overflow: hidden;
   position: relative;
-  height:calc(100vh - 60px - 50px);
+  height: calc(100vh - 60px - 50px);
   min-height: 550px;
   min-width: 1200px;
   width: calc(100vw - 200px - 40px);
@@ -207,7 +213,7 @@ export default {
       background-color: white;
     }
   }
-    ::-webkit-scrollbar {
+  ::-webkit-scrollbar {
     /*滚动条整体样式*/
     width: 10px; /*高宽分别对应横竖滚动条的尺寸*/
     height: 1px;

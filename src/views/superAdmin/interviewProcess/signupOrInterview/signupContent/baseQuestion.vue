@@ -49,26 +49,22 @@
           <span class="freeView-name">{{ item1.description }}</span>
           <!-- 选择or文字 -->
           <select class="freeView-select" v-show="item1.selection">
-              <option
-                selected="selected"
-                disabled="disabled"
-                style="display: none"
-                value=""
-              ></option>
-              <option
-                v-for="(item2, index2) in item1.option"
-                :key="'op' + index2"
-                v-show="item2 != null"
-              >
-                {{ item2 }}
-              </option>
-            </select>
-            <!--  展示input框-->
-            <input
-              type="text"
-              v-show="!item1.selection"
-              class="freeView-input"
-            />
+            <option
+              selected="selected"
+              disabled="disabled"
+              style="display: none"
+              value=""
+            ></option>
+            <option
+              v-for="(item2, index2) in item1.option"
+              :key="'op' + index2"
+              v-show="item2 != null"
+            >
+              {{ item2 }}
+            </option>
+          </select>
+          <!--  展示input框-->
+          <input type="text" v-show="!item1.selection" class="freeView-input" />
         </div>
       </div>
       <!-- 预设问题面板 -->
@@ -259,7 +255,7 @@ export default {
         }
       ],
       //自定义问题
-      BaseList:[]
+      BaseList: []
     }
   },
   methods: {
@@ -395,10 +391,10 @@ export default {
         .forEach((p) => {
           generalQuestions.push(p.description)
         })
-      let questionsList =this.BaseList
+      let questionsList = this.BaseList
       // 给问题排序
-      let i = 1;
-      questionsList.forEach(p => {
+      let i = 1
+      questionsList.forEach((p) => {
         p.questionOrder = i
         i++
       })
@@ -438,7 +434,7 @@ export default {
 
       .must-item {
         display: flex;
-        width: 33%;
+        width: 33.33%;
         align-items: center;
         .must-star {
           color: red;
@@ -449,7 +445,7 @@ export default {
         .must-name {
           width: 30px;
           margin-left: 3px;
-          margin-right: 5px;
+          margin-right: 6px;
         }
         .must-input {
           border-radius: 5px;

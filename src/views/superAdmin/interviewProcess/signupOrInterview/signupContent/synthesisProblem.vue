@@ -355,22 +355,26 @@ export default {
             return this.$message.error('请确认填写是否填写了开始截至时间')
           // 解决综合问题的顺序
           let i = 1
-          this.comprehensiveQuestionsList.forEach(p => {
-            p.questionOrder = i;
+          this.comprehensiveQuestionsList.forEach((p) => {
+            p.questionOrder = i
             i++
           })
           //解决部门问题的顺序
           //得到所有部门id
-          let sectionId = this.departmentQuestionsList.map(p => p.departmentId)
+          let sectionId = this.departmentQuestionsList.map(
+            (p) => p.departmentId
+          )
           let departmentList = []
           //id去重
           sectionId = [...new Set(sectionId)]
           //把相同部门问题 放入temp 给问题排序
-          for(let a = 0;a<sectionId.length;a++) {
+          for (let a = 0; a < sectionId.length; a++) {
             let i = 1
             let temp = []
-            temp = this.departmentQuestionsList.filter(p => p.departmentId ===sectionId[a])
-            temp.forEach(item => {
+            temp = this.departmentQuestionsList.filter(
+              (p) => p.departmentId === sectionId[a]
+            )
+            temp.forEach((item) => {
               item.questionOrder = i
               i++
               departmentList.push(item)
@@ -390,7 +394,7 @@ export default {
           }
           console.log(qustionList)
           //调用函数发送请求
-           this.sendTo(qustionList)
+          this.sendTo(qustionList)
         })
         .catch(() => {
           this.$message({
@@ -401,12 +405,10 @@ export default {
     },
     async sendTo(qustionList) {
       this.$http
-        .post(
-          'api/organization/interview/sign',
-          qustionList
-        )
+        .post('api/organization/interview/sign', qustionList)
         .then((res) => {
-          if (res.data.code !== '00000') return this.$message.error('提交失败' + res.data.message)
+          if (res.data.code !== '00000')
+            return this.$message.error('提交失败' + res.data.message)
           return this.$message.success('提交成功')
         })
         .catch((err) => err)
@@ -461,7 +463,7 @@ export default {
           border-radius: 5px;
           border: 1px solid #0f2d2d;
           height: 18px;
-          width: 166px ;
+          width: 166px;
         }
         .freeView-select {
           width: 167px;

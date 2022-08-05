@@ -63,13 +63,13 @@ export default {
     }
   },
   watch: {
-    all(){
+    all() {
       this.studentId = this.Id
       this.password = this.psw
     }
   },
-    // ...mapState('transform', ['Id', 'psw'])
-   computed: {
+  // ...mapState('transform', ['Id', 'psw'])
+  computed: {
     ...mapState('transform', ['all'])
   },
   methods: {
@@ -103,8 +103,8 @@ export default {
   },
   components: {},
   mounted() {
-    console.log(this.all);
-  },
+    console.log(this.all)
+  }
 }
 </script>
 <style lang="less" scoped>

@@ -74,7 +74,7 @@
                 ></path>
               </g>
             </svg>
-            <span class="header-tip-left">{{organizationName}}</span>
+            <span class="header-tip-left">{{ organizationName }}</span>
           </div>
           <div class="header-right" @click="exitAdmin">
             <svg
@@ -155,8 +155,7 @@ export default {
       this.defaultActiveItem = '1'
     if (this.$route.path === '/superAdmin/informationSet')
       this.defaultActiveItem = '2'
-    if (this.$route.path === '/superAdmin/process')
-      this.defaultActiveItem = '3'
+    if (this.$route.path === '/superAdmin/process') this.defaultActiveItem = '3'
     if (this.$route.path === '/superAdmin/accountManage')
       this.defaultActiveItem = '4'
   },
@@ -169,18 +168,16 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       })
-      .then(() =>{
-      this.$router.push('/home')
-      })
-      .catch(() => {
-        this.$message({
+        .then(() => {
+          this.$router.push('/home')
+        })
+        .catch(() => {
+          this.$message({
             type: 'info',
             message: '已取消退出'
           })
-      })
-
-
-    },
+        })
+    }
   },
   watch: {
     //解决直接在地址栏输入链接跳转 菜单栏激活位置不对问题
@@ -191,7 +188,7 @@ export default {
       if (to.path === '/superAdmin/process') this.defaultActiveItem = '3'
       if (to.path === '/superAdmin/accountManage') this.defaultActiveItem = '4'
     }
-  },
+  }
 }
 </script>
 
@@ -213,30 +210,29 @@ export default {
     justify-content: space-between;
     align-items: center;
     background-color: rgb(253, 255, 254);
-    font-size:16px ;
+    font-size: 16px;
     .header-left {
       display: flex;
       align-items: center;
       .header-tip-left {
-      margin-left: 10px;
-      line-height: 10px;
-      font-size: 19px;
-    }
+        margin-left: 10px;
+        line-height: 10px;
+        font-size: 19px;
+      }
     }
     .header-right {
       display: flex;
       align-items: center;
       .header-tip-right {
-      margin-left: 10px;
-      line-height: 10px;
-      font-size: 17px;
-    }
-    &:hover {
+        margin-left: 10px;
+        line-height: 10px;
+        font-size: 17px;
+      }
+      &:hover {
         cursor: pointer;
         color: #4159fd;
       }
     }
-
   }
   /deep/.el-menu-item {
     display: flex;
