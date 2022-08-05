@@ -129,7 +129,7 @@ export default {
         {
           iconClass: 'el-icon-picture',
           id: '2',
-          pagePath: '/superAdmin/informationSet/informationSetSaved',
+          pagePath: '/superAdmin/informationSet',
           title: '宣传信息设置'
         },
         {
@@ -144,7 +144,49 @@ export default {
           pagePath: '/superAdmin/accountManage',
           title: '组织管理'
         }
-      ]
+      ],
+      // 展示组织名
+      organizationName: sessionStorage.getItem('loginOrganizationName')
+    }
+  },
+  created() {
+    // 解决defaultActiveItem 刷新问题
+    if (this.$route.path === '/superAdmin/interviewTable')
+      this.defaultActiveItem = '1'
+    if (this.$route.path === '/superAdmin/informationSet')
+      this.defaultActiveItem = '2'
+    if (this.$route.path === '/superAdmin/process') this.defaultActiveItem = '3'
+    if (this.$route.path === '/superAdmin/accountManage')
+      this.defaultActiveItem = '4'
+  },
+  methods: {
+    // 退出超级管理
+    exitAdmin() {
+      //弹窗判断
+      this.$confirm('是否确认退出？', '退出', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        .then(() => {
+          this.$router.push('/home')
+        })
+        .catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消退出'
+          })
+        })
+    }
+  },
+  watch: {
+    //解决直接在地址栏输入链接跳转 菜单栏激活位置不对问题
+    // 监控路由变化
+    $route(to) {
+      if (to.path === '/superAdmin/interviewTable') this.defaultActiveItem = '1'
+      if (to.path === '/superAdmin/informationSet') this.defaultActiveItem = '2'
+      if (to.path === '/superAdmin/process') this.defaultActiveItem = '3'
+      if (to.path === '/superAdmin/accountManage') this.defaultActiveItem = '4'
     }
   }
 }
@@ -152,7 +194,8 @@ export default {
 
 <style lang="less" scoped>
 .super-content {
-  height: 100vh;
+  min-width: 1200px;
+  height: 100%;
   .aside-title {
     color: white;
     height: 65px;
