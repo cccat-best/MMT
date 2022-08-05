@@ -1,7 +1,9 @@
 <template>
   <div class="big">
-    <!-- 面试次序和主体数据 -->
-    <personList></personList>
+    <div class="left">
+      <!-- 面试次序和主体数据 -->
+      <personList></personList>
+    </div>
     <div class="right">
       <!-- 任务进度表 -->
       <taskProgress></taskProgress>
@@ -28,12 +30,14 @@ export default {
 
 <style scoped>
 .big {
-  height: 100%;
-  width: 100%;
+  height: 620px;
+  width: 1280px;
   display: flex;
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
+  background-color: white;
+  border-radius: 10px;
 }
 .right {
   height: 100%;

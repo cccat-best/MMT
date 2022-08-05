@@ -146,7 +146,6 @@ export default {
         method: 'delete',
         baseURL: 'http://114.132.71.147:38080',
         url: '/logout',
-
         headers: {
           'content-type': 'application/json'
         }
@@ -184,6 +183,19 @@ export default {
 }
 .el-dropdown-link:hover {
   color: #409eff !important;
+}
+:deep(.el-menu-item .iconfont) {
+  width: 0px;
+}
+.el-dropdown-link:hover {
+  color: #409eff !important;
+}
+.el-dropdown-link {
+  cursor: pointer;
+  color: black;
+}
+:deep(.el-menu-item .iconfont) {
+  width: 0px;
 }
 .el-dropdown-link {
   cursor: pointer;
