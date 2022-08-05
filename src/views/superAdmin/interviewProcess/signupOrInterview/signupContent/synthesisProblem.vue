@@ -19,7 +19,7 @@
               <span class="freeView-name">{{ item1.description }}</span>
             </div>
             <!-- 展示选项 -->
-            <select style="width: 166.4px" v-show="item1.selection">
+            <select class="freeView-select" v-show="item1.selection">
               <option
                 selected="selected"
                 disabled="disabled"
@@ -35,7 +35,11 @@
               </option>
             </select>
             <!--  展示input框-->
-            <input type="text" v-show="!item1.selection" />
+            <input
+              type="text"
+              v-show="!item1.selection"
+              class="freeView-input"
+            />
           </div>
         </div>
       </div>
@@ -63,12 +67,13 @@
           <div v-show="chooseAdd === 1">
             <el-input
               type="textarea"
-              :rows="2"
+              :rows="4"
               placeholder="请输入问题上限50个字"
               v-model="text1"
               maxlength="50"
               show-word-limit
               style="margin: 10px 0"
+              resize="none"
             >
             </el-input>
           </div>
@@ -204,6 +209,7 @@ export default {
       if (index !== -1) {
         this.form.domains.splice(index, 1)
       }
+      this.$refs.synthPopover.updatePopper()
     },
     addDomain() {
       if (this.form.domains.length === 4) {
@@ -212,6 +218,7 @@ export default {
       this.form.domains.push({
         value: ''
       })
+      this.$refs.synthPopover.updatePopper()
     },
     //添加自定义选择
     addChoseList() {
@@ -230,36 +237,36 @@ export default {
         )
       ) {
         let que = {
-          //不是单选
+          //是单选
           selection: true,
           description: this.text2
         }
         let option = {
-          A: null,
-          B: null,
-          C: null,
-          D: null
+          a: null,
+          b: null,
+          c: null,
+          d: null
         }
         //选项赋值 后端需要ABCD形式方便发送请求 后面有时间会改成三元运算
         if (this.form.domains[0]) {
-          option.A = this.form.domains[0].value
+          option.a = this.form.domains[0].value
         } else {
-          option.A = null
+          option.a = null
         }
         if (this.form.domains[1]) {
-          option.B = this.form.domains[1].value
+          option.b = this.form.domains[1].value
         } else {
-          option.B = null
+          option.b = null
         }
         if (this.form.domains[2]) {
-          option.C = this.form.domains[2].value
+          option.c = this.form.domains[2].value
         } else {
-          option.C = null
+          option.c = null
         }
         if (this.form.domains[3]) {
-          option.D = this.form.domains[3].value
+          option.d = this.form.domains[3].value
         } else {
-          option.D = null
+          option.d = null
         }
         que.option = option
         this.comprehensiveQuestionsList.push(que)
@@ -404,14 +411,7 @@ export default {
             return this.$message.error('提交失败' + res.data.message)
           return this.$message.success('提交成功')
         })
-      //   axios.post('http://119.29.27.252:38080/organization/interview/sign',JSON.stringify(qustionList))
-      //   .then(res => {
-      //     console.log(res)
-      //   })
-      //   .catch(err => {
-      //     console.error(err);
-      //   })
-      // console.log('这是结果', res)
+        .catch((err) => err)
     }
   }
 }

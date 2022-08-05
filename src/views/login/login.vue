@@ -44,7 +44,6 @@
   </el-container>
 </template>
 <script>
-import { mapMutations } from 'vuex'
 import { mapState } from 'vuex'
 export default {
   name: 'Login',
@@ -74,7 +73,6 @@ export default {
     ...mapState('transform', ['all'])
   },
   methods: {
-    ...mapMutations('transform', ['clearData']),
     goRegister() {
       this.$router.push('/register')
     },
