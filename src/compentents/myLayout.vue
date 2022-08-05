@@ -8,7 +8,7 @@
       >
         <slot name="asideTitle"></slot>
         <el-menu
-          :default-active="defaultActiveItem"
+          :default-active="activeIndex"
           class="el-menu-vertical-demo"
           :background-color="asideBgColor"
           :text-color="menuItemColor"
@@ -18,9 +18,9 @@
         >
           <div>
             <el-menu-item
-              :index="item.id"
               v-for="(item, index) in menuItemList"
               :key="index"
+              :index="item.index"
               :route="item.pagePath"
             >
               <el-icon :class="['iconfont', item.iconClass]"></el-icon>
@@ -105,7 +105,13 @@ export default {
     }
   },
   data() {
-    return {}
+    return {
+      activeIndex: '/home/reply'
+    }
+  },
+  methods: {},
+  mounted() {
+    this.activeIndex = this.$route.path
   }
 }
 </script>
