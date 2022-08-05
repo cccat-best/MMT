@@ -1,5 +1,8 @@
 import {
   Option,
+  Menu,
+  MenuItem,
+  Icon,
   Select,
   Radio,
   TimePicker,
@@ -41,6 +44,9 @@ import {
 } from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 const components = [
+  Menu,
+  MenuItem,
+  Icon,
   Option,
   Select,
   DropdownItem,
