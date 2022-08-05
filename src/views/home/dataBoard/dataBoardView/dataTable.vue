@@ -201,10 +201,10 @@
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
       :current-page.sync="currentPage"
-      :page-sizes="[10, 20, 30, 40]"
+      :page-sizes="[5, 20, 30, 40]"
       :page-size.sync="pagesize"
       layout="total, sizes, prev, pager, next, jumper"
-      :total="total"
+      :total.sync="total"
     >
     </el-pagination>
   </div>
@@ -416,6 +416,7 @@ export default {
       this.orderChange(sortItem, sortvalue)
       // console.log(this.sort[0])
       // console.log(this[Object.keys(data)[0]])
+      this.currentPage=1
       this.requestData()
     },
     // 处理排序
@@ -472,9 +473,9 @@ export default {
       this.$http.post('api/data-panel/all-information', this.postdata).then(
         (res) => {
           if (res.data.code == '00000') {
-            this.tableList = res.data.data
-            this.total = this.tableList.length
-            console.log(this.tableList)
+            this.tableList = res.data.data.allInformationData
+            this.total = res.data.data.totalNum
+            console.log(res.data)
             // 清除筛选的选中
             this.$refs.filterTable.clearFilter()
             // 成功后,'页面上'回到第一页
@@ -529,9 +530,9 @@ export default {
           break
       }
       console.log(this[Object.keys(data)[0]])
-      this.requestData()
       // 仅自行触发的筛选跳转到第一页
-      // this.currentPage = 1
+      this.currentPage = 1
+      this.requestData()
     },
     requestData() {
       // 下面是初步实现请求，后续要精简，把不必要的参数去除
@@ -574,14 +575,10 @@ export default {
           } else if (res.data.code == 'A0400')
             this.$message.error(res.data.message)
           else {
-            this.tableList = res.data.data
-            this.total = this.tableList.length
-            console.log(this.tableList)
-            // 成功后页面上回到第一页
-            this.currentPage = 1
+            this.tableList = res.data.data.allInformationData
+            this.total = res.data.data.totalNum
+            // console.log(this.tableList)
           }
-          // 通知所有相关项更新数据，因为他们使用tableDataChange而不是tableData
-          // this.orderChange(this.tableData)
         },
         (err) => {
           this.$message.error('获取数据失败' + err)
@@ -761,7 +758,7 @@ export default {
       /**
        * 多列排序
        */
-      console.log(row+'未使用定义变量的错误，记得删掉这行信息')
+      console.log(row.length + '未使用定义变量的错误，记得删掉这行信息')
       if (!this.mutilSort) return
       if (this.activeThead[column.property]) {
         column.order = this.activeThead[column.property]
@@ -832,6 +829,17 @@ export default {
     background-color: #a1a3a9; /*滚动条的背景颜色*/
     // rgba(24,144,255,0.50)
   }
+  // 表格第一行
+  // /deep/ thead{
+  //   color: #ffffff;
+  // }
+  // 表格第一行
+  /deep/ th.el-table__cell {
+    background: #282e38;
+    color: #ffffff;
+    padding: 5px;
+  }
+  // 筛选图标替换
   // /deep/ .el-icon-arrow-down{
   //   background: ;
   //   background-size: 24px;
@@ -840,5 +848,6 @@ export default {
   //   content: '11';
   //   visibility: hidden;
   // }
+
 }
 </style>
