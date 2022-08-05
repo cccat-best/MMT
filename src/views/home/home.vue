@@ -517,7 +517,11 @@ export default {
       this.$router.push('/superAdmin')
     },
     home() {
-      location.reload()
+      if (this.isPersonal) {
+        location.reload()
+      } else {
+        this.$router.push('/personalInfo')
+      }
     },
     getLoginStatus() {
       const url = '/login-status'
