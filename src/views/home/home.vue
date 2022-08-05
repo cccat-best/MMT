@@ -141,6 +141,7 @@ export default {
         this.studentId = res.data.data.studentId
       })
     },
+
     quitLogin() {
       axios({
         method: 'delete',
@@ -178,8 +179,8 @@ export default {
   line-height: 60px;
   text-align: center;
 }
-.color-change:hover {
-  color: #409eff !important;
+:deep(.el-menu-item .iconfont) {
+  width: 0px;
 }
 .el-dropdown-link:hover {
   color: #409eff !important;
