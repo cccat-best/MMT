@@ -273,7 +273,7 @@ export default {
       if (this.isPersonal) {
         location.reload()
       } else {
-        this.$router.push('/home/personalInfo')
+        this.$router.push('/personalInfo')
       }
     },
     // 个人中心顶部左侧返回的实现，还没想到咋实现
