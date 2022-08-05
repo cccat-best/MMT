@@ -42,30 +42,35 @@ export default {
       asideWidth: 200,
       menuList: [
         {
+          index: '/home',
           iconClass: '',
           id: '1',
           title: '面试总看板',
           pagePath: '/home'
         },
         {
+          index: '/home',
           iconClass: '',
           id: '2',
           title: '数据看板',
           pagePath: '/home'
         },
         {
+          index: '/home/arrangement',
           iconClass: '',
           id: '3',
           title: '面试安排',
           pagePath: '/home/arrangement'
         },
         {
+          index: '/home',
           iconClass: '',
           id: '4',
           title: '实时面试',
           pagePath: '/home'
         },
         {
+          index: '/home/reply',
           iconClass: '',
           id: '5',
           title: '面试复盘',
@@ -173,7 +178,11 @@ export default {
       this.$router.push('/superAdmin')
     },
     home() {
-      this.$router.push('/personalInfo')
+      if (this.isPersonal) {
+        location.reload()
+      } else {
+        this.$router.push('/personalInfo')
+      }
     }
   }
 }

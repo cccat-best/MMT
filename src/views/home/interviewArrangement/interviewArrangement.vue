@@ -30,7 +30,7 @@ export default {
 
 <style scoped>
 .big {
-  height: 620px;
+  height: 605px;
   width: 1280px;
   display: flex;
   flex-direction: row;
