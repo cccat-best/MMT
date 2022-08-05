@@ -532,7 +532,7 @@ export default {
   height: 100%;
 }
 .dingwei {
-  margin-top: 40px;
+  margin-top: 20px;
   display: flex;
   justify-content: left;
 }

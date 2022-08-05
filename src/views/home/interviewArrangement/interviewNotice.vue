@@ -17,33 +17,35 @@
       </el-date-picker>
     </div>
     <div class="text">
-      <p class="p0">面试通知：</p>
-      <p class="p1">
-        亲爱的<u>{{ name }}</u
-        >, <u>{{ departmentName[0].name }}</u
-        >邀请你进入<b>{{ order }}</b
-        >面试。
-      </p>
-      <p class="p2">
-        面试时间：<u>{{ dateValue0 }} &nbsp; {{ timeValue0 }}&nbsp; </u>
-      </p>
-      <p class="p2">
-        面试地点：<input
-          type="text"
-          style="
-            border: none;
-            border-bottom: 1px solid black;
-            outline: none;
-            width: 130px;
-          "
-          v-model="address"
-          class="address"
-        />
-      </p>
-      <p class="p1">请提前做好准备。</p>
-      <div class="button">
-        <el-button plain>取消</el-button>
-        <el-button type="primary" @click="queding">确定</el-button>
+      <div class="littleText">
+        <p class="p0">面试通知：</p>
+        <p class="p1">
+          亲爱的<u>{{ name }}</u
+          >, <u>{{ departmentName[0].name }}</u
+          >邀请你进入<b>{{ order }}</b
+          >面试。
+        </p>
+        <p class="p2">
+          面试时间：<u>{{ dateValue0 }} &nbsp; {{ timeValue0 }}&nbsp; </u>
+        </p>
+        <p class="p2">
+          面试地点：<input
+            type="text"
+            style="
+              border: none;
+              border-bottom: 1px solid black;
+              outline: none;
+              width: 130px;
+            "
+            v-model="address"
+            class="address"
+          />
+        </p>
+        <p class="p1">请提前做好准备。</p>
+        <div class="button">
+          <el-button plain>取消</el-button>
+          <el-button type="primary" @click="queding">确定</el-button>
+        </div>
       </div>
     </div>
   </div>
@@ -176,6 +178,10 @@ export default {
   background-color: #fff;
   border-radius: 5px;
   box-shadow: 1px 1px 3px 1px #e5e9f2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* margin-top: 5px; */
 }
 .p0 {
   text-indent: 0em;

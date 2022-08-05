@@ -144,7 +144,7 @@
       center
     >
       <div class="detal">
-        <el-row> <b>姓名:&nbsp;&nbsp;</b>{{ detal.name }} </el-row>
+        <el-row> <b>姓名:&nbsp;&nbsp;</b>{{ detal.studentName }} </el-row>
         <el-row> <b>学号:&nbsp;&nbsp;</b>{{ detal.studentId }} </el-row>
         <el-row v-for="(item, index) in detal.questionScore" :key="index">
           <b>{{ item.questionName }}:&nbsp;&nbsp;</b>{{ item.score }}
