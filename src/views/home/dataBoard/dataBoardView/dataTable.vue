@@ -14,12 +14,6 @@
       "
     >
       测试
-      <!-- </div>
-    <div
-      @click="co"
-      style="float: left; height: 5px; width: 150px; color: blue"
-    >
-    cookie -->
     </div>
     <!--  -->
 
@@ -258,29 +252,12 @@ export default {
       nextPlace: [],
       nextTime: [],
       // 排序，排序选择（姓名0、学号1、地点2、时间3），排序方式（1正序、2倒序）
-      sort: [
-        {
-          sortCondition: 0,
-          sortModel: 1
-        },
-        {
-          sortCondition: 1,
-          sortModel: 1
-        },
-        {
-          sortCondition: 2,
-          sortModel: 1
-        },
-        {
-          sortCondition: 3,
-          sortModel: 1
-        }
-      ],
+      sort: [],
       postdata: '', //发请求的data
       // 页码
       tableList: [], //当前页展示数据
       currentPage: 1, // 当前页码
-      pagesize: 10, // 每页条数，默认10
+      pagesize: 5, // 每页条数，默认10
       total: 100
 
       // 表头名
@@ -298,17 +275,11 @@ export default {
     this.requestFilterItem()
     this.timerUpdate = setInterval(() => {
       setTimeout(this.requestFilterItem, 0)
-    }, 1000 * 60)
+    }, 1000 * 600)
   },
   beforeDestroy() {
     clearInterval(this.timerUpdate)
     this.timerUpdate = null
-  },
-  created() {
-    //获取数据
-    this.searchKeyWord()
-    //渲染并分页
-    this.orderChange(this.tableData)
   },
   components: {
     // mySelectHeader
@@ -397,70 +368,74 @@ export default {
     // 触发排序
     sortTableFun(data) {
       // console.log(data)
-      let name = data.prop
       let sortvalue
-      if (data.order == 'ascending') {
-        sortvalue = 1
+      switch (data.order) {
+        case 'ascending':
+          sortvalue = 1
+          break
+        case 'descending':
+          sortvalue = 2
+          break
+        default:
+          sortvalue = 0
+          break
       }
-      if (data.order == 'descending') {
-        sortvalue = 2
-      }
-      switch (name) {
+      // 姓名0、学号1、地点2、时间3
+      let sortItem
+      switch (data.prop) {
         case 'stuNum':
-          this.sort[1].sortModel = sortvalue
-          console.log('stuNum sort')
+          sortItem = 1
+          // console.log('stuNum sort')
           // console.log(this.className)
           break
         case 'name':
-          this.sort[0].sortModel = sortvalue
-          console.log('name sort')
+          sortItem = 0
+          // console.log('name sort')
           break
         case 'nextTime':
-          this.sort[3] = sortvalue
-          console.log('nextTime sort')
+          sortItem = 3
+          // console.log('nextTime sort')
           break
         case 'nextPlace':
-          this.sort[2] = sortvalue
-          console.log('nextPlace sort')
+          sortItem = 2
+          // console.log('nextPlace sort')
           break
       }
-      console.log(this.sort[0])
+      console.log('================')
+      this.orderChange(sortItem, sortvalue)
+      // console.log(this.sort[0])
       // console.log(this[Object.keys(data)[0]])
       this.requestData()
     },
-    // 排序，默认权限升序，并完成渲染分页
-    orderChange(datalist, currentPage) {
-      // this.$message.success('发起后端请求的接口')
-      // 对权限排序
-      if (this.column == 'permission') {
-        // console.log(Number(datalist[4].permission[0]))
-        if (this.order == 'desc') {
-          datalist.sort((a, b) => {
-            return b.permission[0] > a.permission[0] ? 1 : -1
-          }) //permission 降序
-        } else {
-          datalist.sort((a, b) => {
-            return b.permission[0] < a.permission[0] ? 1 : -1
-          }) //permission 升序
+    // 处理排序
+    orderChange(sortItem, sortvalue) {
+      if (this.sort.length == 0) {
+        this.sort.push({
+          sortCondition: sortItem,
+          sortModel: sortvalue
+        })
+      } else {
+        let isPush = true
+        this.sort.forEach((element) => {
+          if (element.sortCondition == sortItem) {
+            element.sortModel = sortvalue
+            isPush = false
+          }
+        })
+        if (isPush) {
+          this.sort.push({
+            sortCondition: sortItem,
+            sortModel: sortvalue
+          })
         }
       }
-      // 对学号排序
-      else if (this.column == 'studentId') {
-        // 修改数组顺序，后续可能要用对象保存原始数据
-        if (this.order == 'desc') {
-          datalist.sort((a, b) => {
-            return Number(b.studentId) > Number(a.studentId) ? 1 : -1
-          }) //permission 降序
-        } else {
-          datalist.sort((a, b) => {
-            return Number(b.studentId) < Number(a.studentId) ? 1 : -1
-          }) //permission 升序
-        }
-      }
-      // 渲染排序后的数据，分页
-      this.currentPage = currentPage == undefined ? 1 : currentPage
-      this.tableDataChange = datalist
-      this.pageCutDouwn(this.tableDataChange)
+      this.sort = this.sort.filter((element) => {
+        return element.sortModel != 0
+      })
+      // this.sort.forEach((element) => {
+      //   console.log('sortCondition' + element.sortCondition)
+      //   console.log('sortModel' + element.sortModel)
+      // })
     },
 
     //关键字搜索
@@ -485,21 +460,15 @@ export default {
       // 发请求
       this.$http.post('api/data-panel/all-information', this.postdata).then(
         (res) => {
-          // 因为请求访问权限异常，res.data.studentList在返回信息中为undefined
-          if (res.data.code == 'A0300') {
-            // 用造的假数据顶上
-            this.$message.error(res.data.message)
-          } else if (res.data.code == 'A0400')
-            this.$message.error(res.data.message)
-          else {
+          if (res.data.code == '00000') {
             this.tableList = res.data.data
-            this.total = res.tableList.length
+            this.total = this.tableList.length
             console.log(this.tableList)
-            // 成功后页面上回到第一页
+            // 清除筛选的选中
+            this.$refs.filterTable.clearFilter()
+            // 成功后,'页面上'回到第一页
             this.currentPage = 1
-          }
-          // 通知所有相关项更新数据，因为他们使用tableDataChange而不是tableData
-          // this.orderChange(this.tableData)
+          } else this.$message.error(res.data.message)
         },
         (err) => {
           this.$message.error('获取数据失败' + err)
@@ -555,48 +524,63 @@ export default {
     },
     requestData() {
       // 下面是初步实现请求，后续要精简，把不必要的参数去除
-      this.$http
-        .post('api/data-panel/all-information', {
-          admissionId: this.admissionId,
-          organizationId: this.organizationId,
-          pageNum: this.currentPage,
-          pageSize: this.pagesize,
-          className: this.className,
-          organizationOrder: this.organizationOrder,
-          departmentOrder: this.departmentOrder,
-          wishDepartment: this.wishDepartment,
-          interviewStatus: this.interviewStatus,
-          nextPlace: this.nextPlace,
-          nextTime: this.nextTime,
-          sort: this.sort
-        })
-        .then(
-          (res) => {
-            // 因为请求访问权限异常，res.data.studentList在返回信息中为undefined
-            if (res.data.code == 'A0300') {
-              // 用造的假数据顶上
-              this.$message.error(res.data.message)
-            } else if (res.data.code == 'A0400')
-              this.$message.error(res.data.message)
-            else {
-              this.tableList = res.data.data
-              this.total = res.tableList.length
-              console.log(this.tableList)
-              // 成功后页面上回到第一页
-              this.currentPage = 1
-            }
-            // 通知所有相关项更新数据，因为他们使用tableDataChange而不是tableData
-            // this.orderChange(this.tableData)
-          },
-          (err) => {
-            this.$message.error('获取数据失败' + err)
+      let myRequestData = {
+        admissionId: this.admissionId,
+        organizationId: this.organizationId,
+        pageNum: this.currentPage,
+        pageSize: this.pagesize
+      }
+      if (this.className.length != 0) {
+        myRequestData.className = this.className
+      }
+      if (this.organizationOrder.length != 0) {
+        myRequestData.organizationOrder = this.organizationOrder
+      }
+      if (this.departmentOrder.length != 0) {
+        myRequestData.departmentOrder = this.departmentOrder
+      }
+      if (this.wishDepartment.length != 0) {
+        myRequestData.wishDepartment = this.wishDepartment
+      }
+      if (this.interviewStatus.length != 0) {
+        myRequestData.interviewStatus = this.interviewStatus
+      }
+      if (this.nextPlace.length != 0) {
+        myRequestData.nextPlace = this.nextPlace
+      }
+      if (this.nextTime.length != 0) {
+        myRequestData.nextTime = this.nextTime
+      }
+      if (this.sort.length != 0) {
+        myRequestData.sort = this.sort
+      }
+      this.$http.post('api/data-panel/all-information', myRequestData).then(
+        (res) => {
+          // 因为请求访问权限异常，res.data.studentList在返回信息中为undefined
+          if (res.data.code == 'A0300') {
+            // 用造的假数据顶上
+            this.$message.error(res.data.message)
+          } else if (res.data.code == 'A0400')
+            this.$message.error(res.data.message)
+          else {
+            this.tableList = res.data.data
+            this.total = this.tableList.length
+            console.log(this.tableList)
+            // 成功后页面上回到第一页
+            this.currentPage = 1
           }
-        )
+          // 通知所有相关项更新数据，因为他们使用tableDataChange而不是tableData
+          // this.orderChange(this.tableData)
+        },
+        (err) => {
+          this.$message.error('获取数据失败' + err)
+        }
+      )
     },
     // 获取所有筛选项
     requestFilterItem() {
-      // 顺便更新数据
-      this.searchKeyWord()
+      // 更新数据,不要改变排序筛选等，避免用户发现刷新痕迹
+      this.requestData()
       // 获取班级
       this.$http
         .get(
@@ -743,12 +727,12 @@ export default {
       this.pagesize = val
       // 回到第一页
       this.currentPage = 1
-      this.searchKeyWord()
+      this.requestData()
     },
     // 修改到第几页
     handleCurrentChange(val) {
       this.currentPage = val
-      this.searchKeyWord()
+      this.requestData()
     }
     // 具体分页操作
     // pageCutDouwn(tableDataChange) {
@@ -824,5 +808,13 @@ export default {
     background-color: #a1a3a9; /*滚动条的背景颜色*/
     // rgba(24,144,255,0.50)
   }
+  // /deep/ .el-icon-arrow-down{
+  //   background: ;
+  //   background-size: 24px;
+  // }
+  // /deep/ .el-icon-arrow-down:before {
+  //   content: '11';
+  //   visibility: hidden;
+  // }
 }
 </style>
