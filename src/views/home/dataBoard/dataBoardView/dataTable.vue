@@ -201,7 +201,7 @@
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
       :current-page.sync="currentPage"
-      :page-sizes="[5, 20, 30, 40]"
+      :page-sizes="[10, 20, 30, 40]"
       :page-size.sync="pagesize"
       layout="total, sizes, prev, pager, next, jumper"
       :total.sync="total"
@@ -254,7 +254,7 @@ export default {
       // 页码
       tableList: [], //当前页展示数据
       currentPage: 1, // 当前页码
-      pagesize: 5, // 每页条数，默认10
+      pagesize: 10, // 每页条数，默认10
       total: 100
 
       // 表头名
@@ -834,7 +834,7 @@ export default {
   //   color: #ffffff;
   // }
   // 表格第一行
-  /deep/ th.el-table__cell {
+  /deep/ th {
     background: #282e38;
     color: #ffffff;
     padding: 5px;
