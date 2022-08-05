@@ -77,7 +77,7 @@ export default {
     meunItemActiveColor: {
       type: String,
       required: false,
-      default: '#02a7f0'
+      default: 'green'
     },
     // 选择是否需要侧边栏
     isAside: {
@@ -91,7 +91,7 @@ export default {
       required: false,
       default: true
     },
-    // 默认激活的菜单选项
+    // 当前激活菜单的index
     defaultActiveItem: {
       type: String,
       required: false,
@@ -106,7 +106,7 @@ export default {
   },
   data() {
     return {
-      activeIndex: '/home/reply'
+      activeIndex: ''
     }
   },
   methods: {},

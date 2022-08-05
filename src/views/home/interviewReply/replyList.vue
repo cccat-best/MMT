@@ -32,7 +32,7 @@
           width="120"
         >
         </el-table-column>
-        <el-table-column prop="name" label="姓名" width="100">
+        <el-table-column prop="studentName" label="姓名" width="100">
         </el-table-column>
         <el-table-column
           width="100"
