@@ -5,7 +5,6 @@
       ref="layout"
       :asideWidth="asideWidth"
       :menuItemList="menuList"
-      menuItemColor=""
     >
       <template slot="header">
         <myhead
