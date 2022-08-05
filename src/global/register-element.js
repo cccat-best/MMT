@@ -37,10 +37,16 @@ import {
   Avatar,
   Dropdown,
   DropdownMenu,
-  DropdownItem
+  DropdownItem,
+  Menu,
+  MenuItem,
+  Icon
 } from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 const components = [
+  Icon,
+  MenuItem,
+  Menu,
   Option,
   Select,
   DropdownItem,

@@ -104,9 +104,7 @@ export default {
     }
   },
   components: {},
-  mounted() {
-    console.log(this.all)
-  }
+  mounted() {}
 }
 </script>
 <style lang="less" scoped>
