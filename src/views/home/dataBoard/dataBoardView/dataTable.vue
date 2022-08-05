@@ -37,11 +37,7 @@
       height="72.2vh"
       :row-style="{ height: '0' }"
       :cell-style="{ padding: '0px' }"
-      :header-cell-style="{
-        background: '#282e38',
-        color: '#ffffff',
-        padding: '5px'
-      }"
+      :header-cell-style="handleTheadStyle"
       ref="filterTable"
       :data="tableList"
       @sort-change="sortTableFun"
@@ -239,6 +235,7 @@ export default {
     return {
       // 计时器
       timerUpdate: null,
+      activeThead: {}, //保存排序所选择的表头
       // 关键字搜索
       admissionId: 1, //纳新ID不知道，需要询问////////////////////////
       organizationId: 1, ////组织名不知道，需要询问////////////////////////
@@ -285,6 +282,12 @@ export default {
     // mySelectHeader
     resumeDialog,
     changeDialog
+  },
+  // 排序保存表头
+  props: {
+    mutilSort: {
+      default: true
+    }
   },
   methods: {
     ...mapMutations('dataBoard', [
@@ -367,7 +370,15 @@ export default {
     },
     // 触发排序
     sortTableFun(data) {
-      // console.log(data)
+      // 多列排序，保存排序表头高亮
+      this.$emit('sort-change', data)
+      if (!this.mutilSort) return
+      if (data.order) {
+        this.activeThead[data.prop] = data.order
+      } else if (!data.order) {
+        this.activeThead[data.prop] = ''
+      }
+      // 准备排序数组要接收的值
       let sortvalue
       switch (data.order) {
         case 'ascending':
@@ -733,7 +744,7 @@ export default {
     handleCurrentChange(val) {
       this.currentPage = val
       this.requestData()
-    }
+    },
     // 具体分页操作
     // pageCutDouwn(tableDataChange) {
     //   this.tableList = tableDataChange.filter(
@@ -743,6 +754,19 @@ export default {
     //   )
     //   this.total = tableDataChange.length
     // }
+    /**
+     * 设置表头排序
+     */
+    handleTheadStyle({ row, column }) {
+      /**
+       * 多列排序
+       */
+      console.log(row+'未使用定义变量的错误，记得删掉这行信息')
+      if (!this.mutilSort) return
+      if (this.activeThead[column.property]) {
+        column.order = this.activeThead[column.property]
+      }
+    }
   }
 }
 </script>
