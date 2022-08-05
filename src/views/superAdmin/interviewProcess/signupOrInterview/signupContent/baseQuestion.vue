@@ -34,34 +34,21 @@
       </div>
       <!-- 自定义问题展示 -->
       <div class="freeView-content">
-        <!-- 自定义文本问题 -->
-        <div class="freeView-title">自定义问题</div>
+        <!-- 自定义问题 -->
+        <div class="freeView-title">自定义基本问题</div>
         <div
           class="freeView-item"
-          v-for="(item1, i1) in textList"
+          v-for="(item1, i1) in BaseList"
           :key="'t' + i1"
         >
           <i
             class="el-icon-remove"
             style="color: #1597db"
-            @click="removeTextChoose(item1)"
+            @click="removeChoose(item1)"
           ></i>
           <span class="freeView-name">{{ item1.description }}</span>
-          <input type="text" class="freeView-input" />
-        </div>
-        <!-- 自定义选择问题展示 -->
-        <div
-          class="freeView-item"
-          v-for="(item2, i2) in chooseList"
-          :key="'c' + i2"
-        >
-          <i
-            class="el-icon-remove"
-            style="color: #1597db"
-            @click="removeChose(item2)"
-          ></i>
-          <span class="freeView-name">{{ item2.description }}</span>
-          <select class="freeView-select">
+          <!-- 选择or文字 -->
+          <select class="freeView-select" v-show="item1.selection">
             <option
               selected="selected"
               disabled="disabled"
@@ -69,13 +56,15 @@
               value=""
             ></option>
             <option
-              v-for="(item3, index3) in item2.option"
-              :key="'op' + index3"
-              v-show="item3 != null"
+              v-for="(item2, index2) in item1.option"
+              :key="'op' + index2"
+              v-show="item2 != null"
             >
-              {{ item3 }}
+              {{ item2 }}
             </option>
           </select>
+          <!--  展示input框-->
+          <input type="text" v-show="!item1.selection" class="freeView-input" />
         </div>
       </div>
       <!-- 预设问题面板 -->
@@ -265,10 +254,8 @@ export default {
           description: '身高'
         }
       ],
-      //自定义文本问题
-      textList: [],
-      //自定义选择题
-      chooseList: []
+      //自定义问题
+      BaseList: []
     }
   },
   methods: {
@@ -276,9 +263,9 @@ export default {
       'updateGeneralQuestions',
       'updateQuestionsList'
     ]),
-    //删除自定义文本问题
-    removeTextChoose(item) {
-      this.textList = this.textList.filter(
+    //删除自定义问题
+    removeChoose(item) {
+      this.BaseList = this.BaseList.filter(
         (p) => p.description != item.description
       )
       this.isAdd--
@@ -291,7 +278,7 @@ export default {
         return this.$message.error('问题不能为空')
       }
       //如果找不到这个问题
-      if (!this.textList.find((p) => p.description === this.text)) {
+      if (!this.BaseList.find((p) => p.description === this.text)) {
         let que = {
           //不是单选
           selection: false,
@@ -303,7 +290,7 @@ export default {
             d: null
           }
         }
-        this.textList.push(que)
+        this.BaseList.push(que)
         this.isAdd++
         this.text = ''
         //只有成功提交才会关闭这个添加框
@@ -345,9 +332,9 @@ export default {
           return this.$message.error('选项不能为空')
       }
       //如果找不到这个问题 避免重复问题
-      if (!this.chooseList.find((p) => p.description === this.text1)) {
+      if (!this.BaseList.find((p) => p.description === this.text1)) {
         let que = {
-          //不是单选
+          //是单选
           selection: true,
           description: this.text1
         }
@@ -379,13 +366,13 @@ export default {
           option.d = null
         }
         que.option = option
-        this.chooseList.push(que)
+        this.BaseList.push(que)
         this.isAdd++
         this.visible1 = false
       } else {
         return this.$message.error('问题已存在')
       }
-      //清空问题
+      //添加清空问题
       this.text1 = ''
       this.form.domains = [
         {
@@ -396,12 +383,6 @@ export default {
         }
       ]
     },
-    removeChose(item2) {
-      this.chooseList = this.chooseList.filter(
-        (p) => p.description != item2.description
-      )
-      this.isAdd--
-    },
     packgeBaseQue() {
       let generalQuestions = [] //预设问题选择情况
       //过滤是否选中此预设问题
@@ -410,7 +391,14 @@ export default {
         .forEach((p) => {
           generalQuestions.push(p.description)
         })
-      let questionsList = [...this.textList, ...this.chooseList]
+      let questionsList = this.BaseList
+      // 给问题排序
+      let i = 1
+      questionsList.forEach((p) => {
+        p.questionOrder = i
+        i++
+      })
+      // vuex存储
       this.updateGeneralQuestions(generalQuestions)
       this.updateQuestionsList(questionsList)
     }
@@ -543,7 +531,7 @@ export default {
     .freeView-content {
       .freeView-title {
         display: flex;
-        font-size: 18px;
+        font-size: 20px;
         color: #989898;
         margin-left: 65px;
         margin-bottom: 10px;
@@ -562,11 +550,12 @@ export default {
         width: 200px;
       }
       .freeView-input {
+        width: 166px;
         border-radius: 5px;
         border: 1px solid #0f2d2d;
       }
       .freeView-select {
-        width: 165.4px;
+        width: 167px;
         border-radius: 5px;
         border: 1px solid #0f2d2d;
       }

@@ -124,21 +124,10 @@ export default {
       DialogVisibleChangeAccount: false, //修改账号
       // ？？？
       organizationId: 0, //组织名不知道，需要询问
-
       // 校验账号表单结果
       isError: false,
-      // 校验密码表单结果
-      isErrorPass: false,
-
-      // 验证后，用来发修改账户或密码请求的数据
-      postData: {},
-      //当前行数据，修改账户，副本用于修改
+      //当前行数据，修改账户
       formLabelAlign: {},
-      //当前行数据，修改账户，原数据的引用用于校验
-      AccountFormCheck: {},
-      // 删除当前行的索引
-      deleteIndex: 0,
-
       // 修改密码，确认密码////////////////////////////////////////////
       ruleForm: {
         pass: '',
@@ -146,24 +135,8 @@ export default {
       },
       //修改密码校验规则
       rulesPassword: {
-        pass: [
-          { validator: validatePass, trigger: ['blur', 'change'] },
-          {
-            min: 6,
-            max: 16,
-            message: '密码长度为6-16位',
-            trigger: ['blur', 'change']
-          }
-        ],
-        checkPass: [
-          { validator: validatePass2, trigger: ['blur', 'change'] },
-          {
-            min: 6,
-            max: 16,
-            message: '密码长度为6-16位',
-            trigger: ['blur', 'change']
-          }
-        ]
+        pass: [{ validator: validatePass, trigger: ['blur', 'change'] }],
+        checkPass: [{ validator: validatePass2, trigger: ['blur', 'change'] }]
       },
       //修改账号校验规则
       rulesAccount: {
@@ -220,38 +193,13 @@ export default {
           this.$message.error(err)
         }
       )
-
-      // 单行删除同步，达到页面删除效果，仅靠发请求是没办法从视觉上删除的
-      this.$emit('deleteAlign', this.deleteIndex)
-      this.dialogVisibleDeleteAlign = false
     },
-    // 验证已修改数据，放入postData中
-    // 情况是有修改的记录修改，没有修改记录null,全部要发到请求中
-    // checkPostData() {
-    //   Object.keys(this.formLabelAlign).forEach((key) => {
-    //     if (this.formLabelAlign[key] != this.AccountFormCheck[key]) {
-    //       // 把修改项记录下来
-    //       this.postData[key] = this.formLabelAlign[key]
-    //     } else {
-    //       // 未修改项置空
-    //       this.postData[key] = null
-    //     }
-    //   })
-    //   // 补上必传项studentNumber、permission
-    //   this.postData.studentNumber = this.AccountFormCheck.studentId
-    //   this.postData.permission = this.formLabelAlign.permission
-    //   console.log(this.formLabelAlign.name)
-    //   console.log(this.AccountFormCheck.name)
-    //   console.log('-----------------')
-    //   console.log(this.postData.name)
-    // },
-
     // 提交密码修改
     handleDialogVisibleKey() {
-      this.findErrorPass() //校验数据
-      if (this.isErrorPass) {
-        this.$message.success('成功发起修改密码，记得删')
+      if (this.ruleForm.pass != '') {
         this.postAxios()
+      } else {
+        this.$message.error('密码不能为空')
       }
       // 待完善
       // 共用一套密码pass来存储数据，存在问题，能否，每次都重置一下
@@ -259,7 +207,7 @@ export default {
       ;(this.ruleForm.pass = ''), (this.ruleForm.checkPass = '')
       // 不太好，应该每次比较index，不同就重置
     },
-    // 发提交修改请求,最后把isErrorPass重置
+    // 发提交修改请求
     postAxios() {
       axios({
         method: 'post',
@@ -272,28 +220,21 @@ export default {
               password: this.ruleForm.checkPass,
               permission: this.formLabelAlign.permission,
               phone: this.formLabelAlign.phone,
-              studentId: this.formLabelAlign.studentId,
-              // 原学号，修改密码是不改变学号的
-              studentNumber: this.formLabelAlign.studentId
+              studentId: this.formLabelAlign.studentId
             }
           ]
         }
       }).then(
         (res) => {
           this.$message.success(res.data.message)
-          this.isErrorPass = false
         },
         (err) => {
           this.$message.error(err)
-          this.isErrorPass = false
         }
       )
     },
     // 提交账户修改
     handleDialogVisibleChangeAccount() {
-      // 原来的方案是修改了就传，没修改的数据传null
-      // this.checkPostData()
-
       this.findError() //校验数据
       // console.log(this.formLabelAlign.permission);
       if (this.isError) {
@@ -307,23 +248,16 @@ export default {
             organizationId: this.organizationId,
             studentList: [
               {
-                // 可能修改后数据
                 name: this.formLabelAlign.name,
                 permission: this.formLabelAlign.permission,
                 phone: this.formLabelAlign.phone,
-                studentId: this.formLabelAlign.studentId,
-                // 原学号，引用
-                studentNumber: this.AccountFormCheck.studentId
+                studentId: this.formLabelAlign.studentId
               }
             ]
           }
         }).then(
           (res) => {
             this.$message.success(res.data.message)
-            if (res.data.code == '200') {
-              // 如果修改成功，把修改内容同步到AccountFormCheck
-              this.changeBackUpdateAlign()
-            }
             this.isError = false
           },
           (err) => {
@@ -331,18 +265,7 @@ export default {
             this.isError = false
           }
         )
-        // 实验：如果修改成功，把修改内容同步到AccountFormCheck
-        this.changeBackUpdateAlign()
       }
-    },
-    // 如果账号修改成功，把修改内容同步到AccountFormCheck
-    changeBackUpdateAlign() {
-      console.log(' 如果修改成功,把修改内容同步到AccountFormCheck')
-      // AccountFormCheck从主页传过来的是原对象的引用，可以直接在这里同步
-      this.AccountFormCheck.name = this.formLabelAlign.name
-      this.AccountFormCheck.permission = this.formLabelAlign.permission
-      this.AccountFormCheck.phone = this.formLabelAlign.phone
-      this.AccountFormCheck.studentId = this.formLabelAlign.studentId
     },
     // 修改账号表单校验，待修改
     findError() {
@@ -353,18 +276,6 @@ export default {
       } else if (!/^(1[3-9][0-9])[0-9]{8}$/.test(this.formLabelAlign.phone)) {
         this.$message.error('电话不符合规范')
       } else this.isError = true
-    },
-    // 修改密码表单校验，待修改
-    findErrorPass() {
-      if (this.ruleForm.pass == '') {
-        this.$message.error('密码不能为空')
-      } else if (!/[\s\S]{6,16}$/.test(this.ruleForm.pass)) {
-        this.$message.error('密码长度为6-16位')
-      } else if (this.ruleForm.pass == this.ruleForm.checkPass) {
-        this.isErrorPass = true
-      } else {
-        this.$message.error('两次输入密码不同')
-      }
     }
   }
 }

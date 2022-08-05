@@ -44,7 +44,6 @@
 //引入axios
 import axios from 'axios'
 export default {
-  name: 'batchOperateDialog',
   data() {
     return {
       dialogVisibleDelete: false, //批量删除
@@ -78,24 +77,13 @@ export default {
         }
       }).then(
         (res) => {
-          if (res.data.code == '200') {
-            this.$message.success(res.data.message)
-            // 同步更新页面权限数据
-            this.$emit('myBatchOperateDelete', studentListData)
-          } else {
-            this.$message.error(res.data.message)
-            console.log('code: ' + res.data.code)
-          }
+          this.$message.success(res.data.message)
         },
         (err) => {
           this.$message.error(err)
         }
       )
-      console.log('--------仅供测试同步批量删除更新========')
-      this.$emit('myBatchOperateDelete', studentListData)
-      this.dialogVisibleDelete = false
     },
-
     // 批量修改
     handleDialogVisibleChangePermission() {
       // 准备账号信息list
@@ -107,9 +95,7 @@ export default {
           // password: this.passWord, 修改账号不需要password
           permission: this.permission, //选中的权限
           phone: this.multipleSelection[index].phone,
-          studentId: this.multipleSelection[index].studentId,
-          // studentNumber完全不影响，学号不修改，直接凑一个数据
-          studentNumber: this.multipleSelection[index].studentId
+          studentId: this.multipleSelection[index].studentId
         }
       }
       // console.log('点击批量修改')
@@ -123,29 +109,12 @@ export default {
         }
       }).then(
         (res) => {
-          if (res.data.code == '200') {
-            this.$message.success(res.data.message)
-            // 同步更新页面权限数据
-            this.multipleSelection.forEach((item) => {
-              item.permission = this.permission
-            })
-            // console.log(this.multipleSelection)
-          } else {
-            this.$message.error(res.data.message)
-          }
+          this.$message.success(res.data.message)
         },
         (err) => {
           this.$message.error(err)
         }
       )
-      // 仅供测试
-      console.log('测试批量修改权限后，同步更新页面权限数据')
-      // 同步更新页面权限数据，multipleSelection好像也是引用
-      this.multipleSelection.forEach((item) => {
-        item.permission = this.permission
-      })
-      this.$emit('myBatchOperateChange', 114514)
-      this.dialogVisible = false
     }
   }
 }
