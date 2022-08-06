@@ -35,6 +35,8 @@
       tooltip-effect="dark"
       class="el-table"
       height="72.2vh"
+      v-loading="myLoading"
+      element-loading-text="拼命加载中"
       :row-style="{ height: '0' }"
       :cell-style="{ padding: '0px' }"
       :header-cell-style="handleTheadStyle"
@@ -258,6 +260,7 @@ export default {
   data() {
     return {
       // 计时器
+      myLoading: false,
       timerUpdate: null,
       activeThead: {}, //保存排序所选择的表头
       // 关键字搜索
@@ -333,6 +336,7 @@ export default {
     openResumeDialog() {
       this.$refs.resumeDialog.resumeDialogVisible = true
       this.$refs.resumeDialog.studentId = true
+      // this.$refs.resumeDialog.demo()
       console.log(data)
     },
     // 测试数据更新时，表单数据是否同步更新了
@@ -442,7 +446,13 @@ export default {
       // console.log(this.sort[0])
       // console.log(this[Object.keys(data)[0]])
       this.currentPage = 1
+      // loading
+      this.myLoading = true
       this.requestData()
+      // loading
+      setTimeout(() => {
+        this.myLoading = false
+      }, 300)
     },
     // 处理排序
     orderChange(sortItem, sortvalue) {
@@ -477,6 +487,8 @@ export default {
 
     //关键字搜索
     searchKeyWord() {
+      // loading
+      this.myLoading = true
       // 判断字符串是否为空
       if (this.searchWord != '') {
         this.postdata = {
@@ -517,9 +529,17 @@ export default {
               // 成功后,'页面上'回到第一页
               (this.currentPage = 1)
           } else this.$message.error(res.data.message)
+          // loading
+          setTimeout(() => {
+            this.myLoading = false
+          }, 50)
         },
         (err) => {
           this.$message.error('获取数据失败' + err)
+          // loading
+          setTimeout(() => {
+            this.myLoading = false
+          }, 50)
         }
       )
     },
@@ -568,7 +588,13 @@ export default {
       console.log(this[Object.keys(data)[0]])
       // 仅自行触发的筛选跳转到第一页
       this.currentPage = 1
+      // loading
+      this.myLoading = true
       this.requestData()
+      // loading
+      setTimeout(() => {
+        this.myLoading = false
+      }, 300)
     },
     requestData() {
       // 下面是初步实现请求，后续要精简，把不必要的参数去除
@@ -771,12 +797,24 @@ export default {
       this.pagesize = val
       // 回到第一页
       this.currentPage = 1
+      // loading
+      this.myLoading = true
       this.requestData()
+      // loading
+      setTimeout(() => {
+        this.myLoading = false
+      }, 300)
     },
     // 修改到第几页
     handleCurrentChange(val) {
       this.currentPage = val
+      // loading
+      this.myLoading = true
       this.requestData()
+      // loading
+      setTimeout(() => {
+        this.myLoading = false
+      }, 300)
     },
     // 具体分页操作
     // pageCutDouwn(tableDataChange) {

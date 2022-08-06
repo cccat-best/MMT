@@ -41,7 +41,8 @@ import {
   Dropdown,
   DropdownMenu,
   DropdownItem,
-  Drawer
+  Drawer,
+  Loading
 } from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 const components = [
@@ -102,6 +103,7 @@ export default function (Vue) {
   for (const component of components) {
     Vue.use(component)
   }
+  Vue.use(Loading.directive)
   Vue.prototype.$msgbox = MessageBox
   Vue.prototype.$alert = MessageBox.alert
   Vue.prototype.$confirm = MessageBox.confirm
