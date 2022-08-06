@@ -40,10 +40,18 @@ import {
   DropdownItem,
   Menu,
   MenuItem,
-  Icon
+  Icon,
+  Tooltip,
+  Card,
+  Descriptions,
+  DescriptionsItem,
 } from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 const components = [
+  Descriptions,
+  DescriptionsItem,
+  Card,
+  Tooltip,
   Icon,
   MenuItem,
   Menu,

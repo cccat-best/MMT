@@ -13,6 +13,7 @@
           :name="name"
           :organizations="organizations"
           :loginOrganizationName="loginOrganizationName"
+          v-on:update="update"
         ></myhead>
       </template>
       <template slot="asideTitle">
@@ -106,6 +107,9 @@ export default {
     }
   },
   methods: {
+    update(newValue) {
+      this.loginOrganizationName = newValue
+    },
     async getLoginStatus() {
       const url = '/api/login-status'
       try {
@@ -145,6 +149,10 @@ export default {
         this.phoneForm.phone = res.data.data.phone
         this.name = res.data.data.name
         this.studentId = res.data.data.studentId
+        sessionStorage.setItem(
+          'loginOrganizationName',
+          this.loginOrganizationName
+        )
       })
     },
 

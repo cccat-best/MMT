@@ -7,23 +7,35 @@
         :name="name"
         :organizations="organizations"
         :loginOrganizationName="loginOrganizationName"
+        v-on:{update,home}="update"
       ></myhead>
     </el-header>
     <el-main>
       <div class="border">
-        <div
-          class="organization-info"
-          style="text-align: left; margin-left: 20%; margin-top: 5%"
-        >
-          <el-row>
-            <el-col :span="24"
-              ><div class="">
-                当前所在组织：{{ loginOrganizationName }}
-              </div></el-col
+        <el-card class="box-card" shadow="always">
+          <div slot="header" class="clearfix">
+            <span style="font-size: 25px; font-weight: bold">社团信息</span>
+          </div>
+          <div class="organization-info" style="margin-top: 5%">
+            <el-descriptions
+              class="margin-top"
+              title=""
+              :column="1"
+              :size="size"
+              border
             >
-            <el-col :span="24"
-              ><div class="">
-                已加入组织：
+              <el-descriptions-item :contentStyle="{ 'text-align': 'center' }">
+                <template slot="label">
+                  <i class="el-icon-school"></i>
+                  当前所在组织
+                </template>
+                {{ loginOrganizationName }}
+              </el-descriptions-item>
+              <el-descriptions-item :contentStyle="{ 'text-align': 'center' }">
+                <template slot="label">
+                  <i class="el-icon-office-building"></i>
+                  已加入组织
+                </template>
                 <span v-for="(item, index) in organizations" :key="index">
                   <el-tag
                     type="info"
@@ -31,67 +43,85 @@
                       color: black;
                       background-color: #d7d7d7;
                       margin-right: 10px;
+                      margin-bottom: 10px;
                     "
                     >{{ item.name }}</el-tag
                   >
                 </span>
-              </div></el-col
-            >
-            <el-button
-              type="primary"
-              @click="joinClubVisible = true"
-              style="margin-top: 10px"
-              >加入更多组织</el-button
-            >
-          </el-row>
-        </div>
-        <el-divider></el-divider>
-        <div class="personal-info" style="margin-left: 20%; text-align: left">
-          <el-row>
-            <el-col :span="24"
-              ><el-row>
-                <el-col :span="6"><div class="">学号</div></el-col>
-                <el-col :span="6"
-                  ><div class="">{{ studentId }}</div></el-col
-                >
-              </el-row></el-col
-            >
-            <el-col :span="24"
-              ><el-col :span="6"><div class="">真实姓名</div></el-col>
-              <el-col :span="6"
-                ><div class="">{{ name }}</div></el-col
-              ></el-col
-            >
-            <el-col :span="24"
-              ><el-col :span="6"><div class="">手机号</div></el-col>
-              <el-col :span="6"
-                ><div class="">{{ phoneNuberConvert(phone) }}</div></el-col
-              >
-              <el-col :span="6"
-                ><div class="">
-                  <el-button type="text" @click="changePhoneVisible = true"
-                    >修改手机号</el-button
-                  >
-                </div></el-col
-              ></el-col
-            >
-            <el-col :span="24"
-              ><el-col :span="6"><div class="">密码</div></el-col>
-              <el-col :span="6"
-                ><div class="">
-                  <el-button type="text" @click="changePassVisible = true"
-                    >更改密码</el-button
-                  >
-                </div></el-col
-              ></el-col
-            >
+                <el-button
+                  type="primary"
+                  icon="el-icon-plus"
+                  circle
+                  size="small"
+                  style="margin-left: auto"
+                  @click="joinClubVisible = true"
+                ></el-button>
+              </el-descriptions-item>
+            </el-descriptions>
+          </div>
+        </el-card>
+        <el-card class="box-card" shadow="always">
+          <div slot="header" class="clearfix">
+            <span style="font-size: 25px; font-weight: bold">个人信息</span>
+          </div>
+          <div
+            class="personal-info"
+            style="margin-left: 20%; text-align: left; margin-top: 5%"
+          ></div>
+          <el-descriptions
+            class="margin-top"
+            title=""
+            :column="1"
+            :size="size"
+            border
+          >
+            <el-descriptions-item :contentStyle="{ 'text-align': 'center' }">
+              <template slot="label">
+                <i class="el-icon-user"></i>
+                真实姓名
+              </template>
+              {{ name }}
+            </el-descriptions-item>
+            <el-descriptions-item :contentStyle="{ 'text-align': 'center' }">
+              <template slot="label">
+                <i class="el-icon-mobile-phone"></i>
+                手机号
+              </template>
+              {{ phoneNuberConvert(phone) }}
+              <el-button
+                type="primary"
+                icon="el-icon-edit"
+                circle
+                size="small"
+                style="margin-left: auto"
+                @click="changePhoneVisible = true"
+              ></el-button>
+            </el-descriptions-item>
 
-            <!-- <el-button type="primary" @click="getInvitationCodeRequest()"
-              >生成邀请码</el-button
-            > -->
-          </el-row>
-        </div>
+            <el-descriptions-item :contentStyle="{ 'text-align': 'center' }">
+              <template slot="label">
+                <i class="el-icon-tickets"></i>
+                学号
+              </template>
+              {{ studentId }}
+            </el-descriptions-item>
+            <el-descriptions-item :contentStyle="{ 'text-align': 'center' }">
+              <template slot="label">
+                <i class="el-icon-key"></i>
+                密码
+              </template>
 
+              <el-button
+                type="primary"
+                icon="el-icon-edit"
+                circle
+                size="small"
+                style="margin-left: auto"
+                @click="changePassVisible = true"
+              ></el-button>
+            </el-descriptions-item>
+          </el-descriptions>
+        </el-card>
         <!-- 修改密码弹出框 -->
         <el-dialog
           title="更改密码"
@@ -224,6 +254,7 @@ export default {
       joinClubVisible: false,
       isSuper: false,
       isPersonal: true,
+      size: '',
       pwdForm: {
         password: '',
         newPassword: '',
@@ -275,9 +306,25 @@ export default {
     if (this.permission == 'super_admin') {
       this.isSuper = true
     }
+    this.loginOrganizationName = sessionStorage.getItem('loginOrganizationName')
   },
 
   methods: {
+    update(newValue) {
+      this.loginOrganizationName = newValue
+    },
+    getInvitationCodeRequest() {
+      this.$http.get('api/organization/invitation-code').then(
+        (res) => {
+          if (res.data.code == '00000') {
+            this.invitationCode = res.data.data.invitationCode
+          }
+        },
+        (err) => {
+          this.$message.error(err)
+        }
+      )
+    },
     async getLoginStatus() {
       const url = '/api/login-status'
       try {
@@ -304,39 +351,7 @@ export default {
         this.$message.error('当前未登录或登录已失效')
       }
     },
-    async changeOrganization(command) {
-      const organization = {
-        organization: command
-      }
-      const url = '/api/login/change'
-      try {
-        let { data: res } = await this.$http.post(url, organization)
-        switch (res.code) {
-          case '00000': {
-            let { data } = res
-            this.loginOrganizationName = data.loginOrganizationName
-            this.organizationId = data.loginOrganizationId
-            this.organizations = data.organizations
-            this.permission = data.permission
-            this.phone = data.phone
-            this.name = data.name
-            this.studentId = data.studentId
-            this.$message({
-              message: '切换成功',
-              type: 'success'
-            })
-            break
-          }
-          default: {
-            throw new Error(JSON.stringify(res))
-            // this.$message.error(JSON.stringify(res))
-          }
-        }
-      } catch (err) {
-        console.log('出错了', err.message)
-        this.$message.error('当前未登录或登录已失效')
-      }
-    },
+
     async quitLogin() {
       const url = '/api/logout'
       try {
@@ -367,13 +382,6 @@ export default {
         message: '已切换至超级管理',
         type: 'success'
       })
-    },
-    home() {
-      if (this.isPersonal) {
-        location.reload()
-      } else {
-        this.$router.push('/personalInfo')
-      }
     },
     // 个人中心顶部左侧返回的实现
     goBack() {
@@ -491,6 +499,34 @@ export default {
 </script>
 
 <style lang="less" scoped>
+:deep(.is-bordered-label) {
+  width: 125px;
+}
+.clearfix {
+  display: flex;
+  justify-content: center;
+}
+.text {
+  font-size: 14px;
+}
+
+.item {
+  margin-bottom: 18px;
+}
+
+.clearfix:before,
+.clearfix:after {
+  display: table;
+  content: '';
+}
+.clearfix:after {
+  clear: both;
+}
+
+.box-card {
+  margin: 50px;
+  width: 480px;
+}
 :deep(.el-dialog__footer) {
   text-align: center;
 }
@@ -510,6 +546,9 @@ export default {
   height: 100%;
   background-color: white;
   border-radius: 10px;
+  flex-direction: row;
+  display: flex;
+  justify-content: center;
 }
 .el-container {
   // min-width: 1200px;
