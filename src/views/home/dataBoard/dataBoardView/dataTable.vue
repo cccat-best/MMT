@@ -1,22 +1,5 @@
 <template>
   <div class="content">
-    <!-- 测试更新数据 -->
-    <div
-      @click="de"
-      style="
-      position:fixed
-      left:50px
-        float: left;
-        height: 5px;
-        width: 150px;
-        margin-right: 10px;
-        color: blue;
-      "
-    >
-      测试
-    </div>
-    <!--  -->
-
     <!-- 搜索区域 -->
     <div class="seach-header">
       <el-input
@@ -338,64 +321,6 @@ export default {
       this.$refs.resumeDialog.studentId = true
       // this.$refs.resumeDialog.demo()
       console.log(data)
-    },
-    // 测试数据更新时，表单数据是否同步更新了
-    de() {
-      // this.$message.success(
-      //   '测试更新数据，删掉了前三个数据，后面完工时记得删掉这个'
-      // )
-      this.$message.success('测试更新数据，后面完工时记得删掉这个')
-      // this.tableData = this.tableData.slice(3)
-      this.tableList = data
-      // this.orderChange(this.tableData)
-      console.log(data)
-      console.log(this.classNameFilter)
-      // 模拟更新过滤项
-      this.updateClassNameFilter([
-        { className: 'committee', number: 114 },
-        { className: 'member', number: 514 },
-        { className: '筛选2', number: 1919 }
-      ])
-      console.log(this.classNameFilter)
-      // 获取班级
-      this.$http
-        .get(
-          'http://43.142.146.75:38080/data-panel/class?admissionId=' +
-            this.admissionId +
-            '&organizationId=' +
-            this.organizationId
-        )
-        .then(
-          (res) => {
-            if (res.data.code == '00000') {
-              this.updateClassNameFilter(res.data.data)
-              this.$message.success(res.data.message)
-            } else {
-              this.$message.error(res.data.message)
-            }
-          },
-          (err) => {
-            this.$message.error('获取数据失败' + err)
-          }
-        )
-    },
-    // 测试cookie
-    co() {
-      // 发请求模板，待删除，防止后面更改需求，先不删
-      this.$http
-        .post('api/login/b', {
-          studentId: '20200002',
-          password: '123456'
-        })
-        .then(
-          (res) => {
-            this.$message.success('post获取cookie正常' + res)
-            console.log(res)
-          },
-          (err) => {
-            this.$message.error(err)
-          }
-        )
     },
     // 触发排序
     sortTableFun(data) {
@@ -886,6 +811,7 @@ export default {
   padding: 0px;
   color: #666690;
   font-size: 15px;
+  border-radius: 10px;
   // 滚动条，暂时只兼容chrome
   /deep/ .el-table__body-wrapper::-webkit-scrollbar {
     width: 15px; /*滚动条宽度*/
@@ -912,6 +838,9 @@ export default {
     background: #282e38;
     color: #ffffff;
     padding: 5px;
+  }
+  /deep/ .el-table__fixed-right-patch{
+    background: #282e38;
   }
   // 筛选图标替换
   /deep/ .el-icon-arrow-down {
