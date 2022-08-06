@@ -68,11 +68,9 @@ export default {
       this.password = this.psw
     }
   },
+  // ...mapState('transform', ['Id', 'psw'])
   computed: {
-    // ...mapState('transform', ['Id', 'psw'])
-    ...mapState({
-      transform: (state) => state.transform.all
-    })
+    ...mapState('transform', ['all'])
   },
   methods: {
     goRegister() {
@@ -103,7 +101,10 @@ export default {
         })
     }
   },
-  components: {}
+  components: {},
+  mounted() {
+    console.log(this.all)
+  }
 }
 </script>
 <style lang="less" scoped>

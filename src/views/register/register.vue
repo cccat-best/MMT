@@ -129,7 +129,7 @@ export default {
     }
   },
   computed: {
-    ...mapState('transform', ['Id', 'psw'])
+    ...mapState('transform', ['all'])
   },
   methods: {
     creat() {
@@ -145,7 +145,7 @@ export default {
         }
       )
     },
-    ...mapMutations('transform', ['tranformId', 'tranformPsw']),
+    ...mapMutations('transform', ['tranformAll']),
     goLogin() {
       this.$router.push('/Login')
     },
@@ -157,8 +157,7 @@ export default {
           if (res.data.code === '00000') {
             alert('恭喜你！注册成功！')
             // 存储账号密码 跳转登陆以后自动填充
-            this.$store.commit('transform/tranformAll', {
-              //print 表示vuex的文件名
+            this.tranformAll({
               Id: this.studentId,
               psw: this.password
             })

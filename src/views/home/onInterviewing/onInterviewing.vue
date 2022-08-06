@@ -1,5 +1,6 @@
 <template>
   <div class="all">
+    <!-- 顶部进度条 -->
     <div class="one">
       <div class="progress">
         <el-progress
@@ -50,6 +51,7 @@
         <div class="surplus">剩余10人</div>
       </div>
     </div>
+    <!-- 改变面试地点 -->
     <div class="two">
       <el-select v-model="position" placeholder="选择面试地点" class="select">
         <el-option
@@ -61,7 +63,9 @@
         </el-option>
       </el-select>
     </div>
+    <!-- 文字：待面试人员名单 -->
     <div class="three">当前时段待面试人员名单</div>
+    <!-- 搜索框 二维码-->
     <div class="four">
       <div class="search">
         <el-input
@@ -76,16 +80,14 @@
         >点击生成签到二维码</el-button
       >
       <!-- 点击弹出的页面 -->
-      <el-dialog title="提示" :visible.sync="dialogVisible1" width="30%">
-        <span>这是签到二维码</span>
+      <el-dialog title="签到二维码" :visible.sync="dialogVisible1" width="30%">
+        <img style="width:300px;height:300px;margin:0 auto" src="./pic/R-C.jpg" />
         <span slot="footer" class="dialog-footer">
-          <el-button @click="dialogVisible1 = false">取 消</el-button>
-          <el-button type="primary" @click="dialogVisible1 = false"
-            >确 定</el-button
-          >
+          <el-button type="primary" @click="dialogVisible1 = false">关 闭</el-button>
         </span>
       </el-dialog>
     </div>
+    <!-- 表格数据 -->
     <div class="five">
       <el-table
         :data="tableData"
@@ -115,24 +117,120 @@
         </el-table-column>
         <!-- 简历 -->
         <el-table-column prop="resume" label="简历" width="80" align="center">
-          <!-- <template slot-scope="scope">
-            <el-button @click="handleClick(scope.row)" type="text">
-              <i class="el-icon-s-order" style="font-size:20px"></i>
-            </el-button>
-          </template> -->
           <template>
+            <div class="resumeTable">
+            <!-- 弹窗按钮 -->
             <el-button type="text" @click="dialogVisible2 = true">
               <i class="el-icon-s-order" style="font-size: 20px"></i>
             </el-button>
-            <el-dialog title="简历" :visible.sync="dialogVisible2" width="30%">
-              <span>这是简历</span>
+            <!-- 简历弹窗 -->
+            <el-dialog title="" :visible.sync="dialogVisible2" width="65%" top="30px">
+              <!-- 主体内容 -->
+              <div class="resume">
+                <!-- 标题 -->
+                <div class="bigTitle">报名表</div>
+                <!-- 内容 -->
+                <div class="registerTable">
+                  <!-- 基本问题模块 -->
+                  <div class="base">
+                    <div class="tit">基本问题</div>
+                    <el-form :model="ruleForm" ref="ruleForm" label-width="55px" class="demo-ruleForm form" >
+                      <el-form-item label="姓名" prop="name">
+                        <el-input v-model="ruleForm.name" disabled></el-input>
+                      </el-form-item>
+                      <el-form-item label="学号" prop="id">
+                        <el-input v-model="ruleForm.id" disabled></el-input>
+                      </el-form-item>
+                      <el-form-item label="电话" prop="phone">
+                        <el-input v-model="ruleForm.phone" disabled></el-input>
+                      </el-form-item>
+                      <el-form-item label="QQ" prop="qq" v-if="true">
+                        <el-input v-model="ruleForm.qq" disabled></el-input>
+                      </el-form-item>
+                      <el-form-item label="学院" prop="academyId" v-if="true">
+                        <el-input v-model="ruleForm.academyId" disabled></el-input>
+                      </el-form-item>
+                      <el-form-item label="专业" prop="majorId">
+                        <el-input v-model="ruleForm.majorId" disabled></el-input>
+                      </el-form-item>
+                      <el-form-item label="班级" prop="classId">
+                          <el-input v-model="ruleForm.classId" disabled></el-input>
+                      </el-form-item>
+                      <el-form-item label="性别" prop="sex">
+                        <el-input v-model="ruleForm.sex" disabled></el-input>
+                      </el-form-item>
+                      <el-form-item label="生日" prop="birthday">
+                        <el-input v-model="ruleForm.birthday" disabled></el-input>
+                      </el-form-item>
+                      <el-form-item label="身高" prop="length">
+                        <el-input v-model="ruleForm.length" disabled></el-input>
+                      </el-form-item>
+                    </el-form>
+                  </div>
+                  <!-- 部门问题模块 -->
+                  <div class="department">
+                    <div class="tit">部门问题</div>
+                    <!-- 自定义填空 -->
+                    <div class="question1">
+                      <div class="problem">问题一：你暑假的规划</div>
+                      <div class="answer">吃饭睡觉吃饭哈哈哈嘻嘻嘻</div>
+                    </div>
+                    <div class="question1">
+                      <div class="problem">问题三：你暑假的规划</div>
+                      <div class="answer">吃饭睡觉吃饭睡觉吃饭睡觉吃饭睡觉吃饭睡觉吃饭睡觉吃饭睡觉吃饭睡觉吃饭睡觉吃饭睡觉吃饭睡觉吃饭睡觉吃饭睡觉吃饭睡觉吃饭睡觉吃饭睡觉吃饭睡觉吃饭睡觉吃饭睡觉吃饭睡觉</div>
+                    </div>
+                    <!-- 自定义选择 -->
+                    <div class="question2">
+                      <div class="problem">
+                        <span style="margin-right:40px">喜欢吃饭还是睡觉</span>
+                          <el-radio disabled v-model="radio" label="禁用">吃饭</el-radio>
+                          <el-radio disabled v-model="radio" label="选中且禁用">睡觉</el-radio>
+                      </div>
+                    </div>
+                    <div class="question2">
+                      <div class="problem">
+                        <span style="margin-right:40px">喜欢吃饭还是睡觉</span>
+                          <el-radio disabled v-model="radio" label="禁用">吃饭</el-radio>
+                          <el-radio disabled v-model="radio" label="选中且禁用">睡觉</el-radio>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- 综合问题模块 -->
+                  <div class="department">
+                    <div class="tit">综合问题</div>
+                    <!-- 自定义填空 -->
+                    <div class="question1">
+                      <div class="problem">问题一：你暑假的规划</div>
+                      <div class="answer">吃饭睡觉吃饭睡觉吃饭睡觉吃饭睡觉吃饭睡觉吃饭睡觉吃饭睡觉吃饭睡觉吃饭睡觉吃饭睡觉吃饭睡觉吃饭睡觉吃饭睡觉吃饭睡觉吃饭睡觉吃饭睡觉吃饭睡觉吃饭睡觉吃饭睡觉吃饭睡觉</div>
+                    </div>
+                    <div class="question1">
+                      <div class="problem">问题三：你暑假的规划</div>
+                      <div class="answer">吃饭睡觉吃饭睡觉吃饭睡觉吃饭睡觉吃饭睡觉吃饭睡觉吃饭睡觉吃饭睡觉吃饭睡觉吃饭睡觉吃饭睡觉吃饭睡觉吃饭睡觉吃饭睡觉吃饭睡觉吃饭睡觉吃饭睡觉吃饭睡觉吃饭睡觉吃饭睡觉</div>
+                    </div>
+                    <!-- 自定义选择 -->
+                    <div class="question2">
+                      <div class="problem">
+                        <span style="margin-right:40px">喜欢吃饭还是睡觉</span>
+                          <el-radio disabled v-model="radio" label="禁用">吃饭</el-radio>
+                          <el-radio disabled v-model="radio" label="选中且禁用">睡觉</el-radio>
+                      </div>
+                    </div>
+                    <div class="question2">
+                      <div class="problem">
+                        <span style="margin-right:40px">喜欢吃饭还是睡觉</span>
+                          <el-radio disabled v-model="radio" label="禁用">吃饭</el-radio>
+                          <el-radio disabled v-model="radio" label="选中且禁用">睡觉</el-radio>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- 底部按钮 -->
               <span slot="footer" class="dialog-footer">
-                <el-button @click="dialogVisible2 = false">取 消</el-button>
-                <el-button type="primary" @click="dialogVisible2 = false"
-                  >确 定</el-button
-                >
+                <el-button type="primary" @click="dialogVisible2 = false">关 闭</el-button>
               </span>
             </el-dialog>
+            </div>
           </template>
         </el-table-column>
         <!-- 面试评价 -->
@@ -146,7 +244,8 @@
             <el-button type="text" @click="dialogVisible3 = true">
               <i class="el-icon-s-custom" style="font-size: 20px"></i>
             </el-button>
-            <el-dialog title="" :visible.sync="dialogVisible3" width="50%">
+            <!-- 面试评价弹窗 -->
+            <el-dialog title="" :visible.sync="dialogVisible3" width="50%" top="30px">
               <div class="result">
                 <div class="title">面试评价</div>
                 <div class="content">
@@ -183,10 +282,11 @@
         </el-table-column>
       </el-table>
     </div>
+    <!-- 页脚 -->
     <div class="six">
       <div class="total">共有70条记录</div>
       <div class="page">
-        <el-pagination background layout="prev, pager, next" :total="1000">
+        <el-pagination background layout="prev, pager, next" :total="100">
         </el-pagination>
       </div>
     </div>
@@ -313,6 +413,21 @@ export default {
           status: '已面试'
         }
       ],
+      //简历数据
+      radio:'选中且禁用',
+      //表单数据
+      ruleForm: {
+          name: '张三',
+          id:'20210001',
+          phone:'15845896582',
+          sex:'女',
+          qq:'2310768059',
+          birthday:'2002-11-24',
+          length:'180cm',
+          academyId:'计算机科学与工程学院',
+          majorId:'信息安全',
+          classId:'一班'
+      },
       //面试评价文字
       estimate: '',
       //面试得分
@@ -421,23 +536,121 @@ export default {
     }
   }
   .five {
-    .result {
-      width: 700px;
-      height: 350px;
-      // background-color: rgb(59, 137, 123);
-      .title {
-        font-size: 28px;
-        color: rgb(82, 82, 82);
-        font-weight: 700;
-        width: 200px;
+    .resumeTable{
+      /deep/.el-dialog__body{
+        padding: 20px 20px 0px 30px;
       }
-      .content {
-        margin-top: 15px;
-        margin-left: 30px;
-        width: 600px;
-        height: 250px;
+      // 总大小
+      /deep/.el-dialog{
+        height: calc(100vh - 80px);
+        min-width: 840px;
+        min-height: 610px;
+        // min-height: calc(100vh - 150px);
+        margin: 0 auto 30px;
+      }
+      /deep/.el-input{
+        width: 150px;
+      }
+      /deep/.el-radio__input.is-disabled+span.el-radio__label{
+        color: #606266;
+      }
+      /deep/.el-input.is-disabled .el-input__inner{
+        color: #606266;
+      }
+      .resume{
+          height: calc(100vh - 60px - 150px);
+          min-width: 800px;
+          min-height: 480px;
+          // background-color: rgb(72, 143, 188);
+          background-color: white;
+          overflow: auto;
+        .bigTitle{
+          background-color: #fff;
+          font-size: 35px;
+          text-align: left;
+          font-weight: 700;
+          margin-top: 20px;
+        }
+        .registerTable{
+          // border-left: 2px solid gray;
+          padding-left: 18px;
+          .base{
+            // background-color: rgb(164, 199, 82);
+            margin-top: 15px;
+            .tit{
+              font-size: 25px;
+              // background-color: rgb(60, 170, 113);
+              text-align: left;
+            }
+            .form{
+              // background-color: rgb(78, 200, 186);
+              margin-top: 10px;
+              display: flex;
+              flex-wrap: wrap;
+              justify-content: flex-start;
+            }
+          }
+          .department{
+            // background-color: rgb(82, 199, 154);
+            margin-top: 20px;
+            .tit{
+              font-size: 25px;
+              // background-color: rgb(60, 170, 113);
+              text-align: left;
+            }
+            .question1{
+              // background-color: rgb(189, 112, 112);
+              margin-top: 20px;
+              .problem{
+                font-size: 18px;
+                text-align: left;
+              }
+              .answer{
+                margin-top: 20px;
+                text-align: left;
+                margin-left: 30px;
+                margin-right: 30px;
+                font-size: 15px;
+                background-color: #f5f7fa;
+                padding: 17px;
+              }
+            }
+            .question2{
+              // background-color: rgb(123, 207, 208);
+              margin-top: 20px;
+              .problem{
+                font-size: 18px;
+                text-align: left;
+              }
+            }
+          }
+        }
       }
     }
+      .result {
+        width: 700px;
+        height: 350px;
+        // background-color: rgb(59, 137, 123);
+        .title {
+          font-size: 28px;
+          color: rgb(82, 82, 82);
+          font-weight: 700;
+          width: 200px;
+        }
+        .content {
+          margin-top: 15px;
+          margin-left: 30px;
+          width: 600px;
+          height: 250px;
+        }
+        /deep/.el-dialog{
+          height: calc(100vh - 180px);
+          min-width: 840px;
+          min-height: 610px;
+          // min-height: calc(100vh - 150px);
+          margin: 0 auto 30px;
+        }
+      }
   }
   .six {
     height: 45px;
@@ -464,4 +677,24 @@ export default {
     }
   }
 }
+// /deep/.el-dialog__body{
+//   padding: 20px 20px 0px 30px;
+// }
+// // 总大小
+// /deep/.el-dialog{
+//   height: calc(100vh - 80px);
+//   min-width: 840px;
+//   min-height: 610px;
+//   // min-height: calc(100vh - 150px);
+//   margin: 0 auto 30px;
+// }
+// /deep/.el-input{
+//   width: 150px;
+// }
+// /deep/.el-radio__input.is-disabled+span.el-radio__label{
+//   color: #606266;
+// }
+// /deep/.el-input.is-disabled .el-input__inner{
+//   color: #606266;
+// }
 </style>

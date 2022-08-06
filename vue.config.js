@@ -1,3 +1,4 @@
+const { URL } = require('./src/global/config')
 module.exports = {
   devServer: {
     proxy: {
