@@ -45,7 +45,6 @@
   </el-container>
 </template>
 <script>
-import { mapMutations } from 'vuex'
 import { mapState } from 'vuex'
 import loginData from './loginData'
 export default {
@@ -65,7 +64,6 @@ export default {
     this.clearData()
   },
   methods: {
-    ...mapMutations('transform', ['clearData']),
     goRegister() {
       this.$router.push('/register').catch(() => {})
     },
@@ -97,8 +95,7 @@ export default {
                 'loginOrganizationId',
                 res.data.data.loginOrganizationId
               )
-              // this.$router.push('/interviewMain')
-              this.$router.push('/home')
+              this.$router.push('/interviewMain')
             } else {
               this.$message({
                 showClose: true,
@@ -118,7 +115,10 @@ export default {
       }
     }
   },
-  components: {}
+  components: {},
+  mounted() {
+    console.log(this.all)
+  }
 }
 </script>
 <style lang="less" scoped>

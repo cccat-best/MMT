@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import login from '../views/login/login.vue'
-import personalInfo from '../views/home/personalInfo/personalInfo.vue'
+
 Vue.use(VueRouter)
 const routes = [
   {
@@ -30,14 +30,17 @@ const routes = [
         component: () =>
           import('../views/home/interviewReply/interviewReply.vue')
       },
-      // {
-      //   path: 'personalInfo',
-      //   component: () =>
-      //     import('../views/home/personalIofo/personalIofo.vue')
-      // },
+      {
+        path: 'resultInform',
+        component: () => import('../views/home/interviewReply/resultInform.vue')
+      },
       {
         path: 'personalInfo',
-        component: personalInfo
+        component: () => import('../views/personalInfo/personalInfo.vue')
+      },
+      {
+        path: 'interviewMain',
+        component: () => import('../views/home/interviewMain/interviewMain.vue')
       }
     ]
   },
@@ -46,9 +49,36 @@ const routes = [
     component: () => import('../views/superAdmin/superAdmin.vue'),
     children: [
       {
+        // 账号管理页面
+        path: 'accountManage',
+        component: () => import('../views/superAdmin/accountManage/main.vue')
+      },
+      {
         //面试流程页面
         path: 'process',
         component: () => import('../views/superAdmin/interviewProcess/main.vue')
+      },
+      //东睿的宣传信息路由
+      {
+        path: 'informationSet',
+        component: () =>
+          import('../views/superAdmin/informationSet/informationSetMain.vue'),
+        children: [
+          {
+            path: 'informationSetEdit',
+            component: () =>
+              import(
+                '../views/superAdmin/informationSet/informationSetInner/informationBasicEdit.vue'
+              )
+          },
+          {
+            path: 'informationSetSaved',
+            component: () =>
+              import(
+                '../views/superAdmin/informationSet/informationSetInner/informationBasicSaved.vue'
+              )
+          }
+        ]
       }
     ]
   }
@@ -56,6 +86,10 @@ const routes = [
 const router = new VueRouter({
   routes
 })
+const VueRouterPush = VueRouter.prototype.push
+VueRouter.prototype.push = function push(to) {
+  return VueRouterPush.call(this, to).catch((err) => err)
+}
 export default router
 // 路由守卫
 //添加路由守卫:：通过判断来决定当前的路由跳转到底能不能进行，这种守卫，只要进行路由的跳转就会自动的触发，不能人为调用
