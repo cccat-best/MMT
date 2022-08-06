@@ -88,7 +88,9 @@ export default {
       //用于存储社团信息
       communityInformation: {},
       //切换编辑页面和保存页面
-      editable: false
+      editable: false,
+      organizationId: sessionStorage.getItem('loginOrganizationId'),
+      communityData: {}
     }
   },
   methods: {
@@ -111,23 +113,35 @@ export default {
         behavior: 'smooth'
       })
     },
-    getCookie() {
-      // this.$http.get('api/set-cookie/b',{})
-      // .then(function (response) {
-      //   console.log(JSON.stringify(response.data));
-      // })
-      // .catch(function (error) {
-      //   console.log(error);
-      // });
+    getCommunityData() {
       this.$http
-        .get('api/set-cookie/b')
-        .then((res) => {
-          console.log(res)
+        .get('/api/organization/information', {
+          organizationId: 1
         })
-        .catch(function (err) {
-          console.log(err)
+        .then(function (response) {
+          // console.log(JSON.stringify(response.data))
+          // this.communityData = JSON.stringify(response.data)
+          sessionStorage.setItem(
+            'communityRawData',
+            JSON.stringify(response.data.data)
+          )
         })
+        .catch(function (error) {
+          console.log(error)
+        })
+    },
+    setRawCommunityData() {
+      this.communityData = JSON.parse(
+        sessionStorage.getItem('communityRawData')
+      )
     }
+  },
+  mounted: function () {
+    this.$nextTick(function () {
+      // 仅在整个视图都被渲染之后才会运行的代码
+    })
+    this.getCommunityData()
+    this.setRawCommunityData()
   }
 }
 </script>
