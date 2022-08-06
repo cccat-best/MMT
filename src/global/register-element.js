@@ -44,7 +44,7 @@ import {
   Tooltip,
   Card,
   Descriptions,
-  DescriptionsItem,
+  DescriptionsItem
 } from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 const components = [

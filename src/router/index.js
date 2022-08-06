@@ -33,7 +33,7 @@ const routes = [
       {
         path: 'resultInform',
         component: () => import('../views/home/interviewReply/resultInform.vue')
-      },
+      }
     ]
   },
   {
