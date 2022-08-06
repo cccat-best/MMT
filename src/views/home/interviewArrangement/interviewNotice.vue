@@ -17,8 +17,13 @@
       </el-date-picker>
     </div>
     <div class="text">
+      <p
+        class="p0"
+        style="margin-bottom: 15px; padding-left: 50px; width: 100%"
+      >
+        <b>面试通知：</b>
+      </p>
       <div class="littleText">
-        <p class="p0">面试通知：</p>
         <p class="p1">
           亲爱的<u>{{ name }}</u
           >, <u>{{ departmentName[0].name }}</u
@@ -42,6 +47,7 @@
           />
         </p>
         <p class="p1">请提前做好准备。</p>
+
         <div class="button">
           <el-button plain>取消</el-button>
           <el-button type="primary" @click="queding">确定</el-button>
@@ -179,6 +185,7 @@ export default {
   border-radius: 5px;
   box-shadow: 1px 1px 3px 1px #e5e9f2;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   /* margin-top: 5px; */
@@ -188,11 +195,11 @@ export default {
   text-align: left;
 }
 .p1 {
-  text-indent: 2em;
+  text-indent: 0em;
   text-align: left;
 }
 .p2 {
-  text-indent: 4em;
+  text-indent: 2em;
   text-align: left;
 }
 .title {

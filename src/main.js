@@ -5,6 +5,8 @@ import store from './store'
 import registerElement from './global/register-element'
 import './global/global.less'
 import './global/iconfont.css'
+import Plugin from 'v-fit-columns';
+Vue.use(Plugin);
 
 // 注册vue-clipboard2插件，并全局使用
 import VueClipboard from 'vue-clipboard2'

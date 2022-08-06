@@ -13,7 +13,7 @@
         </span>
       </div>
       <div class="content">
-        <p style="margin-left: 40px; margin-top: 20px">
+        <p style="margin-left: 6%; margin-top: 4%">
           <b>面试{{ status }}结果通知</b>
         </p>
         <p class="message">{{ message }}</p>
@@ -21,7 +21,7 @@
           <div class="leftBottom">
             <b>已选:&nbsp;&nbsp;{{ selectTotal }}人</b>
           </div>
-          <div class="div">
+          <div style="margin-right: 6%">
             <el-row>
               <el-button type="primary" @click="submit()">发送</el-button>
               <el-button type="info" class="cancel">取消</el-button>
@@ -171,9 +171,10 @@ export default {
   transform: scale(0.8);
 }
 .bbig {
-  height: 615px;
-  width: 1250px;
-  margin-left: 25px;
+  height: 100%;
+  width: 100%;
+  min-width: 1000px;
+  min-height: 600px;
   background-color: white;
   border-radius: 10px;
   display: flex;
@@ -207,18 +208,17 @@ export default {
   width: 100%;
   display: flex;
   justify-content: space-between;
-  margin-bottom: 15px;
+  margin-bottom: 4%;
 }
 .cancel {
-  margin-right: 40px;
   margin-left: 60px;
 }
 .leftBottom {
-  margin-left: 40px;
+  margin-left: 6%;
   margin-top: 7px;
 }
 .message {
-  margin: 0 120px 0 120px;
+  margin: 0 18% 0 18%;
   text-align: left;
   text-indent: 2em;
   line-height: 200%;

@@ -246,7 +246,7 @@ export default {
 
 <style scoped>
 .bigLeft {
-  width: 980px;
+  width: 78%;
   height: 100%;
   background-color: white;
   border-radius: 10px;
@@ -268,6 +268,7 @@ export default {
   margin-right: 50px;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
 }
 .partText {
@@ -278,7 +279,7 @@ export default {
   font-size: 14px;
   padding-top: 5px;
   padding-left: 0;
-  width: 100px;
+  width: 110px;
   height: 30px;
   margin-right: 2px;
 }

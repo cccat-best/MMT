@@ -170,13 +170,26 @@ export default {
         this.$router.push('/personalInfo')
       }
     }
+  },
+  mounted() {
+    this.$http
+      .post('api/login/b', {
+        studentId: '20200001',
+        password: '123456'
+      })
+      .then((res) => {
+        console.log('cookie:', res)
+      })
+      .catch(function (error) {
+        console.log(error)
+      })
   }
 }
 </script>
 
 <style lang="less" scoped>
 .home {
-  height: 100%;
+  height: 100vh;
 }
 .menuTitle {
   color: white;

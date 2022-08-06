@@ -28,14 +28,9 @@
           tableData.slice((currentPage - 1) * pagesize, currentPage * pagesize)
         "
         :header-cell-style="{ 'text-align': 'center' }"
-        height="50%"
         border
         ref="table"
-        style="
-          width: 630px;
-          border-radius: 8px;
-          box-shadow: 2px 2px 4px 2px #e5e9f2;
-        "
+        style="border-radius: 8px; box-shadow: 2px 2px 4px 2px #e5e9f2"
         :row-style="{ height: 0 + 'px' }"
         :cell-style="{ padding: 0 + 'px', 'text-align': 'center' }"
       >
@@ -91,7 +86,7 @@
             </el-dropdown>
           </template>
         </el-table-column>
-        <el-table-column prop="status" label="通知状态" witch="70">
+        <el-table-column prop="status" label="通知状态" width="90">
         </el-table-column>
       </el-table>
       <div class="foot">
@@ -527,10 +522,6 @@ export default {
 </script>
 
 <style scoped>
-.bigLeft {
-  position: relative;
-  height: 100%;
-}
 .dingwei {
   margin-top: 20px;
   display: flex;

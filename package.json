@@ -17,6 +17,7 @@
     "element-ui": "^2.14.1",
     "i": "^0.3.7",
     "js-cookie": "^3.0.1",
+    "v-fit-columns": "^0.2.0",
     "vue": "^2.6.11",
     "vue-axios": "^3.4.1",
     "vue-clipboard2": "^0.3.3",

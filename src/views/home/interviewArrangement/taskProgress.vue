@@ -56,7 +56,4 @@ export default {
 .figure {
   margin-bottom: 20px;
 }
-.dingwei {
-  margin-top: 40px;
-}
 </style>

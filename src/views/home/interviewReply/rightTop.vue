@@ -114,7 +114,7 @@ export default {
 
 <style scoped>
 .rightTop {
-  width: 250px;
+  width: 20%;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -139,14 +139,14 @@ export default {
   height: 54%;
   background-color: white;
   border-radius: 10px;
-  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: flex-start;
 }
 .belowTop {
   width: 100%;
-  height: 70%;
+  height: 60%;
   display: flex;
   align-items: center;
   justify-content: left;
@@ -163,8 +163,6 @@ export default {
   color: #409eff;
 }
 .search {
-  position: absolute;
-  bottom: 28px;
   width: 100%;
 }
 :deep(.el-dialog .el-dialog__body) {
