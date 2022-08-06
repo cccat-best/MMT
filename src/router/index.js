@@ -54,7 +54,7 @@ const routes = [
   }
 ]
 const router = new VueRouter({
-  routes,
+  routes
 })
 export default router
 // 路由守卫
@@ -66,15 +66,8 @@ router.beforeEach((to, from, next) => {
     return next()
   }
   let cookies = document.cookie
-  console.log(cookies)
   if (!cookies) {
     return next('/login')
   }
   next()
 })
-// 清除重定向报错信息
-// const originalPush = VueRouter.prototype.push
-// VueRouter.prototype.push = function push(location, onResolve, onReject) {
-// if (onResolve || onReject) return originalPush.call(this, location, onResolve, onReject)
-// return originalPush.call(this, location).catch(err => err)
-// }

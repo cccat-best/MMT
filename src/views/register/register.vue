@@ -4,7 +4,7 @@
       <!-- 左侧icon和文本 -->
       <div class="left-icon">
         <el-image :src="url" class="icon-img"></el-image>
-        <div class="icon-text">MMT</div>
+        <div class="icon-text">后台管理系统</div>
       </div>
       <!-- 右侧信息框 -->
       <el-form
@@ -148,45 +148,45 @@ export default {
     // },
     ...mapMutations('transform', ['tranformAll']),
     goLogin() {
-      this.$router.push('/Login')
+      this.$router.push('/Login').catch(() =>{})
     },
     toRegister() {
       if (this.registerForm.studentId === '') {
         this.$message({
-                showClose: true,
-                message: '请输入账号',
-                type: 'error'
-              })
+          showClose: true,
+          message: '请输入账号',
+          type: 'error'
+        })
       } else if (this.registerForm.name === '') {
         this.$message({
-                showClose: true,
-                message: '请输入姓名',
-                type: 'error'
-              })
+          showClose: true,
+          message: '请输入姓名',
+          type: 'error'
+        })
       } else if (this.registerForm.password === '') {
         this.$message({
-                showClose: true,
-                message: '请输入密码',
-                type: 'error'
-              })
+          showClose: true,
+          message: '请输入密码',
+          type: 'error'
+        })
       } else if (this.registerForm.confirmPassword === '') {
         this.$message({
-                showClose: true,
-                message: '请确认密码',
-                type: 'error'
-              })
+          showClose: true,
+          message: '请确认密码',
+          type: 'error'
+        })
       } else if (this.registerForm.phone === '') {
         this.$message({
-                showClose: true,
-                message: '请输入手机号',
-                type: 'error'
-              })
+          showClose: true,
+          message: '请输入手机号',
+          type: 'error'
+        })
       } else if (this.registerForm.invitationCode === '') {
         this.$message({
-                showClose: true,
-                message: '请输入邀请码',
-                type: 'error'
-              })
+          showClose: true,
+          message: '请输入邀请码',
+          type: 'error'
+        })
       } else {
         let registerPost = this.$http.post('api/register', this.registerForm)
         registerPost
@@ -207,7 +207,6 @@ export default {
               })
               this.$router.push('/login')
             }
-
           })
           .catch((err) => {
             console.log(err)
@@ -251,7 +250,7 @@ export default {
 }
 .icon-text {
   color: rgba(26, 113, 185, 100);
-  font-size: 50px;
+  font-size: 46px;
   text-align: left;
   font-family: Arial-400;
   margin-top: 70px;
@@ -303,6 +302,7 @@ export default {
 .input-inviteCode /deep/ .el-input__inner {
   border: none;
   border-radius: 0;
+  font-size: 15px;
   border-bottom: 1px solid #797979;
   padding: 0;
 }

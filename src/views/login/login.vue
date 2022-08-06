@@ -4,7 +4,7 @@
       <!-- 左侧icon和文本 -->
       <div class="left-icon">
         <el-image :src="url" class="icon-img"></el-image>
-        <div class="icon-text">MMT</div>
+        <div class="icon-text">后台管理系统</div>
       </div>
       <!-- 右侧信息框 -->
       <el-form
@@ -67,21 +67,21 @@ export default {
   methods: {
     ...mapMutations('transform', ['clearData']),
     goRegister() {
-      this.$router.push('/register')
+      this.$router.push('/register').catch(() =>{})
     },
     goLogin() {
       if (this.loginForm.studentId === '') {
         this.$message({
-              showClose: true,
-              message: '请输入账号',
-              type: 'error'
-            })
+          showClose: true,
+          message: '请输入账号',
+          type: 'error'
+        })
       } else if (this.loginForm.password === '') {
         this.$message({
-              showClose: true,
-              message: '请输入密码',
-              type: 'error'
-            })
+          showClose: true,
+          message: '请输入密码',
+          type: 'error'
+        })
       } else {
         this.$http
           .post('api/login/b', this.loginForm)
@@ -97,6 +97,7 @@ export default {
                 'loginOrganizationId',
                 res.data.data.loginOrganizationId
               )
+              // this.$router.push('/interviewMain')
               this.$router.push('/home')
             } else {
               this.$message({
@@ -148,7 +149,8 @@ export default {
 }
 .icon-text {
   color: rgba(26, 113, 185, 100);
-  font-size: 50px;
+  // font-size: 50px;
+  font-size: 46px;
   text-align: left;
   font-family: Arial-400;
   margin-top: 70px;
@@ -156,7 +158,7 @@ export default {
 .right-box {
   margin-left: 150px;
   width: 364px;
-  height: 368px;
+  height: 410px;
   line-height: 18px;
   border-radius: 15px;
   background-color: rgba(255, 255, 255, 100);
@@ -165,7 +167,7 @@ export default {
 }
 .login-text {
   margin-left: 30px;
-  margin-top: 24px;
+  margin-top: 48px;
   width: 61px;
   height: 34px;
   color: rgba(26, 113, 185, 100);
@@ -180,7 +182,7 @@ export default {
 .id /deep/ .el-form-item__label,
 .psw /deep/ .el-form-item__label {
   color: rgba(51, 51, 51, 100);
-  font-size: 18px;
+  font-size: 20px;
   font-family: Arial-400;
 }
 
@@ -190,11 +192,12 @@ export default {
   border-radius: 0;
   border-bottom: 1px solid #797979;
   padding: 0;
+  font-size: 16px;
   margin-right: 10px;
   margin-left: 20px;
 }
 .forget-text {
-  margin-top: 18px;
+  margin-top: 26px;
   margin-left: 250px;
   width: 85px;
   height: 14px;
@@ -206,24 +209,24 @@ export default {
   margin-left: 22px;
 }
 .login-btn {
-  margin-top: 15px;
+  margin-top: 33px;
   font-family: Arial-400;
   color: rgba(255, 255, 255, 100);
   font-size: 25px;
   width: 289px;
-  height: 40px;
+  height: 45px;
   line-height: 18px;
   border-radius: 15px;
   background-color: rgba(26, 113, 185, 100);
   text-align: center;
 }
 .el-form-item {
-  margin-top: 45px;
+  margin-top: 35px;
 }
 .footer {
   display: flex;
   margin-left: 111px;
-  margin-top: 11px;
+  margin-top: 21px;
   font-size: 17px;
   font-family: Arial-400;
 }
