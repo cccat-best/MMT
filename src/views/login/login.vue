@@ -114,10 +114,6 @@ export default {
           })
       }
     }
-  },
-  components: {},
-  mounted() {
-    console.log(this.all)
   }
 }
 </script>
