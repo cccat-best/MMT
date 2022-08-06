@@ -1,8 +1,9 @@
+const { URL } = require('./src/global/config')
 module.exports = {
   devServer: {
     proxy: {
       '/api': {
-        target: 'http://114.132.71.147:38080',
+        target: URL,
         pathRewrite: {
           '^/api': ''
         },

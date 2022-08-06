@@ -12,7 +12,9 @@ export const get = (url, params) => {
   return new Promise((resolve, reject) => {
     // axios 自带 get 和 post 方法
     $http
-      .get(url, { params })
+      .get(url, {
+        params
+      })
       .then((res) => {
         resolve(res)
       })

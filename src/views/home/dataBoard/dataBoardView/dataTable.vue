@@ -218,7 +218,6 @@
 <script>
 //引入表单全部数据,这是模拟数据，后期应该会删掉
 import data from '../dataBoardView/data'
-
 // import mySelectHeader from './selectHeader.vue'
 import changeDialog from '../components/changeDialog.vue'
 import resumeDialog from '../components/resumeDialog.vue'
@@ -870,9 +869,13 @@ export default {
   //   background: ;
   //   background-size: 24px;
   // }
-  // /deep/ .el-icon-arrow-down:before {
-  //   content: '11';
-  //   visibility: hidden;
+  //   /deep/ .el-icon-arrow:before{
+  //   font-family:"iconfont" !important;
+  //   -webkit-font-smoothing: antialiased;
+  //   -moz-osx-font-smoothing: grayscale;
+  //   font-size:24px;
+  //   font-style:normal;
+  //   content: "\e65c";
   // }
 }
 </style>
