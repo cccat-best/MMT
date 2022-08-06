@@ -17,6 +17,10 @@ const routes = [
     component: () => import('../views/register/register.vue')
   },
   {
+    path: '/personalInfo',
+    component: () => import('../views/personalInfo/personalInfo.vue')
+  },
+  {
     path: '/home',
     component: () => import('../views/home/home.vue'),
     children: [
@@ -34,10 +38,7 @@ const routes = [
         path: 'resultInform',
         component: () => import('../views/home/interviewReply/resultInform.vue')
       },
-      {
-        path: 'personalInfo',
-        component: () => import('../views/personalInfo/personalInfo.vue')
-      },
+
       {
         path: 'interviewMain',
         component: () => import('../views/home/interviewMain/interviewMain.vue')

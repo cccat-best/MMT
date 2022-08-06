@@ -1,8 +1,6 @@
 import {
   Radio,
-  Menu,
   Select,
-  MenuItem,
   TimePicker,
   DatePicker,
   Input,
@@ -13,7 +11,6 @@ import {
   Header,
   Aside,
   Main,
-  Icon,
   Submenu,
   MenuItemGroup,
   Row,
@@ -58,7 +55,7 @@ const components = [
   Icon,
   MenuItem,
   Menu,
-  Option,
+
   Select,
   Menu,
   MenuItem,

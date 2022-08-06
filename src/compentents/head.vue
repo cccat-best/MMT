@@ -202,6 +202,10 @@ export default {
               'loginOrganizationName',
               data.loginOrganizationName
             )
+            if (this.isPersonal) {
+              location.reload()
+            }
+
             this.$message({
               message: '切换成功',
               type: 'success'
