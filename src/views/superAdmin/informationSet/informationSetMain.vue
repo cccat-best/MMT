@@ -118,22 +118,13 @@ export default {
         .get('/api/organization/information', {
           organizationId: 1
         })
-        .then(function (response) {
-          // console.log(JSON.stringify(response.data))
-          // this.communityData = JSON.stringify(response.data)
-          sessionStorage.setItem(
-            'communityRawData',
-            JSON.stringify(response.data.data)
-          )
+        .then((response) => {
+          this.communityData = JSON.stringify(response.data)
+          console.log(this)
         })
         .catch(function (error) {
           console.log(error)
         })
-    },
-    setRawCommunityData() {
-      this.communityData = JSON.parse(
-        sessionStorage.getItem('communityRawData')
-      )
     }
   },
   mounted: function () {
@@ -141,7 +132,6 @@ export default {
       // 仅在整个视图都被渲染之后才会运行的代码
     })
     this.getCommunityData()
-    this.setRawCommunityData()
   }
 }
 </script>
