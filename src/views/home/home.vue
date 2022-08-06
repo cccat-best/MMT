@@ -46,7 +46,7 @@ export default {
           iconClass: '',
           id: '1',
           title: '面试总看板',
-          pagePath: '/home'
+          pagePath: '/home/interviewMain'
         },
         {
           iconClass: '',

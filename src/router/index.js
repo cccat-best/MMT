@@ -37,12 +37,12 @@ const routes = [
       {
         path: 'personalInfo',
         component: () => import('../views/personalInfo/personalInfo.vue')
+      },
+      {
+        path: 'interviewMain',
+        component: () => import('../views/home/interviewMain/interviewMain.vue')
       }
     ]
-  },
-  {
-    path: '/personalInfo',
-    component: () => import('../views/personalInfo/personalInfo.vue')
   },
   {
     path: '/superAdmin',
@@ -58,9 +58,27 @@ const routes = [
         path: 'process',
         component: () => import('../views/superAdmin/interviewProcess/main.vue')
       },
+      //东睿的宣传信息路由
       {
-        path: 'accountManage',
-        component: () => import('../views/superAdmin/accountManage/main.vue')
+        path: 'informationSet',
+        component: () =>
+          import('../views/superAdmin/informationSet/informationSetMain.vue'),
+        children: [
+          {
+            path: 'informationSetEdit',
+            component: () =>
+              import(
+                '../views/superAdmin/informationSet/informationSetInner/informationBasicEdit.vue'
+              )
+          },
+          {
+            path: 'informationSetSaved',
+            component: () =>
+              import(
+                '../views/superAdmin/informationSet/informationSetInner/informationBasicSaved.vue'
+              )
+          }
+        ]
       }
     ]
   }
