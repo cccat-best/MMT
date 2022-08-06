@@ -35,7 +35,7 @@
       >
         <img
           v-if="this.isSuper"
-          src="../views/home/icon/admin.png"
+          src="../assets/img/admin.png"
           alt=""
           style="height: 30px; width: 30px"
         />

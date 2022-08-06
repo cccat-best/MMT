@@ -11,7 +11,7 @@
         <div class="must-item" v-for="(must, index) in mustList" :key="index">
           <div class="must-star">*</div>
           <div class="must-name">{{ must.description }}</div>
-          <div class="must-input"><input type="text" /></div>
+          <div><input type="text" class="must-input" /></div>
         </div>
       </div>
       <!-- 可选问题 -->
@@ -29,7 +29,7 @@
             @click="item.isShow = !item.isShow"
           ></i>
           <span class="choose-name">{{ item.description }}</span>
-          <input type="text" />
+          <input type="text" class="choose-input" />
         </div>
       </div>
       <!-- 自定义问题展示 -->
@@ -220,7 +220,7 @@ export default {
         },
         {
           isShow: true,
-          description: '手机号'
+          description: '电话'
         }
       ],
       //预设问题
@@ -443,9 +443,13 @@ export default {
           margin-left: 5px;
         }
         .must-name {
-          width: 50px;
+          width: 30px;
           margin-left: 3px;
           margin-right: 5px;
+        }
+        .must-input {
+          border-radius: 5px;
+          border: 1px solid #0f2d2d;
         }
       }
     }
@@ -461,14 +465,20 @@ export default {
         .choose-name {
           margin-left: 3px;
           margin-right: 5px;
-          width: 50px;
+          width: 30px;
+        }
+        .choose-input {
+          margin-left: 2px;
+          border-radius: 5px;
+          border: 1px solid #0f2d2d;
         }
       }
     }
     .yushe-content {
       display: flex;
       flex-direction: column;
-      margin-top: 40px;
+      margin-top: 26px;
+      margin-left: 5px;
       width: 660px;
       height: 168px;
       margin-bottom: 30px;
@@ -490,6 +500,7 @@ export default {
           border-radius: 5px;
           line-height: 25px;
           margin-right: 10px;
+          cursor: pointer;
         }
         padding-bottom: 20px;
         border-bottom: 1px solid #efefef;

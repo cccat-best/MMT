@@ -5,6 +5,8 @@
       ref="layout"
       :asideWidth="asideWidth"
       :menuItemList="menuList"
+      menuItemColor="#fff"
+      meunItemActiveColor="#0187fb"
     >
       <template slot="header">
         <myhead
@@ -32,7 +34,6 @@ import myLayoutVue from '../../compentents/myLayout.vue'
 import myhead from '../../compentents/head.vue'
 export default {
   name: 'home',
-
   components: {
     myLayoutVue,
     myhead
@@ -47,7 +48,7 @@ export default {
           iconClass: '',
           id: '1',
           title: '面试总看板',
-          pagePath: '/home'
+          pagePath: '/home/interviewMain'
         },
         {
           index: '/home',
@@ -128,7 +129,6 @@ export default {
           }
           default: {
             throw new Error(JSON.stringify(res))
-            // this.$message.error(JSON.stringify(res))
           }
         }
       } catch (err) {
@@ -161,7 +161,6 @@ export default {
         method: 'delete',
         baseURL: 'http://114.132.71.147:38080',
         url: '/logout',
-
         headers: {
           'content-type': 'application/json'
         }
@@ -199,6 +198,19 @@ export default {
 }
 .el-dropdown-link:hover {
   color: #409eff !important;
+}
+:deep(.el-menu-item .iconfont) {
+  width: 0px;
+}
+.el-dropdown-link:hover {
+  color: #409eff !important;
+}
+.el-dropdown-link {
+  cursor: pointer;
+  color: black;
+}
+:deep(.el-menu-item .iconfont) {
+  width: 0px;
 }
 .el-dropdown-link {
   cursor: pointer;
