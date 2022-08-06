@@ -5,6 +5,8 @@ let data3 = [
     className: '信安1班',
     organizationOrder: '第一志愿',
     phone: 13222221131,
+    "interviewStatus": "二面进行中",
+    "nextTime": "8/29 15:10",
     studentId: '20210001'
   },
   {
@@ -12,6 +14,8 @@ let data3 = [
     permission: 'member',
     className: '信安2班',
     organizationOrder: '第一志愿',
+    "interviewStatus": "四面失败",
+    "nextTime": "8/29 15:10",
     phone: 143114242421,
     studentId: '20210002'
   },
@@ -20,6 +24,7 @@ let data3 = [
     permission: 'member',
     className: '信安1班',
     organizationOrder: '第一志愿',
+    "interviewStatus": "一面进行中",
     phone: 14451419198,
     studentId: '20210003'
   },
@@ -28,6 +33,7 @@ let data3 = [
     permission: 'commitee',
     className: '信安1班',
     organizationOrder: '第一志愿',
+    "interviewStatus": "一面进行中",
     phone: 16633101092,
     studentId: '20210004'
   },
@@ -36,6 +42,7 @@ let data3 = [
     permission: 'member',
     className: '信安2班',
     organizationOrder: '第一志愿',
+    "interviewStatus": "一面进行中",
     phone: 12113180808,
     studentId: '20210005'
   },
@@ -44,6 +51,7 @@ let data3 = [
     permission: 'commitee',
     className: '信安4班',
     organizationOrder: '第一志愿',
+    "interviewStatus": "一面失败",
     phone: 14113100000,
     studentId: '20210006'
   },
@@ -52,6 +60,7 @@ let data3 = [
     permission: 'commitee',
     className: '信安3班',
     organizationOrder: '第一志愿',
+    "interviewStatus": "一面失败",
     phone: 13666666666,
     studentId: '20210007'
   },
@@ -60,6 +69,7 @@ let data3 = [
     permission: 'commitee',
     organizationOrder: '第一志愿',
     className: '信安11班',
+    "interviewStatus": "一面通过",
     phone: 13666666666,
     studentId: '20210008'
   },
@@ -68,6 +78,7 @@ let data3 = [
     permission: 'member',
     className: '信安10班',
     organizationOrder: '第一志愿',
+    "interviewStatus": "二面通过",
     phone: 13666666666,
     studentId: '20210009'
   },
@@ -77,6 +88,7 @@ let data3 = [
     className: '信安9班',
     phone: 13666666666,
     organizationOrder: '第一志愿',
+    "interviewStatus": "二面通过",
     studentId: '20210010'
   },
   {

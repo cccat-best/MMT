@@ -133,6 +133,11 @@
         :filters.sync="interviewStatusFilter"
         column-key="interviewStatus"
       >
+        <template #default="{ row }">
+          <el-tag :type="row.interviewStatus | statusFilter">
+            {{ row.interviewStatus }}
+          </el-tag>
+        </template>
       </el-table-column>
 
       <!-- 下一场面试时间 -->
@@ -213,7 +218,7 @@
 <script>
 //引入表单全部数据,这是模拟数据，后期应该会删掉
 import data from '../dataBoardView/data'
-import data2 from '../../../superAdmin/accountManage/data copy'
+
 // import mySelectHeader from './selectHeader.vue'
 import changeDialog from '../components/changeDialog.vue'
 import resumeDialog from '../components/resumeDialog.vue'
@@ -230,6 +235,26 @@ export default {
       'nextPlaceFilter',
       'nextTimeFilter'
     ])
+  },
+  // 面试状态根据字符显示颜色
+  filters: {
+    statusFilter(status) {
+      const statusMap = {
+        一面通过: 'success',
+        一面进行中: 'gray',
+        一面失败: 'danger',
+        二面通过: 'success',
+        二面进行中: 'gray',
+        二面失败: 'danger',
+        三面通过: 'success',
+        三面进行中: 'gray',
+        三面失败: 'danger',
+        四面通过: 'success',
+        四面进行中: 'gray',
+        四面失败: 'danger'
+      }
+      return statusMap[status]
+    }
   },
   data() {
     return {
@@ -318,8 +343,9 @@ export default {
       // )
       this.$message.success('测试更新数据，后面完工时记得删掉这个')
       // this.tableData = this.tableData.slice(3)
-      this.tableData = data2
+      this.tableList = data
       // this.orderChange(this.tableData)
+      console.log(data)
       console.log(this.classNameFilter)
       // 模拟更新过滤项
       this.updateClassNameFilter([
