@@ -839,7 +839,7 @@ export default {
     color: #ffffff;
     padding: 5px;
   }
-  /deep/ .el-table__fixed-right-patch{
+  /deep/ .el-table__fixed-right-patch {
     background: #282e38;
   }
   // 筛选图标替换
