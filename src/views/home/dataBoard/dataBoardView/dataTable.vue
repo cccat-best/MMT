@@ -494,6 +494,9 @@ export default {
           pageSize: this.pagesize
         }
       }
+      if (this.sort.length != 0) {
+        this.postdata.sort = this.sort
+      }
       // 发请求
       this.$http.post('api/data-panel/all-information', this.postdata).then(
         (res) => {
@@ -503,8 +506,16 @@ export default {
             console.log(res.data)
             // 清除筛选的选中
             this.$refs.filterTable.clearFilter()
-            // 成功后,'页面上'回到第一页
-            this.currentPage = 1
+            this.$refs.filterTable.clearSort()
+            ;(this.className = []),
+              (this.organizationOrder = []),
+              (this.departmentOrder = []),
+              (this.wishDepartment = []),
+              (this.interviewStatus = []),
+              (this.nextPlace = []),
+              (this.nextTime = []),
+              // 成功后,'页面上'回到第一页
+              (this.currentPage = 1)
           } else this.$message.error(res.data.message)
         },
         (err) => {
@@ -567,6 +578,9 @@ export default {
         pageNum: this.currentPage,
         pageSize: this.pagesize
       }
+      if (this.searchWord != '') {
+        myRequestData.keyWord = this.searchWord
+      }
       if (this.className.length != 0) {
         myRequestData.className = this.className
       }
@@ -594,15 +608,12 @@ export default {
       this.$http.post('api/data-panel/all-information', myRequestData).then(
         (res) => {
           // 因为请求访问权限异常，res.data.studentList在返回信息中为undefined
-          if (res.data.code == 'A0300') {
-            // 用造的假数据顶上
-            this.$message.error(res.data.message)
-          } else if (res.data.code == 'A0400')
-            this.$message.error(res.data.message)
-          else {
+          if (res.data.code == '00000') {
             this.tableList = res.data.data.allInformationData
             this.total = res.data.data.totalNum
             // console.log(this.tableList)
+          } else {
+            this.$message.error(res.data.message)
           }
         },
         (err) => {
@@ -777,7 +788,7 @@ export default {
     //   this.total = tableDataChange.length
     // }
     /**
-     * 设置表头排序
+     * 设置表头排序,允许多个排序高亮
      */
     handleTheadStyle({ row, column }) {
       /**
@@ -865,6 +876,9 @@ export default {
     padding: 5px;
   }
   // 筛选图标替换
+  /deep/ .el-icon-arrow-down {
+    color: #ffffff;
+  }
   // /deep/ .el-icon-arrow-down{
   //   background: ;
   //   background-size: 24px;
