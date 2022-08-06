@@ -148,7 +148,7 @@ export default {
     // },
     ...mapMutations('transform', ['tranformAll']),
     goLogin() {
-      this.$router.push('/Login').catch(() =>{})
+      this.$router.push('/Login').catch(() => {})
     },
     toRegister() {
       if (this.registerForm.studentId === '') {
