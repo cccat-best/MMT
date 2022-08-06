@@ -67,7 +67,7 @@ export default {
   methods: {
     ...mapMutations('transform', ['clearData']),
     goRegister() {
-      this.$router.push('/register').catch(() =>{})
+      this.$router.push('/register').catch(() => {})
     },
     goLogin() {
       if (this.loginForm.studentId === '') {
@@ -90,8 +90,12 @@ export default {
             if (res.data.code === '00000') {
               this.$message.success('恭喜你，登录成功')
               // 存储数据
-              this.loginOrganizationName = JSON.stringify(res.data.data.loginOrganizationName)
-              this.loginOrganizationId = JSON.stringify(res.data.data.loginOrganizationId)
+              this.loginOrganizationName = JSON.stringify(
+                res.data.data.loginOrganizationName
+              )
+              this.loginOrganizationId = JSON.stringify(
+                res.data.data.loginOrganizationId
+              )
               this.$router.push('/interviewMain')
             } else {
               this.$message({
