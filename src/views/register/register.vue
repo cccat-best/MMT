@@ -72,7 +72,6 @@
           <div class="right-text" @click="goLogin()">登录</div>
         </div>
       </el-form>
-      <el-button @click="creat()">嗯嗯</el-button>
     </el-main>
   </el-container>
 </template>
