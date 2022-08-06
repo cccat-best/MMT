@@ -5,129 +5,17 @@
       ref="layout"
       :asideWidth="asideWidth"
       :menuItemList="menuList"
+      menuItemColor="#fff"
+      meunItemActiveColor="#0187fb"
     >
       <template slot="header">
-        <el-row
-          type="flex"
-          align="middle"
-          justify="space-between"
-          style="height: 100%; overflow: hidden"
-        >
-          <!-- 应江哥要求，个人中心页面需要加上顶部左上角的返回键，所以个人中心页面传了一个isPersonal的参数来判断是否是个人中心页面，通过这个参数来展示不同的顶部 -->
-          <div
-            v-if="!isPersonal"
-            class="leftTop"
-            style="height: 20px; overflow: hidden; margin-left: 20px"
-          >
-            {{ loginOrganizationName }}
-          </div>
-          <el-page-header
-            v-if="isPersonal"
-            @back="goBack"
-            :content="this.loginOrganizationName"
-            class="back-botton"
-          >
-          </el-page-header>
-          <!-- 应江哥要求，顶部的超级管理按钮和icon只在有superadmin权限的账号显示，所以个人中心传了一个issuper来判断是否显示超级管理 -->
-          <!-- 不过我感觉这个工作应该让登录进去后的第一个页面来做，似乎个人中心不是登录后的第一个页面？ -->
-          <div class="rightTop" style="display: flex">
-            <img
-              v-if="permission === 'super_admin'"
-              src="./icon/admin.png"
-              alt=""
-              style="height: 30px; width: 30px"
-            />
-            <el-button
-              class="color-change"
-              type="text"
-              @click="superAdmin"
-              style="
-                color: black;
-                margin-right: 30px;
-                height: 40px;
-                overflow: hidden;
-              "
-              @mouseover="this.style.color = blue"
-              v-if="permission === 'super_admin'"
-              >超级管理
-            </el-button>
-            <!-- 应江哥要求，其他页面点击头像进入个人中心，而个人中心点击头像刷新页面，home函数实现 -->
-            <div class="block" style="height: 35px; overflow: hidden">
-              <span @click="home"
-                ><el-avatar
-                  :size="35"
-                  :src="circleUrl"
-                  style="vertical-align: middle"
-                  :click="home"
-                ></el-avatar
-              ></span>
-              <el-dropdown trigger="click">
-                <span
-                  class="el-dropdown-link"
-                  style="
-                    color: black;
-                    margin-left: 10px;
-                    cursor: pointer;
-                    height: 40px;
-                    overflow: hidden;
-                    margin-right: 10px;
-                  "
-                >
-                  {{ name }}<i class="el-icon-arrow-down el-icon--right"></i>
-                </span>
-                <el-dropdown-menu slot="dropdown">
-                  <div style="text-align: center">
-                    <el-avatar
-                      :size="50"
-                      :src="circleUrl"
-                      style="vertical-align: middle"
-                    ></el-avatar>
-
-                    <div
-                      style="font-size: 10px; margin-top: 10px; height: 20px"
-                    >
-                      {{ loginOrganizationName }}
-                    </div>
-                  </div>
-
-                  <el-dropdown-item divided>
-                    <el-dropdown
-                      @command="changeOrganization"
-                      style="width: 140px"
-                    >
-                      <span class="el-dropdown-link">
-                        切换社团<i
-                          class="el-icon-arrow-down el-icon--right"
-                        ></i>
-                      </span>
-                      <!-- 贺节介建议这里的下拉框改成向左拉开，不过我不会 -->
-                      <el-dropdown-menu slot="dropdown">
-                        <el-dropdown-item
-                          style="width: 140px"
-                          :command="item.name"
-                          v-for="(item, index) in organizations"
-                          :key="index"
-                          divided
-                          >{{ item.name }}</el-dropdown-item
-                        >
-                      </el-dropdown-menu>
-                    </el-dropdown>
-                  </el-dropdown-item>
-
-                  <el-dropdown-item divided>
-                    <el-button
-                      type="text"
-                      @click="quitLogin"
-                      class="el-dropdown-link"
-                      style="padding: 0px; margin: 0px"
-                      >退出登录</el-button
-                    >
-                  </el-dropdown-item>
-                </el-dropdown-menu>
-              </el-dropdown>
-            </div>
-          </div>
-        </el-row>
+        <myhead
+          :isPersonal="isPersonal"
+          :isSuper="isSuper"
+          :name="name"
+          :organizations="organizations"
+          :loginOrganizationName="loginOrganizationName"
+        ></myhead>
       </template>
       <template slot="asideTitle">
         <div class="menuTitle">MMT</div>
@@ -142,11 +30,12 @@
 <script>
 import axios from 'axios'
 import myLayoutVue from '../../compentents/myLayout.vue'
+import myhead from '../../compentents/head.vue'
 export default {
   name: 'home',
-
   components: {
-    myLayoutVue
+    myLayoutVue,
+    myhead
   },
   data() {
     return {
@@ -206,23 +95,37 @@ export default {
       }
     }
   },
+  async created() {
+    await this.getLoginStatus()
+    if (this.permission == 'super_admin') {
+      this.isSuper = true
+    }
+  },
   methods: {
-    getLoginStatus() {
+    async getLoginStatus() {
       const url = '/api/login-status'
-      this.$http
-        .get(url)
-        .then((res) => {
-          this.loginOrganizationName = res.data.data.loginOrganizationName
-          this.loginOrganizationId = res.data.data.loginOrganizationId
-          this.organizations = res.data.data.organizations
-          this.permission = res.data.data.permission
-          this.phone = res.data.data.phone
-          this.name = res.data.data.name
-          this.studentId = res.data.data.studentId
-        })
-        .catch((err) => {
-          console.log(err)
-        })
+      try {
+        let { data: res } = await this.$http.get(url)
+        switch (res.code) {
+          case '00000': {
+            let { data } = res
+            this.loginOrganizationName = data.loginOrganizationName
+            this.organizationId = data.loginOrganizationId
+            this.organizations = data.organizations
+            this.permission = data.permission
+            this.phone = data.phone
+            this.name = data.name
+            this.studentId = data.studentId
+            break
+          }
+          default: {
+            throw new Error(JSON.stringify(res))
+          }
+        }
+      } catch (err) {
+        console.log('出错了', err.message)
+        this.$message.error('当前未登录或登录已失效')
+      }
     },
     changeOrganization(command) {
       const organization = {
@@ -245,7 +148,6 @@ export default {
         method: 'delete',
         baseURL: 'http://114.132.71.147:38080',
         url: '/logout',
-
         headers: {
           'content-type': 'application/json'
         }
@@ -257,13 +159,11 @@ export default {
       this.$router.push('/superAdmin')
     },
     home() {
-      this.$router.push('/personalInfo')
-    }
-  },
-  created() {
-    this.getLoginStatus()
-    if (this.permission == 'super_admin') {
-      this.isSuper = true
+      if (this.isPersonal) {
+        location.reload()
+      } else {
+        this.$router.push('/personalInfo')
+      }
     }
   }
 }
@@ -286,6 +186,12 @@ export default {
 .el-dropdown-link:hover {
   color: #409eff !important;
 }
+:deep(.el-menu-item .iconfont) {
+  width: 0px;
+}
+.el-dropdown-link:hover {
+  color: #409eff !important;
+}
 .el-dropdown-link {
   cursor: pointer;
   color: black;
@@ -293,20 +199,12 @@ export default {
 :deep(.el-menu-item .iconfont) {
   width: 0px;
 }
-.back-botton {
+.el-dropdown-link {
+  cursor: pointer;
   color: black;
-  ::v-deep .el-page-header__title {
-    font-size: 14px;
-    font-weight: 500;
-    color: black;
-    &:hover {
-      color: #409eff !important;
-    }
-  }
-  ::v-deep .el-icon-back {
-    &:hover {
-      color: #409eff !important;
-    }
-  }
+}
+
+:deep(.el-menu-item .iconfont) {
+  width: 0px;
 }
 </style>

@@ -4,37 +4,53 @@
       <div class="partText">
         <div class="ttext">按部门查看 &nbsp; &nbsp;</div>
         <div class="udText" style="margin-bottom: 20px">
-          <el-row style="margin-bottom: 10px">
-            <el-button plain size="small" ref="partAll">全部</el-button
-            ><el-button plain size="small">文艺部</el-button
-            ><el-button plain size="small">文艺部</el-button
-            ><el-button plain size="small">文艺部</el-button>
-          </el-row>
-          <el-row>
-            <el-button plain size="small">文艺部</el-button>
-            <el-button plain size="small">文艺部</el-button>
+          <el-row
+            type="flex"
+            justify="start"
+            style="flex-wrap: wrap; margin-left: 3px"
+          >
+            <el-button
+              @click="clDepartment"
+              style="margin: 0 10px 10px 0"
+              ref="depBtn"
+              class="depBtn"
+              plain
+              size="small"
+              v-for="item in department"
+              :key="item.id"
+              :id="item.id"
+              >{{ item.name }}</el-button
+            >
           </el-row>
         </div>
       </div>
       <div class="partText">
         <div class="ttext">按场地查看 &nbsp; &nbsp;</div>
         <div class="udText">
-          <el-row style="margin-bottom: 10px">
-            <el-button plain size="small">全部</el-button
-            ><el-button plain size="small">7-115</el-button
-            ><el-button plain size="small">7-115</el-button
-            ><el-button plain size="small">7-115</el-button>
-          </el-row>
-          <el-row>
-            <el-button plain size="small">7-115</el-button>
-            <el-button plain size="small">7-115</el-button>
+          <el-row
+            type="flex"
+            justify="start"
+            style="flex-wrap: wrap; margin-left: 3px"
+          >
+            <el-button
+              @click="clRoom"
+              style="margin: 0 10px 10px 0"
+              plain
+              class="roomBtn"
+              size="small"
+              ref="roomBtn"
+              v-for="item in room"
+              :key="item.id"
+              :id="item.id"
+              >{{ item.name }}</el-button
+            >
           </el-row>
         </div>
       </div>
     </div>
     <div class="bigChart">
       <div id="pie" ref="pie" style="width: 300px; height: 200px"></div>
-      <div class="chartTotal">共{{ chartTotal }}人</div>
+      <div class="total">共{{ total }}人</div>
     </div>
   </div>
 </template>
@@ -73,15 +89,17 @@ export default {
   name: 'filterFigure',
   data() {
     return {
-      pass: 20,
-      fail: 10,
-      pending: 30,
-      undo: 25,
-      chartTotal: 85
+      win: 20,
+      pass: 10,
+      wait: 30,
+      nedit: 25,
+      total: 85,
+      department: [],
+      room: [],
+      departmentId: 0,
+      departmentName: '',
+      roomId: 0
     }
-  },
-  mounted() {
-    this.drawChar()
   },
   methods: {
     drawChar() {
@@ -116,19 +134,19 @@ export default {
             },
             data: [
               {
-                value: this.pass,
+                value: this.win,
                 name: '通过'
               },
               {
-                value: this.fail,
+                value: this.pass,
                 name: '失败'
               },
               {
-                value: this.pending,
+                value: this.wait,
                 name: '待定'
               },
               {
-                value: this.undo,
+                value: this.nedit,
                 name: '未操作'
               }
             ],
@@ -141,14 +159,94 @@ export default {
           }
         ]
       })
+    },
+    clDepartment() {
+      let depBtn = document.querySelectorAll('.depBtn')
+      depBtn.forEach((e) => {
+        e.classList.remove('clBtn')
+      })
+      document.activeElement.classList.add('clBtn')
+      this.departmentId = document.activeElement.id
+      this.departmentName = document.activeElement.innerText
+      console.log(this.departmentId)
+      console.log(this.departmentName)
+      sessionStorage['departmentId'] = this.departmentId
+      sessionStorage['departmentName'] = this.departmentName
+      this.$bus.$emit('departmentId', this.departmentId)
+    },
+    clRoom() {
+      let roomBtn = document.querySelectorAll('.roomBtn')
+      roomBtn.forEach((e) => {
+        e.classList.remove('clBtn')
+      })
+      document.activeElement.classList.add('clBtn')
+      this.roomId = document.activeElement.id
+      console.log(this.roomId)
+      sessionStorage['roomId'] = this.roomId
+      this.$bus.$emit('roomId', this.roomId)
     }
+  },
+  created() {
+    this.$bus.$on('win', (data) => {
+      this.win = data
+    }),
+      this.$bus.$on('pass', (data) => {
+        this.pass = data
+      }),
+      this.$bus.$on('wait', (data) => {
+        this.wait = data
+      }),
+      this.$bus.$on('nedit', (data) => {
+        this.nedit = data
+      }),
+      this.$bus.$on('total', (data) => {
+        this.total = data
+      })
+  },
+  mounted() {
+    this.drawChar()
+    let admissionId = 4
+    let url1 = `api/interview-reply/department/${admissionId}`
+    this.$http
+      .get(url1)
+      .then((response) => {
+        let department = response.data.data.department
+        department.forEach((element) => {
+          this.department.push(element)
+        })
+        // console.log(this.department)
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+
+    let url2 = `api/interview-reply/room/${admissionId}`
+    this.$http
+      .get(url2)
+      .then((response) => {
+        let room = response.data.data.room
+        room.forEach((element) => {
+          this.room.push(element)
+        })
+        // console.log(this.room)
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+  },
+  beforeDestroy() {
+    this.$bus.$off('win')
+    this.$bus.$off('pass')
+    this.$bus.$off('wait')
+    this.$bus.$off('nedit')
+    this.$bus.$off('total')
   }
 }
 </script>
 
 <style scoped>
 .bigLeft {
-  width: 940px;
+  width: 980px;
   height: 100%;
   background-color: white;
   border-radius: 10px;
@@ -172,11 +270,6 @@ export default {
   flex-direction: column;
   align-items: center;
 }
-.udText {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
 .partText {
   display: flex;
   flex-direction: row;
@@ -184,5 +277,13 @@ export default {
 .ttext {
   font-size: 14px;
   padding-top: 5px;
+  padding-left: 0;
+  width: 100px;
+  height: 30px;
+  margin-right: 2px;
+}
+.clBtn {
+  border-color: #40a9ff;
+  color: #40a9ff;
 }
 </style>

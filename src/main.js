@@ -16,7 +16,6 @@ Vue.filter('replacestar', function (value) {
   str = str.toString().replace(/(\d{3})\d*(\d{4})/, '$1****$2')
   return str
 })
-
 Vue.config.productionTip = false
 import { get, post } from './utils/index'
 Vue.prototype.$http = {

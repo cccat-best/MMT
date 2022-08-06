@@ -72,6 +72,7 @@
           <div class="right-text" @click="goLogin()">登录</div>
         </div>
       </el-form>
+      <el-button @click="creat()">嗯嗯</el-button>
     </el-main>
   </el-container>
 </template>
@@ -131,6 +132,19 @@ export default {
     ...mapState('transform', ['all'])
   },
   methods: {
+    creat() {
+      this.$http.get('api/organization/invitation-code').then(
+        (res) => {
+          if (res.data.code == '00000') {
+            this.invitationCode = res.data.data.invitationCode
+            console.log(res.data.data.invitationCode)
+          }
+        },
+        (err) => {
+          this.$message.error(err)
+        }
+      )
+    },
     ...mapMutations('transform', ['tranformAll']),
     goLogin() {
       this.$router.push('/Login')
@@ -143,14 +157,12 @@ export default {
           if (res.data.code === '00000') {
             alert('恭喜你！注册成功！')
             // 存储账号密码 跳转登陆以后自动填充
-            // this.tranformAll(this.registerForm.studentId)
             this.tranformAll({
-              //print 表示vuex的文件名
-              Id: this.registerForm.studentId,
-              psw: this.registerForm.password
+              Id: this.studentId,
+              psw: this.password
             })
-            console.log(this.all)
-            this.$router.push('/login')
+
+            // this.$router.push('/login')
           }
         })
         .catch((err) => {
