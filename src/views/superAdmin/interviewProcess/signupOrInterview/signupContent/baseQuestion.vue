@@ -186,7 +186,7 @@
 <script scoped>
 import { mapMutations } from 'vuex'
 export default {
-  props:['allQues'],
+  props: ['allQues'],
   data() {
     return {
       //最多三个自定义问题
@@ -405,18 +405,18 @@ export default {
       this.updateQuestionsList(questionsList)
     }
   },
-  watch:{
+  watch: {
     allQues(newV) {
-      if(newV.questionsList.length != 0) {
+      if (newV.questionsList.length != 0) {
         this.BaseList = newV.questionsList
       }
-      if(newV.generalQuestions.length != 0) {
-        this.preList.forEach(p => {
-          p.isShow =false
+      if (newV.generalQuestions.length != 0) {
+        this.preList.forEach((p) => {
+          p.isShow = false
         })
-        for(let i = 0;i<newV.generalQuestions.length;i++) {
-          this.preList.forEach(p => {
-            if(p.description == newV.generalQuestions[i]) {
+        for (let i = 0; i < newV.generalQuestions.length; i++) {
+          this.preList.forEach((p) => {
+            if (p.description == newV.generalQuestions[i]) {
               p.isShow = true
             }
           })
@@ -514,110 +514,110 @@ export default {
       padding: 5px 20px;
       border-radius: 6px;
       .yushe-title {
+        display: flex;
+        align-items: center;
+        font-size: 20px;
+        margin-bottom: 15px;
+        margin-left: 35px;
+        margin-top: 14px;
+      }
+    }
+    .yushe-item-content {
       display: flex;
       align-items: center;
-      font-size: 20px;
-      margin-bottom: 15px;
+      margin-top: 10px;
       margin-left: 35px;
-      margin-top: 14px;
-}
-      }
-      .yushe-item-content {
-        display: flex;
-        align-items: center;
-        margin-top: 10px;
-        margin-left: 35px;
-        width: 575px;
-        .yushe-item {
-          width: 60px;
-          height: 30px;
-          border: 1px solid #9e9e9e;
-          border-radius: 5px;
-          line-height: 30px;
-          margin-right: 15px;
-          cursor: pointer;
-          font-size: 17px;
-        }
-        padding-bottom: 20px;
-        border-bottom: 1px solid #efefef;
-        .yushe-active {
-          color: #67b5fe !important;
-          border: 1px solid #67b5fe !important;
-        }
-      }
-      .zidingyi-content {
-          margin-left: 35px;
-        .form-chose {
-          display: flex;
-        }
-        .my-input {
-          margin: 10px 0;
-          width: 182px;
-        }
-        display: flex;
-        align-items: center;
-        margin-top: 23px;
-        .zidingyi-tilte {
-          margin-right: 20px;
-          font-size: 18px;
-        }
-        .base-add-botton {
-          background: #1991ff;
-          color: white;
-          margin-left: 16px;
-        }
-      }
-    }
-    .freeView-content {
-      .freeView-title {
-        display: flex;
-        font-size: 22px;
-        color: #989898;
-        margin-left: 65px;
-        margin-bottom: 16px;
-        margin-top: 20px;
-      }
-      margin: 20px 0;
-      display: flex;
-      flex-direction: column;
-      .freeView-item {
-        display: flex;
-        align-items: center;
-        margin-left: 17px;
-      }
-      .freeView-name {
-        display: flex;
-        margin: 10px 10px;
-        width: 175px;
+      width: 575px;
+      .yushe-item {
+        width: 60px;
+        height: 30px;
+        border: 1px solid #9e9e9e;
+        border-radius: 5px;
+        line-height: 30px;
+        margin-right: 15px;
+        cursor: pointer;
         font-size: 17px;
       }
-      .freeView-input {
-        width: 166px;
-        border-radius: 5px;
-        border: 1px solid #cecece;
-        height: 25px !important;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #efefef;
+      .yushe-active {
+        color: #67b5fe !important;
+        border: 1px solid #67b5fe !important;
       }
-      .freeView-select {
-        width: 166px;
-        height: 25px;
-        border-radius: 5px;
-        border: 1px solid #cecece;
+    }
+    .zidingyi-content {
+      margin-left: 35px;
+      .form-chose {
+        display: flex;
+      }
+      .my-input {
+        margin: 10px 0;
+        width: 182px;
+      }
+      display: flex;
+      align-items: center;
+      margin-top: 23px;
+      .zidingyi-tilte {
+        margin-right: 20px;
+        font-size: 18px;
+      }
+      .base-add-botton {
+        background: #1991ff;
+        color: white;
+        margin-left: 16px;
       }
     }
   }
+  .freeView-content {
+    .freeView-title {
+      display: flex;
+      font-size: 22px;
+      color: #989898;
+      margin-left: 65px;
+      margin-bottom: 16px;
+      margin-top: 20px;
+    }
+    margin: 20px 0;
+    display: flex;
+    flex-direction: column;
+    .freeView-item {
+      display: flex;
+      align-items: center;
+      margin-left: 17px;
+    }
+    .freeView-name {
+      display: flex;
+      margin: 10px 10px;
+      width: 175px;
+      font-size: 17px;
+    }
+    .freeView-input {
+      width: 166px;
+      border-radius: 5px;
+      border: 1px solid #cecece;
+      height: 25px !important;
+    }
+    .freeView-select {
+      width: 166px;
+      height: 25px;
+      border-radius: 5px;
+      border: 1px solid #cecece;
+    }
+  }
+}
 
-  input:focus {
-    border: 1px solid #535858 !important;
-    outline: none;
-  }
-  input {
-    width: 166px ;
-    padding-left: 10px;
-    box-sizing: border-box;
-    height: 25px !important;
-  }
-  select:focus {
-    outline: none;
-    border: 1px solid #535858 !important;
-  }
+input:focus {
+  border: 1px solid #535858 !important;
+  outline: none;
+}
+input {
+  width: 166px;
+  padding-left: 10px;
+  box-sizing: border-box;
+  height: 25px !important;
+}
+select:focus {
+  outline: none;
+  border: 1px solid #535858 !important;
+}
 </style>

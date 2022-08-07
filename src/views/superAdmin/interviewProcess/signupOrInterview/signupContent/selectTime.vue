@@ -1,10 +1,8 @@
 <template>
   <div class="time-content">
-    <div class="organize-show">{{organizeShow}}</div>
+    <div class="organize-show">{{ organizeShow }}</div>
     <div class="time-title">
-      <div class="title-main">
-       报名时间
-      </div>
+      <div class="title-main">报名时间</div>
       <div class="title-in">
         根据自身情况来设置报名开始时间和停止时间（结束时间尚未确定可以填一个相对靠后的时间）
       </div>
@@ -31,8 +29,8 @@ import { mapMutations } from 'vuex'
 export default {
   data() {
     return {
-      value1: '',
-      organizeShow:'科技协会第一次纳新'
+      value1: [],
+      organizeShow: '科技协会第一次纳新'
     }
   },
   methods: {
@@ -41,8 +39,8 @@ export default {
       this.updateTime(this.value1)
     }
   },
-  props:['allQues'],
-  watch:{
+  props: ['allQues'],
+  watch: {
     // 如果用户设置过时间 展示
     allQues(newV) {
       let timeTemp = []
@@ -77,7 +75,7 @@ export default {
       font-size: 18px;
     }
   }
-  .organize-show{
+  .organize-show {
     margin: 10px 0;
     display: flex;
     align-items: center;

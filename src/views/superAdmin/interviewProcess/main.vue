@@ -78,7 +78,7 @@
 <script>
 import signup from './signupOrInterview/signup.vue'
 import interview from './signupOrInterview/interview.vue'
-import { mapMutations } from "vuex";
+import { mapMutations } from 'vuex'
 export default {
   data() {
     return {
@@ -95,7 +95,7 @@ export default {
     // handleClick(tab, event) {
     //   console.log(tab, event)
     // },
-    ...mapMutations('problem',['updateTime']),
+    ...mapMutations('problem', ['updateTime']),
     changeRound() {
       let obj = {
         organizationId: sessionStorage.getItem('loginOrganizationId'),
@@ -129,7 +129,7 @@ export default {
       } else {
         this.roundCount = res.data.round
       }
-    },
+    }
     // getQues() {
     //   const organizationId = sessionStorage.getItem('loginOrganizationId')
     //   this.$http.get(`api/organization/interview/sign?organizationId=${organizationId}`)
@@ -147,8 +147,8 @@ export default {
   },
   mounted() {
     this.getRound()
-  //   this.getQues()
-   }
+    //   this.getQues()
+  }
 }
 </script>
 

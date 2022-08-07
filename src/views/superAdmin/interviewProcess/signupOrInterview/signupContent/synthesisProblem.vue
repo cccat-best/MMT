@@ -20,27 +20,27 @@
             </div>
             <div class="freeView-name-choose">
               <!-- 展示选项 -->
-            <select class="freeView-select" v-if="item1.selection">
-              <option
-                selected="selected"
-                disabled="disabled"
-                style="display: none"
-                value=""
-              ></option>
-              <option
-                v-for="(item2, index2) in item1.option"
-                :key="'op' + index2"
-                v-show="item2 != null"
-              >
-                {{ item2 }}
-              </option>
-            </select>
-            <!--  展示input框-->
-            <input
-              type="text"
-              v-if="!item1.selection"
-              class="freeView-input"
-            />
+              <select class="freeView-select" v-if="item1.selection">
+                <option
+                  selected="selected"
+                  disabled="disabled"
+                  style="display: none"
+                  value=""
+                ></option>
+                <option
+                  v-for="(item2, index2) in item1.option"
+                  :key="'op' + index2"
+                  v-show="item2 != null"
+                >
+                  {{ item2 }}
+                </option>
+              </select>
+              <!--  展示input框-->
+              <input
+                type="text"
+                v-if="!item1.selection"
+                class="freeView-input"
+              />
             </div>
           </div>
         </div>
@@ -156,7 +156,7 @@
 <script>
 import { mapState } from 'vuex'
 export default {
-  props:['allQues'],
+  props: ['allQues'],
   data() {
     return {
       // 上限五个问题
@@ -192,7 +192,7 @@ export default {
     },
     allQues(newV) {
       //查看用户是否设置过问题
-      if(newV.comprehensiveQuestionsList.length !=0) {
+      if (newV.comprehensiveQuestionsList.length != 0) {
         this.comprehensiveQuestionsList = newV.comprehensiveQuestionsList
       }
     }

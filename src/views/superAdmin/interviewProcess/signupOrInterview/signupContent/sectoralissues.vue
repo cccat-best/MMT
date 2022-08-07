@@ -95,10 +95,10 @@ export default {
       this.$http
         .get(`api/organization/interview/sign?organizationId=${organizationId}`)
         .then((res) => {
-          if(res.data.code != '00000') return
-            this.maxDepartment = res.data.data.maxDepartment
-            this.allocated = res.data.data.allocated
-            this.sectionQues = res.data.data.departmentQuestionsList
+          if (res.data.code != '00000') return
+          this.maxDepartment = res.data.data.maxDepartment
+          this.allocated = res.data.data.allocated
+          this.sectionQues = res.data.data.departmentQuestionsList
         })
         .catch((err) => {
           console.log(err)

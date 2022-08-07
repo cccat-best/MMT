@@ -39,10 +39,22 @@
     </div>
     <div class="right">
       <!-- 根据选择渲染组件 -->
-      <selectTime :allQues='allQues' v-show="showactive == 1" ref="time"></selectTime>
-      <baseQues :allQues='allQues' v-show="showactive == 3" ref="base"></baseQues>
-      <sectionQues :allQues='allQues' v-show="showactive == 4" ref="section"></sectionQues>
-      <synth :allQues='allQues' v-show="showactive == 5"></synth>
+      <selectTime
+        :allQues="allQues"
+        v-show="showactive == 1"
+        ref="time"
+      ></selectTime>
+      <baseQues
+        :allQues="allQues"
+        v-show="showactive == 3"
+        ref="base"
+      ></baseQues>
+      <sectionQues
+        :allQues="allQues"
+        v-show="showactive == 4"
+        ref="section"
+      ></sectionQues>
+      <synth :allQues="allQues" v-show="showactive == 5"></synth>
     </div>
   </div>
 </template>
@@ -56,7 +68,7 @@ export default {
   data() {
     return {
       showactive: 1,
-      allQues:{}
+      allQues: {}
     }
   },
   methods: {
@@ -66,15 +78,16 @@ export default {
     },
     getQues() {
       const organizationId = sessionStorage.getItem('loginOrganizationId')
-      this.$http.get(`api/organization/interview/sign?organizationId=${organizationId}`)
-      .then((res) => {
-        console.log(res);
-        if(res.data.code != '00000') return
-        this.allQues = res.data.data
-      })
-      .catch((err) => {
-        console.log(err);
-      })
+      this.$http
+        .get(`api/organization/interview/sign?organizationId=${organizationId}`)
+        .then((res) => {
+          console.log(res)
+          if (res.data.code != '00000') return
+          this.allQues = res.data.data
+        })
+        .catch((err) => {
+          console.log(err)
+        })
     }
   },
   watch: {
@@ -93,7 +106,7 @@ export default {
   },
   mounted() {
     this.getQues()
-  },
+  }
 }
 </script>
 <style lang="less" scoped>

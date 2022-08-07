@@ -302,7 +302,7 @@ export default {
       })
     }
   },
-  props: ['sectionQues','departmentId'],
+  props: ['sectionQues', 'departmentId'],
   watch: {
     //弹出框位置修正
     chooseAdd() {
@@ -312,9 +312,9 @@ export default {
     },
     // 如果用户设置了问题 展示给用户
     sectionQues(newV) {
-      if(newV.length != 0) {
-        newV.forEach(p =>{
-          if(p.departmentId == this.departmentId) {
+      if (newV.length != 0) {
+        newV.forEach((p) => {
+          if (p.departmentId == this.departmentId) {
             this.departmentQuestionsList.push(p)
           }
         })
