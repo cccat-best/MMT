@@ -277,12 +277,14 @@ export default {
       // nextTimeLabel: '下一次面试时间'
     }
   },
+  created(){
+    this.searchKeyWord()
+  },
   // 定时更新数据和筛选项
   mounted() {
-    this.requestFilterItem()
     this.timerUpdate = setInterval(() => {
       setTimeout(this.requestFilterItem, 0)
-    }, 1000 * 600)
+    }, 1000 * 100)
   },
   beforeDestroy() {
     clearInterval(this.timerUpdate)
