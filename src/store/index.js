@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import problem from './problem'
-import transform from './transform'
-import dataBoard from './dataBoard'
+import problem from './modules/problem'
+import transform from './modules/transform'
+import dataBoard from './modules/dataBoard'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
