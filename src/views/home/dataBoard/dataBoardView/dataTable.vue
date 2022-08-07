@@ -2,6 +2,17 @@
   <div class="content">
     <!-- 搜索区域 -->
     <div class="seach-header">
+      <el-tooltip
+        class="item"
+        effect="dark"
+        content="取消所有筛选"
+        placement="top"
+      >
+        <i class="el-icon-folder-delete myRefresh" @click="searchKeyWord"></i>
+      </el-tooltip>
+      <el-tooltip class="item" effect="dark" content="刷新" placement="top">
+        <i class="el-icon-refresh-right myRefresh" @click="reFresh"></i>
+      </el-tooltip>
       <el-input
         v-model="searchWord"
         type="search"
@@ -54,7 +65,7 @@
       <!-- 班级 -->
       <el-table-column
         prop="className"
-        width="120px"
+        width="230px"
         align="center"
         label="班级"
         :filters.sync="classNameFilter"
@@ -277,12 +288,14 @@ export default {
       // nextTimeLabel: '下一次面试时间'
     }
   },
+  created() {
+    this.searchKeyWord()
+  },
   // 定时更新数据和筛选项
   mounted() {
-    this.requestFilterItem()
     this.timerUpdate = setInterval(() => {
       setTimeout(this.requestFilterItem, 0)
-    }, 1000 * 600)
+    }, 1000 * 100)
   },
   beforeDestroy() {
     clearInterval(this.timerUpdate)
@@ -321,6 +334,16 @@ export default {
       this.$refs.resumeDialog.studentId = true
       // this.$refs.resumeDialog.demo()
       console.log(data)
+    },
+    // 手动刷新
+    reFresh() {
+      // loading
+      this.myLoading = true
+      this.requestFilterItem()
+      // loading
+      setTimeout(() => {
+        this.myLoading = false
+      }, 300)
     },
     // 触发排序
     sortTableFun(data) {
@@ -784,15 +807,25 @@ export default {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 6px;
+  margin-right: 10px;
   padding: 0%;
   // height: 100px;
+  .myRefresh {
+    font-size: 20px;
+    margin-right: 15px;
+  }
+  // 刷新按钮变色
+  .myRefresh:hover {
+    font-size: 20px;
+    color: #409eff;
+  }
 }
 .searchInput {
   width: 300px;
   // display: block;
   // height: 34.4px;
-  margin-left: 20px;
+  // margin-left: 20px;
 }
 .search {
   width: 40vh;
@@ -839,6 +872,7 @@ export default {
     color: #ffffff;
     padding: 5px;
   }
+  // 表格右上角
   /deep/ .el-table__fixed-right-patch {
     background: #282e38;
   }
