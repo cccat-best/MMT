@@ -52,7 +52,7 @@ export default {
           iconClass: '',
           id: '2',
           title: '数据看板',
-          pagePath: '/home'
+          pagePath: '/home/dataBoard'
         },
         {
           iconClass: '',
