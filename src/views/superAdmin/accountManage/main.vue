@@ -760,5 +760,9 @@ export default {
   /deep/ th {
     padding: 5px;
   }
+  // 筛选图标替换
+  /deep/ .el-icon-arrow-down {
+    color: black;
+  }
 }
 </style>
