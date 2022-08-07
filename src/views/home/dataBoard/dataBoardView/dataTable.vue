@@ -2,6 +2,7 @@
   <div class="content">
     <!-- 搜索区域 -->
     <div class="seach-header">
+      <i class="el-icon-folder-delete myRefresh" @click="searchKeyWord"></i>
       <i class="el-icon-refresh-right myRefresh" @click="requestFilterItem"></i>
       <el-input
         v-model="searchWord"
@@ -55,7 +56,7 @@
       <!-- 班级 -->
       <el-table-column
         prop="className"
-        width="120px"
+        width="230px"
         align="center"
         label="班级"
         :filters.sync="classNameFilter"
@@ -787,11 +788,13 @@ export default {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 6px;
+  margin-right: 10px;
   padding: 0%;
   // height: 100px;
   .myRefresh {
     font-size: 20px;
+    margin-right: 15px;
   }
   // 刷新按钮变色
   .myRefresh:hover {
@@ -803,7 +806,7 @@ export default {
   width: 300px;
   // display: block;
   // height: 34.4px;
-  margin-left: 20px;
+  // margin-left: 20px;
 }
 .search {
   width: 40vh;
@@ -850,6 +853,7 @@ export default {
     color: #ffffff;
     padding: 5px;
   }
+  // 表格右上角
   /deep/ .el-table__fixed-right-patch {
     background: #282e38;
   }
