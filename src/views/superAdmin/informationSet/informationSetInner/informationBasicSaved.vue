@@ -88,23 +88,17 @@ export default {
       times: 0
     }
   },
-  methods: {
-    emitGetData() {
-      this.$bus.$emit('savedNeedData')
-      this.times++
-      console.log('触发了savedNeedData' + this.times + '次')
-    },
-    hearSendCommunityDataToChild() {
-      this.$bus.$on('sendCommunityDataToChild', (val) => {
-        console.log('Saved收到了数据:', val)
-        this.communityData = val.data
-        this.showMain = true
-      })
-    }
-  },
+  methods: {},
   mounted() {
-    this.hearSendCommunityDataToChild()
-    this.emitGetData()
+    this.$bus.$on('sendCommunityDataToChild', (val) => {
+      console.log('Saved收到了数据:', val)
+      this.communityData = val.data
+      this.showMain = true
+    })
+    this.$bus.$emit('savedNeedData')
+  },
+  beforeDestroy() {
+    this.$bus.$off('sendCommunityDataToChild')
   }
 }
 </script>

@@ -126,18 +126,20 @@ export default {
         .catch(function (error) {
           console.log(error)
         })
-    },
-    hearSaveNeedData() {
-      this.$bus.$on('savedNeedData', () => {
-        this.getCommunityData()
-      })
     }
   },
   mounted: function () {
     this.$nextTick(function () {
       // 仅在整个视图都被渲染之后才会运行的代码
     })
-    this.hearSaveNeedData()
+    this.$bus.$on('savedNeedData', () => {
+      console.log('Main组件监听到了savedNeedData的请求，开始发送请求')
+      this.getCommunityData()
+    })
+    this.$bus.$emit('savedNeedData')
+  },
+  beforeDestroy() {
+    this.$bus.$off('savedNeedData')
   }
 }
 </script>
