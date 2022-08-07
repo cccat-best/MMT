@@ -35,14 +35,18 @@ const routes = [
         component: () => import('../views/home/interviewReply/resultInform.vue')
       },
       {
+        path: 'personalInfo',
+        component: () => import('../views/personalInfo/personalInfo.vue')
+      },
+      {
+        path: 'interviewMain',
+        component: () => import('../views/home/interviewMain/interviewMain.vue')
+      },
+      {
         path: 'dataBoard',
         component: () => import('../views/home/dataBoard/main.vue')
       }
     ]
-  },
-  {
-    path: '/personalInfo',
-    component: () => import('../views/personalInfo/personalInfo.vue')
   },
   {
     path: '/superAdmin',
@@ -57,6 +61,28 @@ const routes = [
         //面试流程页面
         path: 'process',
         component: () => import('../views/superAdmin/interviewProcess/main.vue')
+      },
+      //东睿的宣传信息路由
+      {
+        path: 'informationSet',
+        component: () =>
+          import('../views/superAdmin/informationSet/informationSetMain.vue'),
+        children: [
+          {
+            path: 'informationSetEdit',
+            component: () =>
+              import(
+                '../views/superAdmin/informationSet/informationSetInner/informationBasicEdit.vue'
+              )
+          },
+          {
+            path: 'informationSetSaved',
+            component: () =>
+              import(
+                '../views/superAdmin/informationSet/informationSetInner/informationBasicSaved.vue'
+              )
+          }
+        ]
       }
     ]
   }
@@ -78,7 +104,6 @@ router.beforeEach((to, from, next) => {
     return next()
   }
   let cookies = document.cookie
-
   if (!cookies) {
     return next('/login')
   }
