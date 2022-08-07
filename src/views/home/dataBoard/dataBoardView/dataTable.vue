@@ -2,8 +2,17 @@
   <div class="content">
     <!-- 搜索区域 -->
     <div class="seach-header">
-      <i class="el-icon-folder-delete myRefresh" @click="searchKeyWord"></i>
-      <i class="el-icon-refresh-right myRefresh" @click="requestFilterItem"></i>
+      <el-tooltip
+        class="item"
+        effect="dark"
+        content="取消所有筛选"
+        placement="top"
+      >
+        <i class="el-icon-folder-delete myRefresh" @click="searchKeyWord"></i>
+      </el-tooltip>
+      <el-tooltip class="item" effect="dark" content="刷新" placement="top">
+        <i class="el-icon-refresh-right myRefresh" @click="reFresh"></i>
+      </el-tooltip>
       <el-input
         v-model="searchWord"
         type="search"
@@ -325,6 +334,16 @@ export default {
       this.$refs.resumeDialog.studentId = true
       // this.$refs.resumeDialog.demo()
       console.log(data)
+    },
+    // 手动刷新
+    reFresh() {
+      // loading
+      this.myLoading = true
+      this.requestFilterItem()
+      // loading
+      setTimeout(() => {
+        this.myLoading = false
+      }, 300)
     },
     // 触发排序
     sortTableFun(data) {
