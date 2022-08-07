@@ -47,14 +47,14 @@ export default {
           iconClass: '',
           id: '1',
           title: '面试总看板',
-          pagePath: '/home'
+          pagePath: '/home/interviewMain'
         },
         {
           index: '/home',
           iconClass: '',
           id: '2',
           title: '数据看板',
-          pagePath: '/home'
+          pagePath: '/home/dataBoard'
         },
         {
           index: '/home/arrangement',
