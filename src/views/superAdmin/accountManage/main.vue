@@ -130,12 +130,18 @@
       @selection-change="handleSelectionChange"
     >
       <!-- 注意上面有tableList -->
-      <el-table-column type="selection" align="center" fixed> </el-table-column>
+      <el-table-column
+        type="selection"
+        align="center"
+        fixed
+        min-width="50px"
+      ></el-table-column>
       <el-table-column
         prop="studentId"
         label="学号"
         sortable="custom"
         align="center"
+        min-width="120px"
         fixed
       >
       </el-table-column>
@@ -146,6 +152,8 @@
       <el-table-column
         prop="permission"
         label="用户权限"
+        align="center"
+        min-width="120px"
         sortable="custom"
         :filters="[
           { text: 'committee', value: 'committee' },
@@ -155,13 +163,18 @@
         :filter-multiple="false"
       >
       </el-table-column>
-      <el-table-column prop="phone" label="手机号" align="center">
+      <el-table-column
+        prop="phone"
+        label="手机号"
+        min-width="120px"
+        align="center"
+      >
         <!-- 脱敏显示 -->
         <template slot-scope="scope">
           {{ scope.row.phone | replacestar }}
         </template>
       </el-table-column>
-      <el-table-column label="修改账号" align="center">
+      <el-table-column label="修改账号" min-width="120px" align="center">
         <!-- 单次删除需要scope来传数据 -->
         <template slot-scope="scope">
           <el-button
@@ -208,7 +221,7 @@
           </el-button>
         </template>
       </el-table-column>
-      <el-table-column label="修改密码" align="center">
+      <el-table-column label="修改密码" min-width="120px" align="center">
         <template slot-scope="scope">
           <el-button
             size="mini"
@@ -241,7 +254,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="删除账号" align="center">
+      <el-table-column label="删除账号" min-width="120px" align="center">
         <template slot-scope="scope">
           <el-button
             size="medium"
