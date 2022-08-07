@@ -63,11 +63,24 @@
 
 <script>
 export default {
+  name: 'informationBasicSaved',
   data() {
     return {
       circleUrl:
-        'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg'
+        'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
+      communityData: {}
     }
+  },
+  methods: {
+    sendCommunityData() {
+      this.$bus.$on('sendCommunityData', (val) => {
+        console.log('Saved组件收到了sendCommunityData数据为：', val)
+        this.communityData = val
+      })
+    }
+  },
+  mounted() {
+    this.sendCommunityData()
   }
 }
 </script>

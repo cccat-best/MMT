@@ -81,16 +81,16 @@
 
 <script>
 export default {
+  name: 'informationSetMain',
   data() {
     return {
       //状态变蓝色
       blue: 1,
       //用于存储社团信息
-      communityInformation: {},
+      communityData: {},
       //切换编辑页面和保存页面
       editable: false,
-      organizationId: sessionStorage.getItem('loginOrganizationId'),
-      communityData: {}
+      organizationId: sessionStorage.getItem('loginOrganizationId')
     }
   },
   methods: {
@@ -119,12 +119,14 @@ export default {
           organizationId: 1
         })
         .then((response) => {
-          this.communityData = JSON.stringify(response.data)
-          console.log(this)
+          this.communityData = JSON.parse(JSON.stringify(response.data))
+          console.log('收到了服务器的响应:结果是', this.communityData)
+          this.$bus.$emit('sendCommunityData', this.communityData)
         })
         .catch(function (error) {
           console.log(error)
         })
+      // this.$bus.$emit('alreadyGetCommunityData')
     }
   },
   mounted: function () {
