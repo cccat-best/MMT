@@ -90,13 +90,14 @@ export default {
             if (res.data.code === '00000') {
               this.$message.success('恭喜你，登录成功')
               // 存储数据
+              console.log(this);
               this.loginOrganizationName = JSON.stringify(
                 res.data.data.loginOrganizationName
               )
               this.loginOrganizationId = JSON.stringify(
                 res.data.data.loginOrganizationId
               )
-              this.$router.push('/interviewMain')
+              this.$router.push('/home/interviewMain')
             } else {
               this.$message({
                 showClose: true,
