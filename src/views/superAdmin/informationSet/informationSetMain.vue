@@ -121,19 +121,23 @@ export default {
         .then((response) => {
           this.communityData = JSON.parse(JSON.stringify(response.data))
           console.log('收到了服务器的响应:结果是', this.communityData)
-          this.$bus.$emit('sendCommunityData', this.communityData)
+          this.$bus.$emit('sendCommunityDataToChild', this.communityData)
         })
         .catch(function (error) {
           console.log(error)
         })
-      // this.$bus.$emit('alreadyGetCommunityData')
+    },
+    hearSaveNeedData() {
+      this.$bus.$on('savedNeedData', () => {
+        this.getCommunityData()
+      })
     }
   },
   mounted: function () {
     this.$nextTick(function () {
       // 仅在整个视图都被渲染之后才会运行的代码
     })
-    this.getCommunityData()
+    this.hearSaveNeedData()
   }
 }
 </script>
@@ -184,6 +188,9 @@ export default {
   background: rgba(158, 158, 158, 0.381);
 }
 .editBtn {
+  position: fixed;
+  right: 50px;
+  top: 140px;
   width: 100px;
   height: 40px;
   line-height: 45px;

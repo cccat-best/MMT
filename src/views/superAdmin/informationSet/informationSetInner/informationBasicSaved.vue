@@ -1,5 +1,5 @@
 <template>
-  <div class="informationBasicSaved">
+  <div class="informationBasicSaved" v-if="showMain === true">
     <div class="basicInformationTitle" id="basicInformation">基本信息</div>
     <!-- 下面是基本信息 -->
     <div class="informationBasicSavedMid">
@@ -11,16 +11,19 @@
       <div class="informationRight">
         <div>
           <span class="informationRightFont">社团名称：</span
-          ><span>辩论队</span>
+          ><span>{{ communityData.name }}</span>
         </div>
         <div>
-          <el-tag size="medium" class="tags" effect="dark">校级组织</el-tag>
-          <el-tag size="medium" class="tags" type="success" effect="dark"
-            >学术科技</el-tag
-          >
+          <el-tag size="medium" class="tags" effect="dark">{{
+            communityData.tag.tagA
+          }}</el-tag>
+          <el-tag size="medium" class="tags" type="success" effect="dark">{{
+            communityData.tag.tagB
+          }}</el-tag>
         </div>
         <div>
           <span class="informationRightFont">简介：</span>
+          <span>{{ communityData.briefIntroduction }}</span>
         </div>
       </div>
     </div>
@@ -30,28 +33,39 @@
     <!-- 下面是社团宣传 -->
     <div class="associations">
       <div class="associationsBox">
-        <div class="associationsTitleFont">联系方式</div>
-        <div class="associationsTitleFontWhite">xxxxxxxxxxxxx</div>
+        <div
+          class="associationsTitleFont"
+          v-if="communityData.contactInfo != null"
+        >
+          联系方式
+        </div>
+        <div class="associationsTitleFontWhite">
+          {{ communityData.contactInfo }}
+        </div>
       </div>
-      <div class="associationsBox">
+      <div class="associationsBox" v-if="communityData.slogan != null">
         <div class="associationsTitleFont">纳新宣言</div>
-        <div class="associationsTitleFontWhite">xxxxxxxxxxxxx</div>
+        <div class="associationsTitleFontWhite">{{ communityData.slogan }}</div>
       </div>
-      <div class="associationsBox">
+      <div class="associationsBox" v-if="communityData.introduction != null">
         <div class="associationsTitleFont">社团介绍</div>
-        <div class="associationsTitleFontWhite">xxxxxxxxxxxxx</div>
+        <div class="associationsTitleFontWhite">
+          {{ communityData.introduction }}
+        </div>
       </div>
-      <div class="associationsBox">
+      <div class="associationsBox" v-if="communityData.feature != null">
         <div class="associationsTitleFont">社团特色</div>
-        <div class="associationsTitleFontWhite">xxxxxxxxxxxxx</div>
+        <div class="associationsTitleFontWhite">
+          {{ communityData.feature }}
+        </div>
       </div>
-      <div class="associationsBox">
+      <div class="associationsBox" v-if="communityData.daily != null">
         <div class="associationsTitleFont">社团日常</div>
-        <div class="associationsTitleFontWhite">xxxxxxxxxxxxx</div>
+        <div class="associationsTitleFontWhite">{{ communityData.daily }}</div>
       </div>
-      <div class="associationsBox">
+      <div class="associationsBox" v-if="communityData.more != null">
         <div class="associationsTitleFont">更多</div>
-        <div class="associationsTitleFontWhite">xxxxxxxxxxxxx</div>
+        <div class="associationsTitleFontWhite">{{ communityData.more }}</div>
       </div>
     </div>
     <!-- 社团宣传结束 -->
@@ -68,19 +82,29 @@ export default {
     return {
       circleUrl:
         'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
-      communityData: {}
+      communityData: {},
+      showMain: false,
+      //用于测试触发多少次saveNeedData
+      times: 0
     }
   },
   methods: {
-    sendCommunityData() {
-      this.$bus.$on('sendCommunityData', (val) => {
-        console.log('Saved组件收到了sendCommunityData数据为：', val)
-        this.communityData = val
+    emitGetData() {
+      this.$bus.$emit('savedNeedData')
+      this.times++
+      console.log('触发了savedNeedData' + this.times + '次')
+    },
+    hearSendCommunityDataToChild() {
+      this.$bus.$on('sendCommunityDataToChild', (val) => {
+        console.log('Saved收到了数据:', val)
+        this.communityData = val.data
+        this.showMain = true
       })
     }
   },
   mounted() {
-    this.sendCommunityData()
+    this.hearSendCommunityDataToChild()
+    this.emitGetData()
   }
 }
 </script>
@@ -91,6 +115,7 @@ export default {
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
+  margin-top: 65px;
 }
 .informationBasicSavedMid {
   width: 70vw;
