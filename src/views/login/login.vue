@@ -24,7 +24,6 @@
           >
           </el-input>
         </el-form-item>
-        <!-- <el-form-item label="密码" class="psw" prop="password" :error="err"> -->
         <el-form-item label="密码" class="psw" prop="password">
           <el-input
             placeholder="请输入密码"
@@ -45,67 +44,66 @@
   </el-container>
 </template>
 <script>
-import { mapMutations } from "vuex";
-import { mapState } from "vuex";
-import loginData from "./loginData";
+import { mapMutations } from 'vuex'
+import { mapState } from 'vuex'
+import loginData from './loginData'
 
 export default {
-  name: "Login",
+  name: 'Login',
   data() {
     return {
       ...loginData.data()
-    };
+    }
   },
   watch: {},
   computed: {
-    ...mapState("transform", ["all"])
+    ...mapState('transform', ['all'])
   },
   mounted() {
-    this.loginForm.studentId = this.all.Id;
-    this.loginForm.password = this.all.psw;
-    this.clearData();
+    this.loginForm.studentId = this.all.Id
+    this.loginForm.password = this.all.psw
+    this.clearData()
   },
   methods: {
-    ...mapMutations("transform", ["clearData"]),
+    ...mapMutations('transform', ['clearData']),
     goRegister() {
-      this.$router.push("/register").catch(() => {
-      });
+      this.$router.push('/register').catch(() => {})
     },
     goLogin() {
-      if (this.loginForm.studentId === "") {
+      if (this.loginForm.studentId === '') {
         this.$message({
           showClose: true,
-          message: "请输入账号",
-          type: "error"
-        });
-      } else if (this.loginForm.password === "") {
+          message: '请输入账号',
+          type: 'error'
+        })
+      } else if (this.loginForm.password === '') {
         this.$message({
           showClose: true,
-          message: "请输入密码",
-          type: "error"
-        });
+          message: '请输入密码',
+          type: 'error'
+        })
       } else {
         this.$http
-          .post("api/login/b", this.loginForm)
+          .post('api/login/b', this.loginForm)
           .then((res) => {
-            if (res.data.code === "00000") {
-              this.$message.success("恭喜你，登录成功");
+            if (res.data.code === '00000') {
+              this.$message.success('恭喜你，登录成功')
               // 存储数据
               sessionStorage.setItem(
-                "loginOrganizationName",
+                'loginOrganizationName',
                 res.data.data.loginOrganizationName
-              );
+              )
               sessionStorage.setItem(
-                "loginOrganizationId",
+                'loginOrganizationId',
                 res.data.data.loginOrganizationId
-              );
-              this.$router.push("/home/interviewMain");
+              )
+              this.$router.push('/home/interviewMain')
             } else {
               this.$message({
                 showClose: true,
                 message: res.data.message,
-                type: "error"
-              });
+                type: 'error'
+              })
             }
           })
           .catch((err) => {
@@ -113,14 +111,14 @@ export default {
             this.$message({
               showClose: true,
               message: err,
-              type: "warning"
-            });
-          });
+              type: 'warning'
+            })
+          })
       }
     }
   },
   components: {}
-};
+}
 </script>
 <style lang="less" scoped>
 .father {
