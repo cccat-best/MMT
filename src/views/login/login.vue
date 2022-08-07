@@ -45,6 +45,7 @@
   </el-container>
 </template>
 <script>
+import { mapMutations } from 'vuex'
 import { mapState } from 'vuex'
 import loginData from './loginData'
 export default {
@@ -64,6 +65,7 @@ export default {
     this.clearData()
   },
   methods: {
+    ...mapMutations('transform', ['clearData']),
     goRegister() {
       this.$router.push('/register').catch(() => {})
     },
@@ -87,12 +89,11 @@ export default {
           .then((res) => {
             if (res.data.code === '00000') {
               this.$message.success('恭喜你，登录成功')
-              sessionStorage.setItem(
-                'loginOrganizationName',
+              // 存储数据
+              this.loginOrganizationName = JSON.stringify(
                 res.data.data.loginOrganizationName
               )
-              sessionStorage.setItem(
-                'loginOrganizationId',
+              this.loginOrganizationId = JSON.stringify(
                 res.data.data.loginOrganizationId
               )
               this.$router.push('/interviewMain')
@@ -114,7 +115,8 @@ export default {
           })
       }
     }
-  }
+  },
+  components: {}
 }
 </script>
 <style lang="less" scoped>
