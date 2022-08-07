@@ -8,6 +8,7 @@
             currentPage * pagesize
           )
         "
+        height="auto"
         :header-cell-style="{ 'text-align': 'center', height: 0 + 'px' }"
         style="width: 100%; border-radius: 8px; overflow: hidden"
         :row-style="{ height: 0 + 'px' }"
@@ -67,19 +68,19 @@
               >&nbsp;--&nbsp;&nbsp;--&nbsp;</span
             >
             <span
-              v-if="scope.row.status == 1"
+              v-else-if="scope.row.status == 1"
               class="tag"
               style="background-color: #fb9495"
               >&nbsp;失败&nbsp;</span
             >
             <span
-              v-if="scope.row.status == 2"
+              v-else-if="scope.row.status == 2"
               class="tag"
               style="background-color: #89e051"
               >&nbsp;通过&nbsp;</span
             >
             <span
-              v-if="scope.row.status == 3"
+              v-else-if="scope.row.status == 3"
               class="tag"
               style="background-color: #fbd53c"
               >&nbsp;待定&nbsp;</span
@@ -161,10 +162,10 @@ export default {
       roomId: 0,
       keyWord: '',
       page: 1,
-      win: 4,
+      win: 3,
       pass: 3,
       wait: 3,
-      nedit: 1,
+      nedit: 2,
       information: [
         {
           studentId: 20220001,
@@ -244,7 +245,7 @@ export default {
             }
           ],
           totalScore: 80,
-          status: 1
+          status: 0
         },
         {
           studentId: 20220006,
@@ -276,7 +277,7 @@ export default {
             }
           ],
           totalScore: 80,
-          status: 2
+          status: 1
         },
         {
           studentId: 20220008,
@@ -347,17 +348,20 @@ export default {
   },
   methods: {
     pd(e) {
-      if (e == 0) {
-        return '- -'
-      }
-      if (e == 1) {
-        return '失败'
-      }
-      if (e == 2) {
-        return '通过'
-      }
-      if (e == 3) {
-        return '待定'
+      switch (e) {
+        case 0:
+          return '- -'
+        case 1:
+          return '失败'
+
+        case 2:
+          return '通过'
+
+        case 3:
+          return '待定'
+
+        default:
+          return '- -'
       }
     },
     indexMethod(index) {
@@ -718,7 +722,7 @@ export default {
   align-items: center;
 }
 :deep(.el-dialog) {
-  border-radius: 10px;
+  border-radius: 15px;
 }
 :deep(.el-row) {
   margin-bottom: 20px;

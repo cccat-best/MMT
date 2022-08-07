@@ -35,21 +35,26 @@ export default {
   min-width: 1200px;
   min-height: 590px;
   display: flex;
-  justify-content: space-around;
-  align-items: center;
-  background-color: white;
-  border-radius: 10px;
+  /* justify-content: center; */
+  /* align-items: center; */
 }
 .left {
+  padding-left: 3%;
+  padding-right: 3%;
+  width: 56%;
   height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
+  background-color: white;
+  border-radius: 15px;
+  margin-right: 2%;
 }
 .right {
+  width: 42%;
   height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
 }
 </style>

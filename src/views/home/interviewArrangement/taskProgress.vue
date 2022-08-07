@@ -53,6 +53,17 @@ export default {
 }
 </script>
 <style scoped>
+.dingwei {
+  width: 100%;
+  height: 40%;
+  margin-bottom: 4%;
+  background-color: white;
+  border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
 .figure {
   margin-bottom: 20px;
 }

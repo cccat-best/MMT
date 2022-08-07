@@ -28,9 +28,14 @@
           tableData.slice((currentPage - 1) * pagesize, currentPage * pagesize)
         "
         :header-cell-style="{ 'text-align': 'center' }"
+        height="291px"
         border
         ref="table"
-        style="border-radius: 8px; box-shadow: 2px 2px 4px 2px #e5e9f2"
+        style="
+          border-radius: 8px;
+          box-shadow: 2px 2px 4px 2px #e5e9f2;
+          width: 632px;
+        "
         :row-style="{ height: 0 + 'px' }"
         :cell-style="{ padding: 0 + 'px', 'text-align': 'center' }"
       >
@@ -480,9 +485,9 @@ export default {
       this.$bus.$emit('order', this.order)
     },
     getCurrentRow(row) {
-      this.$bus.$emit('selectionName1', row.name)
+      this.$bus.$emit('selectionName1', row.studentName)
       this.$bus.$emit('selectionStudentId1', row.studentId)
-      this.$bus.$emit('selectiondepartmentName', row.departmentName)
+      this.$bus.$emit('selectiondepartmentName', row.departmentName[0].name)
     }
   }
   // created() {
