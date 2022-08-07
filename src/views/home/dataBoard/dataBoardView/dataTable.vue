@@ -2,6 +2,7 @@
   <div class="content">
     <!-- 搜索区域 -->
     <div class="seach-header">
+      <i class="el-icon-refresh-right myRefresh" @click="requestFilterItem"></i>
       <el-input
         v-model="searchWord"
         type="search"
@@ -789,6 +790,14 @@ export default {
   margin-bottom: 10px;
   padding: 0%;
   // height: 100px;
+  .myRefresh {
+    font-size: 20px;
+  }
+  // 刷新按钮变色
+  .myRefresh:hover {
+    font-size: 20px;
+    color: #409eff;
+  }
 }
 .searchInput {
   width: 300px;
