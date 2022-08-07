@@ -277,7 +277,7 @@ export default {
       // nextTimeLabel: '下一次面试时间'
     }
   },
-  created(){
+  created() {
     this.searchKeyWord()
   },
   // 定时更新数据和筛选项
