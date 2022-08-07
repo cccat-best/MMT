@@ -355,7 +355,7 @@ export default {
       showactive2: 0, //第二个按钮
 
       // 关键字搜索
-      organizationId: 2, ////组织名不知道，需要询问////////////////////////
+      organizationId: 1, ////组织名不知道，需要询问////////////////////////
       searchWord: '',
       data: '', //发请求的data
       order: 'asc', //排序顺序，默认升序
