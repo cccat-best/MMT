@@ -174,7 +174,7 @@
           {{ scope.row.phone | replacestar }}
         </template>
       </el-table-column>
-      <el-table-column label="修改账号" min-width="120px" align="center">
+      <el-table-column label="操作" min-width="250px" align="center">
         <!-- 单次删除需要scope来传数据 -->
         <template slot-scope="scope">
           <el-button
@@ -182,54 +182,52 @@
             class="buttonMove"
             @click="DialogVisibleChangeAccount(scope.row)"
           >
-            <svg
-              class="svgColor1"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 48 48"
-              width="23"
-              height="23"
-              style="
-                border-color: rgba(187, 187, 187, 1);
-                border-width: 0px;
-                border-style: solid;
-              "
-              filter="none"
-            >
-              <g>
-                <rect
-                  width="48"
-                  height="48"
-                  fill="rgba(16.065,16.065,16.065,1)"
-                  fill-opacity="0.01"
-                  stroke="none"
-                ></rect>
-                <path
-                  d="M42 26V40C42 41.1046 41.1046 42 40 42H8C6.89543 42 6 41.1046 6 40V8C6 6.89543 6.89543 6 8 6L22 6"
-                  stroke-width="4"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  fill="none"
-                ></path>
-                <path
-                  d="M14 26.7199V34H21.3172L42 13.3081L34.6951 6L14 26.7199Z"
-                  fill="none"
-                  stroke-width="4"
-                  stroke-linejoin="round"
-                ></path>
-              </g>
-            </svg>
+            <el-tooltip content="修改账号" placement="top">
+              <svg
+                class="svgColor1"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 48 48"
+                width="23"
+                height="23"
+                style="
+                  border-color: rgba(187, 187, 187, 1);
+                  border-width: 0px;
+                  border-style: solid;
+                "
+                filter="none"
+              >
+                <g>
+                  <rect
+                    width="48"
+                    height="48"
+                    fill="rgba(16.065,16.065,16.065,1)"
+                    fill-opacity="0.01"
+                    stroke="none"
+                  ></rect>
+                  <path
+                    d="M42 26V40C42 41.1046 41.1046 42 40 42H8C6.89543 42 6 41.1046 6 40V8C6 6.89543 6.89543 6 8 6L22 6"
+                    stroke-width="4"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    fill="none"
+                  ></path>
+                  <path
+                    d="M14 26.7199V34H21.3172L42 13.3081L34.6951 6L14 26.7199Z"
+                    fill="none"
+                    stroke-width="4"
+                    stroke-linejoin="round"
+                  ></path>
+                </g>
+              </svg>
+            </el-tooltip>
           </el-button>
-        </template>
-      </el-table-column>
-      <el-table-column label="修改密码" min-width="120px" align="center">
-        <template slot-scope="scope">
           <el-button
             size="mini"
             type="text"
             class="buttonMove"
             @click="handleKeyEdit(scope.row)"
           >
-            <div>
+            <el-tooltip content="修改密码" placement="top">
               <svg
                 class="svgColor"
                 xmlns="http://www.w3.org/2000/svg"
@@ -249,13 +247,8 @@
                   ></path>
                 </g>
               </svg>
-            </div>
+            </el-tooltip>
           </el-button>
-        </template>
-      </el-table-column>
-
-      <el-table-column label="删除账号" min-width="120px" align="center">
-        <template slot-scope="scope">
           <el-button
             size="medium"
             type="text"
@@ -263,26 +256,28 @@
             @click="handleDelete(scope.$index, scope.row)"
           >
             <div>
-              <svg
-                class="svgColor"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 32 32"
-                width="23"
-                height="23"
-                style="
-                  border-color: rgba(187, 187, 187, 1);
-                  border-width: 0px;
-                  border-style: solid;
-                "
-                filter="none"
-              >
-                <g>
-                  <path
-                    d="M8.032 28.64c0.032 0.768 0.64 1.376 1.408 1.376h13.152c0.736 0 1.376-0.608 1.408-1.376l0.928-19.84h-17.856l0.96 19.84zM18.976 13.728c0-0.288 0.256-0.544 0.576-0.544h0.928c0.32 0 0.576 0.256 0.576 0.544v11.36c0 0.288-0.288 0.544-0.576 0.544h-0.928c-0.32 0-0.576-0.256-0.576-0.544v-11.36zM14.976 13.728c0-0.288 0.256-0.544 0.576-0.544h0.928c0.297 0.009 0.535 0.247 0.544 0.543l0 0.001v11.36c-0.009 0.297-0.247 0.535-0.543 0.544l-0.001 0h-0.928c-0.32 0-0.576-0.256-0.576-0.544v-11.36zM10.976 13.728c0-0.288 0.256-0.544 0.576-0.544h0.896c0.32 0 0.576 0.256 0.576 0.544v11.36c0 0.288-0.256 0.544-0.576 0.544h-0.896c-0.32 0-0.576-0.256-0.576-0.544v-11.36zM25.568 3.456h-6.080v-1.152c0-0.16-0.128-0.32-0.288-0.32h-6.368c-0.16 0-0.32 0.16-0.32 0.32v1.152h-6.048c-0.48 0-0.896 0.384-0.896 0.864v2.784h20.864v-2.784c0-0.001 0-0.003 0-0.004 0-0.475-0.385-0.86-0.86-0.86-0.001 0-0.003 0-0.004 0h0z"
-                    stroke="none"
-                  ></path>
-                </g>
-              </svg>
+              <el-tooltip content="删除账号" placement="top">
+                <svg
+                  class="svgColor"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 32 32"
+                  width="23"
+                  height="23"
+                  style="
+                    border-color: rgba(187, 187, 187, 1);
+                    border-width: 0px;
+                    border-style: solid;
+                  "
+                  filter="none"
+                >
+                  <g>
+                    <path
+                      d="M8.032 28.64c0.032 0.768 0.64 1.376 1.408 1.376h13.152c0.736 0 1.376-0.608 1.408-1.376l0.928-19.84h-17.856l0.96 19.84zM18.976 13.728c0-0.288 0.256-0.544 0.576-0.544h0.928c0.32 0 0.576 0.256 0.576 0.544v11.36c0 0.288-0.288 0.544-0.576 0.544h-0.928c-0.32 0-0.576-0.256-0.576-0.544v-11.36zM14.976 13.728c0-0.288 0.256-0.544 0.576-0.544h0.928c0.297 0.009 0.535 0.247 0.544 0.543l0 0.001v11.36c-0.009 0.297-0.247 0.535-0.543 0.544l-0.001 0h-0.928c-0.32 0-0.576-0.256-0.576-0.544v-11.36zM10.976 13.728c0-0.288 0.256-0.544 0.576-0.544h0.896c0.32 0 0.576 0.256 0.576 0.544v11.36c0 0.288-0.256 0.544-0.576 0.544h-0.896c-0.32 0-0.576-0.256-0.576-0.544v-11.36zM25.568 3.456h-6.080v-1.152c0-0.16-0.128-0.32-0.288-0.32h-6.368c-0.16 0-0.32 0.16-0.32 0.32v1.152h-6.048c-0.48 0-0.896 0.384-0.896 0.864v2.784h20.864v-2.784c0-0.001 0-0.003 0-0.004 0-0.475-0.385-0.86-0.86-0.86-0.001 0-0.003 0-0.004 0h0z"
+                      stroke="none"
+                    ></path>
+                  </g>
+                </svg>
+              </el-tooltip>
             </div>
           </el-button>
         </template>
@@ -734,9 +729,9 @@ export default {
 }
 //
 // 使图标对齐文字
-// .buttonMove {
-// margin-left: 20px;
-// }
+.buttonMove {
+  margin: 0 40px;
+}
 .search {
   width: 40vh;
   height: 100px;
