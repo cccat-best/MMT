@@ -1,7 +1,10 @@
 <template>
   <div class="time-content">
+    <div class="organize-show">{{organizeShow}}</div>
     <div class="time-title">
-      <div class="title-main">报名时间</div>
+      <div class="title-main">
+       报名时间
+      </div>
       <div class="title-in">
         根据自身情况来设置报名开始时间和停止时间（结束时间尚未确定可以填一个相对靠后的时间）
       </div>
@@ -15,7 +18,7 @@
           start-placeholder="开始日期"
           end-placeholder="结束日期"
           class="time-select"
-          value-format="yyyy-MM-dd hh:mm:ss"
+          value-format="yyyy-MM-dd HH:mm:ss"
         >
         </el-date-picker>
       </div>
@@ -28,7 +31,8 @@ import { mapMutations } from 'vuex'
 export default {
   data() {
     return {
-      value1: ''
+      value1: '',
+      organizeShow:'科技协会第一次纳新'
     }
   },
   methods: {
@@ -36,12 +40,23 @@ export default {
     packge() {
       this.updateTime(this.value1)
     }
+  },
+  props:['allQues'],
+  watch:{
+    // 如果用户设置过时间 展示
+    allQues(newV) {
+      let timeTemp = []
+      timeTemp[0] = newV.startTime
+      timeTemp[1] = newV.endTime
+      this.value1 = timeTemp
+    }
   }
 }
 </script>
 
 <style lang="less" scoped>
 .time-content {
+  margin-top: 25px;
   .time-title {
     margin-top: 10px;
     color: #838383;
@@ -49,15 +64,25 @@ export default {
     flex-direction: column;
     .title-main {
       display: flex;
-      font-size: 30px;
+      font-size: 28px;
       color: #838383;
+      margin-left: 30px;
+      margin-top: 20px;
+      margin-bottom: 7px;
     }
     .title-in {
       margin-top: 20px;
       margin-left: 30px;
       display: flex;
-      font-size: 16px;
+      font-size: 18px;
     }
+  }
+  .organize-show{
+    margin: 10px 0;
+    display: flex;
+    align-items: center;
+    font-size: 30px;
+    color: #838383;
   }
   .block {
     width: 660px;
@@ -67,7 +92,7 @@ export default {
     .time-select {
       height: 100%;
       width: 100%;
-      margin-top: 60px;
+      margin-top: 40px;
     }
   }
 }

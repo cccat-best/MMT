@@ -33,7 +33,11 @@
           部门{{ i + 1 }}：{{ item.departmentName }}
         </div>
         <!-- 问题展示区&&添加区 -->
-        <addQues :departmentId="item.departmentId" ref="a"></addQues>
+        <addQues
+          :sectionQues="sectionQues"
+          :departmentId="item.departmentId"
+          ref="a"
+        ></addQues>
       </div>
     </div>
   </div>
@@ -54,7 +58,8 @@ export default {
       //部门数组
       departmentList: [],
       //如果部门数为1不显示调剂按钮
-      departmentCount: 0
+      departmentCount: 0,
+      sectionQues: []
     }
   },
   mounted() {
@@ -79,9 +84,25 @@ export default {
       )
       //判断是否请求成功
       if (res.code != '00000') return this.$message.error('部门' + res.message)
-      //成功
+      //成功后 发送请求 查看用户是否设置过问题
+      this.getSectionQues()
       this.departmentCount = res.data.departmentList.length
       this.departmentList = res.data.departmentList
+    },
+    // 如果用户第二次登录得到部门问题
+    getSectionQues() {
+      const organizationId = sessionStorage.getItem('loginOrganizationId')
+      this.$http
+        .get(`api/organization/interview/sign?organizationId=${organizationId}`)
+        .then((res) => {
+          if(res.data.code != '00000') return
+            this.maxDepartment = res.data.data.maxDepartment
+            this.allocated = res.data.data.allocated
+            this.sectionQues = res.data.data.departmentQuestionsList
+        })
+        .catch((err) => {
+          console.log(err)
+        })
     }
   }
 }
@@ -103,6 +124,7 @@ export default {
       .section-content-top-max {
         .section-content-top-max-title {
           padding-right: 5px;
+          font-size: 16px;
         }
       }
       .section-content-top-allocated {
@@ -121,5 +143,15 @@ export default {
       }
     }
   }
+}
+input:focus {
+  border: 1px solid #535858 !important;
+  outline: none;
+}
+input {
+  padding-left: 10px;
+}
+select:focus {
+  outline: none;
 }
 </style>

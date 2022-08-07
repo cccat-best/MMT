@@ -16,7 +16,7 @@
             <span class="freeView-name">{{ item1.description }}</span>
           </div>
           <!-- 展示选项 -->
-          <select class="freeView-select" v-show="item1.selection">
+          <select class="freeView-select" v-if="item1.selection">
             <option
               selected="selected"
               disabled="disabled"
@@ -32,7 +32,7 @@
             </option>
           </select>
           <!--  展示input框-->
-          <input type="text" v-show="!item1.selection" class="freeView-input" />
+          <input type="text" v-if="!item1.selection" class="freeView-input" />
         </div>
       </div>
     </div>
@@ -302,13 +302,23 @@ export default {
       })
     }
   },
-  props: ['departmentId'],
+  props: ['sectionQues','departmentId'],
   watch: {
     //弹出框位置修正
     chooseAdd() {
       this.$nextTick(() => {
         this.$refs.addPopover.updatePopper()
       })
+    },
+    // 如果用户设置了问题 展示给用户
+    sectionQues(newV) {
+      if(newV.length != 0) {
+        newV.forEach(p =>{
+          if(p.departmentId == this.departmentId) {
+            this.departmentQuestionsList.push(p)
+          }
+        })
+      }
     }
   }
 }
@@ -348,12 +358,13 @@ export default {
     .freeView-input {
       width: 166px;
       border-radius: 5px;
-      border: 1px solid #0f2d2d;
+      border: 1px solid #cecece;
     }
     .freeView-select {
       width: 167px;
       border-radius: 5px;
-      border: 1px solid #0f2d2d;
+      border: 1px solid #cecece;
+      height: 25px;
     }
   }
 }
@@ -364,11 +375,25 @@ export default {
   .add-botton {
     color: white;
     background-color: #02a8ef;
-    margin-bottom: 30px;
+    margin-bottom: 15px;
   }
   .synth-add-chose {
     display: flex;
     justify-content: center;
   }
+}
+input:focus {
+  border: 1px solid #535858 !important;
+  outline: none;
+}
+input {
+  width: 166px !important;
+  padding-left: 10px;
+  box-sizing: border-box;
+  height: 25px !important;
+}
+select:focus {
+  outline: none;
+  border: 1px solid #535858 !important;
 }
 </style>

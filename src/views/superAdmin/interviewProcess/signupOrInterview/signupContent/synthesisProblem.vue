@@ -18,8 +18,9 @@
             <div class="freeView-name-content">
               <span class="freeView-name">{{ item1.description }}</span>
             </div>
-            <!-- 展示选项 -->
-            <select class="freeView-select" v-show="item1.selection">
+            <div class="freeView-name-choose">
+              <!-- 展示选项 -->
+            <select class="freeView-select" v-if="item1.selection">
               <option
                 selected="selected"
                 disabled="disabled"
@@ -37,9 +38,10 @@
             <!--  展示input框-->
             <input
               type="text"
-              v-show="!item1.selection"
+              v-if="!item1.selection"
               class="freeView-input"
             />
+            </div>
           </div>
         </div>
       </div>
@@ -67,7 +69,7 @@
           <div v-show="chooseAdd === 1">
             <el-input
               type="textarea"
-              :rows="4"
+              :rows="2"
               placeholder="请输入问题上限50个字"
               v-model="text1"
               maxlength="50"
@@ -154,6 +156,7 @@
 <script>
 import { mapState } from 'vuex'
 export default {
+  props:['allQues'],
   data() {
     return {
       // 上限五个问题
@@ -186,6 +189,12 @@ export default {
       this.$nextTick(() => {
         this.$refs.synthPopover.updatePopper()
       })
+    },
+    allQues(newV) {
+      //查看用户是否设置过问题
+      if(newV.comprehensiveQuestionsList.length !=0) {
+        this.comprehensiveQuestionsList = newV.comprehensiveQuestionsList
+      }
     }
   },
   computed: {
@@ -449,10 +458,10 @@ export default {
         .freeView-name-content {
           display: flex;
           margin: 10px 10px;
-          width: 200px;
-          overflow: hidden;
-          white-space: nowrap;
-          text-overflow: ellipsis;
+          width: 240px;
+          // overflow: hidden;
+          // white-space: nowrap;
+          // text-overflow: ellipsis;
           .freeView-name {
             overflow: hidden;
             white-space: nowrap;
@@ -461,15 +470,15 @@ export default {
         }
         .freeView-input {
           border-radius: 5px;
-          border: 1px solid #0f2d2d;
+          border: 1px solid #cecece;
           height: 18px;
           width: 166px;
         }
         .freeView-select {
           width: 167px;
           border-radius: 5px;
-          border: 1px solid #0f2d2d;
-          height: 20px;
+          border: 1px solid #cecece;
+          height: 25px;
         }
       }
     }
@@ -498,5 +507,19 @@ export default {
       }
     }
   }
+}
+input:focus {
+  border: 1px solid #535858 !important;
+  outline: none;
+}
+input {
+  width: 166px !important;
+  padding-left: 10px;
+  box-sizing: border-box;
+  height: 25px !important;
+}
+select:focus {
+  outline: none;
+  border: 1px solid #535858 !important;
 }
 </style>
