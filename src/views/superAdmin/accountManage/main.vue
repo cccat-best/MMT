@@ -4,34 +4,6 @@
       <i class="el-icon-s-custom top-content-icon"></i>
       账号管理
     </div>
-    <!-- 测试更新数据 -->
-    <div
-      @click="de"
-      style="
-      position:fixed
-      left:50px
-        height: 5px;
-        width: 150px;
-        margin-right: 10px;
-        color: blue;
-      "
-    >
-      数据
-    </div>
-    <div
-      @click="co"
-      style="
-        height: 5px;
-        position: fixed;
-        left: 500px;
-        width: 150px;
-        color: blue;
-      "
-    >
-      cookie
-    </div>
-    <!--  -->
-
     <!-- 批量操作 -->
     <div class="seach-header">
       <div>
@@ -337,7 +309,6 @@
 <script>
 //引入表单全部数据,这是模拟数据，后期应该会删掉
 import data from './data.js'
-import data2 from './data copy.js'
 // 引入clipBoard
 import clipBoard from './dialog/clipboard.vue'
 //引入弹窗
@@ -355,7 +326,7 @@ export default {
       showactive2: 0, //第二个按钮
 
       // 关键字搜索
-      organizationId: 2, ////组织名不知道，需要询问////////////////////////
+      organizationId: 1, ////组织名不知道，需要询问////////////////////////
       searchWord: '',
       data: '', //发请求的data
       order: 'asc', //排序顺序，默认升序
@@ -386,60 +357,7 @@ export default {
     //渲染并分页
     this.orderChange(this.tableData)
   },
-  // mounted() {
-  // 通过Vue自带的$on去为子组件添加自定义事件
-  // this.$refs.batchOperateDialog.$on('myBatchOperateChange',batchOperateChange)
-  // this.$refs.batchOperateDialog.$on('myBatchOperateDelete',batchOperateDelete)
-  // },
   methods: {
-    // 测试数据更新时，表单数据是否同步更新了
-    de() {
-      // this.$message.success(
-      //   '测试更新数据，删掉了前三个数据，后面完工时记得删掉这个'
-      // )
-      this.$message.success('测试更新数据，后面完工时记得删掉这个')
-      // this.tableData = this.tableData.slice(3)
-      this.tableData = data2
-      this.orderChange(this.tableData)
-      // 矫正顺序
-      this.orderChange(this.tableData)
-    },
-    // 测试cookie
-    co() {
-      // 发请求模板，待删除，防止后面更改需求，先不删
-      this.$http
-        .post('api/login/b', {
-          studentId: '20200002',
-          password: '123456'
-        })
-        .then(
-          (res) => {
-            this.$message.success('post获取cookie正常' + res)
-            console.log(res)
-          },
-          (err) => {
-            this.$message.error(err)
-          }
-        )
-      // this.$http.get('api/set-cookie/b').then(
-      //   (res) => {
-      //     this.$message.success('get获取cookie正常' + res.data.message)
-      //   },
-      //   (err) => {
-      //     this.$message.error(err)
-      //   }
-      // )
-      // this.$http.post('api/account/manage/all',{organizationId: 2})
-      // .then(
-      //   (res) => {
-      //     this.$message.success("搜索获取全部信息正常"+res.data.message)
-      //   },
-      //   (err) => {
-      //     this.$message.error(err)
-      //   }
-      // )
-    },
-
     //图标变色,第一个
     changeColor() {
       if (this.batchColorChange1 == '#666666')
@@ -456,16 +374,8 @@ export default {
       if (this.showactive2 == 0) this.showactive2 = 1
       else this.showactive2 = 0
     },
-
-    // // 批量修改同步
-    // batchOperateChange(datalist) {
-    //   // console.log('批量修改同步')
-    //   console.log(datalist)
-    // },
     // 批量删除同步
     batchOperateDelete(studentListData) {
-      // console.log('批量删除同步')
-      // console.log(studentListData)
       // 遍历要删除的数组名单
       // 看看要不要写箭头函数
       studentListData.forEach((element) => {
@@ -484,7 +394,6 @@ export default {
       })
       // 对currentPage做一个判断
       // 如果整页没删完，保持在当前页，如果删完了返回上一页（除非删的是第一页）
-      // console.log('=============length')
       // console.log(studentListData.length)
       const totalPage = Math.ceil((this.total - 1) / this.pagesize) // 总页数
       let pagelength = this.pagesize
@@ -504,9 +413,6 @@ export default {
       this.orderChange(this.tableData, this.currentPage)
       // 根据已有permissionSelect筛选
       this.filterChangeData(this.permissionSelect)
-
-      // this.tableData.filter(()=>{
-      // })
     },
     //单行删除同步,达到页面删除效果，仅靠发请求是没办法从视觉上删除的
     deleteAlign(index) {
@@ -660,36 +566,6 @@ export default {
       // this.currentPage = 1
       this.pageCutDouwn(this.tableDataChange)
     },
-
-    //修改账号表单校验、发请求模板，待删除，防止后面更改需求，先不删
-    // findError() {
-    //   if (!/^20[1-9][0-9][0-9]{4}$/.test(this.sendData.stdId)) {
-    //     this.$message.error('学号长度为8')
-    //   } else if (!/^[\u4E00-\u9FA5]{2,5}$/.test(this.sendData.stdName)) {
-    //     this.$message.error('请输入真实姓名')
-    //   } else if (!/^(1[3-9][0-9])[0-9]{8}$/.test(this.sendData.stdPhone)) {
-    //     this.$message.error('电话不符合规范')
-    //   } else this.ifError = true
-    // },
-    //发请求模板，待删除，防止后面更改需求，先不删
-    // postData() {
-    //   this.findError() //校验数据
-    //   if (this.ifError) {
-    //     axios({
-    //       method: 'post',
-    //       url: 'http://47.94.90.140:8000/post',
-    //       data: this.sendData
-    //     }).then(
-    //       (res) => {
-    //         this.$message.success(res.data.message)
-    //       },
-    //       (err) => {
-    //         this.$message.error(err)
-    //       }
-    //     )
-    //   }
-    // },
-
     // 批量操作，先传输选中数据
     pushMultipleSelectionData() {
       this.$refs.batchOperateDialog.multipleSelection = this.multipleSelection
@@ -715,7 +591,7 @@ export default {
     //多选选中添加到记录中
     handleSelectionChange(val) {
       this.multipleSelection = val
-      /////////////////直接获取选中数据///////////////////////////
+      // 直接获取选中数据
       // console.log(this.multipleSelection)
     },
     //修改账号弹窗
@@ -746,23 +622,6 @@ export default {
       this.$refs.manyDialog.organizationId = this.organizationId
       this.$refs.manyDialog.deleteIndex = index
       this.$refs.manyDialog.formLabelAlign.studentId = data.studentId
-      // this.$confirm('此操作将删除：' + data.name + '，是否继续？', '提示', {
-      //   confirmButtonText: '确定',
-      //   cancelButtonText: '取消',
-      //   type: 'warning'
-      // })
-      //   .then(() => {
-      //     this.$message({
-      //       type: 'info',
-      //       message: '已删除'
-      //     })
-      //   })
-      //   .catch(() => {
-      //     this.$message({
-      //       type: 'info',
-      //       message: '已取消删除'
-      //     })
-      //   })
     },
     //修改页容量
     handleSizeChange(val) {
@@ -791,13 +650,6 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-// * {
-// line-height: 15px;
-// line-height: 2.8vh;
-
-// color: black;
-// }
-
 // main面板的样式
 .content {
   // 暂定900px
@@ -895,6 +747,10 @@ export default {
   /deep/.el-table__body-wrapper::-webkit-scrollbar-thumb {
     background-color: #a1a3a9;
     border-radius: 8px;
+  }
+  // 表格第一行
+  /deep/ th {
+    padding: 5px;
   }
 }
 </style>

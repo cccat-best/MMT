@@ -295,7 +295,7 @@ export default {
   mounted() {
     this.timerUpdate = setInterval(() => {
       setTimeout(this.requestFilterItem, 0)
-    }, 1000 * 100)
+    }, 1000 * 900)
   },
   beforeDestroy() {
     clearInterval(this.timerUpdate)
