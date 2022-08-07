@@ -295,7 +295,7 @@ export default {
   mounted() {
     this.timerUpdate = setInterval(() => {
       setTimeout(this.requestFilterItem, 0)
-    }, 1000 * 100)
+    }, 1000 * 900)
   },
   beforeDestroy() {
     clearInterval(this.timerUpdate)
@@ -389,7 +389,7 @@ export default {
           // console.log('nextPlace sort')
           break
       }
-      console.log('================')
+      // console.log('================')
       this.orderChange(sortItem, sortvalue)
       // console.log(this.sort[0])
       // console.log(this[Object.keys(data)[0]])
@@ -463,7 +463,7 @@ export default {
           if (res.data.code == '00000') {
             this.tableList = res.data.data.allInformationData
             this.total = res.data.data.totalNum
-            console.log(res.data)
+            // console.log(res.data)
             // 清除筛选的选中
             this.$refs.filterTable.clearFilter()
             this.$refs.filterTable.clearSort()
@@ -494,7 +494,7 @@ export default {
 
     // 触发筛选权限
     filterChange(data) {
-      console.log(data)
+      // console.log(data)
       // 取出修改的筛选的名字
       let name = Object.keys(data)[0]
       // 取出修改的筛选的值
@@ -505,35 +505,35 @@ export default {
       switch (name) {
         case 'className':
           this.className = filtervalue
-          console.log('className ok')
+          // console.log('className ok')
           // console.log(this.className)
           break
         case 'organizationOrder':
           this.organizationOrder = filtervalue
-          console.log('organizationOrder ok')
+          // console.log('organizationOrder ok')
           break
         case 'departmentOrder':
           this.departmentOrder = filtervalue
-          console.log('departmentOrder ok')
+          // console.log('departmentOrder ok')
           break
         case 'wishDepartment':
           this.wishDepartment = filtervalue
-          console.log('wishDepartment ok')
+          // console.log('wishDepartment ok')
           break
         case 'interviewStatus':
           this.interviewStatus = filtervalue
-          console.log('interviewStatus ok')
+          // console.log('interviewStatus ok')
           break
         case 'nextPlace':
           this.nextPlace = filtervalue
-          console.log('nextPlace ok')
+          // console.log('nextPlace ok')
           break
         case 'nextTime':
           this.nextTime = filtervalue
-          console.log('nextTime ok')
+          // console.log('nextTime ok')
           break
       }
-      console.log(this[Object.keys(data)[0]])
+      // console.log(this[Object.keys(data)[0]])
       // 仅自行触发的筛选跳转到第一页
       this.currentPage = 1
       // loading
