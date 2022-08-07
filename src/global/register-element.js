@@ -44,10 +44,12 @@ import {
   Tooltip,
   Card,
   Descriptions,
-  DescriptionsItem
+  DescriptionsItem,
+  Loading,
 } from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 const components = [
+  Loading,
   Descriptions,
   DescriptionsItem,
   Card,

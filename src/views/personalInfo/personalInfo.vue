@@ -10,11 +10,11 @@
         v-on:{update,home}="update"
       ></myhead>
     </el-header>
-    <el-main>
+    <el-main v-loading="loading">
       <div class="border">
         <el-card class="box-card" shadow="always">
           <div slot="header" class="clearfix">
-            <span style="font-size: 25px; font-weight: bold">社团信息</span>
+            <span style="font-size: 25px; font-weight: bold">所在组织</span>
           </div>
           <div class="organization-info" style="margin-top: 5%">
             <el-descriptions
@@ -41,9 +41,9 @@
                     type="info"
                     style="
                       color: black;
-                      background-color: #d7d7d7;
-                      margin-right: 10px;
-                      margin-bottom: 10px;
+                      background-color: #e9eef3;
+                      margin-right: 20px;
+                      margin-bottom: 20px;
                     "
                     >{{ item.name }}</el-tag
                   >
@@ -62,7 +62,7 @@
         </el-card>
         <el-card class="box-card" shadow="always">
           <div slot="header" class="clearfix">
-            <span style="font-size: 25px; font-weight: bold">个人信息</span>
+            <span style="font-size: 25px; font-weight: bold">基本信息</span>
           </div>
           <div
             class="personal-info"
@@ -255,6 +255,7 @@ export default {
       isSuper: false,
       isPersonal: true,
       size: '',
+      loading: true,
       pwdForm: {
         password: '',
         newPassword: '',
@@ -307,6 +308,9 @@ export default {
       this.isSuper = true
     }
     this.loginOrganizationName = sessionStorage.getItem('loginOrganizationName')
+  },
+  updated() {
+    this.loading = false
   },
 
   methods: {
