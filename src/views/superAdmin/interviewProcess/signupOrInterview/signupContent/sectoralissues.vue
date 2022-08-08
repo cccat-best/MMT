@@ -47,7 +47,7 @@
 import addQues from './addQues.vue'
 import { mapMutations } from 'vuex'
 export default {
-  props:['allQues'],
+  props: ['allQues'],
   //添加问题组件
   components: { addQues },
   data() {
@@ -88,30 +88,25 @@ export default {
       if (res.code != '00000') return this.$message.error('部门' + res.message)
       this.departmentCount = res.data.departmentList.length
       this.departmentList = res.data.departmentList
-      // 查看用户是否设置过问题
-      console.log('请求这里了');
-      // if(this.allQues.departmentQuestionsList.length != 0) {
-      //       this.sectionQues = this.allQues.departmentQuestionsList
-      //     }
-    },
+    }
   },
-  watch:{
+  watch: {
     // 查看用户是否设置过问题
     allQues(newV) {
-        if (newV.allocated) {
-            this.allocated = newV.allocated
-            this.updateAllocated(newV.allocated)
-          }
-        if (newV.maxDepartment) {
-            this.maxDepartment = newV.maxDepartment
-            this.updateMaxDepartment(newV.maxDepartment)
-          }
-        if(newV.departmentQuestionsList.length !=0) {
-          //避免子组件在请求之前数据更改 检测不到
-          setTimeout(() =>{
-            this.sectionQues = newV.departmentQuestionsList
-          },500)
-        }
+      if (newV.allocated) {
+        this.allocated = newV.allocated
+        this.updateAllocated(newV.allocated)
+      }
+      if (newV.maxDepartment) {
+        this.maxDepartment = newV.maxDepartment
+        this.updateMaxDepartment(newV.maxDepartment)
+      }
+      if (newV.departmentQuestionsList.length != 0) {
+        //避免子组件在请求之前数据更改 检测不到
+        setTimeout(() => {
+          this.sectionQues = newV.departmentQuestionsList
+        }, 500)
+      }
     }
   }
 }

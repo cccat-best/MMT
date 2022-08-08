@@ -311,7 +311,6 @@ export default {
       })
     },
     sectionQues(newV) {
-      console.log(newV);
       if (newV.length != 0) {
         newV.forEach((p) => {
           if (p.departmentId == this.departmentId) {
@@ -321,7 +320,7 @@ export default {
         })
       }
     }
-  },
+  }
   // mounted() {
   //   console.log(this.sectionQues,'ques');
   //   // 查看用户是否设置过问题

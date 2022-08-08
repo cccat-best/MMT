@@ -1,6 +1,5 @@
 <template>
   <div class="time-content">
-    <div class="organize-show">{{ organizeShow }}</div>
     <div class="time-title">
       <div class="title-main">报名时间</div>
       <div class="title-in">
@@ -16,7 +15,7 @@
           start-placeholder="开始日期"
           end-placeholder="结束日期"
           class="time-select"
-          value-format="yyyy-MM-dd HH:mm:ss"
+          value-format="yyyy-MM-dd hh:mm:ss"
         >
         </el-date-picker>
       </div>
@@ -29,8 +28,7 @@ import { mapMutations } from 'vuex'
 export default {
   data() {
     return {
-      value1: [],
-      organizeShow: '科技协会第一次纳新'
+      value1: []
     }
   },
   methods: {
@@ -57,19 +55,16 @@ export default {
 
 <style lang="less" scoped>
 .time-content {
-  margin-top: 25px;
+  margin-top: 18px;
   .time-title {
     margin-top: 10px;
-    color: #838383;
+    color: #989898;
     display: flex;
     flex-direction: column;
     .title-main {
       display: flex;
-      font-size: 28px;
-      color: #838383;
-      margin-left: 30px;
-      margin-top: 20px;
-      margin-bottom: 7px;
+      font-size: 30px;
+      color: #989898;
     }
     .title-in {
       margin-top: 20px;
@@ -77,13 +72,6 @@ export default {
       display: flex;
       font-size: 18px;
     }
-  }
-  .organize-show {
-    margin: 10px 0;
-    display: flex;
-    align-items: center;
-    font-size: 30px;
-    color: #838383;
   }
   .block {
     width: 660px;
@@ -93,7 +81,7 @@ export default {
     .time-select {
       height: 100%;
       width: 100%;
-      margin-top: 40px;
+      margin-top: 60px;
     }
   }
 }

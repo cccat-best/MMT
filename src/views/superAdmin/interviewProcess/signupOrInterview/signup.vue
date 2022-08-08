@@ -76,12 +76,13 @@ export default {
     cancel() {
       this.showactive = 1
     },
+    // 检测用户是否设置过问题
     getQues() {
       const organizationId = sessionStorage.getItem('loginOrganizationId')
       this.$http
         .get(`api/organization/interview/sign?organizationId=${organizationId}`)
         .then((res) => {
-          console.log(res)
+          // 只有00000 才是设置过问题 没有直接退出
           if (res.data.code != '00000') return
           this.allQues = res.data.data
         })
@@ -141,7 +142,7 @@ export default {
         cursor: pointer;
       }
       .active {
-        border-left: 4px solid #63afe2 !important;
+        border-left: 4px solid #2e98f9 !important;
         color: #63afe2;
       }
       .special {
@@ -149,7 +150,7 @@ export default {
         cursor: default !important;
       }
       .active-sp {
-        color: #85c4ff;
+        color: #2e98f9;
         border-left: 4px solid #a3a3a3;
       }
     }
