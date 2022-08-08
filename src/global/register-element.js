@@ -45,7 +45,10 @@ import {
   Card,
   Descriptions,
   DescriptionsItem,
-  Loading
+  Loading,
+  Drawer,
+  Loading,
+  Tooltip
 } from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 const components = [
@@ -80,9 +83,7 @@ const components = [
   Aside,
   Main,
   Icon,
-  Menu,
   Submenu,
-  MenuItem,
   MenuItemGroup,
   Row,
   Col,
@@ -110,12 +111,15 @@ const components = [
   TabPane,
   TableColumn,
   Tabs,
-  InputNumber
+  InputNumber,
+  Drawer,
+  Tooltip
 ]
 export default function (Vue) {
   for (const component of components) {
     Vue.use(component)
   }
+  Vue.use(Loading.directive)
   Vue.prototype.$msgbox = MessageBox
   Vue.prototype.$alert = MessageBox.alert
   Vue.prototype.$confirm = MessageBox.confirm

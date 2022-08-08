@@ -42,6 +42,10 @@ const routes = [
       {
         path: 'interviewMain',
         component: () => import('../views/home/interviewMain/interviewMain.vue')
+      },
+      {
+        path: 'dataBoard',
+        component: () => import('../views/home/dataBoard/main.vue')
       }
     ]
   },
@@ -101,7 +105,6 @@ router.beforeEach((to, from, next) => {
     return next()
   }
   let cookies = document.cookie
-
   if (!cookies) {
     return next('/login')
   }
