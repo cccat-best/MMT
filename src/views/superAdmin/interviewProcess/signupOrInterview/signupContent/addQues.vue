@@ -310,8 +310,8 @@ export default {
         this.$refs.addPopover.updatePopper()
       })
     },
-    // 如果用户设置了问题 展示给用户
     sectionQues(newV) {
+      console.log(newV);
       if (newV.length != 0) {
         newV.forEach((p) => {
           if (p.departmentId == this.departmentId) {
@@ -321,7 +321,19 @@ export default {
         })
       }
     }
-  }
+  },
+  // mounted() {
+  //   console.log(this.sectionQues,'ques');
+  //   // 查看用户是否设置过问题
+  //     if (this.sectionQues.length != 0) {
+  //       this.sectionQues.forEach((p) => {
+  //         if (p.departmentId == this.departmentId) {
+  //           this.updateDepartmentQuestionsList(p)
+  //           this.departmentQuestionsList.push(p)
+  //         }
+  //       })
+  //     }
+  // }
 }
 </script>
 

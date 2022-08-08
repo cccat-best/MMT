@@ -15,6 +15,7 @@
           :name="name"
           :organizations="organizations"
           :loginOrganizationName="loginOrganizationName"
+          v-on:update="update"
         ></myhead>
       </template>
       <template slot="asideTitle">
@@ -43,30 +44,35 @@ export default {
       asideWidth: 200,
       menuList: [
         {
+          index: '/home',
           iconClass: '',
           id: '1',
           title: '面试总看板',
-          pagePath: '/home'
+          pagePath: '/home/interviewMain'
         },
         {
+          index: '/home',
           iconClass: '',
           id: '2',
           title: '数据看板',
-          pagePath: '/home'
+          pagePath: '/home/dataBoard'
         },
         {
+          index: '/home/arrangement',
           iconClass: '',
           id: '3',
           title: '面试安排',
           pagePath: '/home/arrangement'
         },
         {
+          index: '/home',
           iconClass: '',
           id: '4',
           title: '实时面试',
           pagePath: '/home'
         },
         {
+          index: '/home/reply',
           iconClass: '',
           id: '5',
           title: '面试复盘',
@@ -102,6 +108,9 @@ export default {
     }
   },
   methods: {
+    update(newValue) {
+      this.loginOrganizationName = newValue
+    },
     async getLoginStatus() {
       const url = '/api/login-status'
       try {
@@ -140,6 +149,10 @@ export default {
         this.phoneForm.phone = res.data.data.phone
         this.name = res.data.data.name
         this.studentId = res.data.data.studentId
+        sessionStorage.setItem(
+          'loginOrganizationName',
+          this.loginOrganizationName
+        )
       })
     },
 

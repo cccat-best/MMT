@@ -47,6 +47,7 @@
 import addQues from './addQues.vue'
 import { mapMutations } from 'vuex'
 export default {
+  props:['allQues'],
   //添加问题组件
   components: { addQues },
   data() {
@@ -59,6 +60,7 @@ export default {
       departmentList: [],
       //如果部门数为1不显示调剂按钮
       departmentCount: 0,
+      // 获取用户是否设置过部门问题
       sectionQues: []
     }
   },
@@ -84,32 +86,32 @@ export default {
       )
       //判断是否请求成功
       if (res.code != '00000') return this.$message.error('部门' + res.message)
-      //成功后 发送请求 查看用户是否设置过问题
-      this.getSectionQues()
       this.departmentCount = res.data.departmentList.length
       this.departmentList = res.data.departmentList
+      // 查看用户是否设置过问题
+      console.log('请求这里了');
+      // if(this.allQues.departmentQuestionsList.length != 0) {
+      //       this.sectionQues = this.allQues.departmentQuestionsList
+      //     }
     },
-    // 如果用户第二次登录得到部门问题
-    getSectionQues() {
-      const organizationId = sessionStorage.getItem('loginOrganizationId')
-      this.$http
-        .get(`api/organization/interview/sign?organizationId=${organizationId}`)
-        .then((res) => {
-          //判断用户是否设置过问题
-          if (res.data.code != '00000') return
-          if(res.data.data.maxDepartment) {
-             this.maxDepartment = res.data.data.maxDepartment
-             this.updateMaxDepartment(res.data.data.maxDepartment)
+  },
+  watch:{
+    // 查看用户是否设置过问题
+    allQues(newV) {
+        if (newV.allocated) {
+            this.allocated = newV.allocated
+            this.updateAllocated(newV.allocated)
           }
-          if(res.data.data.allocated) {
-            this.allocated = res.data.data.allocated
-            this.updateAllocated(res.data.data.allocated)
+        if (newV.maxDepartment) {
+            this.maxDepartment = newV.maxDepartment
+            this.updateMaxDepartment(newV.maxDepartment)
           }
-          this.sectionQues = res.data.data.departmentQuestionsList
-        })
-        .catch((err) => {
-          console.log(err)
-        })
+        if(newV.departmentQuestionsList.length !=0) {
+          //避免子组件在请求之前数据更改 检测不到
+          setTimeout(() =>{
+            this.sectionQues = newV.departmentQuestionsList
+          },500)
+        }
     }
   }
 }

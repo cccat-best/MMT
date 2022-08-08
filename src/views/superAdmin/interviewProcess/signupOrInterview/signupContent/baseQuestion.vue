@@ -228,23 +228,23 @@ export default {
       //预设问题
       preList: [
         {
-          isShow: true,
+          isShow: false,
           description: '班级'
         },
         {
-          isShow: true,
+          isShow: false,
           description: '学院'
         },
         {
-          isShow: true,
+          isShow: false,
           description: '专业'
         },
         {
-          isShow: true,
+          isShow: false,
           description: '性别'
         },
         {
-          isShow: true,
+          isShow: false,
           description: 'QQ'
         },
         {
@@ -414,9 +414,9 @@ export default {
       }
       if (newV.generalQuestions.length != 0) {
         this.updateGeneralQuestions(newV.generalQuestions)
-        this.preList.forEach((p) => {
-          p.isShow = false
-        })
+        // this.preList.forEach((p) => {
+        //   p.isShow = false
+        // })
         for (let i = 0; i < newV.generalQuestions.length; i++) {
           this.preList.forEach((p) => {
             if (p.description == newV.generalQuestions[i]) {
@@ -591,7 +591,7 @@ export default {
     .freeView-name {
       display: flex;
       margin: 10px 10px;
-      width: 175px;
+      width: 185px;
       font-size: 17px;
     }
     .freeView-input {
