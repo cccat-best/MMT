@@ -315,6 +315,7 @@ export default {
       if (newV.length != 0) {
         newV.forEach((p) => {
           if (p.departmentId == this.departmentId) {
+            this.updateDepartmentQuestionsList(p)
             this.departmentQuestionsList.push(p)
           }
         })

@@ -95,9 +95,16 @@ export default {
       this.$http
         .get(`api/organization/interview/sign?organizationId=${organizationId}`)
         .then((res) => {
+          //判断用户是否设置过问题
           if (res.data.code != '00000') return
-          this.maxDepartment = res.data.data.maxDepartment
-          this.allocated = res.data.data.allocated
+          if(res.data.data.maxDepartment) {
+             this.maxDepartment = res.data.data.maxDepartment
+             this.updateMaxDepartment(res.data.data.maxDepartment)
+          }
+          if(res.data.data.allocated) {
+            this.allocated = res.data.data.allocated
+            this.updateAllocated(res.data.data.allocated)
+          }
           this.sectionQues = res.data.data.departmentQuestionsList
         })
         .catch((err) => {

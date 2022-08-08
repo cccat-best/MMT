@@ -406,11 +406,14 @@ export default {
     }
   },
   watch: {
+    //检测用户是否设置过问题
     allQues(newV) {
       if (newV.questionsList.length != 0) {
         this.BaseList = newV.questionsList
+        this.updateQuestionsList(newV.questionsList)
       }
       if (newV.generalQuestions.length != 0) {
+        this.updateGeneralQuestions(newV.generalQuestions)
         this.preList.forEach((p) => {
           p.isShow = false
         })

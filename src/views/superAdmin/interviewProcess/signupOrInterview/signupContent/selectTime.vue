@@ -43,10 +43,13 @@ export default {
   watch: {
     // 如果用户设置过时间 展示
     allQues(newV) {
-      let timeTemp = []
+      if(newV.startTime != '') {
+        let timeTemp = []
       timeTemp[0] = newV.startTime
       timeTemp[1] = newV.endTime
       this.value1 = timeTemp
+      this.updateTime(timeTemp)
+      }
     }
   }
 }
