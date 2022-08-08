@@ -177,7 +177,8 @@ export default {
     },
     //添加自定义选择
     addChoseList() {
-      if (this.isAdd > 5) return this.$message.error('最多自定义五个问题')
+      if (this.departmentQuestionsList.length >= 5)
+        return this.$message.error('最多自定义五个问题')
       if (this.text2 == '') {
         return this.$message.error('问题不能为空')
       }
@@ -225,7 +226,7 @@ export default {
         }
         que.option = option
         this.departmentQuestionsList.push(que)
-        this.isAdd++
+        // this.isAdd++
         this.addShow = false
         //重新定向到文本问题展示
         this.chooseAdd = 1
@@ -246,7 +247,8 @@ export default {
     //添加自定义文本问题
     addTextQues() {
       //判断自定义问题是否超过三个
-      if (this.isAdd > 5) return this.$message.error('最多自定义五个问题')
+      if (this.departmentQuestionsList.length >= 5)
+        return this.$message.error('最多自定义五个问题')
       if (this.text1 == '') {
         return this.$message.error('问题不能为空')
       }
@@ -268,7 +270,7 @@ export default {
           }
         }
         this.departmentQuestionsList.push(que)
-        this.isAdd++
+        // this.isAdd++
         this.text1 = ''
         //只有成功提交才会关闭这个添加框
         this.addShow = false
@@ -293,7 +295,7 @@ export default {
       )
       //同步删减vuex中此问题
       this.removeDepartmentQuestionsList(item1)
-      this.isAdd--
+      // this.isAdd--
     },
     //保存到vuex
     saveToVuex() {
@@ -321,18 +323,6 @@ export default {
       }
     }
   }
-  // mounted() {
-  //   console.log(this.sectionQues,'ques');
-  //   // 查看用户是否设置过问题
-  //     if (this.sectionQues.length != 0) {
-  //       this.sectionQues.forEach((p) => {
-  //         if (p.departmentId == this.departmentId) {
-  //           this.updateDepartmentQuestionsList(p)
-  //           this.departmentQuestionsList.push(p)
-  //         }
-  //       })
-  //     }
-  // }
 }
 </script>
 
@@ -353,11 +343,14 @@ export default {
     .freeView-item {
       display: flex;
       align-items: center;
+      i {
+        cursor: pointer;
+      }
     }
     .freeView-name-content {
       display: flex;
       margin: 10px 10px;
-      width: 200px;
+      width: 250px;
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;

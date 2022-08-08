@@ -159,8 +159,7 @@ export default {
   props: ['allQues'],
   data() {
     return {
-      // 上限五个问题
-      isAdd: 1,
+      // isAdd: 1,
       addShow: false,
       comprehensiveQuestionsList: [],
       // 控制添加选择还是填空
@@ -231,7 +230,8 @@ export default {
     },
     //添加自定义选择
     addChoseList() {
-      if (this.isAdd > 5) return this.$message.error('最多自定义五个问题')
+      if (this.comprehensiveQuestionsList.length >= 5)
+        return this.$message.error('最多自定义五个问题')
       if (this.text2 == '') {
         return this.$message.error('问题不能为空')
       }
@@ -279,7 +279,7 @@ export default {
         }
         que.option = option
         this.comprehensiveQuestionsList.push(que)
-        this.isAdd++
+        // this.isAdd++
         this.addShow = false
         //重新定向到文本问题展示
         this.chooseAdd = 1
@@ -300,7 +300,8 @@ export default {
     //添加自定义文本问题
     addTextQues() {
       //判断自定义问题是否超过三个
-      if (this.isAdd > 5) return this.$message.error('最多自定义五个问题')
+      if (this.comprehensiveQuestionsList.length >= 5)
+        return this.$message.error('最多自定义五个问题')
       if (this.text1 == '') {
         return this.$message.error('问题不能为空')
       }
@@ -322,7 +323,7 @@ export default {
           }
         }
         this.comprehensiveQuestionsList.push(que)
-        this.isAdd++
+        // this.isAdd++
         this.text1 = ''
         //只有成功提交才会关闭这个添加框
         this.addShow = false
@@ -345,7 +346,7 @@ export default {
       this.comprehensiveQuestionsList = this.comprehensiveQuestionsList.filter(
         (p) => p.description != item1.description
       )
-      this.isAdd--
+      // this.isAdd--
     },
     //如果点击取消回到时间选择页
     cancel() {
@@ -458,7 +459,7 @@ export default {
         .freeView-name-content {
           display: flex;
           margin: 10px 10px;
-          width: 240px;
+          width: 250px;
           // overflow: hidden;
           // white-space: nowrap;
           // text-overflow: ellipsis;

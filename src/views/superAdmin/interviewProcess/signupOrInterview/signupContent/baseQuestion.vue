@@ -189,8 +189,7 @@ export default {
   props: ['allQues'],
   data() {
     return {
-      //最多三个自定义问题
-      isAdd: 1,
+      //isAdd: 1,
       form: {
         //最少两个选项
         domains: [
@@ -270,12 +269,13 @@ export default {
       this.BaseList = this.BaseList.filter(
         (p) => p.description != item.description
       )
-      this.isAdd--
+      // this.isAdd--
     },
     //添加自定义文本问题
     addTextQues() {
       //判断自定义问题是否超过三个
-      if (this.isAdd > 3) return this.$message.error('最多自定义三个问题')
+      if (this.BaseList.length >= 3)
+        return this.$message.error('最多自定义三个问题')
       if (this.text == '') {
         return this.$message.error('问题不能为空')
       }
@@ -293,7 +293,7 @@ export default {
           }
         }
         this.BaseList.push(que)
-        this.isAdd++
+        // this.isAdd++
         this.text = ''
         //只有成功提交才会关闭这个添加框
         this.visible = false
@@ -325,7 +325,8 @@ export default {
     },
     //添加自定义选择
     addChoseList() {
-      if (this.isAdd > 3) return this.$message.error('最多自定义三个问题')
+      if (this.BaseList.length >= 3)
+        return this.$message.error('最多自定义三个问题')
       if (this.text1 == '') {
         return this.$message.error('问题不能为空')
       }
@@ -369,7 +370,7 @@ export default {
         }
         que.option = option
         this.BaseList.push(que)
-        this.isAdd++
+        // this.isAdd++
         this.visible1 = false
       } else {
         return this.$message.error('问题已存在')

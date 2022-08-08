@@ -102,7 +102,7 @@ export default {
         this.updateMaxDepartment(newV.maxDepartment)
       }
       if (newV.departmentQuestionsList.length != 0) {
-        //避免子组件在请求之前数据更改 检测不到
+        //如果用户设置过部门问题传递给子组件 子组件是请求完部门后渲染 所以避免子组件在请求之前数据更改检测不到 使用定时器延迟
         setTimeout(() => {
           this.sectionQues = newV.departmentQuestionsList
         }, 500)

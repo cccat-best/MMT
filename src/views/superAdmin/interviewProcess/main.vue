@@ -107,7 +107,9 @@ export default {
           //更新面试轮数
           this.getRound()
         })
-        .catch((err) => err)
+        .catch((err) => {
+          console('面试轮数' + err)
+        })
       //重新获取面试轮数
       // setTimeout(() => {
       //   this.getRound()
