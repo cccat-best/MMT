@@ -361,7 +361,7 @@ export default {
   },
   created() {
     // 获取organizationId
-    this.organizationId=sessionStorage.getItem('loginOrganizationId')
+    this.organizationId = sessionStorage.getItem('loginOrganizationId')
     //获取数据
     this.searchKeyWord()
     //渲染并分页
