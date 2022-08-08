@@ -7,6 +7,7 @@
       :menuItemList="menuList"
       menuItemColor="#fff"
       meunItemActiveColor="#0187fb"
+      :defaultActiveItem="defaultActiveItem"
     >
       <template slot="header">
         <myhead
@@ -39,39 +40,35 @@ export default {
   },
   data() {
     return {
+      defaultActiveItem: '1',
       isCollapse: false,
       asideWidth: 200,
       menuList: [
         {
-          index: '/home/interviewMain',
           iconClass: '',
           id: '1',
           title: '面试总看板',
           pagePath: '/home/interviewMain'
         },
         {
-          index: '/home/dataBoard',
           iconClass: '',
           id: '2',
           title: '数据看板',
           pagePath: '/home/dataBoard'
         },
         {
-          index: '/home/arrangement',
           iconClass: '',
           id: '3',
           title: '面试安排',
           pagePath: '/home/arrangement'
         },
         {
-          index: '/home',
           iconClass: '',
           id: '4',
           title: '实时面试',
           pagePath: '/home'
         },
         {
-          index: '/home/reply',
           iconClass: '',
           id: '5',
           title: '面试复盘',
@@ -83,7 +80,6 @@ export default {
       squareUrl:
         'https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png',
       sizeList: ['large', 'medium', 'small'],
-      studentId: '',
       name: '',
       organizations: [],
       loginOrganizationName: '',
@@ -98,24 +94,30 @@ export default {
       this.isSuper = true
     }
   },
+  mounted() {
+    // 解决defaultActiveItem 刷新问题
+    if (this.$route.path == '/home/interviewMain') this.defaultActiveItem = '1'
+    if (this.$route.path == '/home/dataBoard') this.defaultActiveItem = '2'
+    if (this.$route.path == '/home/arrangement') this.defaultActiveItem = '3'
+    if (this.$route.path == '/home') this.defaultActiveItem = '4'
+    if (this.$route.path == '/home/reply') this.defaultActiveItem = '5'
+    if (this.$route.path == '/home/resultInform') this.defaultActiveItem = '5'
+  },
   methods: {
     update(newValue) {
       this.loginOrganizationName = newValue
     },
     async getLoginStatus() {
-      const url = 'api/login-status'
+      const url = '/api/login-status/'
       try {
         let { data: res } = await this.$http.get(url)
         switch (res.code) {
           case '00000': {
             let { data } = res
             this.loginOrganizationName = data.loginOrganizationName
-            this.organizationId = data.loginOrganizationId
             this.organizations = data.organizations
             this.permission = data.permission
-            this.phone = data.phone
             this.name = data.name
-            this.studentId = data.studentId
             break
           }
           default: {
@@ -127,20 +129,18 @@ export default {
         this.$message.error('当前未登录或登录已失效')
       }
     }
+  },
+  watch: {
+    //解决直接在地址栏输入链接跳转 菜单栏激活位置不对问题
+    // 监控路由变化
+    $route(to) {
+      if (to.path == '/home/interviewMain') this.defaultActiveItem = '1'
+      if (to.path == '/home/dataBoard') this.defaultActiveItem = '2'
+      if (to.path == '/home/arrangement') this.defaultActiveItem = '3'
+      if (to.path == '/home') this.defaultActiveItem = '4'
+      if (to.path == '/home/reply') this.defaultActiveItem = '5'
+    }
   }
-  // mounted() {
-  //   this.$http
-  //     .post('api/login/b', {
-  //       studentId: '20200001',
-  //       password: '123456'
-  //     })
-  //     .then((res) => {
-  //       console.log('cookie:', res)
-  //     })
-  //     .catch(function (error) {
-  //       console.log(error)
-  //     })
-  // }
 }
 </script>
 
