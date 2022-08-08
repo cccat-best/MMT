@@ -1,49 +1,59 @@
 <template>
-  <div class="dingwei">
-    <div class="title">
-      <el-date-picker
-        v-model="dateTime"
-        type="datetime"
-        style="
-          width: 230px;
-          border-radius: 5px;
-          box-shadow: 1px 1px 3px 1px #e5e9f2;
-          margin-bottom: 0px;
-        "
-        size="small"
-        @change="dateTimeValue"
-        placeholder="请选择日期时间"
-      >
-      </el-date-picker>
-    </div>
-    <div class="text">
-      <p class="p0">面试通知：</p>
-      <p class="p1">
-        亲爱的<u>{{ name }}</u
-        >, <u>{{ departmentName[0].name }}</u
-        >邀请你进入<b>{{ order }}</b
-        >面试。
-      </p>
-      <p class="p2">
-        面试时间：<u>{{ dateValue0 }} &nbsp; {{ timeValue0 }}&nbsp; </u>
-      </p>
-      <p class="p2">
-        面试地点：<input
-          type="text"
+  <div class="ddingwei">
+    <div class="dingwei">
+      <div class="title">
+        <el-date-picker
+          v-model="dateTime"
+          type="datetime"
           style="
-            border: none;
-            border-bottom: 1px solid black;
-            outline: none;
-            width: 130px;
+            width: 230px;
+            border-radius: 5px;
+            box-shadow: 1px 1px 3px 1px #e5e9f2;
+            margin-bottom: 0px;
           "
-          v-model="address"
-          class="address"
-        />
-      </p>
-      <p class="p1">请提前做好准备。</p>
-      <div class="button">
-        <el-button plain>取消</el-button>
-        <el-button type="primary" @click="queding">确定</el-button>
+          size="small"
+          @change="dateTimeValue"
+          placeholder="请选择日期时间"
+        >
+        </el-date-picker>
+      </div>
+      <div class="text">
+        <p
+          class="p0"
+          style="margin-bottom: 15px; padding-left: 50px; width: 100%"
+        >
+          <b>面试通知：</b>
+        </p>
+        <div class="littleText">
+          <p class="p1">
+            亲爱的<u>{{ name }}</u
+            >, <u>{{ departmentName }}</u
+            >邀请你进入<b>{{ order }}</b
+            >面试。
+          </p>
+          <p class="p2">
+            面试时间：<u>{{ dateValue0 }} &nbsp; {{ timeValue0 }}&nbsp; </u>
+          </p>
+          <p class="p2">
+            面试地点：<input
+              type="text"
+              style="
+                border: none;
+                border-bottom: 1px solid black;
+                outline: none;
+                width: 130px;
+              "
+              v-model="address"
+              class="address"
+            />
+          </p>
+          <p class="p1">请提前做好准备。</p>
+
+          <div class="button">
+            <el-button plain>取消</el-button>
+            <el-button type="primary" @click="queding">确定</el-button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -58,11 +68,11 @@ export default {
       departmentName: '学生事务中心',
       studentId: 20220000,
       order: '一面',
-      timestamp: '',
+      timestamp: 1644346800000,
       dateTime: '',
-      dateValue0: '',
-      timeValue0: '',
-      address: '',
+      dateValue0: '2022-02-09',
+      timeValue0: '03:00:00',
+      address: '7-115-L03工位桌',
       messageTemplate: ''
     }
   },
@@ -82,13 +92,17 @@ export default {
         mm = '0' + mm
       }
       this.timeValue0 = hh + ':' + mm
+      // console.log(this.timestamp)
     },
     queding() {
       // 确定安排面试
       var form3 = {
         studentId: this.studentId,
         startTime: this.timestamp,
-        address: this.address
+        address: this.address,
+        departmentId: 1,
+        round: 1,
+        admissionId: 1
         // studentId: 20200002,
         // startTime: 123456789,
         // address: '时光小镇'
@@ -101,7 +115,7 @@ export default {
           // 确定获取模板
           const url1 = 'api/interview-arrangement/getNotice'
           let params = {
-            type: 3,
+            type: 1,
             organizationId: 1
           }
           this.$http
@@ -109,9 +123,11 @@ export default {
             .then((response) => {
               console.log('获取模板成功', response)
               this.messageTemplate = response.data.data.messageTemplate
-                .replace(/{template}/, this.name)
-                .replace(/{template}/, this.departmentName)
-                .replace(/{template}/, this.order)
+                .replace(/{name}/, this.name)
+                .replace(/{department}/, this.departmentName)
+                .replace(/{round}/, this.order)
+                .replace(/{time}/, this.dateValue0 + ' ' + this.timeValue0)
+                .replace(/{location}/, this.address)
               console.log(this.messageTemplate)
               // 确定发送通知
               var form2 = {
@@ -164,9 +180,20 @@ export default {
 </script>
 
 <style scoped>
-.dingwei {
-  margin-top: 80px;
+.ddingwei {
+  height: 57%;
+  width: 100%;
+  background-color: white;
+  border-radius: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
+/* .dingwei {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+} */
 .text {
   width: 440px;
   height: 220px;
@@ -176,17 +203,22 @@ export default {
   background-color: #fff;
   border-radius: 5px;
   box-shadow: 1px 1px 3px 1px #e5e9f2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  /* margin-top: 5px; */
 }
 .p0 {
   text-indent: 0em;
   text-align: left;
 }
 .p1 {
-  text-indent: 2em;
+  text-indent: 0em;
   text-align: left;
 }
 .p2 {
-  text-indent: 4em;
+  text-indent: 2em;
   text-align: left;
 }
 .title {

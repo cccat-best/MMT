@@ -30,18 +30,31 @@ export default {
 
 <style scoped>
 .big {
-  height: 605px;
-  width: 1280px;
+  height: 100%;
+  width: 100%;
+  min-width: 1200px;
+  min-height: 590px;
   display: flex;
-  flex-direction: row;
-  justify-content: space-around;
+  /* justify-content: center; */
+  /* align-items: center; */
+}
+.left {
+  padding-left: 3%;
+  padding-right: 3%;
+  width: 56%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
   background-color: white;
-  border-radius: 10px;
+  border-radius: 15px;
+  margin-right: 2%;
 }
 .right {
+  width: 42%;
   height: 100%;
-  margin-left: 50px;
-  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
 }
 </style>

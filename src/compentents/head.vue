@@ -35,7 +35,7 @@
       >
         <img
           v-if="this.isSuper"
-          src="../views/home/icon/admin.png"
+          src="../assets/img/admin.png"
           alt=""
           style="height: 30px; width: 30px"
         />
@@ -240,7 +240,11 @@ export default {
       })
     },
     home() {
-      location.reload()
+      if (this.isPersonal) {
+        location.reload()
+      } else {
+        this.$router.push('/personalInfo')
+      }
     },
     // 个人中心顶部左侧返回的实现
     goBack() {

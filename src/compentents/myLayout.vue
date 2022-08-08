@@ -106,7 +106,7 @@ export default {
   },
   data() {
     return {
-      activeIndex: '/home/reply'
+      activeIndex: ''
     }
   },
   methods: {},
