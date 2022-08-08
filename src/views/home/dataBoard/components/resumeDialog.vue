@@ -27,6 +27,9 @@ export default {
       // 学号,由主页传过来
       studentId: ''
     }
+  },
+  methods: {
+    handleClose() {}
   }
 }
 </script>

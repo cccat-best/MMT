@@ -15,6 +15,7 @@
           :name="name"
           :organizations="organizations"
           :loginOrganizationName="loginOrganizationName"
+          v-on:update="update"
         ></myhead>
       </template>
       <template slot="asideTitle">
@@ -28,7 +29,6 @@
 </template>
 
 <script>
-import axios from 'axios'
 import myLayoutVue from '../../compentents/myLayout.vue'
 import myhead from '../../compentents/head.vue'
 export default {
@@ -43,14 +43,14 @@ export default {
       asideWidth: 200,
       menuList: [
         {
-          index: '/home',
+          index: '/home/interviewMain',
           iconClass: '',
           id: '1',
           title: '面试总看板',
           pagePath: '/home/interviewMain'
         },
         {
-          index: '/home',
+          index: '/home/dataBoard',
           iconClass: '',
           id: '2',
           title: '数据看板',
@@ -87,17 +87,9 @@ export default {
       name: '',
       organizations: [],
       loginOrganizationName: '',
-      loginOrganizationId: '',
       permission: '',
-      cookie: '',
-      organizationName: '',
-      organizationId: '',
       isSuper: false,
-      isPersonal: false,
-      phoneForm: {
-        phone: '',
-        newPhone: ''
-      }
+      isPersonal: false
     }
   },
   async created() {
@@ -107,8 +99,11 @@ export default {
     }
   },
   methods: {
+    update(newValue) {
+      this.loginOrganizationName = newValue
+    },
     async getLoginStatus() {
-      const url = '/api/login-status'
+      const url = 'api/login-status'
       try {
         let { data: res } = await this.$http.get(url)
         switch (res.code) {
@@ -131,59 +126,21 @@ export default {
         console.log('出错了', err.message)
         this.$message.error('当前未登录或登录已失效')
       }
-    },
-    changeOrganization(command) {
-      const organization = {
-        organization: command
-      }
-      const url = '/api/login/change'
-      this.$http.post(url, organization).then((res) => {
-        this.loginOrganizationName = res.data.data.loginOrganizationName
-        this.loginOrganizationId = res.data.data.loginOrganizationId
-        this.organizations = res.data.data.organizations
-        this.permission = res.data.data.permission
-        this.phoneForm.phone = res.data.data.phone
-        this.name = res.data.data.name
-        this.studentId = res.data.data.studentId
-      })
-    },
-
-    quitLogin() {
-      axios({
-        method: 'delete',
-        baseURL: 'http://114.132.71.147:38080',
-        url: '/logout',
-        headers: {
-          'content-type': 'application/json'
-        }
-      }).then((val) => {
-        alert(val.data.data.message)
-      })
-    },
-    superAdmin() {
-      this.$router.push('/superAdmin')
-    },
-    home() {
-      if (this.isPersonal) {
-        location.reload()
-      } else {
-        this.$router.push('/personalInfo')
-      }
     }
-  },
-  mounted() {
-    this.$http
-      .post('api/login/b', {
-        studentId: '20200001',
-        password: '123456'
-      })
-      .then((res) => {
-        console.log('cookie:', res)
-      })
-      .catch(function (error) {
-        console.log(error)
-      })
   }
+  // mounted() {
+  //   this.$http
+  //     .post('api/login/b', {
+  //       studentId: '20200001',
+  //       password: '123456'
+  //     })
+  //     .then((res) => {
+  //       console.log('cookie:', res)
+  //     })
+  //     .catch(function (error) {
+  //       console.log(error)
+  //     })
+  // }
 }
 </script>
 
