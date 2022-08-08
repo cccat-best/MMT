@@ -588,7 +588,7 @@ export default {
       this.$refs.batchOperateDialog.organizationId = this.organizationId
       this.pushMultipleSelectionData() //批量传输选中数据
     },
-    ClearMultipleSelect(){
+    ClearMultipleSelect() {
       // 自动去除选中效果
       this.$refs.multipleTable.clearSelection()
     },
