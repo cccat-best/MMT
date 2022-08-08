@@ -289,7 +289,8 @@ export default {
     }
   },
   created() {
-    this.searchKeyWord()
+    this.organizationId=sessionStorage.getItem('loginOrganizationId')
+    this.getTwoId()
   },
   // 定时更新数据和筛选项
   mounted() {
@@ -322,6 +323,30 @@ export default {
       'updateNextPlaceFilter',
       'updateNextTimeFilter'
     ]),
+    // 获取organizationId与admissionId
+    getTwoId(){
+      this.$http.get('api/organization/interview/id-latest',{
+        organizationId:this.organizationId
+      })
+      .then(
+        (res) => {
+          if (res.data.code == '00000') {
+          this.admissionId=res.data.data.admissionIdList[0].admissionId
+          // admissionId存在session中
+          sessionStorage.setItem(
+                'admissionId',
+                res.data.data.admissionIdList[0].admissionId
+              )
+          } else this.$message.error(res.data.message)
+          // 获取数据
+          this.searchKeyWord()
+        },
+        (err) => {
+          this.$message.error('获取数据失败' + err)
+          this.searchKeyWord()
+        }
+      )
+    },
     // 修改弹窗
     openChangeDialog(data) {
       this.$refs.changeDialog.changeDialogVisible = true

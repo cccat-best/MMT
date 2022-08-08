@@ -174,7 +174,7 @@
           {{ scope.row.phone | replacestar }}
         </template>
       </el-table-column>
-      <el-table-column label="操作" min-width="250px" align="center">
+      <el-table-column label="操作" min-width="300px" align="center">
         <!-- 单次删除需要scope来传数据 -->
         <template slot-scope="scope">
           <el-button
@@ -334,7 +334,7 @@ export default {
       showactive2: 0, //第二个按钮
 
       // 关键字搜索
-      organizationId: 1, ////组织名不知道，需要询问////////////////////////
+      organizationId: 3, ////组织名不知道，需要询问////////////////////////
       searchWord: '',
       data: '', //发请求的data
       order: 'asc', //排序顺序，默认升序
@@ -360,6 +360,8 @@ export default {
     batchOperateDialog
   },
   created() {
+    // 获取organizationId
+    this.organizationId=sessionStorage.getItem('loginOrganizationId')
     //获取数据
     this.searchKeyWord()
     //渲染并分页
