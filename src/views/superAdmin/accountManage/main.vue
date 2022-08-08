@@ -298,6 +298,7 @@
     <batchOperateDialog
       ref="batchOperateDialog"
       @myBatchOperateDelete="batchOperateDelete"
+      @myClearMultipleSelect="ClearMultipleSelect"
     />
     <!-- 页码 -->
     <el-pagination
@@ -586,6 +587,10 @@ export default {
       this.$refs.batchOperateDialog.dialogVisible = true
       this.$refs.batchOperateDialog.organizationId = this.organizationId
       this.pushMultipleSelectionData() //批量传输选中数据
+    },
+    ClearMultipleSelect(){
+      // 自动去除选中效果
+      this.$refs.multipleTable.clearSelection()
     },
     //批量删除弹窗
     deleteDialogVisible() {
