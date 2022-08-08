@@ -24,7 +24,6 @@
           >
           </el-input>
         </el-form-item>
-        <!-- <el-form-item label="密码" class="psw" prop="password" :error="err"> -->
         <el-form-item label="密码" class="psw" prop="password">
           <el-input
             placeholder="请输入密码"
@@ -48,6 +47,7 @@
 import { mapMutations } from 'vuex'
 import { mapState } from 'vuex'
 import loginData from './loginData'
+
 export default {
   name: 'Login',
   data() {
@@ -85,18 +85,19 @@ export default {
       } else {
         this.$http
           .post('api/login/b', this.loginForm)
-
           .then((res) => {
             if (res.data.code === '00000') {
               this.$message.success('恭喜你，登录成功')
               // 存储数据
-              this.loginOrganizationName = JSON.stringify(
+              sessionStorage.setItem(
+                'loginOrganizationName',
                 res.data.data.loginOrganizationName
               )
-              this.loginOrganizationId = JSON.stringify(
+              sessionStorage.setItem(
+                'loginOrganizationId',
                 res.data.data.loginOrganizationId
               )
-              this.$router.push('/interviewMain')
+              this.$router.push('/home/interviewMain')
             } else {
               this.$message({
                 showClose: true,
@@ -125,26 +126,31 @@ export default {
   width: 100%;
   height: 100%;
 }
+
 .content {
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
 }
+
 .left-icon {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
+
 .el-image icon-img {
   width: 206px;
   height: 206px;
 }
+
 .icon-img {
   width: 206px;
   height: 206px;
 }
+
 .icon-text {
   color: rgba(26, 113, 185, 100);
   // font-size: 50px;
@@ -153,6 +159,7 @@ export default {
   font-family: Arial-400;
   margin-top: 70px;
 }
+
 .right-box {
   margin-left: 150px;
   width: 364px;
@@ -163,6 +170,7 @@ export default {
   text-align: center;
   border: 3px solid rgba(26, 113, 185, 100);
 }
+
 .login-text {
   margin-left: 30px;
   margin-top: 48px;
@@ -173,10 +181,12 @@ export default {
   text-align: left;
   font-family: Arial-400;
 }
+
 .id,
 .psw {
   width: 300px;
 }
+
 .id /deep/ .el-form-item__label,
 .psw /deep/ .el-form-item__label {
   color: rgba(51, 51, 51, 100);
@@ -194,6 +204,7 @@ export default {
   margin-right: 10px;
   margin-left: 20px;
 }
+
 .forget-text {
   margin-top: 26px;
   margin-left: 250px;
@@ -203,9 +214,11 @@ export default {
   font-size: 17px;
   font-family: Arial-400;
 }
+
 .el-form /deep/ .el-form-item__error {
   margin-left: 22px;
 }
+
 .login-btn {
   margin-top: 33px;
   font-family: Arial-400;
@@ -218,9 +231,11 @@ export default {
   background-color: rgba(26, 113, 185, 100);
   text-align: center;
 }
+
 .el-form-item {
   margin-top: 35px;
 }
+
 .footer {
   display: flex;
   margin-left: 111px;
@@ -228,10 +243,12 @@ export default {
   font-size: 17px;
   font-family: Arial-400;
 }
+
 .no-id,
 .register {
   color: rgba(134, 116, 116, 100);
 }
+
 .register:hover {
   color: rgba(26, 113, 185, 100);
   cursor: pointer;
