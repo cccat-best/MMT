@@ -91,10 +91,6 @@ export default {
   },
   components: { signup, interview },
   methods: {
-    // 切换次导航触发事件
-    // handleClick(tab, event) {
-    //   console.log(tab, event)
-    // },
     ...mapMutations('problem', ['updateTime']),
     changeRound() {
       let obj = {
@@ -110,11 +106,6 @@ export default {
         .catch((err) => {
           console('面试轮数' + err)
         })
-      //重新获取面试轮数
-      // setTimeout(() => {
-      //   this.getRound()
-      // },1000)
-      // this.roundCount = this.num
     },
     //得到几面
     async getRound() {
@@ -132,24 +123,9 @@ export default {
         this.roundCount = res.data.round
       }
     }
-    // getQues() {
-    //   const organizationId = sessionStorage.getItem('loginOrganizationId')
-    //   this.$http.get(`api/organization/interview/sign?organizationId=${organizationId}`)
-    //   .then((res) => {
-    //     console.log(res);
-    //     let timeTemp = []
-    //     timeTemp[0] = res.data.data.startTime
-    //     timeTemp[1] = res.data.data.endTime
-    //     this.updateTime(timeTemp)
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   })
-    // }
   },
   mounted() {
     this.getRound()
-    //   this.getQues()
   }
 }
 </script>
