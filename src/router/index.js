@@ -104,7 +104,7 @@ router.beforeEach((to, from, next) => {
     return next()
   }
   let cookies = document.cookie
-  console.log(cookies);
+  console.log(cookies)
   if (!cookies) {
     return next('/login')
   }
