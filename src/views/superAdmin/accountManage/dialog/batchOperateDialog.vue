@@ -138,6 +138,8 @@ export default {
                 item.permission = this.permission
               })
               // console.log(this.multipleSelection)
+              // 自动去除选中效果
+              this.$emit('myClearMultipleSelect')
             } else {
               this.$message.error(res.data.message)
             }
