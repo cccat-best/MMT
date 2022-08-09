@@ -229,8 +229,8 @@ export default {
             break
           }
           default: {
+            // this.$message.error(res.message)
             throw new Error(JSON.stringify(res))
-            // this.$message.error(JSON.stringify(res))
           }
         }
       } catch (err) {
@@ -252,8 +252,8 @@ export default {
             break
           }
           default: {
+            // this.$message.error(res.message)
             throw new Error(JSON.stringify(res))
-            // this.$message.error(JSON.stringify(res))
           }
         }
       } catch (err) {
