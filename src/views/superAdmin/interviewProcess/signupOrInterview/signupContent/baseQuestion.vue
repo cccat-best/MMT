@@ -6,7 +6,9 @@
       <div class="inTitle">
         <div class="inTitle-left">基本问题</div>
         <!-- 是否可以编辑 -->
-        <div class="inTitle-right" @click="canEdit"><i class="el-icon-edit"></i>编辑/取消编辑</div>
+        <div class="inTitle-right" @click="canEdit">
+          <i class="el-icon-edit"></i>编辑/取消编辑
+        </div>
       </div>
     </div>
     <div class="base-main">
@@ -28,7 +30,7 @@
           v-show="item.isShow"
         >
           <i
-            :class="['el-icon-remove',!isEdit?'remove-opacity':'']"
+            :class="['el-icon-remove', !isEdit ? 'remove-opacity' : '']"
             style="color: #1597db"
             @click="removeYushe(item)"
           ></i>
@@ -46,7 +48,7 @@
           :key="'t' + i1"
         >
           <i
-            :class="['el-icon-remove',!isEdit?'remove-opacity':'']"
+            :class="['el-icon-remove', !isEdit ? 'remove-opacity' : '']"
             style="color: #1597db"
             @click="removeChoose(item1)"
           ></i>
@@ -193,7 +195,7 @@ export default {
   props: ['allQues'],
   data() {
     return {
-      isEdit:false,
+      isEdit: false,
       //isAdd: 1,
       form: {
         //最少两个选项
@@ -271,24 +273,24 @@ export default {
       'updateIsEdit'
     ]),
     canEdit() {
-      this.isEdit=!this.isEdit
+      this.isEdit = !this.isEdit
       this.updateIsEdit()
-      if(this.isEdit) return this.$message.success('编辑模式')
-      if(!this.isEdit) return this.$message('非编辑模式')
+      if (this.isEdit) return this.$message.success('编辑模式')
+      if (!this.isEdit) return this.$message('非编辑模式')
     },
     // 预设问题展示
-    yusheIsshow(item){
-      if(!this.isEdit) return this.$message.error('非编辑模式')
+    yusheIsshow(item) {
+      if (!this.isEdit) return this.$message.error('非编辑模式')
       item.isShow = !item.isShow
     },
     // 删除预设问题
-    removeYushe(item){
-      if(!this.isEdit) return
+    removeYushe(item) {
+      if (!this.isEdit) return
       item.isShow = !item.isShow
     },
     //删除自定义问题
     removeChoose(item) {
-      if(!this.isEdit) return
+      if (!this.isEdit) return
       this.BaseList = this.BaseList.filter(
         (p) => p.description != item.description
       )
@@ -296,7 +298,7 @@ export default {
     },
     //添加自定义文本问题
     addTextQues() {
-      if(!this.isEdit) return this.$message.error('非编辑模式')
+      if (!this.isEdit) return this.$message.error('非编辑模式')
       //判断自定义问题是否超过三个
       if (this.BaseList.length >= 3)
         return this.$message.error('最多自定义三个问题')
@@ -349,8 +351,8 @@ export default {
     },
     //添加自定义选择
     addChoseList() {
-      if(!this.isEdit) return this.$message.error('非编辑模式')
-      if(this.isEdit == false) return this.$message.error('非编辑模式')
+      if (!this.isEdit) return this.$message.error('非编辑模式')
+      if (this.isEdit == false) return this.$message.error('非编辑模式')
       if (this.BaseList.length >= 3)
         return this.$message.error('最多自定义三个问题')
       if (this.text1 == '') {

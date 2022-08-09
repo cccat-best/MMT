@@ -8,7 +8,7 @@ export default {
     maxDepartment: 1,
     allocated: false,
     //是否是编辑模式
-    isEdit:false
+    isEdit: false
   }),
   mutations: {
     //更新允许报名时间

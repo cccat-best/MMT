@@ -13,11 +13,12 @@
             :min="1"
             :max="3"
             size="mini"
+            :disabled="!isEdit"
           ></el-input-number>
         </div>
         <!-- 是否允许调剂 -->
         <div class="section-content-top-allocated">
-          <el-checkbox v-model="allocated" v-if="departmentCount >= 2"
+          <el-checkbox v-model="allocated" v-if="departmentCount >= 2" :disabled="!isEdit"
             >允许调剂</el-checkbox
           >
         </div>
@@ -45,7 +46,7 @@
 
 <script>
 import addQues from './addQues.vue'
-import { mapMutations,mapState } from 'vuex'
+import { mapMutations, mapState } from 'vuex'
 export default {
   props: ['allQues'],
   //添加问题组件
@@ -107,10 +108,10 @@ export default {
           this.sectionQues = newV.departmentQuestionsList
         }, 500)
       }
-    },
+    }
   },
-  computed:{
-    ...mapState('problem',['isEdit'])
+  computed: {
+    ...mapState('problem', ['isEdit'])
   }
 }
 </script>
@@ -147,6 +148,7 @@ export default {
       .section-que-content-title {
         display: flex;
         font-size: 20px;
+        margin-bottom: 20px;
       }
     }
   }
