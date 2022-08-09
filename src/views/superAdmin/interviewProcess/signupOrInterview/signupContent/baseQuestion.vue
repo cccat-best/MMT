@@ -4,14 +4,12 @@
     <div class="baseTitle">
       <div class="mainTitle">
         <div class="mainTitle-left">报名表问题</div>
-         <!-- 是否可以编辑 -->
+        <!-- 是否可以编辑 -->
         <div class="mainTitle-right" @click="canEdit">
           <i class="el-icon-edit"></i>编辑/取消编辑
         </div>
-        </div>
-      <div class="inTitle">
-        基本问题
       </div>
+      <div class="inTitle">基本问题</div>
     </div>
     <div class="base-main">
       <!-- 必选问题 -->
@@ -474,7 +472,7 @@ export default {
       font-size: 30px;
       justify-content: space-between;
       color: #989898;
-       .mainTitle-right {
+      .mainTitle-right {
         cursor: pointer;
         color: #67b5fe;
         font-size: 20px;
