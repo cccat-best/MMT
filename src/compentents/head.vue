@@ -247,7 +247,7 @@ export default {
     },
 
     superAdmin() {
-      this.$router.push('/superAdmin')
+      this.$router.push('/superAdmin/interviewMain')
       this.$message({
         message: '已切换至超级管理',
         type: 'success'

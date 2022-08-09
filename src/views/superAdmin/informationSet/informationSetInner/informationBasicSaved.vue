@@ -166,10 +166,12 @@ export default {
 .associationsTitleFont {
   font-size: 24px;
   margin: 60px 60px 60px 0px;
+  text-align: left;
 }
 .associationsTitleFontWhite {
   font-size: 20px;
   color: rgba(64, 64, 64, 0.759);
+  text-align: left;
 }
 .associationsBox {
   display: flex;

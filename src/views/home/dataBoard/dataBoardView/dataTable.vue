@@ -28,7 +28,7 @@
       stripe
       tooltip-effect="dark"
       class="el-table"
-      height="72.2vh"
+      height="82vh"
       v-loading="myLoading"
       element-loading-text="拼命加载中"
       :row-style="{ height: '0' }"

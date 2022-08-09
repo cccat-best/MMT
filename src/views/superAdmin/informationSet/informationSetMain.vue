@@ -62,6 +62,7 @@
           @click="
             editable = !editable
             gotoSaved()
+            $bus.$emit('postData')
           "
         >
           <i class="el-icon-document-checked"></i>
@@ -136,10 +137,15 @@ export default {
       console.log('Main组件监听到了savedNeedData的请求，开始发送请求')
       this.getCommunityData()
     })
+    this.$bus.$on('editNeedData', () => {
+      console.log('Main组件监听到了editNeedData的请求，开始发送请求')
+      this.getCommunityData()
+    })
     this.$bus.$emit('savedNeedData')
   },
   beforeDestroy() {
     this.$bus.$off('savedNeedData')
+    this.$bus.$off('editNeedData')
   }
 }
 </script>
@@ -191,6 +197,7 @@ export default {
 }
 .editBtn {
   position: fixed;
+  z-index: 10;
   right: 50px;
   top: 140px;
   width: 100px;
