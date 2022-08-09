@@ -103,6 +103,9 @@ export default {
       required: false,
       default: false
     }
+  },
+  data() {
+    return {}
   }
 }
 </script>

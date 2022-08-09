@@ -39,10 +39,22 @@
     </div>
     <div class="right">
       <!-- 根据选择渲染组件 -->
-      <selectTime v-show="showactive == 1" ref="time"></selectTime>
-      <baseQues v-show="showactive == 3" ref="base"></baseQues>
-      <sectionQues v-show="showactive == 4" ref="section"></sectionQues>
-      <synth v-show="showactive == 5"></synth>
+      <selectTime
+        :allQues="allQues"
+        v-show="showactive == 1"
+        ref="time"
+      ></selectTime>
+      <baseQues
+        :allQues="allQues"
+        v-show="showactive == 3"
+        ref="base"
+      ></baseQues>
+      <sectionQues
+        :allQues="allQues"
+        v-show="showactive == 4"
+        ref="section"
+      ></sectionQues>
+      <synth :allQues="allQues" v-show="showactive == 5"></synth>
     </div>
   </div>
 </template>
@@ -55,13 +67,30 @@ export default {
   components: { selectTime, baseQues, synth, sectionQues },
   data() {
     return {
-      showactive: 1
+      showactive: 1,
+      allQues: {}
     }
   },
   methods: {
     //最后一页点击取消回到第一页
     cancel() {
       this.showactive = 1
+    },
+    // 检测用户是否设置过问题
+    getQues() {
+      const organizationId = sessionStorage.getItem('loginOrganizationId')
+      this.$http
+        .get(`api/organization/interview/sign?organizationId=${organizationId}`)
+        .then((res) => {
+          console.log(res, 'get')
+          // 只有00000 才是设置过问题 没有直接退出
+          if (res.data.code != '00000') return
+          //等于00000把他传给子组件
+          this.allQues = res.data.data
+        })
+        .catch((err) => {
+          console.log(err)
+        })
     }
   },
   watch: {
@@ -77,6 +106,9 @@ export default {
         this.$refs.section.packgeSectionQue()
       }
     }
+  },
+  mounted() {
+    this.getQues()
   }
 }
 </script>
@@ -112,7 +144,7 @@ export default {
         cursor: pointer;
       }
       .active {
-        border-left: 4px solid #63afe2 !important;
+        border-left: 4px solid #2e98f9 !important;
         color: #63afe2;
       }
       .special {
@@ -120,7 +152,7 @@ export default {
         cursor: default !important;
       }
       .active-sp {
-        color: #85c4ff;
+        color: #2e98f9;
         border-left: 4px solid #a3a3a3;
       }
     }
