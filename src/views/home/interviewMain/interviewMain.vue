@@ -37,6 +37,11 @@
 
 <script>
 export default {
-  comments: {}
+  comments: {},
+  data() {
+    return {
+      editable: false
+    }
+  }
 }
 </script>

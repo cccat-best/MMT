@@ -6,7 +6,7 @@
           v-model="dateTime"
           type="datetime"
           style="
-            width: 230px;
+            width: 200px;
             border-radius: 5px;
             box-shadow: 1px 1px 3px 1px #e5e9f2;
             margin-bottom: 0px;
@@ -207,7 +207,7 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  /* margin-top: 5px; */
+  margin-top: 7px;
 }
 .p0 {
   text-indent: 0em;
