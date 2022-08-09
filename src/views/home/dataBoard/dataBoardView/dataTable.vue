@@ -294,8 +294,9 @@ export default {
   },
   // 定时更新数据和筛选项
   mounted() {
+    // 无痕刷新
     this.timerUpdate = setInterval(() => {
-      setTimeout(this.requestFilterItem, 0)
+      setTimeout(this.reFreshWithoutSee, 0)
     }, 1000 * 900)
   },
   beforeDestroy() {
@@ -603,10 +604,62 @@ export default {
         }
       )
     },
+    // 无痕刷新,去除loading效果
+    reFreshWithoutSee(){
+      // 获取筛选项
+      this.requestAllItem()
+      // 请求数据，无loading效果
+      let myRequestData = {
+        admissionId: this.admissionId,
+        organizationId: this.organizationId,
+        pageNum: this.currentPage,
+        pageSize: this.pagesize
+      }
+      if (this.searchWord != '') {
+        myRequestData.keyWord = this.searchWord
+      }
+      if (this.className.length != 0) {
+        myRequestData.className = this.className
+      }
+      if (this.organizationOrder.length != 0) {
+        myRequestData.organizationOrder = this.organizationOrder
+      }
+      if (this.departmentOrder.length != 0) {
+        myRequestData.departmentOrder = this.departmentOrder
+      }
+      if (this.wishDepartment.length != 0) {
+        myRequestData.wishDepartment = this.wishDepartment
+      }
+      if (this.interviewStatus.length != 0) {
+        myRequestData.interviewStatus = this.interviewStatus
+      }
+      if (this.nextPlace.length != 0) {
+        myRequestData.nextPlace = this.nextPlace
+      }
+      if (this.nextTime.length != 0) {
+        myRequestData.nextTime = this.nextTime
+      }
+      if (this.sort.length != 0) {
+        myRequestData.sort = this.sort
+      }
+      this.$http.post('api/data-panel/all-information', myRequestData).then(
+        (res) => {
+          // 因为请求访问权限异常，res.data.studentList在返回信息中为undefined
+          if (res.data.code == '00000') {
+            this.tableList = res.data.data.allInformationData
+            this.total = res.data.data.totalNum
+            // console.log(this.tableList)
+          } else {
+            this.$message.error(res.data.message)
+          }
+        },
+        (err) => {
+          this.$message.error('获取数据失败' + err)
+        }
+      )
+    },
     // 获取所有筛选项
-    requestFilterItem() {
-      // 更新数据,不要改变排序筛选等，避免用户发现刷新痕迹
-      this.requestData()
+    requestAllItem(){
       // 获取班级
       this.$http
         .get(
@@ -747,6 +800,12 @@ export default {
             this.$message.error('获取数据失败' + err)
           }
         )
+    },
+    // 获取所有筛选项并刷新数据
+    requestFilterItem() {
+      // 更新数据,不要改变排序筛选等，避免用户发现刷新痕迹
+      this.requestData()
+      this.requestAllItem()
     },
     //修改页容量
     handleSizeChange(val) {
