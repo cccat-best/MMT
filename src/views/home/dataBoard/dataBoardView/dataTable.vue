@@ -833,8 +833,10 @@ export default {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  margin-bottom: 6px;
-  margin-right: 10px;
+  margin-bottom: 10px;
+  position: relative;
+  bottom: 5px;
+  margin-right: 20px;
   padding: 0%;
   // height: 100px;
   .myRefresh {
@@ -870,7 +872,7 @@ export default {
   padding: 0px;
   color: #666690;
   font-size: 15px;
-  border-radius: 10px;
+  border-radius: 4px;
   // 滚动条，暂时只兼容chrome
   /deep/ .el-table__body-wrapper::-webkit-scrollbar {
     width: 15px; /*滚动条宽度*/
