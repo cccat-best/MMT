@@ -2,7 +2,13 @@
   <div class="baseContent">
     <!-- 标题 -->
     <div class="baseTitle">
-      <div class="mainTitle">报名表问题</div>
+      <div class="mainTitle">
+        <div class="mainTitle-left">报名表问题</div>
+        <!-- 是否可以编辑 -->
+        <div class="mainTitle-right" @click="canEdit">
+          <i class="el-icon-edit"></i>编辑/取消编辑
+        </div>
+      </div>
       <div class="inTitle">基本问题</div>
     </div>
     <div class="base-main">
@@ -24,9 +30,9 @@
           v-show="item.isShow"
         >
           <i
-            class="el-icon-remove"
+            :class="['el-icon-remove', !isEdit ? 'remove-opacity' : '']"
             style="color: #1597db"
-            @click="item.isShow = !item.isShow"
+            @click="removeYushe(item)"
           ></i>
           <span class="choose-name">{{ item.description }}</span>
           <input type="text" class="choose-input" />
@@ -42,13 +48,13 @@
           :key="'t' + i1"
         >
           <i
-            class="el-icon-remove"
+            :class="['el-icon-remove', !isEdit ? 'remove-opacity' : '']"
             style="color: #1597db"
             @click="removeChoose(item1)"
           ></i>
           <span class="freeView-name">{{ item1.description }}</span>
           <!-- 选择or文字 -->
-          <select class="freeView-select" v-show="item1.selection">
+          <select class="freeView-select" v-if="item1.selection">
             <option
               selected="selected"
               disabled="disabled"
@@ -64,7 +70,7 @@
             </option>
           </select>
           <!--  展示input框-->
-          <input type="text" v-show="!item1.selection" class="freeView-input" />
+          <input type="text" v-if="!item1.selection" class="freeView-input" />
         </div>
       </div>
       <!-- 预设问题面板 -->
@@ -77,7 +83,7 @@
             <div
               v-if="i < 7"
               :class="['yushe-item', item.isShow ? 'yushe-active' : '']"
-              @click="item.isShow = !item.isShow"
+              @click="yusheIsshow(item)"
             >
               {{ item.description }}
             </div>
@@ -153,6 +159,7 @@
                   <el-input
                     v-model="domain.value"
                     style="margin-right: 5px"
+                    maxlength="10"
                   ></el-input
                   ><el-button @click.prevent="removeDomain(domain)"
                     >删除</el-button
@@ -185,10 +192,11 @@
 <script scoped>
 import { mapMutations } from 'vuex'
 export default {
+  props: ['allQues'],
   data() {
     return {
-      //最多三个自定义问题
-      isAdd: 1,
+      isEdit: false,
+      //isAdd: 1,
       form: {
         //最少两个选项
         domains: [
@@ -226,23 +234,23 @@ export default {
       //预设问题
       preList: [
         {
-          isShow: true,
+          isShow: false,
           description: '班级'
         },
         {
-          isShow: true,
+          isShow: false,
           description: '学院'
         },
         {
-          isShow: true,
+          isShow: false,
           description: '专业'
         },
         {
-          isShow: true,
+          isShow: false,
           description: '性别'
         },
         {
-          isShow: true,
+          isShow: false,
           description: 'QQ'
         },
         {
@@ -261,19 +269,39 @@ export default {
   methods: {
     ...mapMutations('problem', [
       'updateGeneralQuestions',
-      'updateQuestionsList'
+      'updateQuestionsList',
+      'updateIsEdit'
     ]),
+    canEdit() {
+      this.isEdit = !this.isEdit
+      this.updateIsEdit()
+      if (this.isEdit) return this.$message.success('编辑模式')
+      if (!this.isEdit) return this.$message('非编辑模式')
+    },
+    // 预设问题展示
+    yusheIsshow(item) {
+      if (!this.isEdit) return this.$message.error('非编辑模式')
+      item.isShow = !item.isShow
+    },
+    // 删除预设问题
+    removeYushe(item) {
+      if (!this.isEdit) return
+      item.isShow = !item.isShow
+    },
     //删除自定义问题
     removeChoose(item) {
+      if (!this.isEdit) return
       this.BaseList = this.BaseList.filter(
         (p) => p.description != item.description
       )
-      this.isAdd--
+      // this.isAdd--
     },
     //添加自定义文本问题
     addTextQues() {
+      if (!this.isEdit) return this.$message.error('非编辑模式')
       //判断自定义问题是否超过三个
-      if (this.isAdd > 3) return this.$message.error('最多自定义三个问题')
+      if (this.BaseList.length >= 3)
+        return this.$message.error('最多自定义三个问题')
       if (this.text == '') {
         return this.$message.error('问题不能为空')
       }
@@ -291,7 +319,7 @@ export default {
           }
         }
         this.BaseList.push(que)
-        this.isAdd++
+        // this.isAdd++
         this.text = ''
         //只有成功提交才会关闭这个添加框
         this.visible = false
@@ -323,7 +351,10 @@ export default {
     },
     //添加自定义选择
     addChoseList() {
-      if (this.isAdd > 3) return this.$message.error('最多自定义三个问题')
+      if (!this.isEdit) return this.$message.error('非编辑模式')
+      if (this.isEdit == false) return this.$message.error('非编辑模式')
+      if (this.BaseList.length >= 3)
+        return this.$message.error('最多自定义三个问题')
       if (this.text1 == '') {
         return this.$message.error('问题不能为空')
       }
@@ -367,7 +398,7 @@ export default {
         }
         que.option = option
         this.BaseList.push(que)
-        this.isAdd++
+        // this.isAdd++
         this.visible1 = false
       } else {
         return this.$message.error('问题已存在')
@@ -402,6 +433,28 @@ export default {
       this.updateGeneralQuestions(generalQuestions)
       this.updateQuestionsList(questionsList)
     }
+  },
+  watch: {
+    //检测用户是否设置过问题
+    allQues(newV) {
+      if (newV.questionsList.length != 0) {
+        this.BaseList = newV.questionsList
+        this.updateQuestionsList(newV.questionsList)
+      }
+      if (newV.generalQuestions.length != 0) {
+        this.updateGeneralQuestions(newV.generalQuestions)
+        // this.preList.forEach((p) => {
+        //   p.isShow = false
+        // })
+        for (let i = 0; i < newV.generalQuestions.length; i++) {
+          this.preList.forEach((p) => {
+            if (p.description == newV.generalQuestions[i]) {
+              p.isShow = true
+            }
+          })
+        }
+      }
+    }
   }
 }
 </script>
@@ -417,13 +470,21 @@ export default {
     .mainTitle {
       display: flex;
       font-size: 30px;
+      justify-content: space-between;
       color: #989898;
+      .mainTitle-right {
+        cursor: pointer;
+        color: #67b5fe;
+        font-size: 20px;
+        margin-right: 40px;
+        margin-top: 10px;
+      }
     }
     .inTitle {
       margin-top: 30px;
       margin-left: 65px;
       display: flex;
-      font-size: 20px;
+      font-size: 22px;
     }
   }
   .base-main {
@@ -431,10 +492,10 @@ export default {
     .must {
       display: flex;
       justify-content: space-between;
-
+      margin: 0 17px;
       .must-item {
         display: flex;
-        width: 33%;
+        width: 33.33%;
         align-items: center;
         .must-star {
           color: red;
@@ -445,11 +506,14 @@ export default {
         .must-name {
           width: 30px;
           margin-left: 3px;
-          margin-right: 5px;
+          margin-right: 6px;
+          font-size: 17px;
         }
         .must-input {
+          width: 182px;
           border-radius: 5px;
-          border: 1px solid #0f2d2d;
+          border: 1px solid #cecece;
+          margin-left: 5px;
         }
       }
     }
@@ -457,6 +521,7 @@ export default {
       display: flex;
       align-items: center;
       flex-wrap: wrap;
+      margin: 0 17px;
       .choose-item {
         margin-top: 30px;
         width: 33.33%;
@@ -466,100 +531,139 @@ export default {
           margin-left: 3px;
           margin-right: 5px;
           width: 30px;
+          font-size: 17px;
         }
         .choose-input {
-          margin-left: 2px;
+          margin-left: 6px;
+          width: 182px;
           border-radius: 5px;
-          border: 1px solid #0f2d2d;
+          border: 1px solid #cecece;
+        }
+        .remove-opacity {
+          opacity: 0;
         }
       }
     }
     .yushe-content {
+      margin-left: 17px;
       display: flex;
       flex-direction: column;
       margin-top: 26px;
-      margin-left: 5px;
-      width: 660px;
-      height: 168px;
+      margin-left: 10px;
+      width: 640px;
+      height: 190px;
       margin-bottom: 30px;
       box-shadow: 4px 4px 8px 4px rgba(0, 0, 0, 0.2);
       padding: 5px 20px;
+      border-radius: 6px;
       .yushe-title {
         display: flex;
         align-items: center;
         font-size: 20px;
-        margin-bottom: 30px;
-      }
-      .yushe-item-content {
-        display: flex;
-        align-items: center;
-        .yushe-item {
-          width: 50px;
-          height: 25px;
-          border: 1px solid #9e9e9e;
-          border-radius: 5px;
-          line-height: 25px;
-          margin-right: 10px;
-          cursor: pointer;
-        }
-        padding-bottom: 20px;
-        border-bottom: 1px solid #efefef;
-        .yushe-active {
-          color: #9ed1ff !important;
-          border: 2px solid #9ed1ff !important;
-        }
-      }
-      .zidingyi-content {
-        .form-chose {
-          display: flex;
-        }
-        .my-input {
-          margin: 10px 0;
-        }
-        display: flex;
-        align-items: center;
-        margin-top: 30px;
-        .zidingyi-tilte {
-          margin-right: 20px;
-        }
-        .base-add-botton {
-          background: #1991ff;
-          color: white;
-        }
+        margin-bottom: 15px;
+        margin-left: 35px;
+        margin-top: 14px;
       }
     }
-    .freeView-content {
-      .freeView-title {
-        display: flex;
-        font-size: 20px;
-        color: #989898;
-        margin-left: 65px;
-        margin-bottom: 10px;
-        margin-top: 20px;
-      }
-      margin: 20px 0;
+    .yushe-item-content {
       display: flex;
-      flex-direction: column;
-      .freeView-item {
-        display: flex;
-        align-items: center;
-      }
-      .freeView-name {
-        display: flex;
-        margin: 10px 10px;
-        width: 200px;
-      }
-      .freeView-input {
-        width: 166px;
+      align-items: center;
+      margin-top: 10px;
+      margin-left: 35px;
+      width: 575px;
+      .yushe-item {
+        width: 60px;
+        height: 30px;
+        border: 1px solid #9e9e9e;
         border-radius: 5px;
-        border: 1px solid #0f2d2d;
+        line-height: 30px;
+        margin-right: 15px;
+        cursor: pointer;
+        font-size: 17px;
       }
-      .freeView-select {
-        width: 167px;
-        border-radius: 5px;
-        border: 1px solid #0f2d2d;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #efefef;
+      .yushe-active {
+        color: #67b5fe !important;
+        border: 1px solid #67b5fe !important;
+      }
+    }
+    .zidingyi-content {
+      margin-left: 35px;
+      .form-chose {
+        display: flex;
+      }
+      .my-input {
+        margin: 10px 0;
+        width: 182px;
+      }
+      display: flex;
+      align-items: center;
+      margin-top: 23px;
+      .zidingyi-tilte {
+        margin-right: 20px;
+        font-size: 18px;
+      }
+      .base-add-botton {
+        background: #1991ff;
+        color: white;
+        margin-left: 16px;
       }
     }
   }
+  .freeView-content {
+    .freeView-title {
+      display: flex;
+      font-size: 22px;
+      color: #989898;
+      margin-left: 65px;
+      margin-bottom: 16px;
+      margin-top: 20px;
+    }
+    margin: 20px 0;
+    display: flex;
+    flex-direction: column;
+    .freeView-item {
+      display: flex;
+      align-items: center;
+      margin-left: 17px;
+      .remove-opacity {
+        opacity: 0;
+      }
+    }
+    .freeView-name {
+      display: flex;
+      margin: 10px 10px;
+      width: 185px;
+      font-size: 17px;
+    }
+    .freeView-input {
+      width: 166px;
+      border-radius: 5px;
+      border: 1px solid #cecece;
+      height: 25px !important;
+    }
+    .freeView-select {
+      width: 166px;
+      height: 25px;
+      border-radius: 5px;
+      border: 1px solid #cecece;
+    }
+  }
+}
+
+input:focus {
+  border: 1px solid #535858 !important;
+  outline: none;
+}
+input {
+  width: 166px;
+  padding-left: 10px;
+  box-sizing: border-box;
+  height: 25px !important;
+}
+select:focus {
+  outline: none;
+  border: 1px solid #535858 !important;
 }
 </style>
