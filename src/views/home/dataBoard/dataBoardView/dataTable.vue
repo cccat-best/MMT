@@ -492,12 +492,12 @@ export default {
               (this.currentPage = 1)
           } else this.$message.error(res.data.message)
           // loading
-            this.myLoading = false
+          this.myLoading = false
         },
         (err) => {
           this.$message.error('获取数据失败' + err)
           // loading
-            this.myLoading = false
+          this.myLoading = false
         }
       )
     },
