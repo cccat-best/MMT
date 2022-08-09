@@ -883,7 +883,7 @@ export default {
   font-size: 25px;
   color: #409eff;
 }
-.paginationMove{
+.paginationMove {
   position: relative;
   top: 10px;
 }
