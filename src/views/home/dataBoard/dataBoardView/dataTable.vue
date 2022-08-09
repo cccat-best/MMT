@@ -605,7 +605,7 @@ export default {
       )
     },
     // 无痕刷新,去除loading效果
-    reFreshWithoutSee(){
+    reFreshWithoutSee() {
       // 获取筛选项
       this.requestAllItem()
       // 请求数据，无loading效果
@@ -659,7 +659,7 @@ export default {
       )
     },
     // 获取所有筛选项
-    requestAllItem(){
+    requestAllItem() {
       // 获取班级
       this.$http
         .get(
