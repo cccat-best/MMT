@@ -56,6 +56,7 @@
         <!-- 应江哥要求，其他页面点击头像进入个人中心，而个人中心点击头像刷新页面，home函数实现 -->
         <div class="block" style="height: 35px; overflow: hidden">
           <el-tooltip
+            v-if="!this.isPersonal"
             class="item"
             effect="dark"
             content="点击头像进入个人中心"
@@ -70,7 +71,22 @@
               ></el-avatar
             ></span>
           </el-tooltip>
-
+          <el-tooltip
+            v-if="this.isPersonal"
+            class="item"
+            effect="dark"
+            content="点击头像刷新个人中心"
+            placement="bottom"
+          >
+            <span @click="home"
+              ><el-avatar
+                :size="35"
+                :src="circleUrl"
+                style="vertical-align: middle; cursor: pointer"
+                :click="home"
+              ></el-avatar
+            ></span>
+          </el-tooltip>
           <el-dropdown trigger="click">
             <span
               class="el-dropdown-link"

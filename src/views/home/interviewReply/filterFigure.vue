@@ -49,8 +49,8 @@
       </div>
     </div>
     <div class="bigChart">
-      <div id="pie" ref="pie" style="width: 300px; height: 200px"></div>
-      <div class="total">共{{ total }}人</div>
+      <div id="pie" ref="pie" style="width: 285px; height: 190px"></div>
+      <div class="total" style="padding-bottom: 16px">共{{ total }}人</div>
     </div>
   </div>
 </template>
@@ -89,11 +89,11 @@ export default {
   name: 'filterFigure',
   data() {
     return {
-      win: 20,
-      pass: 10,
-      wait: 30,
-      nedit: 25,
-      total: 85,
+      win: 3,
+      pass: 3,
+      wait: 3,
+      nedit: 2,
+      total: 11,
       department: [],
       room: [],
       departmentId: 0,
@@ -246,17 +246,18 @@ export default {
 
 <style scoped>
 .bigLeft {
-  width: 980px;
+  width: 78%;
   height: 100%;
   background-color: white;
-  border-radius: 10px;
+  border-radius: 15px;
   display: flex;
   justify-content: space-around;
   align-items: center;
+  position: relative;
 }
 .text {
   height: 100%;
-  width: 60%;
+  width: 65%;
   margin-left: 40px;
   display: flex;
   flex-direction: column;
@@ -265,22 +266,23 @@ export default {
 }
 .bigChart {
   height: 100%;
-  margin-right: 50px;
+  margin-right: 40px;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
-}
-.partText {
-  display: flex;
-  flex-direction: row;
 }
 .ttext {
   font-size: 14px;
   padding-top: 5px;
   padding-left: 0;
-  width: 100px;
+  width: 110px;
   height: 30px;
   margin-right: 2px;
+  position: absolute;
+}
+.udText {
+  margin-left: 100px;
 }
 .clBtn {
   border-color: #40a9ff;

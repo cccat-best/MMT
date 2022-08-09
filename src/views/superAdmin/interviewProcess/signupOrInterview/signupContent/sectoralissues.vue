@@ -13,11 +13,15 @@
             :min="1"
             :max="3"
             size="mini"
+            :disabled="!isEdit"
           ></el-input-number>
         </div>
         <!-- 是否允许调剂 -->
         <div class="section-content-top-allocated">
-          <el-checkbox v-model="allocated" v-if="departmentCount >= 2"
+          <el-checkbox
+            v-model="allocated"
+            v-if="departmentCount >= 2"
+            :disabled="!isEdit"
             >允许调剂</el-checkbox
           >
         </div>
@@ -33,7 +37,11 @@
           部门{{ i + 1 }}：{{ item.departmentName }}
         </div>
         <!-- 问题展示区&&添加区 -->
-        <addQues :departmentId="item.departmentId" ref="a"></addQues>
+        <addQues
+          :sectionQues="sectionQues"
+          :departmentId="item.departmentId"
+          ref="a"
+        ></addQues>
       </div>
     </div>
   </div>
@@ -41,8 +49,9 @@
 
 <script>
 import addQues from './addQues.vue'
-import { mapMutations } from 'vuex'
+import { mapMutations, mapState } from 'vuex'
 export default {
+  props: ['allQues'],
   //添加问题组件
   components: { addQues },
   data() {
@@ -54,7 +63,9 @@ export default {
       //部门数组
       departmentList: [],
       //如果部门数为1不显示调剂按钮
-      departmentCount: 0
+      departmentCount: 0,
+      // 获取用户是否设置过部门问题
+      sectionQues: []
     }
   },
   mounted() {
@@ -79,10 +90,31 @@ export default {
       )
       //判断是否请求成功
       if (res.code != '00000') return this.$message.error('部门' + res.message)
-      //成功
       this.departmentCount = res.data.departmentList.length
       this.departmentList = res.data.departmentList
     }
+  },
+  watch: {
+    // 查看用户是否设置过问题
+    allQues(newV) {
+      if (newV.allocated) {
+        this.allocated = newV.allocated
+        this.updateAllocated(newV.allocated)
+      }
+      if (newV.maxDepartment) {
+        this.maxDepartment = newV.maxDepartment
+        this.updateMaxDepartment(newV.maxDepartment)
+      }
+      if (newV.departmentQuestionsList.length != 0) {
+        //如果用户设置过部门问题传递给子组件 子组件是请求完部门后渲染 所以避免子组件在请求之前数据更改检测不到 使用定时器延迟
+        setTimeout(() => {
+          this.sectionQues = newV.departmentQuestionsList
+        }, 500)
+      }
+    }
+  },
+  computed: {
+    ...mapState('problem', ['isEdit'])
   }
 }
 </script>
@@ -103,6 +135,7 @@ export default {
       .section-content-top-max {
         .section-content-top-max-title {
           padding-right: 5px;
+          font-size: 16px;
         }
       }
       .section-content-top-allocated {
@@ -118,8 +151,19 @@ export default {
       .section-que-content-title {
         display: flex;
         font-size: 20px;
+        margin-bottom: 20px;
       }
     }
   }
+}
+input:focus {
+  border: 1px solid #535858 !important;
+  outline: none;
+}
+input {
+  padding-left: 10px;
+}
+select:focus {
+  outline: none;
 }
 </style>

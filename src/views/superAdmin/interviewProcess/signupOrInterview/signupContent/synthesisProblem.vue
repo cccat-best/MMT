@@ -11,35 +11,37 @@
             :key="'a' + i1"
           >
             <i
-              class="el-icon-remove"
+              :class="['el-icon-remove', !isEdit ? 'remove-opacity' : '']"
               style="color: #1597db"
               @click="removeItem(item1)"
             ></i>
             <div class="freeView-name-content">
               <span class="freeView-name">{{ item1.description }}</span>
             </div>
-            <!-- 展示选项 -->
-            <select class="freeView-select" v-show="item1.selection">
-              <option
-                selected="selected"
-                disabled="disabled"
-                style="display: none"
-                value=""
-              ></option>
-              <option
-                v-for="(item2, index2) in item1.option"
-                :key="'op' + index2"
-                v-show="item2 != null"
-              >
-                {{ item2 }}
-              </option>
-            </select>
-            <!--  展示input框-->
-            <input
-              type="text"
-              v-show="!item1.selection"
-              class="freeView-input"
-            />
+            <div class="freeView-name-choose">
+              <!-- 展示选项 -->
+              <select class="freeView-select" v-if="item1.selection">
+                <option
+                  selected="selected"
+                  disabled="disabled"
+                  style="display: none"
+                  value=""
+                ></option>
+                <option
+                  v-for="(item2, index2) in item1.option"
+                  :key="'op' + index2"
+                  v-show="item2 != null"
+                >
+                  {{ item2 }}
+                </option>
+              </select>
+              <!--  展示input框-->
+              <input
+                type="text"
+                v-if="!item1.selection"
+                class="freeView-input"
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -67,7 +69,7 @@
           <div v-show="chooseAdd === 1">
             <el-input
               type="textarea"
-              :rows="4"
+              :rows="2"
               placeholder="请输入问题上限50个字"
               v-model="text1"
               maxlength="50"
@@ -154,10 +156,10 @@
 <script>
 import { mapState } from 'vuex'
 export default {
+  props: ['allQues'],
   data() {
     return {
-      // 上限五个问题
-      isAdd: 1,
+      // isAdd: 1,
       addShow: false,
       comprehensiveQuestionsList: [],
       // 控制添加选择还是填空
@@ -186,6 +188,12 @@ export default {
       this.$nextTick(() => {
         this.$refs.synthPopover.updatePopper()
       })
+    },
+    allQues(newV) {
+      //查看用户是否设置过问题
+      if (newV.comprehensiveQuestionsList.length != 0) {
+        this.comprehensiveQuestionsList = newV.comprehensiveQuestionsList
+      }
     }
   },
   computed: {
@@ -196,7 +204,8 @@ export default {
       'questionsList',
       'departmentQuestionsList',
       'maxDepartment',
-      'allocated'
+      'allocated',
+      'isEdit'
     ])
   },
   methods: {
@@ -222,7 +231,9 @@ export default {
     },
     //添加自定义选择
     addChoseList() {
-      if (this.isAdd > 5) return this.$message.error('最多自定义五个问题')
+      if (!this.isEdit) return this.$message.error('非编辑模式')
+      if (this.comprehensiveQuestionsList.length >= 5)
+        return this.$message.error('最多自定义五个问题')
       if (this.text2 == '') {
         return this.$message.error('问题不能为空')
       }
@@ -270,7 +281,7 @@ export default {
         }
         que.option = option
         this.comprehensiveQuestionsList.push(que)
-        this.isAdd++
+        // this.isAdd++
         this.addShow = false
         //重新定向到文本问题展示
         this.chooseAdd = 1
@@ -290,8 +301,10 @@ export default {
     },
     //添加自定义文本问题
     addTextQues() {
+      if (!this.isEdit) return this.$message.error('非编辑模式')
       //判断自定义问题是否超过三个
-      if (this.isAdd > 5) return this.$message.error('最多自定义五个问题')
+      if (this.comprehensiveQuestionsList.length >= 5)
+        return this.$message.error('最多自定义五个问题')
       if (this.text1 == '') {
         return this.$message.error('问题不能为空')
       }
@@ -313,7 +326,7 @@ export default {
           }
         }
         this.comprehensiveQuestionsList.push(que)
-        this.isAdd++
+        // this.isAdd++
         this.text1 = ''
         //只有成功提交才会关闭这个添加框
         this.addShow = false
@@ -333,10 +346,11 @@ export default {
     },
     // 删除问题
     removeItem(item1) {
+      if (!this.isEdit) return
       this.comprehensiveQuestionsList = this.comprehensiveQuestionsList.filter(
         (p) => p.description != item1.description
       )
-      this.isAdd--
+      // this.isAdd--
     },
     //如果点击取消回到时间选择页
     cancel() {
@@ -403,7 +417,7 @@ export default {
           })
         })
     },
-    async sendTo(qustionList) {
+    sendTo(qustionList) {
       this.$http
         .post('api/organization/interview/sign', qustionList)
         .then((res) => {
@@ -431,45 +445,48 @@ export default {
   .synth-main-content {
     .show-qus {
       .freeView-content {
-        .freeView-title {
-          display: flex;
-          font-size: 18px;
-          color: #989898;
-          margin-left: 65px;
-          margin-bottom: 10px;
-          margin-top: 20px;
-        }
-        margin: 20px 0;
-        display: flex;
-        flex-direction: column;
+        // margin: 20px 0;
+        // display: flex;
+        // flex-direction: column;
         .freeView-item {
           display: flex;
           align-items: center;
-        }
-        .freeView-name-content {
-          display: flex;
-          margin: 10px 10px;
-          width: 200px;
-          overflow: hidden;
-          white-space: nowrap;
-          text-overflow: ellipsis;
-          .freeView-name {
-            overflow: hidden;
-            white-space: nowrap;
-            text-overflow: ellipsis;
+          .freeView-name-content {
+            display: flex;
+            margin: 10px 10px;
+            width: 240px;
+            margin-right: 20px;
+            text-align: left;
+            // overflow: hidden;
+            // white-space: nowrap;
+            // text-overflow: ellipsis;
+            .freeView-name {
+              // overflow: hidden;
+              // white-space: nowrap;
+              // text-overflow: ellipsis;
+              white-space: pre-wrap;
+            }
           }
-        }
-        .freeView-input {
-          border-radius: 5px;
-          border: 1px solid #0f2d2d;
-          height: 18px;
-          width: 166px;
-        }
-        .freeView-select {
-          width: 167px;
-          border-radius: 5px;
-          border: 1px solid #0f2d2d;
-          height: 20px;
+          .freeView-input {
+            border-radius: 5px;
+            border: 1px solid #cecece;
+            height: 18px;
+            width: 166px;
+          }
+          .freeView-select {
+            width: 167px;
+            border-radius: 5px;
+            border: 1px solid #cecece;
+            height: 25px;
+          }
+          .remove-opacity {
+            opacity: 0;
+          }
+          i {
+            cursor: pointer;
+            align-self: start;
+            margin-top: 14px;
+          }
         }
       }
     }
@@ -498,5 +515,19 @@ export default {
       }
     }
   }
+}
+input:focus {
+  border: 1px solid #535858 !important;
+  outline: none;
+}
+input {
+  width: 166px !important;
+  padding-left: 10px;
+  box-sizing: border-box;
+  height: 25px !important;
+}
+select:focus {
+  outline: none;
+  border: 1px solid #535858 !important;
 }
 </style>

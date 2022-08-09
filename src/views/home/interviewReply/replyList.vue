@@ -1,6 +1,6 @@
 <template>
-  <div class="big">
-    <div>
+  <div class="bottomBig">
+    <div style="width: 85%">
       <el-table
         :data="
           information.slice(
@@ -8,34 +8,22 @@
             currentPage * pagesize
           )
         "
-        :header-cell-style="{ 'text-align': 'center' }"
-        style="width: 100%; border-radius: 8px"
+        height="auto"
+        :header-cell-style="{ 'text-align': 'center', height: 0 + 'px' }"
+        style="width: 100%; border-radius: 8px; overflow: hidden"
         :row-style="{ height: 0 + 'px' }"
         :cell-style="{ padding: 0 + 'px', 'text-align': 'center' }"
         @sort-change="sortChange"
         @filter-change="filterChange"
         @selection-change="handleSeclect"
       >
-        <el-table-column type="selection" width="60"> </el-table-column>
-        <el-table-column
-          prop="id"
-          label="ID"
-          width="60"
-          type="index"
-          :index="indexMethod"
-        >
+        <el-table-column type="selection"> </el-table-column>
+        <el-table-column prop="id" label="ID" type="index" :index="indexMethod">
         </el-table-column>
-        <el-table-column
-          prop="studentId"
-          label="学号"
-          sortable="custom"
-          width="120"
-        >
+        <el-table-column prop="studentId" label="学号" sortable="custom">
         </el-table-column>
-        <el-table-column prop="name" label="姓名" width="100">
-        </el-table-column>
+        <el-table-column prop="studentName" label="姓名"> </el-table-column>
         <el-table-column
-          width="100"
           v-for="(item, index) in information[0].questionScore"
           :key="index"
         >
@@ -53,7 +41,7 @@
           width="120"
         >
         </el-table-column>
-        <el-table-column label="简历" width="100">
+        <el-table-column label="简历">
           <template slot-scope="scope">
             <span style="cursor: pointer" @click="resume(scope.row)"
               ><i class="el-icon-notebook-2"></i
@@ -63,7 +51,6 @@
         <el-table-column
           prop="status"
           label="通过状态"
-          width="100"
           :filters="[
             { text: '通过', value: 4 },
             { text: '失败', value: 2 },
@@ -81,19 +68,19 @@
               >&nbsp;--&nbsp;&nbsp;--&nbsp;</span
             >
             <span
-              v-if="scope.row.status == 1"
+              v-else-if="scope.row.status == 1"
               class="tag"
               style="background-color: #fb9495"
               >&nbsp;失败&nbsp;</span
             >
             <span
-              v-if="scope.row.status == 2"
+              v-else-if="scope.row.status == 2"
               class="tag"
               style="background-color: #89e051"
               >&nbsp;通过&nbsp;</span
             >
             <span
-              v-if="scope.row.status == 3"
+              v-else-if="scope.row.status == 3"
               class="tag"
               style="background-color: #fbd53c"
               >&nbsp;待定&nbsp;</span
@@ -144,7 +131,7 @@
       center
     >
       <div class="detal">
-        <el-row> <b>姓名:&nbsp;&nbsp;</b>{{ detal.name }} </el-row>
+        <el-row> <b>姓名:&nbsp;&nbsp;</b>{{ detal.studentName }} </el-row>
         <el-row> <b>学号:&nbsp;&nbsp;</b>{{ detal.studentId }} </el-row>
         <el-row v-for="(item, index) in detal.questionScore" :key="index">
           <b>{{ item.questionName }}:&nbsp;&nbsp;</b>{{ item.score }}
@@ -175,10 +162,10 @@ export default {
       roomId: 0,
       keyWord: '',
       page: 1,
-      win: 4,
+      win: 3,
       pass: 3,
       wait: 3,
-      nedit: 1,
+      nedit: 2,
       information: [
         {
           studentId: 20220001,
@@ -258,7 +245,7 @@ export default {
             }
           ],
           totalScore: 80,
-          status: 1
+          status: 0
         },
         {
           studentId: 20220006,
@@ -290,7 +277,7 @@ export default {
             }
           ],
           totalScore: 80,
-          status: 2
+          status: 1
         },
         {
           studentId: 20220008,
@@ -361,17 +348,20 @@ export default {
   },
   methods: {
     pd(e) {
-      if (e == 0) {
-        return '- -'
-      }
-      if (e == 1) {
-        return '失败'
-      }
-      if (e == 2) {
-        return '通过'
-      }
-      if (e == 3) {
-        return '待定'
+      switch (e) {
+        case 0:
+          return '- -'
+        case 1:
+          return '失败'
+
+        case 2:
+          return '通过'
+
+        case 3:
+          return '待定'
+
+        default:
+          return '- -'
       }
     },
     indexMethod(index) {
@@ -418,8 +408,8 @@ export default {
           }
         }
       }
-      let url = 'http://118.195.251.126:38080/interview-reply/stu-info'
-      // let url = 'api/interview-reply/stu-info'
+      // let url = 'http://118.195.251.126:38080/interview-reply/stu-info'
+      let url = 'api/interview-reply/stu-info'
 
       this.$http
         .get(url, params)
@@ -480,8 +470,8 @@ export default {
         status: 3
       }
       console.log(sinForm)
-      const url1 = 'http://118.195.251.126:38080/interview-reply/status'
-      // const url1 = 'api/interview-reply/status'
+      // const url1 = 'http://118.195.251.126:38080/interview-reply/status'
+      const url1 = 'api/interview-reply/status'
       let post3 = this.$http.post(url1, sinForm)
       post3
         .then((res) => {
@@ -535,8 +525,8 @@ export default {
           }
         }
       }
-      let url = 'http://118.195.251.126:38080/interview-reply/stu-info'
-      // let url = 'api/interview-reply/stu-info'
+      // let url = 'http://118.195.251.126:38080/interview-reply/stu-info'
+      let url = 'api/interview-reply/stu-info'
 
       this.$http
         .get(url, params1)
@@ -595,8 +585,8 @@ export default {
     }
   },
   mounted() {
-    // let url = 'http://118.195.251.126:38080/interview-reply/stu-info'
-    // // let url = 'api/interview-reply/stu-info'
+    // // let url = 'http://118.195.251.126:38080/interview-reply/stu-info'
+    // let url = 'api/interview-reply/stu-info'
     // let params = {
     //   organizationId: 1,
     //   departmentId: this.departmentId,
@@ -675,8 +665,8 @@ export default {
     },
     keyWord() {
       console.log(this.keyWord)
-      let url3 = 'http://118.195.251.126:38080/interview-reply/stu-search'
-      // let url3 = 'api/interview-reply/stu-search'
+      // let url3 = 'http://118.195.251.126:38080/interview-reply/stu-search'
+      let url3 = 'api/interview-reply/stu-search'
       let params3 = {
         keyWord: this.keyWord,
         organizationId: 1,
@@ -703,18 +693,17 @@ export default {
 </script>
 
 <style scoped>
-.big {
+.bottomBig {
   height: 100%;
   width: 100%;
-  background-color: white;
-  border-radius: 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
 }
 .foot {
   margin-top: 10px;
+  margin-bottom: 10px;
   display: flex;
   justify-content: right;
   align-items: center;
@@ -733,7 +722,7 @@ export default {
   align-items: center;
 }
 :deep(.el-dialog) {
-  border-radius: 10px;
+  border-radius: 15px;
 }
 :deep(.el-row) {
   margin-bottom: 20px;
