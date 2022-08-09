@@ -7,6 +7,7 @@
       :menuItemList="menuList"
       menuItemColor="#fff"
       meunItemActiveColor="#0187fb"
+      :defaultActiveItem="defaultActiveItem"
     >
       <template slot="header">
         <myhead
@@ -15,6 +16,7 @@
           :name="name"
           :organizations="organizations"
           :loginOrganizationName="loginOrganizationName"
+          v-on:update="update"
         ></myhead>
       </template>
       <template slot="asideTitle">
@@ -28,7 +30,6 @@
 </template>
 
 <script>
-import axios from 'axios'
 import myLayoutVue from '../../compentents/myLayout.vue'
 import myhead from '../../compentents/head.vue'
 export default {
@@ -39,6 +40,7 @@ export default {
   },
   data() {
     return {
+      defaultActiveItem: '1',
       isCollapse: false,
       asideWidth: 200,
       menuList: [
@@ -78,21 +80,12 @@ export default {
       squareUrl:
         'https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png',
       sizeList: ['large', 'medium', 'small'],
-      studentId: '',
       name: '',
       organizations: [],
       loginOrganizationName: '',
-      loginOrganizationId: '',
       permission: '',
-      cookie: '',
-      organizationName: '',
-      organizationId: '',
       isSuper: false,
-      isPersonal: false,
-      phoneForm: {
-        phone: '',
-        newPhone: ''
-      }
+      isPersonal: false
     }
   },
   async created() {
@@ -101,21 +94,30 @@ export default {
       this.isSuper = true
     }
   },
+  mounted() {
+    // 解决defaultActiveItem 刷新问题
+    if (this.$route.path == '/home/interviewMain') this.defaultActiveItem = '1'
+    if (this.$route.path == '/home/dataBoard') this.defaultActiveItem = '2'
+    if (this.$route.path == '/home/arrangement') this.defaultActiveItem = '3'
+    if (this.$route.path == '/home') this.defaultActiveItem = '4'
+    if (this.$route.path == '/home/reply') this.defaultActiveItem = '5'
+    if (this.$route.path == '/home/resultInform') this.defaultActiveItem = '5'
+  },
   methods: {
+    update(newValue) {
+      this.loginOrganizationName = newValue
+    },
     async getLoginStatus() {
-      const url = '/api/login-status'
+      const url = '/api/login-status/'
       try {
         let { data: res } = await this.$http.get(url)
         switch (res.code) {
           case '00000': {
             let { data } = res
             this.loginOrganizationName = data.loginOrganizationName
-            this.organizationId = data.loginOrganizationId
             this.organizations = data.organizations
             this.permission = data.permission
-            this.phone = data.phone
             this.name = data.name
-            this.studentId = data.studentId
             break
           }
           default: {
@@ -126,44 +128,17 @@ export default {
         console.log('出错了', err.message)
         this.$message.error('当前未登录或登录已失效')
       }
-    },
-    changeOrganization(command) {
-      const organization = {
-        organization: command
-      }
-      const url = '/api/login/change'
-      this.$http.post(url, organization).then((res) => {
-        this.loginOrganizationName = res.data.data.loginOrganizationName
-        this.loginOrganizationId = res.data.data.loginOrganizationId
-        this.organizations = res.data.data.organizations
-        this.permission = res.data.data.permission
-        this.phoneForm.phone = res.data.data.phone
-        this.name = res.data.data.name
-        this.studentId = res.data.data.studentId
-      })
-    },
-
-    quitLogin() {
-      axios({
-        method: 'delete',
-        baseURL: 'http://114.132.71.147:38080',
-        url: '/logout',
-        headers: {
-          'content-type': 'application/json'
-        }
-      }).then((val) => {
-        alert(val.data.data.message)
-      })
-    },
-    superAdmin() {
-      this.$router.push('/superAdmin')
-    },
-    home() {
-      if (this.isPersonal) {
-        location.reload()
-      } else {
-        this.$router.push('/personalInfo')
-      }
+    }
+  },
+  watch: {
+    //解决直接在地址栏输入链接跳转 菜单栏激活位置不对问题
+    // 监控路由变化
+    $route(to) {
+      if (to.path == '/home/interviewMain') this.defaultActiveItem = '1'
+      if (to.path == '/home/dataBoard') this.defaultActiveItem = '2'
+      if (to.path == '/home/arrangement') this.defaultActiveItem = '3'
+      if (to.path == '/home') this.defaultActiveItem = '4'
+      if (to.path == '/home/reply') this.defaultActiveItem = '5'
     }
   }
 }
@@ -171,7 +146,7 @@ export default {
 
 <style lang="less" scoped>
 .home {
-  height: 100%;
+  height: 100vh;
 }
 .menuTitle {
   color: white;
