@@ -294,6 +294,7 @@ export default {
   },
   // 定时更新数据和筛选项
   mounted() {
+    this.requestFilterItem()
     this.timerUpdate = setInterval(() => {
       setTimeout(this.requestFilterItem, 0)
     }, 1000 * 900)
