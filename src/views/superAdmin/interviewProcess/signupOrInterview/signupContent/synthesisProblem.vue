@@ -11,7 +11,7 @@
             :key="'a' + i1"
           >
             <i
-              class="el-icon-remove"
+              :class="['el-icon-remove',!isEdit?'remove-opacity':'']"
               style="color: #1597db"
               @click="removeItem(item1)"
             ></i>
@@ -204,7 +204,8 @@ export default {
       'questionsList',
       'departmentQuestionsList',
       'maxDepartment',
-      'allocated'
+      'allocated',
+      'isEdit'
     ])
   },
   methods: {
@@ -230,6 +231,7 @@ export default {
     },
     //添加自定义选择
     addChoseList() {
+      if(!this.isEdit) return this.$message.error('非编辑模式')
       if (this.comprehensiveQuestionsList.length >= 5)
         return this.$message.error('最多自定义五个问题')
       if (this.text2 == '') {
@@ -299,6 +301,7 @@ export default {
     },
     //添加自定义文本问题
     addTextQues() {
+      if(!this.isEdit) return this.$message.error('非编辑模式')
       //判断自定义问题是否超过三个
       if (this.comprehensiveQuestionsList.length >= 5)
         return this.$message.error('最多自定义五个问题')
@@ -343,6 +346,7 @@ export default {
     },
     // 删除问题
     removeItem(item1) {
+      if(!this.isEdit) return
       this.comprehensiveQuestionsList = this.comprehensiveQuestionsList.filter(
         (p) => p.description != item1.description
       )
@@ -413,7 +417,7 @@ export default {
           })
         })
     },
-    async sendTo(qustionList) {
+    sendTo(qustionList) {
       this.$http
         .post('api/organization/interview/sign', qustionList)
         .then((res) => {
@@ -455,8 +459,7 @@ export default {
         .freeView-item {
           display: flex;
           align-items: center;
-        }
-        .freeView-name-content {
+            .freeView-name-content {
           display: flex;
           margin: 10px 10px;
           width: 250px;
@@ -480,6 +483,10 @@ export default {
           border-radius: 5px;
           border: 1px solid #cecece;
           height: 25px;
+        }
+          .remove-opacity {
+            opacity: 0;
+          }
         }
       }
     }

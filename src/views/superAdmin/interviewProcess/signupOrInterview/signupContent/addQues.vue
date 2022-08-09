@@ -8,7 +8,7 @@
           :key="'a' + i1"
         >
           <i
-            class="el-icon-remove"
+            :class="['el-icon-remove',!isEdit?'remove-opacity':'']"
             style="color: #1597db"
             @click="removeItem(item1)"
           ></i>
@@ -123,7 +123,7 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex'
+import { mapMutations,mapState } from 'vuex'
 export default {
   data() {
     return {
@@ -177,6 +177,7 @@ export default {
     },
     //添加自定义选择
     addChoseList() {
+      if(!this.isEdit) return this.$message.error('非编辑模式')
       if (this.departmentQuestionsList.length >= 5)
         return this.$message.error('最多自定义五个问题')
       if (this.text2 == '') {
@@ -246,6 +247,7 @@ export default {
     },
     //添加自定义文本问题
     addTextQues() {
+      if(!this.isEdit) return this.$message.error('非编辑模式')
       //判断自定义问题是否超过三个
       if (this.departmentQuestionsList.length >= 5)
         return this.$message.error('最多自定义五个问题')
@@ -290,6 +292,7 @@ export default {
     },
     // 删除问题
     removeItem(item1) {
+      if(!this.isEdit) return
       this.departmentQuestionsList = this.departmentQuestionsList.filter(
         (p) => p.description != item1.description
       )
@@ -322,6 +325,9 @@ export default {
         })
       }
     }
+  },
+  computed:{
+    ...mapState('problem',['isEdit'])
   }
 }
 </script>
@@ -345,6 +351,10 @@ export default {
       align-items: center;
       i {
         cursor: pointer;
+      }
+      .remove-opacity {
+        opacity: 0;
+        cursor: auto;
       }
     }
     .freeView-name-content {

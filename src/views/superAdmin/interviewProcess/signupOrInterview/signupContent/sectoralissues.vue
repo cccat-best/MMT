@@ -45,7 +45,7 @@
 
 <script>
 import addQues from './addQues.vue'
-import { mapMutations } from 'vuex'
+import { mapMutations,mapState } from 'vuex'
 export default {
   props: ['allQues'],
   //添加问题组件
@@ -107,7 +107,10 @@ export default {
           this.sectionQues = newV.departmentQuestionsList
         }, 500)
       }
-    }
+    },
+  },
+  computed:{
+    ...mapState('problem',['isEdit'])
   }
 }
 </script>

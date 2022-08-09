@@ -6,7 +6,9 @@ export default {
     questionsList: [],
     departmentQuestionsList: [],
     maxDepartment: 1,
-    allocated: false
+    allocated: false,
+    //是否是编辑模式
+    isEdit:false
   }),
   mutations: {
     //更新允许报名时间
@@ -55,6 +57,9 @@ export default {
     //更新是否允许调剂
     updateAllocated(state, item) {
       state.allocated = item
+    },
+    updateIsEdit(state) {
+      state.isEdit = !state.isEdit
     }
   },
   getters: {}
