@@ -11,7 +11,12 @@
         <div
           v-if="!isPersonal"
           class="leftTop"
-          style="height: 20px; overflow: hidden; margin-left: 20px"
+          style="
+            height: 20px;
+            overflow: hidden;
+            margin-left: 20px;
+            text-align: start;
+          "
         >
           {{ loginOrganizationName }}
         </div>
@@ -50,14 +55,22 @@
         </el-button>
         <!-- 应江哥要求，其他页面点击头像进入个人中心，而个人中心点击头像刷新页面，home函数实现 -->
         <div class="block" style="height: 35px; overflow: hidden">
-          <span @click="home"
-            ><el-avatar
-              :size="35"
-              :src="circleUrl"
-              style="vertical-align: middle; cursor: pointer"
-              :click="home"
-            ></el-avatar
-          ></span>
+          <el-tooltip
+            class="item"
+            effect="dark"
+            content="点击头像进入个人中心"
+            placement="bottom"
+          >
+            <span @click="home"
+              ><el-avatar
+                :size="35"
+                :src="circleUrl"
+                style="vertical-align: middle; cursor: pointer"
+                :click="home"
+              ></el-avatar
+            ></span>
+          </el-tooltip>
+
           <el-dropdown trigger="click">
             <span
               class="el-dropdown-link"
@@ -180,13 +193,19 @@ export default {
         switch (res.code) {
           case '00000': {
             let { data } = res
-            this.loginOrganizationName = data.loginOrganizationName
-            this.organizationId = data.loginOrganizationId
-            this.organizations = data.organizations
-            this.permission = data.permission
-            this.phone = data.phone
-            this.name = data.name
-            this.studentId = data.studentId
+            // if (this.isPersonal) {
+            this.update(data.loginOrganizationName)
+            // } else {
+            // this.loginOrganizationName = data.loginOrganizationName
+            // }
+            sessionStorage.setItem(
+              'loginOrganizationName',
+              data.loginOrganizationName
+            )
+            if (this.isPersonal) {
+              location.reload()
+            }
+
             this.$message({
               message: '切换成功',
               type: 'success'
@@ -238,18 +257,36 @@ export default {
       if (this.isPersonal) {
         location.reload()
       } else {
+        this.update(this.loginOrganizationName)
         this.$router.push('/personalInfo')
       }
     },
     // 个人中心顶部左侧返回的实现
     goBack() {
       this.$router.go(-1)
+    },
+    //更新切换组织后的组织名
+    update(newValue) {
+      this.$emit('update', newValue)
     }
   }
 }
 </script>
 
 <style lang="less" scoped>
+.bottom {
+  clear: both;
+  text-align: center;
+}
+
+.item {
+  margin: 4px;
+}
+
+.left .el-tooltip__popper,
+.right .el-tooltip__popper {
+  padding: 8px 10px;
+}
 .color-change:hover {
   color: #409eff !important;
 }

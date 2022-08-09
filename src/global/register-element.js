@@ -1,8 +1,6 @@
 import {
   Radio,
-  Menu,
   Select,
-  MenuItem,
   TimePicker,
   DatePicker,
   Input,
@@ -13,7 +11,6 @@ import {
   Header,
   Aside,
   Main,
-  Icon,
   Submenu,
   MenuItemGroup,
   Row,
@@ -40,10 +37,28 @@ import {
   Avatar,
   Dropdown,
   DropdownMenu,
-  DropdownItem
+  DropdownItem,
+  Menu,
+  MenuItem,
+  Icon,
+  Card,
+  Descriptions,
+  DescriptionsItem,
+  Drawer,
+  Loading,
+  Tooltip
 } from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 const components = [
+  Loading,
+  Descriptions,
+  DescriptionsItem,
+  Card,
+  Tooltip,
+  Icon,
+  MenuItem,
+  Menu,
+
   Select,
   Menu,
   MenuItem,
@@ -66,9 +81,7 @@ const components = [
   Aside,
   Main,
   Icon,
-  Menu,
   Submenu,
-  MenuItem,
   MenuItemGroup,
   Row,
   Col,
@@ -96,12 +109,15 @@ const components = [
   TabPane,
   TableColumn,
   Tabs,
-  InputNumber
+  InputNumber,
+  Drawer,
+  Tooltip
 ]
 export default function (Vue) {
   for (const component of components) {
     Vue.use(component)
   }
+  Vue.use(Loading.directive)
   Vue.prototype.$msgbox = MessageBox
   Vue.prototype.$alert = MessageBox.alert
   Vue.prototype.$confirm = MessageBox.confirm

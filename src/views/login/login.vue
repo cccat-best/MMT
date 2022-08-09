@@ -4,7 +4,7 @@
       <!-- 左侧icon和文本 -->
       <div class="left-icon">
         <el-image :src="url" class="icon-img"></el-image>
-        <div class="icon-text">MMT</div>
+        <div class="icon-text">后台管理系统</div>
       </div>
       <!-- 右侧信息框 -->
       <el-form
@@ -24,7 +24,7 @@
           >
           </el-input>
         </el-form-item>
-        <el-form-item label="密码" class="psw" prop="password" :error="err">
+        <el-form-item label="密码" class="psw" prop="password">
           <el-input
             placeholder="请输入密码"
             v-model="loginForm.password"
@@ -44,67 +44,80 @@
   </el-container>
 </template>
 <script>
+import { mapMutations } from 'vuex'
 import { mapState } from 'vuex'
+import loginData from './loginData'
+
 export default {
   name: 'Login',
   data() {
     return {
-      url: require('@../../../public/sipc.png'),
-      hideRequired: true,
-      err: '',
-      loginForm: {
-        studentId: '',
-        password: ''
-      },
-      rules: {
-        studentId: [{ required: true, message: '请输入学号', trigger: 'blur' }],
-        password: [{ required: true, message: '请输入密码', trigger: 'blur' }]
-      }
+      ...loginData.data()
     }
   },
-  watch: {
-    all() {
-      this.studentId = this.Id
-      this.password = this.psw
-    }
-  },
-  // ...mapState('transform', ['Id', 'psw'])
+  watch: {},
   computed: {
     ...mapState('transform', ['all'])
   },
+  mounted() {
+    this.loginForm.studentId = this.all.Id
+    this.loginForm.password = this.all.psw
+    this.clearData()
+  },
   methods: {
+    ...mapMutations('transform', ['clearData']),
     goRegister() {
-      this.$router.push('/register')
+      this.$router.push('/register').catch(() => {})
     },
     goLogin() {
-      this.$http
-        .post('api/login/b', this.loginForm)
-
-        .then((res) => {
-          if (res.data.code === '00000') {
-            alert('欢迎你,' + res.data.data.name)
-            sessionStorage.setItem(
-              'loginOrganizationName',
-              res.data.data.loginOrganizationName
-            )
-            sessionStorage.setItem(
-              'loginOrganizationId',
-              res.data.data.loginOrganizationId
-            )
-            this.$router.push('/home')
-          } else {
-            this.err = res.data.message
-          }
+      if (this.loginForm.studentId === '') {
+        this.$message({
+          showClose: true,
+          message: '请输入账号',
+          type: 'error'
         })
-        .catch((err) => {
-          console.log(err)
+      } else if (this.loginForm.password === '') {
+        this.$message({
+          showClose: true,
+          message: '请输入密码',
+          type: 'error'
         })
+      } else {
+        this.$http
+          .post('api/login/b', this.loginForm)
+          .then((res) => {
+            if (res.data.code === '00000') {
+              this.$message.success('恭喜你，登录成功')
+              // 存储数据
+              sessionStorage.setItem(
+                'loginOrganizationName',
+                res.data.data.loginOrganizationName
+              )
+              sessionStorage.setItem(
+                'loginOrganizationId',
+                res.data.data.loginOrganizationId
+              )
+              this.$router.push('/home/interviewMain')
+            } else {
+              this.$message({
+                showClose: true,
+                message: res.data.message,
+                type: 'error'
+              })
+            }
+          })
+          .catch((err) => {
+            console.log(err)
+            this.$message({
+              showClose: true,
+              message: err,
+              type: 'warning'
+            })
+          })
+      }
     }
   },
-  components: {},
-  mounted() {
-    console.log(this.all)
-  }
+  components: {}
 }
 </script>
 <style lang="less" scoped>
@@ -113,46 +126,54 @@ export default {
   width: 100%;
   height: 100%;
 }
+
 .content {
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
 }
+
 .left-icon {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
+
 .el-image icon-img {
   width: 206px;
   height: 206px;
 }
+
 .icon-img {
   width: 206px;
   height: 206px;
 }
+
 .icon-text {
   color: rgba(26, 113, 185, 100);
-  font-size: 50px;
+  // font-size: 50px;
+  font-size: 46px;
   text-align: left;
   font-family: Arial-400;
   margin-top: 70px;
 }
+
 .right-box {
   margin-left: 150px;
   width: 364px;
-  height: 368px;
+  height: 410px;
   line-height: 18px;
   border-radius: 15px;
   background-color: rgba(255, 255, 255, 100);
   text-align: center;
   border: 3px solid rgba(26, 113, 185, 100);
 }
+
 .login-text {
   margin-left: 30px;
-  margin-top: 24px;
+  margin-top: 48px;
   width: 61px;
   height: 34px;
   color: rgba(26, 113, 185, 100);
@@ -160,14 +181,16 @@ export default {
   text-align: left;
   font-family: Arial-400;
 }
+
 .id,
 .psw {
   width: 300px;
 }
+
 .id /deep/ .el-form-item__label,
 .psw /deep/ .el-form-item__label {
   color: rgba(51, 51, 51, 100);
-  font-size: 18px;
+  font-size: 20px;
   font-family: Arial-400;
 }
 
@@ -177,11 +200,13 @@ export default {
   border-radius: 0;
   border-bottom: 1px solid #797979;
   padding: 0;
+  font-size: 16px;
   margin-right: 10px;
   margin-left: 20px;
 }
+
 .forget-text {
-  margin-top: 18px;
+  margin-top: 26px;
   margin-left: 250px;
   width: 85px;
   height: 14px;
@@ -189,35 +214,41 @@ export default {
   font-size: 17px;
   font-family: Arial-400;
 }
+
 .el-form /deep/ .el-form-item__error {
   margin-left: 22px;
 }
+
 .login-btn {
-  margin-top: 15px;
+  margin-top: 33px;
   font-family: Arial-400;
   color: rgba(255, 255, 255, 100);
   font-size: 25px;
   width: 289px;
-  height: 40px;
+  height: 45px;
   line-height: 18px;
   border-radius: 15px;
   background-color: rgba(26, 113, 185, 100);
   text-align: center;
 }
+
 .el-form-item {
-  margin-top: 45px;
+  margin-top: 35px;
 }
+
 .footer {
   display: flex;
   margin-left: 111px;
-  margin-top: 11px;
+  margin-top: 21px;
   font-size: 17px;
   font-family: Arial-400;
 }
+
 .no-id,
 .register {
   color: rgba(134, 116, 116, 100);
 }
+
 .register:hover {
   color: rgba(26, 113, 185, 100);
   cursor: pointer;
