@@ -27,6 +27,7 @@
               v-for="(item2, index2) in item1.option"
               :key="'op' + index2"
               v-show="item2 != null"
+              :disabled="true"
             >
               {{ item2 }}
             </option>
