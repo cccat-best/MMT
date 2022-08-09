@@ -259,7 +259,7 @@ export default {
       activeThead: {}, //保存排序所选择的表头
       // 关键字搜索
       admissionId: 1, //纳新ID不知道，需要询问////////////////////////
-      organizationId: 1, ////组织名不知道，需要询问////////////////////////
+      organizationId: 2, ////组织名不知道，需要询问////////////////////////
       searchWord: '',
       // 筛选勾选的请求信息的数组
       className: [],
@@ -294,7 +294,6 @@ export default {
   },
   // 定时更新数据和筛选项
   mounted() {
-    this.requestFilterItem()
     this.timerUpdate = setInterval(() => {
       setTimeout(this.requestFilterItem, 0)
     }, 1000 * 900)
@@ -341,11 +340,11 @@ export default {
               )
             } else this.$message.error(res.data.message)
             // 获取数据
-            this.searchKeyWord()
+            this.requestFilterItem()
           },
           (err) => {
             this.$message.error('获取数据失败' + err)
-            this.searchKeyWord()
+            this.requestFilterItem()
           }
         )
     },
@@ -364,13 +363,7 @@ export default {
     },
     // 手动刷新
     reFresh() {
-      // loading
-      this.myLoading = true
       this.requestFilterItem()
-      // loading
-      setTimeout(() => {
-        this.myLoading = false
-      }, 300)
     },
     // 触发排序
     sortTableFun(data) {
@@ -421,13 +414,7 @@ export default {
       // console.log(this.sort[0])
       // console.log(this[Object.keys(data)[0]])
       this.currentPage = 1
-      // loading
-      this.myLoading = true
       this.requestData()
-      // loading
-      setTimeout(() => {
-        this.myLoading = false
-      }, 300)
     },
     // 处理排序
     orderChange(sortItem, sortvalue) {
@@ -505,16 +492,12 @@ export default {
               (this.currentPage = 1)
           } else this.$message.error(res.data.message)
           // loading
-          setTimeout(() => {
             this.myLoading = false
-          }, 50)
         },
         (err) => {
           this.$message.error('获取数据失败' + err)
           // loading
-          setTimeout(() => {
             this.myLoading = false
-          }, 50)
         }
       )
     },
@@ -563,15 +546,11 @@ export default {
       // console.log(this[Object.keys(data)[0]])
       // 仅自行触发的筛选跳转到第一页
       this.currentPage = 1
-      // loading
-      this.myLoading = true
       this.requestData()
-      // loading
-      setTimeout(() => {
-        this.myLoading = false
-      }, 300)
     },
     requestData() {
+      // loading
+      this.myLoading = true
       // 下面是初步实现请求，后续要精简，把不必要的参数去除
       let myRequestData = {
         admissionId: this.admissionId,
@@ -616,9 +595,11 @@ export default {
           } else {
             this.$message.error(res.data.message)
           }
+          this.myLoading = false
         },
         (err) => {
           this.$message.error('获取数据失败' + err)
+          this.myLoading = false
         }
       )
     },
@@ -772,34 +753,13 @@ export default {
       this.pagesize = val
       // 回到第一页
       this.currentPage = 1
-      // loading
-      this.myLoading = true
       this.requestData()
-      // loading
-      setTimeout(() => {
-        this.myLoading = false
-      }, 300)
     },
     // 修改到第几页
     handleCurrentChange(val) {
       this.currentPage = val
-      // loading
-      this.myLoading = true
       this.requestData()
-      // loading
-      setTimeout(() => {
-        this.myLoading = false
-      }, 300)
     },
-    // 具体分页操作
-    // pageCutDouwn(tableDataChange) {
-    //   this.tableList = tableDataChange.filter(
-    //     (item, index) =>
-    //       index < this.currentPage * this.pagesize &&
-    //       index >= this.pagesize * (this.currentPage - 1)
-    //   )
-    //   this.total = tableDataChange.length
-    // }
     /**
      * 设置表头排序,允许多个排序高亮
      */
@@ -817,12 +777,6 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-// * {
-// line-height: 15px;
-// line-height: 2.8vh;
-// color: black;
-// }
-
 // main面板的样式
 .content {
   // 暂定900px
