@@ -273,7 +273,7 @@ export default {
       sort: [],
       postdata: '', //发请求的data
       // 页码
-      tableList: [], //当前页展示数据
+      tableList: [...data], //当前页展示数据
       currentPage: 1, // 当前页码
       pagesize: 10, // 每页条数，默认10
       total: 100
