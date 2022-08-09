@@ -528,6 +528,9 @@ export default {
         width: 33.33%;
         display: flex;
         align-items: center;
+        i {
+          cursor: pointer;
+        }
         .choose-name {
           margin-left: 3px;
           margin-right: 5px;
@@ -542,6 +545,7 @@ export default {
         }
         .remove-opacity {
           opacity: 0;
+          cursor: auto;
         }
       }
     }
@@ -628,8 +632,12 @@ export default {
       display: flex;
       align-items: center;
       margin-left: 17px;
+      i {
+          cursor: pointer;
+        }
       .remove-opacity {
         opacity: 0;
+        cursor: auto;
       }
     }
     .freeView-name {

@@ -13,7 +13,16 @@
             @click="removeItem(item1)"
           ></i>
           <div class="freeView-name-content">
-            <span class="freeView-name">{{ item1.description }}</span>
+            <!-- 超过13个字溢出隐藏 tip显示完整 -->
+            <el-tooltip
+                :content="item1.description"
+                placement="bottom"
+                effect="light"
+                v-if="item1.description.length>13"
+              >
+              <span class="freeView-name">{{ item1.description }}</span>
+              </el-tooltip>
+              <span class="freeView-name" v-if="item1.description.length<=13">{{ item1.description }}</span>
           </div>
           <!-- 展示选项 -->
           <select class="freeView-select" v-if="item1.selection">
@@ -345,17 +354,17 @@ export default {
       .freeView-name-content {
         display: flex;
         margin: 10px 10px;
-        width: 240px;
+        width: 220px;
         margin-right: 20px;
         text-align: left;
         // overflow: hidden;
         // white-space: nowrap;
         // text-overflow: ellipsis;
         .freeView-name {
-          // overflow: hidden;
-          // white-space: nowrap;
-          // text-overflow: ellipsis;
-          white-space: pre-wrap;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          // white-space: pre-wrap;
         }
       }
       .freeView-input {
@@ -372,6 +381,7 @@ export default {
       }
       .remove-opacity {
         opacity: 0;
+        cursor: auto;
       }
       i {
         cursor: pointer;
