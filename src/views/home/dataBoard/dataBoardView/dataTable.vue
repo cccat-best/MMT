@@ -28,7 +28,7 @@
       stripe
       tooltip-effect="dark"
       class="el-table"
-      height="72.2vh"
+      height="82vh"
       v-loading="myLoading"
       element-loading-text="拼命加载中"
       :row-style="{ height: '0' }"
@@ -259,7 +259,7 @@ export default {
       activeThead: {}, //保存排序所选择的表头
       // 关键字搜索
       admissionId: 1, //纳新ID不知道，需要询问////////////////////////
-      organizationId: 1, ////组织名不知道，需要询问////////////////////////
+      organizationId: 2, ////组织名不知道，需要询问////////////////////////
       searchWord: '',
       // 筛选勾选的请求信息的数组
       className: [],
@@ -273,7 +273,7 @@ export default {
       sort: [],
       postdata: '', //发请求的data
       // 页码
-      tableList: [], //当前页展示数据
+      tableList: [...data], //当前页展示数据
       currentPage: 1, // 当前页码
       pagesize: 10, // 每页条数，默认10
       total: 100
@@ -289,13 +289,15 @@ export default {
     }
   },
   created() {
-    this.searchKeyWord()
+    this.organizationId = sessionStorage.getItem('loginOrganizationId')
+    this.getTwoId()
   },
   // 定时更新数据和筛选项
   mounted() {
+    // 无痕刷新
     this.timerUpdate = setInterval(() => {
-      setTimeout(this.requestFilterItem, 0)
-    }, 1000 * 100)
+      setTimeout(this.reFreshWithoutSee, 0)
+    }, 1000 * 900)
   },
   beforeDestroy() {
     clearInterval(this.timerUpdate)
@@ -322,6 +324,31 @@ export default {
       'updateNextPlaceFilter',
       'updateNextTimeFilter'
     ]),
+    // 获取organizationId与admissionId
+    getTwoId() {
+      this.$http
+        .get('api/organization/interview/id-latest', {
+          organizationId: this.organizationId
+        })
+        .then(
+          (res) => {
+            if (res.data.code == '00000') {
+              this.admissionId = res.data.data.admissionIdList[0].admissionId
+              // admissionId存在session中
+              sessionStorage.setItem(
+                'admissionId',
+                res.data.data.admissionIdList[0].admissionId
+              )
+            } else this.$message.error(res.data.message)
+            // 获取数据
+            this.requestFilterItem()
+          },
+          (err) => {
+            this.$message.error('获取数据失败' + err)
+            this.requestFilterItem()
+          }
+        )
+    },
     // 修改弹窗
     openChangeDialog(data) {
       this.$refs.changeDialog.changeDialogVisible = true
@@ -337,13 +364,7 @@ export default {
     },
     // 手动刷新
     reFresh() {
-      // loading
-      this.myLoading = true
       this.requestFilterItem()
-      // loading
-      setTimeout(() => {
-        this.myLoading = false
-      }, 300)
     },
     // 触发排序
     sortTableFun(data) {
@@ -389,18 +410,12 @@ export default {
           // console.log('nextPlace sort')
           break
       }
-      console.log('================')
+      // console.log('================')
       this.orderChange(sortItem, sortvalue)
       // console.log(this.sort[0])
       // console.log(this[Object.keys(data)[0]])
       this.currentPage = 1
-      // loading
-      this.myLoading = true
       this.requestData()
-      // loading
-      setTimeout(() => {
-        this.myLoading = false
-      }, 300)
     },
     // 处理排序
     orderChange(sortItem, sortvalue) {
@@ -463,7 +478,7 @@ export default {
           if (res.data.code == '00000') {
             this.tableList = res.data.data.allInformationData
             this.total = res.data.data.totalNum
-            console.log(res.data)
+            // console.log(res.data)
             // 清除筛选的选中
             this.$refs.filterTable.clearFilter()
             this.$refs.filterTable.clearSort()
@@ -478,23 +493,19 @@ export default {
               (this.currentPage = 1)
           } else this.$message.error(res.data.message)
           // loading
-          setTimeout(() => {
-            this.myLoading = false
-          }, 50)
+          this.myLoading = false
         },
         (err) => {
           this.$message.error('获取数据失败' + err)
           // loading
-          setTimeout(() => {
-            this.myLoading = false
-          }, 50)
+          this.myLoading = false
         }
       )
     },
 
     // 触发筛选权限
     filterChange(data) {
-      console.log(data)
+      // console.log(data)
       // 取出修改的筛选的名字
       let name = Object.keys(data)[0]
       // 取出修改的筛选的值
@@ -505,47 +516,99 @@ export default {
       switch (name) {
         case 'className':
           this.className = filtervalue
-          console.log('className ok')
+          // console.log('className ok')
           // console.log(this.className)
           break
         case 'organizationOrder':
           this.organizationOrder = filtervalue
-          console.log('organizationOrder ok')
+          // console.log('organizationOrder ok')
           break
         case 'departmentOrder':
           this.departmentOrder = filtervalue
-          console.log('departmentOrder ok')
+          // console.log('departmentOrder ok')
           break
         case 'wishDepartment':
           this.wishDepartment = filtervalue
-          console.log('wishDepartment ok')
+          // console.log('wishDepartment ok')
           break
         case 'interviewStatus':
           this.interviewStatus = filtervalue
-          console.log('interviewStatus ok')
+          // console.log('interviewStatus ok')
           break
         case 'nextPlace':
           this.nextPlace = filtervalue
-          console.log('nextPlace ok')
+          // console.log('nextPlace ok')
           break
         case 'nextTime':
           this.nextTime = filtervalue
-          console.log('nextTime ok')
+          // console.log('nextTime ok')
           break
       }
-      console.log(this[Object.keys(data)[0]])
+      // console.log(this[Object.keys(data)[0]])
       // 仅自行触发的筛选跳转到第一页
       this.currentPage = 1
-      // loading
-      this.myLoading = true
       this.requestData()
-      // loading
-      setTimeout(() => {
-        this.myLoading = false
-      }, 300)
     },
     requestData() {
+      // loading
+      this.myLoading = true
       // 下面是初步实现请求，后续要精简，把不必要的参数去除
+      let myRequestData = {
+        admissionId: this.admissionId,
+        organizationId: this.organizationId,
+        pageNum: this.currentPage,
+        pageSize: this.pagesize
+      }
+      if (this.searchWord != '') {
+        myRequestData.keyWord = this.searchWord
+      }
+      if (this.className.length != 0) {
+        myRequestData.className = this.className
+      }
+      if (this.organizationOrder.length != 0) {
+        myRequestData.organizationOrder = this.organizationOrder
+      }
+      if (this.departmentOrder.length != 0) {
+        myRequestData.departmentOrder = this.departmentOrder
+      }
+      if (this.wishDepartment.length != 0) {
+        myRequestData.wishDepartment = this.wishDepartment
+      }
+      if (this.interviewStatus.length != 0) {
+        myRequestData.interviewStatus = this.interviewStatus
+      }
+      if (this.nextPlace.length != 0) {
+        myRequestData.nextPlace = this.nextPlace
+      }
+      if (this.nextTime.length != 0) {
+        myRequestData.nextTime = this.nextTime
+      }
+      if (this.sort.length != 0) {
+        myRequestData.sort = this.sort
+      }
+      this.$http.post('api/data-panel/all-information', myRequestData).then(
+        (res) => {
+          // 因为请求访问权限异常，res.data.studentList在返回信息中为undefined
+          if (res.data.code == '00000') {
+            this.tableList = res.data.data.allInformationData
+            this.total = res.data.data.totalNum
+            // console.log(this.tableList)
+          } else {
+            this.$message.error(res.data.message)
+          }
+          this.myLoading = false
+        },
+        (err) => {
+          this.$message.error('获取数据失败' + err)
+          this.myLoading = false
+        }
+      )
+    },
+    // 无痕刷新,去除loading效果
+    reFreshWithoutSee() {
+      // 获取筛选项
+      this.requestAllItem()
+      // 请求数据，无loading效果
       let myRequestData = {
         admissionId: this.admissionId,
         organizationId: this.organizationId,
@@ -596,9 +659,7 @@ export default {
       )
     },
     // 获取所有筛选项
-    requestFilterItem() {
-      // 更新数据,不要改变排序筛选等，避免用户发现刷新痕迹
-      this.requestData()
+    requestAllItem() {
       // 获取班级
       this.$http
         .get(
@@ -740,39 +801,24 @@ export default {
           }
         )
     },
+    // 获取所有筛选项并刷新数据
+    requestFilterItem() {
+      // 更新数据,不要改变排序筛选等，避免用户发现刷新痕迹
+      this.requestData()
+      this.requestAllItem()
+    },
     //修改页容量
     handleSizeChange(val) {
       this.pagesize = val
       // 回到第一页
       this.currentPage = 1
-      // loading
-      this.myLoading = true
       this.requestData()
-      // loading
-      setTimeout(() => {
-        this.myLoading = false
-      }, 300)
     },
     // 修改到第几页
     handleCurrentChange(val) {
       this.currentPage = val
-      // loading
-      this.myLoading = true
       this.requestData()
-      // loading
-      setTimeout(() => {
-        this.myLoading = false
-      }, 300)
     },
-    // 具体分页操作
-    // pageCutDouwn(tableDataChange) {
-    //   this.tableList = tableDataChange.filter(
-    //     (item, index) =>
-    //       index < this.currentPage * this.pagesize &&
-    //       index >= this.pagesize * (this.currentPage - 1)
-    //   )
-    //   this.total = tableDataChange.length
-    // }
     /**
      * 设置表头排序,允许多个排序高亮
      */
@@ -790,12 +836,6 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-// * {
-// line-height: 15px;
-// line-height: 2.8vh;
-// color: black;
-// }
-
 // main面板的样式
 .content {
   // 暂定900px
@@ -807,8 +847,10 @@ export default {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  margin-bottom: 6px;
-  margin-right: 10px;
+  margin-bottom: 10px;
+  position: relative;
+  bottom: 5px;
+  margin-right: 20px;
   padding: 0%;
   // height: 100px;
   .myRefresh {
@@ -844,7 +886,7 @@ export default {
   padding: 0px;
   color: #666690;
   font-size: 15px;
-  border-radius: 10px;
+  border-radius: 4px;
   // 滚动条，暂时只兼容chrome
   /deep/ .el-table__body-wrapper::-webkit-scrollbar {
     width: 15px; /*滚动条宽度*/
