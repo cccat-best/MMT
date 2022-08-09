@@ -115,7 +115,7 @@
       stripe
       tooltip-effect="dark"
       style="color: #666690; font-size: 15px"
-      height="65.7vh"
+      height="76vh"
       :row-style="{ height: '0' }"
       :cell-style="{ padding: '0px' }"
       :header-cell-style="{ color: '#666666' }"
