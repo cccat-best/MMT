@@ -199,6 +199,7 @@
     <!-- 页码 -->
     <el-pagination
       background
+      class="paginationMove"
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
       :current-page.sync="currentPage"
@@ -881,6 +882,10 @@ export default {
 .changeicon:hover {
   font-size: 25px;
   color: #409eff;
+}
+.paginationMove{
+  position: relative;
+  top: 10px;
 }
 .el-table {
   padding: 0px;
