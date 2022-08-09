@@ -335,50 +335,50 @@ export default {
 <style lang="less" scoped>
 .show-qus {
   .freeView-content {
-        // margin: 20px 0;
-        // display: flex;
-        // flex-direction: column;
-        .freeView-item {
-          display: flex;
-          align-items: center;
-          .freeView-name-content {
-            display: flex;
-            margin: 10px 10px;
-            width: 240px;
-            margin-right: 20px;
-            text-align: left;
-            // overflow: hidden;
-            // white-space: nowrap;
-            // text-overflow: ellipsis;
-            .freeView-name {
-              // overflow: hidden;
-              // white-space: nowrap;
-              // text-overflow: ellipsis;
-              white-space: pre-wrap;
-            }
-          }
-          .freeView-input {
-            border-radius: 5px;
-            border: 1px solid #cecece;
-            height: 18px;
-            width: 166px;
-          }
-          .freeView-select {
-            width: 167px;
-            border-radius: 5px;
-            border: 1px solid #cecece;
-            height: 25px;
-          }
-          .remove-opacity {
-            opacity: 0;
-          }
-          i {
-            cursor: pointer;
-            align-self: start;
-            margin-top: 14px;
-          }
+    // margin: 20px 0;
+    // display: flex;
+    // flex-direction: column;
+    .freeView-item {
+      display: flex;
+      align-items: center;
+      .freeView-name-content {
+        display: flex;
+        margin: 10px 10px;
+        width: 240px;
+        margin-right: 20px;
+        text-align: left;
+        // overflow: hidden;
+        // white-space: nowrap;
+        // text-overflow: ellipsis;
+        .freeView-name {
+          // overflow: hidden;
+          // white-space: nowrap;
+          // text-overflow: ellipsis;
+          white-space: pre-wrap;
         }
       }
+      .freeView-input {
+        border-radius: 5px;
+        border: 1px solid #cecece;
+        height: 18px;
+        width: 166px;
+      }
+      .freeView-select {
+        width: 167px;
+        border-radius: 5px;
+        border: 1px solid #cecece;
+        height: 25px;
+      }
+      .remove-opacity {
+        opacity: 0;
+      }
+      i {
+        cursor: pointer;
+        align-self: start;
+        margin-top: 14px;
+      }
+    }
+  }
 }
 .add-qus {
   display: flex;

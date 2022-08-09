@@ -2,13 +2,15 @@
   <div class="baseContent">
     <!-- 标题 -->
     <div class="baseTitle">
-      <div class="mainTitle">报名表问题</div>
-      <div class="inTitle">
-        <div class="inTitle-left">基本问题</div>
-        <!-- 是否可以编辑 -->
-        <div class="inTitle-right" @click="canEdit">
+      <div class="mainTitle">
+        <div class="mainTitle-left">报名表问题</div>
+         <!-- 是否可以编辑 -->
+        <div class="mainTitle-right" @click="canEdit">
           <i class="el-icon-edit"></i>编辑/取消编辑
         </div>
+        </div>
+      <div class="inTitle">
+        基本问题
       </div>
     </div>
     <div class="base-main">
@@ -470,20 +472,21 @@ export default {
     .mainTitle {
       display: flex;
       font-size: 30px;
+      justify-content: space-between;
       color: #989898;
+       .mainTitle-right {
+        cursor: pointer;
+        color: #67b5fe;
+        font-size: 20px;
+        margin-right: 40px;
+        margin-top: 10px;
+      }
     }
     .inTitle {
       margin-top: 30px;
       margin-left: 65px;
       display: flex;
-      justify-content: space-between;
       font-size: 22px;
-      .inTitle-right {
-        cursor: pointer;
-        color: #67b5fe;
-        font-size: 18px;
-        margin-right: 40px;
-      }
     }
   }
   .base-main {

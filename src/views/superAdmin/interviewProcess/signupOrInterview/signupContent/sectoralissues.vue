@@ -18,7 +18,10 @@
         </div>
         <!-- 是否允许调剂 -->
         <div class="section-content-top-allocated">
-          <el-checkbox v-model="allocated" v-if="departmentCount >= 2" :disabled="!isEdit"
+          <el-checkbox
+            v-model="allocated"
+            v-if="departmentCount >= 2"
+            :disabled="!isEdit"
             >允许调剂</el-checkbox
           >
         </div>
