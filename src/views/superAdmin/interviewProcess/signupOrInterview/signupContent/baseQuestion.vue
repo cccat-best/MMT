@@ -633,8 +633,8 @@ export default {
       align-items: center;
       margin-left: 17px;
       i {
-          cursor: pointer;
-        }
+        cursor: pointer;
+      }
       .remove-opacity {
         opacity: 0;
         cursor: auto;

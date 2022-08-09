@@ -21,11 +21,15 @@
                 :content="item1.description"
                 placement="bottom"
                 effect="light"
-                v-if="item1.description.length>15"
+                v-if="item1.description.length > 15"
               >
-              <span class="freeView-name">{{ item1.description }}</span>
+                <span class="freeView-name">{{ item1.description }}</span>
               </el-tooltip>
-              <span class="freeView-name" v-if="item1.description.length<=15">{{ item1.description }}</span>
+              <span
+                class="freeView-name"
+                v-if="item1.description.length <= 15"
+                >{{ item1.description }}</span
+              >
             </div>
             <div class="freeView-name-choose">
               <!-- 展示选项 -->
@@ -416,7 +420,7 @@ export default {
             allocated: this.allocated,
             comprehensiveQuestionsList: this.comprehensiveQuestionsList
           }
-          console.log(qustionList)
+          // console.log(qustionList)
           //调用函数发送请求
           this.sendTo(qustionList)
         })

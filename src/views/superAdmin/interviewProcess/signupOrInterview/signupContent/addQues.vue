@@ -15,14 +15,16 @@
           <div class="freeView-name-content">
             <!-- 超过13个字溢出隐藏 tip显示完整 -->
             <el-tooltip
-                :content="item1.description"
-                placement="bottom"
-                effect="light"
-                v-if="item1.description.length>13"
-              >
+              :content="item1.description"
+              placement="bottom"
+              effect="light"
+              v-if="item1.description.length > 13"
+            >
               <span class="freeView-name">{{ item1.description }}</span>
-              </el-tooltip>
-              <span class="freeView-name" v-if="item1.description.length<=13">{{ item1.description }}</span>
+            </el-tooltip>
+            <span class="freeView-name" v-if="item1.description.length <= 13">{{
+              item1.description
+            }}</span>
           </div>
           <!-- 展示选项 -->
           <select class="freeView-select" v-if="item1.selection">
