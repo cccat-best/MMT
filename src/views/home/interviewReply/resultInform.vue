@@ -44,7 +44,7 @@ export default {
       studentName: [],
       message: '',
       messageArrary: [],
-      name: '同学',
+      name: 'XXX',
       departmentName: '我部门',
       selectTotal: 20,
       passNum: 20,
@@ -57,17 +57,17 @@ export default {
   methods: {
     submit() {
       if (
-        !sessionStorage['departmentName'] ||
-        sessionStorage['departmentName'] == '全部'
+        !sessionStorage['replyDepartmentName'] ||
+        sessionStorage['replyDepartmentName'] == '全部'
       ) {
         alert('发送失败！请在面试复盘界面选择具体部门！')
       } else {
         let url8 = 'api/interview-arrangement/postNotice'
         let data8 = {
           message: this.messageArrary,
-          organizationId: 1,
+          organizationId: sessionStorage['loginOrganizationId'],
           studentId: this.studentId,
-          admissionId: 1,
+          admissionId: sessionStorage['homeAdmissionId'],
           departmentId: this.departmentId
         }
         this.$http
@@ -89,7 +89,7 @@ export default {
       this.status = '失败'
       let url0 = 'api/interview-reply/stu-info'
       let params2 = {
-        organizationId: 1,
+        organizationId: sessionStorage['loginOrganizationId'],
         departmentId: this.departmentId,
         roomId: 0,
         filterStatus: 2
@@ -137,7 +137,7 @@ export default {
       this.status = '通过'
       let url0 = 'api/interview-reply/stu-info'
       let params4 = {
-        organizationId: 1,
+        organizationId: sessionStorage['loginOrganizationId'],
         departmentId: this.departmentId,
         roomId: 0,
         filterStatus: 4
@@ -183,21 +183,20 @@ export default {
   },
   mounted() {
     if (
-      sessionStorage['departmentName'] &&
-      sessionStorage['departmentName'] != '全部'
+      sessionStorage['replyDepartmentName'] &&
+      sessionStorage['replyDepartmentName'] != '全部'
     ) {
-      this.departmentName = sessionStorage['departmentName']
-      this.departmentId = sessionStorage['departmentId']
-      this.roomId = sessionStorage['roomId']
+      this.departmentName = sessionStorage['replyDepartmentName']
+      this.departmentId = sessionStorage['replyDepartmentId']
     }
     let url0 = 'api/interview-reply/stu-info'
     let params0 = {
-      organizationId: 1,
+      organizationId: sessionStorage['loginOrganizationId'],
       departmentId: this.departmentId,
       roomId: 0
     }
     let params2 = {
-      organizationId: 1,
+      organizationId: sessionStorage['loginOrganizationId'],
       departmentId: this.departmentId,
       roomId: 0,
       filterStatus: 2
@@ -239,12 +238,13 @@ export default {
       .then((response) => {
         console.log(response)
         this.messageArrary = []
-        this.message = response.data.data.messageTemplate
+        let message0 = response.data.data.messageTemplate
           .replace(/{department}/, this.departmentName)
           .replace(/{round}/, '')
+        this.message = message0.replace(/{name}/, this.name)
         for (let i = 0; i < this.passNum; ++i) {
           this.messageArrary.push(
-            this.message.replace(/{name}/, this.studentName[i])
+            message0.replace(/{name}/, this.studentName[i])
           )
         }
       })
