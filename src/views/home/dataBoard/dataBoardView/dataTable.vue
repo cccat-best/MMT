@@ -38,21 +38,12 @@
       :data="tableList"
       @sort-change="sortTableFun"
       @filter-change="filterChange"
+      prop="stuNum"
+      label="学号"
+      width="100px"
+      align="center"
     >
-      <!-- 注意上面有tableList -->
-      <el-table-column label="ID" align="center" width="70px">
-        <template slot-scope="scope">
-          {{ scope.$index + 1 + (currentPage - 1) * pagesize }}
-        </template>
-      </el-table-column>
-      <el-table-column
-        prop="stuNum"
-        label="学号"
-        width="100px"
-        align="center"
-        sortable="custom"
-      >
-      </el-table-column>
+      <!-- </el-table-column> -->
       <!-- 姓名 -->
       <el-table-column
         prop="name"
