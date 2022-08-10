@@ -66,7 +66,7 @@ export default {
           iconClass: '',
           id: '4',
           title: '实时面试',
-          pagePath: '/home'
+          pagePath: '/home/onInterviewing'
         },
         {
           iconClass: '',
