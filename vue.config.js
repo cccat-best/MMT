@@ -3,7 +3,7 @@ module.exports = {
   devServer: {
     proxy: {
       '/api': {
-        target: 'https://api.yuleng.top:38080',
+        target: URL,
         pathRewrite: {
           '^/api': ''
         },

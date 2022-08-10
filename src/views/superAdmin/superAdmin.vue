@@ -189,16 +189,6 @@ export default {
       if (to.path === '/superAdmin/accountManage') this.defaultActiveItem = '4'
     }
   },
-  watch: {
-    //解决直接在地址栏输入链接跳转 菜单栏激活位置不对问题
-    // 监控路由变化
-    $route(to) {
-      if (to.path === '/superAdmin/interviewTable') this.defaultActiveItem = '1'
-      if (to.path === '/superAdmin/informationSet') this.defaultActiveItem = '2'
-      if (to.path === '/superAdmin/process') this.defaultActiveItem = '3'
-      if (to.path === '/superAdmin/accountManage') this.defaultActiveItem = '4'
-    }
-  },
   mounted() {
     this.organizationName = sessionStorage.getItem('loginOrganizationName')
   }

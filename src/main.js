@@ -7,8 +7,8 @@ import './global/global.less'
 ;('./global/register-element')
 
 // 注册vue-clipboard2插件，并全局使用
-import VueClipboard from 'vue-clipboard2'
-Vue.use(VueClipboard)
+// import VueClipboard from 'vue-clipboard2'
+// Vue.use(VueClipboard)
 // 全局过滤,手机号脱敏处理
 Vue.filter('replacestar', function (value) {
   if (!value) return ''
