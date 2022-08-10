@@ -42,7 +42,7 @@ import {
   Dropdown,
   DropdownMenu,
   DropdownItem,
-  Loading,
+  Loading
 } from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 const components = [
@@ -110,7 +110,7 @@ const components = [
   Dropdown,
   DropdownMenu,
   DropdownItem,
-  Loading,
+  Loading
 ]
 export default function (Vue) {
   for (const component of components) {
