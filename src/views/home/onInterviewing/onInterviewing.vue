@@ -1068,7 +1068,7 @@ export default {
             }
             .form {
               // background-color: rgb(78, 200, 186);
-              margin-top: 10px;
+              margin-top: 20px;
               display: flex;
               flex-wrap: wrap;
               justify-content: flex-start;
@@ -1076,7 +1076,7 @@ export default {
           }
           .department {
             // background-color: rgb(82, 199, 154);
-            margin-top: 20px;
+            margin-top: 15px;
             .tit {
               font-size: 25px;
               // background-color: rgb(60, 170, 113);
@@ -1105,6 +1105,7 @@ export default {
               .problem {
                 font-size: 18px;
                 text-align: left;
+                margin-bottom: 15px;
               }
               .answer {
                 margin-top: 20px;
@@ -1132,7 +1133,7 @@ export default {
       }
       .content {
         margin-top: 15px;
-        margin-left: 30px;
+        margin-left: 43px;
         width: 600px;
         height: 250px;
       }
