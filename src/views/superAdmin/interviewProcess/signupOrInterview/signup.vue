@@ -82,8 +82,7 @@ export default {
       this.$http
         .get(`api/organization/interview/sign?organizationId=${organizationId}`)
         .then((res) => {
-          console.log(res, 'get')
-          // 只有00000 才是设置过问题 没有直接退出
+          // 只有00000 才是设置过问题 不是直接退出
           if (res.data.code != '00000') return
           //等于00000把他传给子组件
           this.allQues = res.data.data
@@ -108,6 +107,7 @@ export default {
     }
   },
   mounted() {
+    //查看用户是否设置过问题
     this.getQues()
   }
 }
@@ -154,6 +154,7 @@ export default {
       .active-sp {
         color: #2e98f9;
         border-left: 4px solid #a3a3a3;
+        font-weight: bold;
       }
     }
   }
