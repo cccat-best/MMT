@@ -72,7 +72,7 @@
           <div class="right-text" @click="goLogin()">登录</div>
         </div>
       </el-form>
-      <!-- <el-button @click="creat()">生成邀请码test</el-button> -->
+       <el-button @click="creat()">生成邀请码test</el-button>
     </el-main>
   </el-container>
 </template>
@@ -133,19 +133,19 @@ export default {
   },
   methods: {
     // test临时生成邀请码
-    // creat() {
-    //   this.$http.get('api/organization/invitation-code').then(
-    //     (res) => {
-    //       if (res.data.code == '00000') {
-    //         this.invitationCode = res.data.data.invitationCode
-    //         console.log(res.data.data.invitationCode)
-    //       }
-    //     },
-    //     (err) => {
-    //       this.$message.error(err)
-    //     }
-    //   )
-    // },
+    creat() {
+      this.$http.get('api/organization/invitation-code').then(
+        (res) => {
+          if (res.data.code == '00000') {
+            this.invitationCode = res.data.data.invitationCode
+            console.log(res.data.data.invitationCode)
+          }
+        },
+        (err) => {
+          this.$message.error(err)
+        }
+      )
+    },
     ...mapMutations('transform', ['tranformAll']),
     goLogin() {
       this.$router.push('/Login').catch(() => {})
@@ -206,6 +206,13 @@ export default {
                 psw: this.registerForm.password
               })
               this.$router.push('/login')
+            }
+            else{
+              this.$message({
+                showClose: true,
+                message: res.data.message,
+                type: 'warning'
+              })
             }
           })
           .catch((err) => {
