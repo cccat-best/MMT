@@ -108,7 +108,7 @@ const components = [
   Select,
   Option,
   Image,
-  Drawer,
+  Drawer
 ]
 export default function (Vue) {
   for (const component of components) {

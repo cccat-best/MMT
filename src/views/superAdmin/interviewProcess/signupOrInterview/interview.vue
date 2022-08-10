@@ -183,19 +183,13 @@
     <!-- 左边导航条 -->
     <div class="left1">
       <div class="nav1">
-        <span :class="['text', isSelect1() ? 'blue' : '']"
-          >面试问题设置</span
-        >
+        <span :class="['text', isSelect1() ? 'blue' : '']">面试问题设置</span>
       </div>
       <div class="nav1">
-        <span :class="['text', isSelect2() ? 'blue' : '']"
-          >面试文案编辑</span
-        >
+        <span :class="['text', isSelect2() ? 'blue' : '']">面试文案编辑</span>
       </div>
       <div class="nav1">
-        <span :class="['text', isSelect3() ? 'blue' : '']"
-          >结果通知编辑</span
-        >
+        <span :class="['text', isSelect3() ? 'blue' : '']">结果通知编辑</span>
       </div>
     </div>
 

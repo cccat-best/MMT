@@ -38,11 +38,11 @@
       :data="tableList"
       @sort-change="sortTableFun"
       @filter-change="filterChange"
-        prop="stuNum"
-        label="学号"
-        width="100px"
-        align="center"
-      >
+      prop="stuNum"
+      label="学号"
+      width="100px"
+      align="center"
+    >
       <!-- </el-table-column> -->
       <!-- 姓名 -->
       <el-table-column
