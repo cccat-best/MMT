@@ -65,6 +65,7 @@
               v-for="(item2, index2) in item1.option"
               :key="'op' + index2"
               v-show="item2 != null"
+              :disabled="true"
             >
               {{ item2 }}
             </option>
@@ -527,6 +528,9 @@ export default {
         width: 33.33%;
         display: flex;
         align-items: center;
+        i {
+          cursor: pointer;
+        }
         .choose-name {
           margin-left: 3px;
           margin-right: 5px;
@@ -541,6 +545,7 @@ export default {
         }
         .remove-opacity {
           opacity: 0;
+          cursor: auto;
         }
       }
     }
@@ -627,8 +632,12 @@ export default {
       display: flex;
       align-items: center;
       margin-left: 17px;
+      i {
+        cursor: pointer;
+      }
       .remove-opacity {
         opacity: 0;
+        cursor: auto;
       }
     }
     .freeView-name {
