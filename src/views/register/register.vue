@@ -210,7 +210,7 @@ export default {
               this.$message({
                 showClose: true,
                 message: res.data.message,
-                type: 'warning'
+                type: 'error'
               })
             }
           })
