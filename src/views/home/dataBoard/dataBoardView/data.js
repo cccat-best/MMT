@@ -5,71 +5,116 @@ let data3 = [
     className: '信安1班',
     organizationOrder: '第一志愿',
     phone: 13222221131,
-    studentId: '20210001'
+    interviewStatus: '二面进行中',
+    nextTime: '8/29 15:10',
+    nextPlace: '7-112',
+    stuNum: '20210001',
+    wishDepartment: '产品组',
+    departmentOrder: '第一志愿'
   },
   {
     name: '熊二',
     permission: 'member',
     className: '信安2班',
     organizationOrder: '第一志愿',
+    interviewStatus: '四面失败',
+    nextTime: '8/29 15:10',
     phone: 143114242421,
-    studentId: '20210002'
+    nextPlace: '7-112',
+    stuNum: '20210002',
+    wishDepartment: '产品组',
+    departmentOrder: '第一志愿'
   },
   {
     name: '猫王',
     permission: 'member',
     className: '信安1班',
     organizationOrder: '第一志愿',
+    interviewStatus: '一面进行中',
     phone: 14451419198,
-    studentId: '20210003'
+    nextPlace: '7-112',
+    nextTime: '8/29 15:10',
+    stuNum: '20210003',
+    wishDepartment: '产品组',
+    departmentOrder: '第一志愿'
   },
   {
     name: '虎魄',
     permission: 'commitee',
     className: '信安1班',
     organizationOrder: '第一志愿',
+    interviewStatus: '一面进行中',
     phone: 16633101092,
-    studentId: '20210004'
+    nextPlace: '7-117',
+    nextTime: '8/29 15:10',
+    stuNum: '20210004',
+    wishDepartment: '产品组',
+    departmentOrder: '第一志愿'
   },
   {
     name: '王虎',
     permission: 'member',
     className: '信安2班',
     organizationOrder: '第一志愿',
+    interviewStatus: '一面进行中',
     phone: 12113180808,
-    studentId: '20210005'
+    nextPlace: '7-117',
+    nextTime: '8/29 15:10',
+    stuNum: '20210005',
+    wishDepartment: '产品组',
+    departmentOrder: '第一志愿'
   },
   {
     name: '小彤',
     permission: 'commitee',
     className: '信安4班',
     organizationOrder: '第一志愿',
+    interviewStatus: '一面失败',
+    nextPlace: '7-117',
     phone: 14113100000,
-    studentId: '20210006'
+    nextTime: '8/29 15:10',
+    stuNum: '20210006',
+    wishDepartment: '产品组',
+    departmentOrder: '第一志愿'
   },
   {
     name: '小虎',
     permission: 'commitee',
     className: '信安3班',
     organizationOrder: '第一志愿',
+    nextPlace: '7-117',
+    interviewStatus: '一面失败',
     phone: 13666666666,
-    studentId: '20210007'
+    nextTime: '8/29 15:10',
+    stuNum: '20210007',
+    wishDepartment: '产品组',
+    departmentOrder: '第一志愿'
   },
   {
     name: '盖虎',
     permission: 'commitee',
     organizationOrder: '第一志愿',
     className: '信安11班',
+    interviewStatus: '一面通过',
+    nextPlace: '7-117',
     phone: 13666666666,
-    studentId: '20210008'
+    nextTime: '8/29 15:10',
+    stuNum: '20210008',
+    wishDepartment: '产品组',
+    departmentOrder: '第一志愿'
   },
   {
     name: '盖亚',
     permission: 'member',
     className: '信安10班',
     organizationOrder: '第一志愿',
+    interviewStatus: '二面通过',
     phone: 13666666666,
-    studentId: '20210009'
+    nextPlace: '7-117',
+    nextTime: '8/29 15:10',
+    stuNum: '20210009',
+    wishDepartment: '产品组',
+    departmentOrder: '第一志愿'
   },
   {
     name: '东北虎',
@@ -77,7 +122,12 @@ let data3 = [
     className: '信安9班',
     phone: 13666666666,
     organizationOrder: '第一志愿',
-    studentId: '20210010'
+    nextPlace: '7-117',
+    interviewStatus: '二面通过',
+    nextTime: '8/29 15:10',
+    stuNum: '20210010',
+    wishDepartment: '产品组',
+    departmentOrder: '第一志愿'
   },
   {
     name: '华南虎',
@@ -85,7 +135,10 @@ let data3 = [
     className: '计科1班',
     organizationOrder: '第一志愿',
     phone: 15316666666,
-    studentId: '20210011'
+    nextTime: '8/29 15:10',
+    stuNum: '20210011',
+    wishDepartment: '产品组',
+    departmentOrder: '第一志愿'
   },
   {
     name: '兀虎',
@@ -93,7 +146,10 @@ let data3 = [
     className: '计科1班',
     organizationOrder: '第一志愿',
     phone: 15316666666,
-    studentId: '20210012'
+    nextTime: '8/29 15:10',
+    stuNum: '20210012',
+    wishDepartment: '产品组',
+    departmentOrder: '第一志愿'
   },
   {
     name: '企鹅',
@@ -101,7 +157,10 @@ let data3 = [
     className: '计科1班',
     organizationOrder: '第一志愿',
     phone: 15316666666,
-    studentId: '20210013'
+    nextTime: '8/29 15:10',
+    stuNum: '20210013',
+    wishDepartment: '产品组',
+    departmentOrder: '第一志愿'
   },
   {
     name: '北极星',
@@ -109,7 +168,10 @@ let data3 = [
     organizationOrder: '第一志愿',
     className: '计科1班',
     phone: 15316666666,
-    studentId: '20210014'
+    nextTime: '8/29 15:10',
+    stuNum: '20210014',
+    wishDepartment: '产品组',
+    departmentOrder: '第一志愿'
   },
   {
     name: '猫咪',
@@ -117,7 +179,10 @@ let data3 = [
     className: '计科10班',
     organizationOrder: '第一志愿',
     phone: 15316666666,
-    studentId: '20210015'
+    nextTime: '8/29 15:10',
+    stuNum: '20210015',
+    wishDepartment: '产品组',
+    departmentOrder: '第一志愿'
   },
   {
     name: '亚瑟',
@@ -125,7 +190,10 @@ let data3 = [
     organizationOrder: '第一志愿',
     className: '计科2班',
     phone: 15316666666,
-    studentId: '20210016'
+    nextTime: '8/29 15:10',
+    stuNum: '20210016',
+    wishDepartment: '产品组',
+    departmentOrder: '第一志愿'
   },
   {
     name: '二舅',
@@ -133,7 +201,10 @@ let data3 = [
     organizationOrder: '第一志愿',
     className: '计科0班',
     phone: 15316666666,
-    studentId: '20210017'
+    nextTime: '8/29 15:10',
+    stuNum: '20210017',
+    wishDepartment: '产品组',
+    departmentOrder: '第一志愿'
   },
   {
     name: '刘备',
@@ -141,7 +212,10 @@ let data3 = [
     className: '计科3班',
     organizationOrder: '第一志愿',
     phone: 15316666666,
-    studentId: '20210027'
+    nextTime: '8/29 15:10',
+    stuNum: '20210027',
+    wishDepartment: '产品组',
+    departmentOrder: '第一志愿'
   },
   {
     name: '孙策',
@@ -149,7 +223,10 @@ let data3 = [
     className: '计科5班',
     phone: 15316666666,
     organizationOrder: '第一志愿',
-    studentId: '20210037'
+    nextTime: '8/29 15:10',
+    stuNum: '20210037',
+    wishDepartment: '产品组',
+    departmentOrder: '第一志愿'
   },
   {
     name: '关羽',
@@ -157,7 +234,10 @@ let data3 = [
     className: '计科6班',
     organizationOrder: '第一志愿',
     phone: 15316666666,
-    studentId: '20210057'
+    nextTime: '8/29 15:10',
+    stuNum: '20210057',
+    wishDepartment: '产品组',
+    departmentOrder: '第一志愿'
   },
   {
     name: '张飞',
@@ -165,7 +245,10 @@ let data3 = [
     organizationOrder: '第一志愿',
     className: '计科2班',
     phone: 15316666666,
-    studentId: '20210097'
+    nextTime: '8/29 15:10',
+    stuNum: '20210097',
+    wishDepartment: '产品组',
+    departmentOrder: '第一志愿'
   },
   {
     name: '正山',
@@ -173,7 +256,10 @@ let data3 = [
     className: '计科1班',
     phone: 15316666666,
     organizationOrder: '第一志愿',
-    studentId: '20210107'
+    nextTime: '8/29 15:10',
+    stuNum: '20210107',
+    wishDepartment: '产品组',
+    departmentOrder: '第一志愿'
   },
   {
     name: '张三',
@@ -181,7 +267,10 @@ let data3 = [
     className: '计科1班',
     organizationOrder: '第一志愿',
     phone: 15316666666,
-    studentId: '20210117'
+    nextTime: '8/29 15:10',
+    stuNum: '20210117',
+    wishDepartment: '产品组',
+    departmentOrder: '第一志愿'
   },
   {
     name: '掌声',
@@ -189,7 +278,10 @@ let data3 = [
     className: '计科1班',
     organizationOrder: '第一志愿',
     phone: 15316666666,
-    studentId: '20210207'
+    nextTime: '8/29 15:10',
+    stuNum: '20210207',
+    wishDepartment: '产品组',
+    departmentOrder: '第一志愿'
   },
   {
     name: '尤雨溪',
@@ -197,7 +289,10 @@ let data3 = [
     className: '计科1班',
     phone: 15316666666,
     organizationOrder: '第一志愿',
-    studentId: '20210307'
+    nextTime: '8/29 15:10',
+    stuNum: '20210307',
+    wishDepartment: '产品组',
+    departmentOrder: '第一志愿'
   },
   {
     name: '大佬',
@@ -205,7 +300,10 @@ let data3 = [
     organizationOrder: '第一志愿',
     className: '计科1班',
     phone: 15316666666,
-    studentId: '20210309'
+    nextTime: '8/29 15:10',
+    stuNum: '20210309',
+    wishDepartment: '产品组',
+    departmentOrder: '第一志愿'
   },
   {
     name: '账号',
@@ -213,7 +311,10 @@ let data3 = [
     className: '计科1班',
     organizationOrder: '第一志愿',
     phone: 15316666666,
-    studentId: '20210911'
+    nextTime: '8/29 15:10',
+    stuNum: '20210911',
+    wishDepartment: '产品组',
+    departmentOrder: '第一志愿'
   },
   {
     name: '管理',
@@ -221,7 +322,10 @@ let data3 = [
     className: '计科1班',
     organizationOrder: '第一志愿',
     phone: 15316666666,
-    studentId: '20220001'
+    nextTime: '8/29 15:10',
+    stuNum: '20220001',
+    wishDepartment: '产品组',
+    departmentOrder: '第一志愿'
   },
   {
     name: '小虎',
@@ -229,7 +333,10 @@ let data3 = [
     className: '中加1班',
     organizationOrder: '第一志愿',
     phone: 15316666666,
-    studentId: '20220002'
+    nextTime: '8/29 15:10',
+    stuNum: '20220002',
+    wishDepartment: '产品组',
+    departmentOrder: '第一志愿'
   },
   {
     name: '小虎',
@@ -237,7 +344,10 @@ let data3 = [
     className: '中加1班',
     organizationOrder: '第一志愿',
     phone: 15316666666,
-    studentId: '20220003'
+    nextTime: '8/29 15:10',
+    stuNum: '20220003',
+    wishDepartment: '产品组',
+    departmentOrder: '第一志愿'
   },
   {
     name: '小虎',
@@ -245,7 +355,10 @@ let data3 = [
     organizationOrder: '第一志愿',
     className: '中加1班',
     phone: 15316666666,
-    studentId: '20220004'
+    nextTime: '8/29 15:10',
+    stuNum: '20220004',
+    wishDepartment: '产品组',
+    departmentOrder: '第一志愿'
   },
   {
     name: '小虎',
@@ -253,7 +366,10 @@ let data3 = [
     className: '中加1班',
     organizationOrder: '第一志愿',
     phone: 15316666666,
-    studentId: '20220005'
+    nextTime: '8/29 15:10',
+    stuNum: '20220005',
+    wishDepartment: '产品组',
+    departmentOrder: '第一志愿'
   },
   {
     name: '小虎',
@@ -261,7 +377,10 @@ let data3 = [
     className: '信安1班',
     phone: 15316666666,
     organizationOrder: '第一志愿',
-    studentId: '20221111'
+    nextTime: '8/29 15:10',
+    stuNum: '20221111',
+    wishDepartment: '产品组',
+    departmentOrder: '第一志愿'
   }
 ]
 export default data3

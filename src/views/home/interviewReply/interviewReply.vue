@@ -28,18 +28,22 @@ export default {
 <style scoped>
 .big {
   height: 100%;
-  width: 1260px;
+  width: 100%;
+  min-width: 1000px;
+  min-height: 600px;
 }
 .top {
   width: 100%;
-  height: 250px;
+  height: 40%;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  margin-bottom: 25px;
+  margin-bottom: 17px;
 }
 .bottom {
   width: 100%;
-  height: 350px;
+  height: 59%;
+  background-color: white;
+  border-radius: 15px;
 }
 </style>

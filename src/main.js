@@ -4,7 +4,7 @@ import router from './router'
 import store from './store'
 import registerElement from './global/register-element'
 import './global/global.less'
-;('./global/register-element')
+// import './global/iconfont.css'
 
 // 注册vue-clipboard2插件，并全局使用
 // import VueClipboard from 'vue-clipboard2'

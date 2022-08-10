@@ -287,7 +287,7 @@ export default {
       // 控制简历界面弹窗
       resumeDialogVisible: false,
       // 学号,由主页传过来
-      studentId: 20200001,
+      studentId: '',
       admissionId: 1,
       round: 1,
       organizationId: sessionStorage.getItem('loginOrganizationId'),

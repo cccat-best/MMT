@@ -1,30 +1,18 @@
 <template>
   <div class="content">
-    <!-- 测试更新数据 -->
-    <div
-      @click="de"
-      style="
-      position:fixed
-      left:50px
-        float: left;
-        height: 5px;
-        width: 150px;
-        margin-right: 10px;
-        color: blue;
-      "
-    >
-      测试
-      <!-- </div>
-    <div
-      @click="co"
-      style="float: left; height: 5px; width: 150px; color: blue"
-    >
-    cookie -->
-    </div>
-    <!--  -->
-
     <!-- 搜索区域 -->
     <div class="seach-header">
+      <el-tooltip
+        class="item"
+        effect="dark"
+        content="取消所有筛选"
+        placement="top"
+      >
+        <i class="el-icon-folder-delete myRefresh" @click="searchKeyWord"></i>
+      </el-tooltip>
+      <el-tooltip class="item" effect="dark" content="刷新" placement="top">
+        <i class="el-icon-refresh-right myRefresh" @click="reFresh"></i>
+      </el-tooltip>
       <el-input
         v-model="searchWord"
         type="search"
@@ -40,37 +28,22 @@
       stripe
       tooltip-effect="dark"
       class="el-table"
-      height="72.2vh"
+      height="82vh"
+      v-loading="myLoading"
+      element-loading-text="拼命加载中"
       :row-style="{ height: '0' }"
       :cell-style="{ padding: '0px' }"
-      :header-cell-style="{
-        background: '#282e38',
-        color: '#ffffff',
-        padding: '5px'
-      }"
+      :header-cell-style="handleTheadStyle"
       ref="filterTable"
       :data="tableList"
       @sort-change="sortTableFun"
       @filter-change="filterChange"
-      :default-sort="
-        ({ prop: 'studentId', order: 'ascending' },
-        { prop: 'permission', order: 'ascending' })
-      "
-    >
-      <!-- 注意上面有tableList -->
-      <el-table-column label="ID" align="center" width="70px">
-        <template slot-scope="scope">
-          {{ scope.$index + 1 + (currentPage - 1) * pagesize }}
-        </template>
-      </el-table-column>
-      <el-table-column
-        prop="studentId"
+        prop="stuNum"
         label="学号"
         width="100px"
         align="center"
-        sortable="custom"
       >
-      </el-table-column>
+      <!-- </el-table-column> -->
       <!-- 姓名 -->
       <el-table-column
         prop="name"
@@ -83,7 +56,7 @@
       <!-- 班级 -->
       <el-table-column
         prop="className"
-        width="120px"
+        width="230px"
         align="center"
         label="班级"
         :filters.sync="classNameFilter"
@@ -120,10 +93,10 @@
       <el-table-column
         width="160px"
         align="center"
-        prop="permission"
+        prop="departmentOrder"
         label="部门志愿次序"
         :filters.sync="departmentOrderFilter"
-        column-key="permission"
+        column-key="departmentOrder"
       >
       </el-table-column>
 
@@ -131,8 +104,10 @@
       <el-table-column
         width="160px"
         align="center"
-        prop="permission"
+        prop="wishDepartment"
         label="当前志愿部门"
+        column-key="wishDepartment"
+        :filters.sync="wishDepartmentFilter"
       >
       </el-table-column>
 
@@ -140,22 +115,27 @@
       <el-table-column
         width="160px"
         align="center"
-        prop="permission"
+        prop="interviewStatus"
         label="当前志愿状态"
         :filters.sync="interviewStatusFilter"
-        column-key="permission"
+        column-key="interviewStatus"
       >
+        <template #default="{ row }">
+          <el-tag :type="row.interviewStatus | statusFilter">
+            {{ row.interviewStatus }}
+          </el-tag>
+        </template>
       </el-table-column>
 
       <!-- 下一场面试时间 -->
       <el-table-column
         width="180px"
         align="center"
-        prop="permission"
+        prop="nextTime"
         label="下一场面试时间"
         sortable="custom"
         :filters.sync="nextTimeFilter"
-        column-key="permission"
+        column-key="nextTime"
       >
       </el-table-column>
 
@@ -163,11 +143,11 @@
       <el-table-column
         width="180px"
         align="center"
-        prop="permission"
+        prop="nextPlace"
         label="下一场面试地点"
         sortable="custom"
         :filters.sync="nextPlaceFilter"
-        column-key="permission"
+        column-key="nextPlace"
       >
       </el-table-column>
 
@@ -216,7 +196,7 @@
       :page-sizes="[10, 20, 30, 40]"
       :page-size.sync="pagesize"
       layout="total, sizes, prev, pager, next, jumper"
-      :total="total"
+      :total.sync="total"
     >
     </el-pagination>
   </div>
@@ -224,9 +204,8 @@
 
 <script>
 //引入表单全部数据,这是模拟数据，后期应该会删掉
-// import data from '../dataBoardView/data'
-// import data2 from '../../../superAdmin/accountManage/data copy'
-//// import mySelectHeader from './selectHeader.vue'
+import data from '../dataBoardView/data'
+// import mySelectHeader from './selectHeader.vue'
 import changeDialog from '../components/changeDialog.vue'
 import resumeDialog from '../components/resumeDialog.vue'
 import { mapState, mapMutations } from 'vuex'
@@ -237,47 +216,58 @@ export default {
       'classNameFilter',
       'organizationOrderFilter',
       'departmentOrderFilter',
+      'wishDepartmentFilter',
       'interviewStatusFilter',
       'nextPlaceFilter',
       'nextTimeFilter'
     ])
   },
+  // 面试状态根据字符显示颜色
+  filters: {
+    statusFilter(status) {
+      const statusMap = {
+        一面通过: 'success',
+        一面进行中: 'gray',
+        一面失败: 'danger',
+        二面通过: 'success',
+        二面进行中: 'gray',
+        二面失败: 'danger',
+        三面通过: 'success',
+        三面进行中: 'gray',
+        三面失败: 'danger',
+        四面通过: 'success',
+        四面进行中: 'gray',
+        四面失败: 'danger'
+      }
+      return statusMap[status]
+    }
+  },
   data() {
     return {
+      // 计时器
+      myLoading: false,
+      timerUpdate: null,
+      activeThead: {}, //保存排序所选择的表头
       // 关键字搜索
-      admissionId: 0, //纳新ID不知道，需要询问////////////////////////
+      admissionId: 1, //纳新ID不知道，需要询问////////////////////////
       organizationId: 2, ////组织名不知道，需要询问////////////////////////
       searchWord: '',
+      // 筛选勾选的请求信息的数组
+      className: [],
+      organizationOrder: [],
+      departmentOrder: [],
+      wishDepartment: [],
+      interviewStatus: [],
+      nextPlace: [],
+      nextTime: [],
+      // 排序，排序选择（姓名0、学号1、地点2、时间3），排序方式（1正序、2倒序）
+      sort: [],
       postdata: '', //发请求的data
-      order: 'ascending', //排序顺序，默认升序
-      column: 'permission', //排序变量，默认权限升序
-      permissionSelect: null, //筛选变量
-
       // 页码
-      tableList: [
-        {
-          studentId: '1',
-          name: 'zhang',
-          className: 'one',
-          phone: '123456',
-          organizationOrder: '1',
-          permission: '222'
-        },
-        {
-          studentId: '1',
-          name: 'zhang',
-          className: 'one',
-          phone: '123456',
-          organizationOrder: '1',
-          permission: '222'
-        }
-      ], //当前页展示数据
+      tableList: [...data], //当前页展示数据
       currentPage: 1, // 当前页码
       pagesize: 10, // 每页条数，默认10
-      total: 100,
-      // 表格数据
-      // tableData: [...data], //模拟数据，发请求会获取数据覆盖它
-      tableDataChange: [] //排序、筛选之后的数据
+      total: 100
 
       // 表头名
       // classNameLabel: '班级',
@@ -290,25 +280,66 @@ export default {
     }
   },
   created() {
-    //获取数据
-    this.searchKeyWord()
-    //渲染并分页
-    this.orderChange(this.tableData)
+    this.organizationId = sessionStorage.getItem('loginOrganizationId')
+    this.getTwoId()
+  },
+  // 定时更新数据和筛选项
+  mounted() {
+    // 无痕刷新
+    this.timerUpdate = setInterval(() => {
+      setTimeout(this.reFreshWithoutSee, 0)
+    }, 1000 * 900)
+  },
+  beforeDestroy() {
+    clearInterval(this.timerUpdate)
+    this.timerUpdate = null
   },
   components: {
     // mySelectHeader
     resumeDialog,
     changeDialog
   },
+  // 排序保存表头
+  props: {
+    mutilSort: {
+      default: true
+    }
+  },
   methods: {
     ...mapMutations('dataBoard', [
       'updateClassNameFilter',
       'updateOrganizationOrderFilter',
       'updateDepartmentOrderFilter',
+      'updateWishDepartmentFilter',
       'updateInterviewStatusFilter',
       'updateNextPlaceFilter',
       'updateNextTimeFilter'
     ]),
+    // 获取organizationId与admissionId
+    getTwoId() {
+      this.$http
+        .get('api/organization/interview/id-latest', {
+          organizationId: this.organizationId
+        })
+        .then(
+          (res) => {
+            if (res.data.code == '00000') {
+              this.admissionId = res.data.data.admissionIdList[0].admissionId
+              // admissionId存在session中
+              sessionStorage.setItem(
+                'admissionId',
+                res.data.data.admissionIdList[0].admissionId
+              )
+            } else this.$message.error(res.data.message)
+            // 获取数据
+            this.requestFilterItem()
+          },
+          (err) => {
+            this.$message.error('获取数据失败' + err)
+            this.requestFilterItem()
+          }
+        )
+    },
     // 修改弹窗
     openChangeDialog(data) {
       this.$refs.changeDialog.changeDialogVisible = true
@@ -316,101 +347,102 @@ export default {
       this.$refs.changeDialog.studentId = true
     },
     // 简历弹窗
-    openResumeDialog(data) {
+    openResumeDialog() {
       this.$refs.resumeDialog.resumeDialogVisible = true
       this.$refs.resumeDialog.studentId = true
+      // this.$refs.resumeDialog.demo()
       console.log(data)
     },
-    // 测试数据更新时，表单数据是否同步更新了
-    de() {
-      // this.$message.success(
-      //   '测试更新数据，删掉了前三个数据，后面完工时记得删掉这个'
-      // )
-      this.$message.success('测试更新数据，后面完工时记得删掉这个')
-      // this.tableData = this.tableData.slice(3)
-      // this.tableData = data2
-      // this.orderChange(this.tableData)
-      console.log(this.classNameFilter)
-      // 模拟更新过滤项
-      this.updateClassNameFilter([
-        { text: 'committee', value: 'committee' },
-        { text: 'member', value: 'member' },
-        { text: '筛选2', value: 'member' }
-      ])
-      console.log(this.classNameFilter)
-    },
-    // 测试cookie
-    co() {
-      // 发请求模板，待删除，防止后面更改需求，先不删
-      this.$http
-        .post('api/login/b', {
-          studentId: '20200002',
-          password: '123456'
-        })
-        .then(
-          (res) => {
-            this.$message.success('post获取cookie正常' + res)
-            console.log(res)
-          },
-          (err) => {
-            this.$message.error(err)
-          }
-        )
+    // 手动刷新
+    reFresh() {
+      this.requestFilterItem()
     },
     // 触发排序
-    sortTableFun(column) {
-      //用户点击这一列的上下排序按钮时，触发的函数
-      console.log(column)
-      this.column = column.prop //该方法获取到当前列绑定的prop字段名赋值给一个变量，之后这个变量做为入参传给后端
-      if (column.prop) {
-        //该列有绑定prop字段走这个分支
-        if (column.order == 'ascending') {
-          //当用户点击的是升序按钮，即ascending时
-          this.order = 'ascending' //将order这个变量赋值为后端接口文档定义的升序的字段名，之后作为入参传给后端
-        } else if (column.order == 'descending') {
-          //当用户点击的是升序按钮，即descending时
-          this.order = 'descending' //将order这个变量赋值为后端接口文档定义的降序的字段名，之后作为入参传给后端
-        }
-        this.orderChange(this.tableDataChange) //改变全部数据顺序
+    sortTableFun(data) {
+      // 多列排序，保存排序表头高亮
+      this.$emit('sort-change', data)
+      if (!this.mutilSort) return
+      if (data.order) {
+        this.activeThead[data.prop] = data.order
+      } else if (!data.order) {
+        this.activeThead[data.prop] = ''
       }
+      // 准备排序数组要接收的值
+      let sortvalue
+      switch (data.order) {
+        case 'ascending':
+          sortvalue = 1
+          break
+        case 'descending':
+          sortvalue = 2
+          break
+        default:
+          sortvalue = 0
+          break
+      }
+      // 姓名0、学号1、地点2、时间3
+      let sortItem
+      switch (data.prop) {
+        case 'stuNum':
+          sortItem = 1
+          // console.log('stuNum sort')
+          // console.log(this.className)
+          break
+        case 'name':
+          sortItem = 0
+          // console.log('name sort')
+          break
+        case 'nextTime':
+          sortItem = 3
+          // console.log('nextTime sort')
+          break
+        case 'nextPlace':
+          sortItem = 2
+          // console.log('nextPlace sort')
+          break
+      }
+      // console.log('================')
+      this.orderChange(sortItem, sortvalue)
+      // console.log(this.sort[0])
+      // console.log(this[Object.keys(data)[0]])
+      this.currentPage = 1
+      this.requestData()
     },
-    // 排序，默认权限升序，并完成渲染分页
-    orderChange(datalist, currentPage) {
-      // this.$message.success('发起后端请求的接口')
-      // 对权限排序
-      if (this.column == 'permission') {
-        // console.log(Number(datalist[4].permission[0]))
-        if (this.order == 'desc') {
-          datalist.sort((a, b) => {
-            return b.permission[0] > a.permission[0] ? 1 : -1
-          }) //permission 降序
-        } else {
-          datalist.sort((a, b) => {
-            return b.permission[0] < a.permission[0] ? 1 : -1
-          }) //permission 升序
+    // 处理排序
+    orderChange(sortItem, sortvalue) {
+      if (this.sort.length == 0) {
+        this.sort.push({
+          sortCondition: sortItem,
+          sortModel: sortvalue
+        })
+      } else {
+        let isPush = true
+        this.sort.forEach((element) => {
+          if (element.sortCondition == sortItem) {
+            element.sortModel = sortvalue
+            isPush = false
+          }
+        })
+        if (isPush) {
+          this.sort.push({
+            sortCondition: sortItem,
+            sortModel: sortvalue
+          })
         }
       }
-      // 对学号排序
-      else if (this.column == 'studentId') {
-        // 修改数组顺序，后续可能要用对象保存原始数据
-        if (this.order == 'desc') {
-          datalist.sort((a, b) => {
-            return Number(b.studentId) > Number(a.studentId) ? 1 : -1
-          }) //permission 降序
-        } else {
-          datalist.sort((a, b) => {
-            return Number(b.studentId) < Number(a.studentId) ? 1 : -1
-          }) //permission 升序
-        }
-      }
-      // 渲染排序后的数据，分页
-      this.currentPage = currentPage == undefined ? 1 : currentPage
-      this.tableDataChange = datalist
-      this.pageCutDouwn(this.tableDataChange)
+      this.sort = this.sort.filter((element) => {
+        return element.sortModel != 0
+      })
+      // this.sort.forEach((element) => {
+      //   console.log('sortCondition' + element.sortCondition)
+      //   console.log('sortModel' + element.sortModel)
+      // })
     },
 
     //关键字搜索
     searchKeyWord() {
+      // loading
+      this.myLoading = true
       // 判断字符串是否为空
       if (this.searchWord != '') {
         this.postdata = {
@@ -428,107 +460,373 @@ export default {
           pageSize: this.pagesize
         }
       }
+      if (this.sort.length != 0) {
+        this.postdata.sort = this.sort
+      }
       // 发请求
-      this.$http.post('api/account/manage/all', this.postdata).then(
+      this.$http.post('api/data-panel/all-information', this.postdata).then(
         (res) => {
-          // 因为请求访问权限异常，res.data.studentList在返回信息中为undefined
-          if (res.data.code == 'A0300') {
-            // 用造的假数据顶上
-            this.$message.error(res.data.message)
-          } else {
-            this.tableData = res.data.data.studentList
-            this.total = res.data.data.total
-            console.log(this.tableData)
-            // 成功后页面上回到第一页
-            this.currentPage = 1
-          }
-          // 通知所有相关项更新数据，因为他们使用tableDataChange而不是tableData
-          // this.orderChange(this.tableData)
+          if (res.data.code == '00000') {
+            this.tableList = res.data.data.allInformationData
+            this.total = res.data.data.totalNum
+            // console.log(res.data)
+            // 清除筛选的选中
+            this.$refs.filterTable.clearFilter()
+            this.$refs.filterTable.clearSort()
+            ;(this.className = []),
+              (this.organizationOrder = []),
+              (this.departmentOrder = []),
+              (this.wishDepartment = []),
+              (this.interviewStatus = []),
+              (this.nextPlace = []),
+              (this.nextTime = []),
+              // 成功后,'页面上'回到第一页
+              (this.currentPage = 1)
+          } else this.$message.error(res.data.message)
+          // loading
+          this.myLoading = false
         },
         (err) => {
           this.$message.error('获取数据失败' + err)
+          // loading
+          this.myLoading = false
         }
       )
     },
 
     // 触发筛选权限
     filterChange(data) {
-      // console.log(data.permission)
-      this.permissionSelect = data.permission[0]
-      // 传permission
-      this.filterChangeData(data.permission[0])
+      // console.log(data)
+      // 取出修改的筛选的名字
+      let name = Object.keys(data)[0]
+      // 取出修改的筛选的值
+      let filtervalue = Object.values(data)[0]
+      // console.log(filtervalue)
+      // console.log(name)
+      // 根据筛选项更新传输的筛选数据，记得注释掉多余代码
+      switch (name) {
+        case 'className':
+          this.className = filtervalue
+          // console.log('className ok')
+          // console.log(this.className)
+          break
+        case 'organizationOrder':
+          this.organizationOrder = filtervalue
+          // console.log('organizationOrder ok')
+          break
+        case 'departmentOrder':
+          this.departmentOrder = filtervalue
+          // console.log('departmentOrder ok')
+          break
+        case 'wishDepartment':
+          this.wishDepartment = filtervalue
+          // console.log('wishDepartment ok')
+          break
+        case 'interviewStatus':
+          this.interviewStatus = filtervalue
+          // console.log('interviewStatus ok')
+          break
+        case 'nextPlace':
+          this.nextPlace = filtervalue
+          // console.log('nextPlace ok')
+          break
+        case 'nextTime':
+          this.nextTime = filtervalue
+          // console.log('nextTime ok')
+          break
+      }
+      // console.log(this[Object.keys(data)[0]])
       // 仅自行触发的筛选跳转到第一页
       this.currentPage = 1
-      this.pageCutDouwn(this.tableDataChange)
+      this.requestData()
     },
-    // 对数组筛选
-    filterChangeData(permission) {
-      if (permission == 'committee') {
-        // console.log(permission=="committee")
-        // console.log(this.tableData[0].permission=="committee")
-        // this.$message.success(permission)
-        // 只改变tableDataChange，保证能够还原，不会越筛越少
-        this.tableDataChange = this.tableData.filter((element) => {
-          // console.log(element.permission=="committee")
-          return element.permission == 'committee'
-        })
-        // console.log(this.tableData)
-      } else if (permission == 'member') {
-        // this.$message.success(permission)
-        this.tableDataChange = this.tableData.filter((element) => {
-          // console.log(element.permission=="committee")
-          return element.permission == 'member'
-        })
-      } else {
-        // permission结果为undefined,因为element-ui自动生成这个选项，我也不知道怎么给它加value值
-        // console.log(permission)
-        // this.$message.error('全部')
-        this.tableDataChange = this.tableData
+    requestData() {
+      // loading
+      this.myLoading = true
+      // 下面是初步实现请求，后续要精简，把不必要的参数去除
+      let myRequestData = {
+        admissionId: this.admissionId,
+        organizationId: this.organizationId,
+        pageNum: this.currentPage,
+        pageSize: this.pagesize
       }
-      // 渲染筛选后数据
-      // 考虑不周，不应该直接返回第一页
-      // this.currentPage = 1
-      this.pageCutDouwn(this.tableDataChange)
+      if (this.searchWord != '') {
+        myRequestData.keyWord = this.searchWord
+      }
+      if (this.className.length != 0) {
+        myRequestData.className = this.className
+      }
+      if (this.organizationOrder.length != 0) {
+        myRequestData.organizationOrder = this.organizationOrder
+      }
+      if (this.departmentOrder.length != 0) {
+        myRequestData.departmentOrder = this.departmentOrder
+      }
+      if (this.wishDepartment.length != 0) {
+        myRequestData.wishDepartment = this.wishDepartment
+      }
+      if (this.interviewStatus.length != 0) {
+        myRequestData.interviewStatus = this.interviewStatus
+      }
+      if (this.nextPlace.length != 0) {
+        myRequestData.nextPlace = this.nextPlace
+      }
+      if (this.nextTime.length != 0) {
+        myRequestData.nextTime = this.nextTime
+      }
+      if (this.sort.length != 0) {
+        myRequestData.sort = this.sort
+      }
+      this.$http.post('api/data-panel/all-information', myRequestData).then(
+        (res) => {
+          // 因为请求访问权限异常，res.data.studentList在返回信息中为undefined
+          if (res.data.code == '00000') {
+            this.tableList = res.data.data.allInformationData
+            this.total = res.data.data.totalNum
+            // console.log(this.tableList)
+          } else {
+            this.$message.error(res.data.message)
+          }
+          this.myLoading = false
+        },
+        (err) => {
+          this.$message.error('获取数据失败' + err)
+          this.myLoading = false
+        }
+      )
     },
-    //修改密码弹窗
-    handleKeyEdit(data) {
-      this.$refs.manyDialog.dialogVisibleKey = true
-      this.$refs.manyDialog.organizationId = this.organizationId
-      this.$refs.manyDialog.formLabelAlign = data
+    // 无痕刷新,去除loading效果
+    reFreshWithoutSee() {
+      // 获取筛选项
+      this.requestAllItem()
+      // 请求数据，无loading效果
+      let myRequestData = {
+        admissionId: this.admissionId,
+        organizationId: this.organizationId,
+        pageNum: this.currentPage,
+        pageSize: this.pagesize
+      }
+      if (this.searchWord != '') {
+        myRequestData.keyWord = this.searchWord
+      }
+      if (this.className.length != 0) {
+        myRequestData.className = this.className
+      }
+      if (this.organizationOrder.length != 0) {
+        myRequestData.organizationOrder = this.organizationOrder
+      }
+      if (this.departmentOrder.length != 0) {
+        myRequestData.departmentOrder = this.departmentOrder
+      }
+      if (this.wishDepartment.length != 0) {
+        myRequestData.wishDepartment = this.wishDepartment
+      }
+      if (this.interviewStatus.length != 0) {
+        myRequestData.interviewStatus = this.interviewStatus
+      }
+      if (this.nextPlace.length != 0) {
+        myRequestData.nextPlace = this.nextPlace
+      }
+      if (this.nextTime.length != 0) {
+        myRequestData.nextTime = this.nextTime
+      }
+      if (this.sort.length != 0) {
+        myRequestData.sort = this.sort
+      }
+      this.$http.post('api/data-panel/all-information', myRequestData).then(
+        (res) => {
+          // 因为请求访问权限异常，res.data.studentList在返回信息中为undefined
+          if (res.data.code == '00000') {
+            this.tableList = res.data.data.allInformationData
+            this.total = res.data.data.totalNum
+            // console.log(this.tableList)
+          } else {
+            this.$message.error(res.data.message)
+          }
+        },
+        (err) => {
+          this.$message.error('获取数据失败' + err)
+        }
+      )
+    },
+    // 获取所有筛选项
+    requestAllItem() {
+      // 获取班级
+      this.$http
+        .get(
+          'api/data-panel/class?admissionId=' +
+            this.admissionId +
+            '&organizationId=' +
+            this.organizationId
+        )
+        .then(
+          (res) => {
+            if (res.data.code == '00000') {
+              this.updateClassNameFilter(res.data.data)
+            } else {
+              this.$message.error(res.data.message)
+            }
+          },
+          (err) => {
+            this.$message.error('获取数据失败' + err)
+          }
+        )
+      // 获取社团志愿次序
+      this.$http
+        .get(
+          'api/data-panel/organization-order?admissionId=' +
+            this.admissionId +
+            '&organizationId=' +
+            this.organizationId
+        )
+        .then(
+          (res) => {
+            if (res.data.code == '00000') {
+              this.updateOrganizationOrderFilter(res.data.data)
+            } else {
+              this.$message.error(res.data.message)
+            }
+          },
+          (err) => {
+            this.$message.error('获取数据失败' + err)
+          }
+        )
+      // 获取部门志愿次序
+      this.$http
+        .get(
+          'api/data-panel/department-order?admissionId=' +
+            this.admissionId +
+            '&organizationId=' +
+            this.organizationId
+        )
+        .then(
+          (res) => {
+            if (res.data.code == '00000') {
+              this.updateDepartmentOrderFilter(res.data.data)
+            } else {
+              this.$message.error(res.data.message)
+            }
+          },
+          (err) => {
+            this.$message.error('获取数据失败' + err)
+          }
+        )
+      // 获取当前志愿状态
+      this.$http
+        .get(
+          'api/data-panel/interview-status?admissionId=' +
+            this.admissionId +
+            '&organizationId=' +
+            this.organizationId
+        )
+        .then(
+          (res) => {
+            if (res.data.code == '00000') {
+              this.updateInterviewStatusFilter(res.data.data)
+            } else {
+              this.$message.error(res.data.message)
+            }
+          },
+          (err) => {
+            this.$message.error('获取数据失败' + err)
+          }
+        )
+      // 获取下一场面试地点
+      this.$http
+        .get(
+          'api/data-panel/next-place?admissionId=' +
+            this.admissionId +
+            '&organizationId=' +
+            this.organizationId
+        )
+        .then(
+          (res) => {
+            if (res.data.code == '00000') {
+              this.updateNextPlaceFilter(res.data.data)
+            } else {
+              this.$message.error(res.data.message)
+            }
+          },
+          (err) => {
+            this.$message.error('获取数据失败' + err)
+          }
+        )
+      // 获取下一次面试时间
+      this.$http
+        .get(
+          'api/data-panel/next-time?admissionId=' +
+            this.admissionId +
+            '&organizationId=' +
+            this.organizationId
+        )
+        .then(
+          (res) => {
+            if (res.data.code == '00000') {
+              this.updateNextTimeFilter(res.data.data)
+            } else {
+              this.$message.error(res.data.message)
+            }
+          },
+          (err) => {
+            this.$message.error('获取数据失败' + err)
+          }
+        )
+      // 获取当前部门志愿
+      this.$http
+        .get(
+          'api/data-panel/wish-department?admissionId=' +
+            this.admissionId +
+            '&organizationId=' +
+            this.organizationId
+        )
+        .then(
+          (res) => {
+            if (res.data.code == '00000') {
+              this.updateWishDepartmentFilter(res.data.data)
+            } else {
+              this.$message.error(res.data.message)
+            }
+          },
+          (err) => {
+            this.$message.error('获取数据失败' + err)
+          }
+        )
+    },
+    // 获取所有筛选项并刷新数据
+    requestFilterItem() {
+      // 更新数据,不要改变排序筛选等，避免用户发现刷新痕迹
+      this.requestData()
+      this.requestAllItem()
     },
     //修改页容量
     handleSizeChange(val) {
       this.pagesize = val
       // 回到第一页
       this.currentPage = 1
-      // console.log(`每页: ${val}`)
-      this.pageCutDouwn(this.tableDataChange)
+      this.requestData()
     },
     // 修改到第几页
     handleCurrentChange(val) {
       this.currentPage = val
-      // console.log(`当前页: ${val}`)
-      this.pageCutDouwn(this.tableDataChange)
+      this.requestData()
     },
-    // 具体分页操作
-    pageCutDouwn(tableDataChange) {
-      this.tableList = tableDataChange.filter(
-        (item, index) =>
-          index < this.currentPage * this.pagesize &&
-          index >= this.pagesize * (this.currentPage - 1)
-      )
-      this.total = tableDataChange.length
+    /**
+     * 设置表头排序,允许多个排序高亮
+     */
+    handleTheadStyle({ row, column }) {
+      /**
+       * 多列排序
+       */
+      console.log(row.length + '未使用定义变量的错误，记得删掉这行信息')
+      if (!this.mutilSort) return
+      if (this.activeThead[column.property]) {
+        column.order = this.activeThead[column.property]
+      }
     }
   }
 }
 </script>
 <style lang="less" scoped>
-// * {
-// line-height: 15px;
-// line-height: 2.8vh;
-// color: black;
-// }
-
 // main面板的样式
 .content {
   // 暂定900px
@@ -541,14 +839,26 @@ export default {
   justify-content: flex-end;
   align-items: center;
   margin-bottom: 10px;
+  position: relative;
+  bottom: 5px;
+  margin-right: 20px;
   padding: 0%;
   // height: 100px;
+  .myRefresh {
+    font-size: 20px;
+    margin-right: 15px;
+  }
+  // 刷新按钮变色
+  .myRefresh:hover {
+    font-size: 20px;
+    color: #409eff;
+  }
 }
 .searchInput {
   width: 300px;
   // display: block;
   // height: 34.4px;
-  margin-left: 20px;
+  // margin-left: 20px;
 }
 .search {
   width: 40vh;
@@ -567,6 +877,7 @@ export default {
   padding: 0px;
   color: #666690;
   font-size: 15px;
+  border-radius: 4px;
   // 滚动条，暂时只兼容chrome
   /deep/ .el-table__body-wrapper::-webkit-scrollbar {
     width: 15px; /*滚动条宽度*/
@@ -584,5 +895,35 @@ export default {
     background-color: #a1a3a9; /*滚动条的背景颜色*/
     // rgba(24,144,255,0.50)
   }
+  // 表格第一行
+  // /deep/ thead{
+  //   color: #ffffff;
+  // }
+  // 表格第一行
+  /deep/ th {
+    background: #282e38;
+    color: #ffffff;
+    padding: 5px;
+  }
+  // 表格右上角
+  /deep/ .el-table__fixed-right-patch {
+    background: #282e38;
+  }
+  // 筛选图标替换
+  /deep/ .el-icon-arrow-down {
+    color: #ffffff;
+  }
+  // /deep/ .el-icon-arrow-down{
+  //   background: ;
+  //   background-size: 24px;
+  // }
+  //   /deep/ .el-icon-arrow:before{
+  //   font-family:"iconfont" !important;
+  //   -webkit-font-smoothing: antialiased;
+  //   -moz-osx-font-smoothing: grayscale;
+  //   font-size:24px;
+  //   font-style:normal;
+  //   content: "\e65c";
+  // }
 }
 </style>

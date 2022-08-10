@@ -73,6 +73,7 @@
 <script>
 import signup from './signupOrInterview/signup.vue'
 import interview from './signupOrInterview/interview.vue'
+import { mapMutations } from 'vuex'
 export default {
   data() {
     return {
@@ -85,10 +86,7 @@ export default {
   },
   components: { signup, interview },
   methods: {
-    // 切换次导航触发事件
-    // handleClick(tab, event) {
-    //   console.log(tab, event)
-    // },
+    ...mapMutations('problem', ['updateTime']),
     changeRound() {
       let obj = {
         organizationId: sessionStorage.getItem('loginOrganizationId'),
@@ -100,12 +98,9 @@ export default {
           //更新面试轮数
           this.getRound()
         })
-        .catch((err) => err)
-      //重新获取面试轮数
-      // setTimeout(() => {
-      //   this.getRound()
-      // },1000)
-      // this.roundCount = this.num
+        .catch((err) => {
+          console('面试轮数' + err)
+        })
     },
     //得到几面
     async getRound() {
