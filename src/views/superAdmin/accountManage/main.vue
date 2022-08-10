@@ -4,34 +4,6 @@
       <i class="el-icon-s-custom top-content-icon"></i>
       账号管理
     </div>
-    <!-- 测试更新数据 -->
-    <div
-      @click="de"
-      style="
-      position:fixed
-      left:50px
-        height: 5px;
-        width: 150px;
-        margin-right: 10px;
-        color: blue;
-      "
-    >
-      数据
-    </div>
-    <div
-      @click="co"
-      style="
-        height: 5px;
-        position: fixed;
-        left: 500px;
-        width: 150px;
-        color: blue;
-      "
-    >
-      cookie
-    </div>
-    <!--  -->
-
     <!-- 批量操作 -->
     <div class="seach-header">
       <div>
@@ -143,7 +115,7 @@
       stripe
       tooltip-effect="dark"
       style="color: #666690; font-size: 15px"
-      height="65.7vh"
+      height="76vh"
       :row-style="{ height: '0' }"
       :cell-style="{ padding: '0px' }"
       :header-cell-style="{ color: '#666666' }"
@@ -158,12 +130,18 @@
       @selection-change="handleSelectionChange"
     >
       <!-- 注意上面有tableList -->
-      <el-table-column type="selection" align="center" fixed> </el-table-column>
+      <el-table-column
+        type="selection"
+        align="center"
+        fixed
+        min-width="50px"
+      ></el-table-column>
       <el-table-column
         prop="studentId"
         label="学号"
         sortable="custom"
         align="center"
+        min-width="120px"
         fixed
       >
       </el-table-column>
@@ -174,6 +152,8 @@
       <el-table-column
         prop="permission"
         label="用户权限"
+        align="center"
+        min-width="120px"
         sortable="custom"
         :filters="[
           { text: 'committee', value: 'committee' },
@@ -183,13 +163,18 @@
         :filter-multiple="false"
       >
       </el-table-column>
-      <el-table-column prop="phone" label="手机号" align="center">
+      <el-table-column
+        prop="phone"
+        label="手机号"
+        min-width="120px"
+        align="center"
+      >
         <!-- 脱敏显示 -->
         <template slot-scope="scope">
           {{ scope.row.phone | replacestar }}
         </template>
       </el-table-column>
-      <el-table-column label="修改账号" align="center">
+      <el-table-column label="操作" min-width="300px" align="center">
         <!-- 单次删除需要scope来传数据 -->
         <template slot-scope="scope">
           <el-button
@@ -197,54 +182,52 @@
             class="buttonMove"
             @click="DialogVisibleChangeAccount(scope.row)"
           >
-            <svg
-              class="svgColor1"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 48 48"
-              width="23"
-              height="23"
-              style="
-                border-color: rgba(187, 187, 187, 1);
-                border-width: 0px;
-                border-style: solid;
-              "
-              filter="none"
-            >
-              <g>
-                <rect
-                  width="48"
-                  height="48"
-                  fill="rgba(16.065,16.065,16.065,1)"
-                  fill-opacity="0.01"
-                  stroke="none"
-                ></rect>
-                <path
-                  d="M42 26V40C42 41.1046 41.1046 42 40 42H8C6.89543 42 6 41.1046 6 40V8C6 6.89543 6.89543 6 8 6L22 6"
-                  stroke-width="4"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  fill="none"
-                ></path>
-                <path
-                  d="M14 26.7199V34H21.3172L42 13.3081L34.6951 6L14 26.7199Z"
-                  fill="none"
-                  stroke-width="4"
-                  stroke-linejoin="round"
-                ></path>
-              </g>
-            </svg>
+            <el-tooltip content="修改账号" placement="top">
+              <svg
+                class="svgColor1"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 48 48"
+                width="23"
+                height="23"
+                style="
+                  border-color: rgba(187, 187, 187, 1);
+                  border-width: 0px;
+                  border-style: solid;
+                "
+                filter="none"
+              >
+                <g>
+                  <rect
+                    width="48"
+                    height="48"
+                    fill="rgba(16.065,16.065,16.065,1)"
+                    fill-opacity="0.01"
+                    stroke="none"
+                  ></rect>
+                  <path
+                    d="M42 26V40C42 41.1046 41.1046 42 40 42H8C6.89543 42 6 41.1046 6 40V8C6 6.89543 6.89543 6 8 6L22 6"
+                    stroke-width="4"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    fill="none"
+                  ></path>
+                  <path
+                    d="M14 26.7199V34H21.3172L42 13.3081L34.6951 6L14 26.7199Z"
+                    fill="none"
+                    stroke-width="4"
+                    stroke-linejoin="round"
+                  ></path>
+                </g>
+              </svg>
+            </el-tooltip>
           </el-button>
-        </template>
-      </el-table-column>
-      <el-table-column label="修改密码" align="center">
-        <template slot-scope="scope">
           <el-button
             size="mini"
             type="text"
             class="buttonMove"
             @click="handleKeyEdit(scope.row)"
           >
-            <div>
+            <el-tooltip content="修改密码" placement="top">
               <svg
                 class="svgColor"
                 xmlns="http://www.w3.org/2000/svg"
@@ -264,13 +247,8 @@
                   ></path>
                 </g>
               </svg>
-            </div>
+            </el-tooltip>
           </el-button>
-        </template>
-      </el-table-column>
-
-      <el-table-column label="删除账号" align="center">
-        <template slot-scope="scope">
           <el-button
             size="medium"
             type="text"
@@ -278,26 +256,28 @@
             @click="handleDelete(scope.$index, scope.row)"
           >
             <div>
-              <svg
-                class="svgColor"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 32 32"
-                width="23"
-                height="23"
-                style="
-                  border-color: rgba(187, 187, 187, 1);
-                  border-width: 0px;
-                  border-style: solid;
-                "
-                filter="none"
-              >
-                <g>
-                  <path
-                    d="M8.032 28.64c0.032 0.768 0.64 1.376 1.408 1.376h13.152c0.736 0 1.376-0.608 1.408-1.376l0.928-19.84h-17.856l0.96 19.84zM18.976 13.728c0-0.288 0.256-0.544 0.576-0.544h0.928c0.32 0 0.576 0.256 0.576 0.544v11.36c0 0.288-0.288 0.544-0.576 0.544h-0.928c-0.32 0-0.576-0.256-0.576-0.544v-11.36zM14.976 13.728c0-0.288 0.256-0.544 0.576-0.544h0.928c0.297 0.009 0.535 0.247 0.544 0.543l0 0.001v11.36c-0.009 0.297-0.247 0.535-0.543 0.544l-0.001 0h-0.928c-0.32 0-0.576-0.256-0.576-0.544v-11.36zM10.976 13.728c0-0.288 0.256-0.544 0.576-0.544h0.896c0.32 0 0.576 0.256 0.576 0.544v11.36c0 0.288-0.256 0.544-0.576 0.544h-0.896c-0.32 0-0.576-0.256-0.576-0.544v-11.36zM25.568 3.456h-6.080v-1.152c0-0.16-0.128-0.32-0.288-0.32h-6.368c-0.16 0-0.32 0.16-0.32 0.32v1.152h-6.048c-0.48 0-0.896 0.384-0.896 0.864v2.784h20.864v-2.784c0-0.001 0-0.003 0-0.004 0-0.475-0.385-0.86-0.86-0.86-0.001 0-0.003 0-0.004 0h0z"
-                    stroke="none"
-                  ></path>
-                </g>
-              </svg>
+              <el-tooltip content="删除账号" placement="top">
+                <svg
+                  class="svgColor"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 32 32"
+                  width="23"
+                  height="23"
+                  style="
+                    border-color: rgba(187, 187, 187, 1);
+                    border-width: 0px;
+                    border-style: solid;
+                  "
+                  filter="none"
+                >
+                  <g>
+                    <path
+                      d="M8.032 28.64c0.032 0.768 0.64 1.376 1.408 1.376h13.152c0.736 0 1.376-0.608 1.408-1.376l0.928-19.84h-17.856l0.96 19.84zM18.976 13.728c0-0.288 0.256-0.544 0.576-0.544h0.928c0.32 0 0.576 0.256 0.576 0.544v11.36c0 0.288-0.288 0.544-0.576 0.544h-0.928c-0.32 0-0.576-0.256-0.576-0.544v-11.36zM14.976 13.728c0-0.288 0.256-0.544 0.576-0.544h0.928c0.297 0.009 0.535 0.247 0.544 0.543l0 0.001v11.36c-0.009 0.297-0.247 0.535-0.543 0.544l-0.001 0h-0.928c-0.32 0-0.576-0.256-0.576-0.544v-11.36zM10.976 13.728c0-0.288 0.256-0.544 0.576-0.544h0.896c0.32 0 0.576 0.256 0.576 0.544v11.36c0 0.288-0.256 0.544-0.576 0.544h-0.896c-0.32 0-0.576-0.256-0.576-0.544v-11.36zM25.568 3.456h-6.080v-1.152c0-0.16-0.128-0.32-0.288-0.32h-6.368c-0.16 0-0.32 0.16-0.32 0.32v1.152h-6.048c-0.48 0-0.896 0.384-0.896 0.864v2.784h20.864v-2.784c0-0.001 0-0.003 0-0.004 0-0.475-0.385-0.86-0.86-0.86-0.001 0-0.003 0-0.004 0h0z"
+                      stroke="none"
+                    ></path>
+                  </g>
+                </svg>
+              </el-tooltip>
             </div>
           </el-button>
         </template>
@@ -318,6 +298,7 @@
     <batchOperateDialog
       ref="batchOperateDialog"
       @myBatchOperateDelete="batchOperateDelete"
+      @myClearMultipleSelect="ClearMultipleSelect"
     />
     <!-- 页码 -->
     <el-pagination
@@ -337,7 +318,6 @@
 <script>
 //引入表单全部数据,这是模拟数据，后期应该会删掉
 import data from './data.js'
-import data2 from './data copy.js'
 // 引入clipBoard
 import clipBoard from './dialog/clipboard.vue'
 //引入弹窗
@@ -355,7 +335,7 @@ export default {
       showactive2: 0, //第二个按钮
 
       // 关键字搜索
-      organizationId: 1, ////组织名不知道，需要询问////////////////////////
+      organizationId: 3, ////组织名不知道，需要询问////////////////////////
       searchWord: '',
       data: '', //发请求的data
       order: 'asc', //排序顺序，默认升序
@@ -381,65 +361,14 @@ export default {
     batchOperateDialog
   },
   created() {
+    // 获取organizationId
+    this.organizationId = sessionStorage.getItem('loginOrganizationId')
     //获取数据
     this.searchKeyWord()
     //渲染并分页
     this.orderChange(this.tableData)
   },
-  // mounted() {
-  // 通过Vue自带的$on去为子组件添加自定义事件
-  // this.$refs.batchOperateDialog.$on('myBatchOperateChange',batchOperateChange)
-  // this.$refs.batchOperateDialog.$on('myBatchOperateDelete',batchOperateDelete)
-  // },
   methods: {
-    // 测试数据更新时，表单数据是否同步更新了
-    de() {
-      // this.$message.success(
-      //   '测试更新数据，删掉了前三个数据，后面完工时记得删掉这个'
-      // )
-      this.$message.success('测试更新数据，后面完工时记得删掉这个')
-      // this.tableData = this.tableData.slice(3)
-      this.tableData = data2
-      this.orderChange(this.tableData)
-      // 矫正顺序
-      this.orderChange(this.tableData)
-    },
-    // 测试cookie
-    co() {
-      // 发请求模板，待删除，防止后面更改需求，先不删
-      this.$http
-        .post('api/login/b', {
-          studentId: '20200002',
-          password: '123456'
-        })
-        .then(
-          (res) => {
-            this.$message.success('post获取cookie正常' + res)
-            console.log(res)
-          },
-          (err) => {
-            this.$message.error(err)
-          }
-        )
-      // this.$http.get('api/set-cookie/b').then(
-      //   (res) => {
-      //     this.$message.success('get获取cookie正常' + res.data.message)
-      //   },
-      //   (err) => {
-      //     this.$message.error(err)
-      //   }
-      // )
-      // this.$http.post('api/account/manage/all',{organizationId: 2})
-      // .then(
-      //   (res) => {
-      //     this.$message.success("搜索获取全部信息正常"+res.data.message)
-      //   },
-      //   (err) => {
-      //     this.$message.error(err)
-      //   }
-      // )
-    },
-
     //图标变色,第一个
     changeColor() {
       if (this.batchColorChange1 == '#666666')
@@ -456,16 +385,8 @@ export default {
       if (this.showactive2 == 0) this.showactive2 = 1
       else this.showactive2 = 0
     },
-
-    // // 批量修改同步
-    // batchOperateChange(datalist) {
-    //   // console.log('批量修改同步')
-    //   console.log(datalist)
-    // },
     // 批量删除同步
     batchOperateDelete(studentListData) {
-      // console.log('批量删除同步')
-      // console.log(studentListData)
       // 遍历要删除的数组名单
       // 看看要不要写箭头函数
       studentListData.forEach((element) => {
@@ -484,7 +405,6 @@ export default {
       })
       // 对currentPage做一个判断
       // 如果整页没删完，保持在当前页，如果删完了返回上一页（除非删的是第一页）
-      // console.log('=============length')
       // console.log(studentListData.length)
       const totalPage = Math.ceil((this.total - 1) / this.pagesize) // 总页数
       let pagelength = this.pagesize
@@ -504,9 +424,6 @@ export default {
       this.orderChange(this.tableData, this.currentPage)
       // 根据已有permissionSelect筛选
       this.filterChangeData(this.permissionSelect)
-
-      // this.tableData.filter(()=>{
-      // })
     },
     //单行删除同步,达到页面删除效果，仅靠发请求是没办法从视觉上删除的
     deleteAlign(index) {
@@ -660,36 +577,6 @@ export default {
       // this.currentPage = 1
       this.pageCutDouwn(this.tableDataChange)
     },
-
-    //修改账号表单校验、发请求模板，待删除，防止后面更改需求，先不删
-    // findError() {
-    //   if (!/^20[1-9][0-9][0-9]{4}$/.test(this.sendData.stdId)) {
-    //     this.$message.error('学号长度为8')
-    //   } else if (!/^[\u4E00-\u9FA5]{2,5}$/.test(this.sendData.stdName)) {
-    //     this.$message.error('请输入真实姓名')
-    //   } else if (!/^(1[3-9][0-9])[0-9]{8}$/.test(this.sendData.stdPhone)) {
-    //     this.$message.error('电话不符合规范')
-    //   } else this.ifError = true
-    // },
-    //发请求模板，待删除，防止后面更改需求，先不删
-    // postData() {
-    //   this.findError() //校验数据
-    //   if (this.ifError) {
-    //     axios({
-    //       method: 'post',
-    //       url: 'http://47.94.90.140:8000/post',
-    //       data: this.sendData
-    //     }).then(
-    //       (res) => {
-    //         this.$message.success(res.data.message)
-    //       },
-    //       (err) => {
-    //         this.$message.error(err)
-    //       }
-    //     )
-    //   }
-    // },
-
     // 批量操作，先传输选中数据
     pushMultipleSelectionData() {
       this.$refs.batchOperateDialog.multipleSelection = this.multipleSelection
@@ -700,6 +587,10 @@ export default {
       this.$refs.batchOperateDialog.dialogVisible = true
       this.$refs.batchOperateDialog.organizationId = this.organizationId
       this.pushMultipleSelectionData() //批量传输选中数据
+    },
+    ClearMultipleSelect() {
+      // 自动去除选中效果
+      this.$refs.multipleTable.clearSelection()
     },
     //批量删除弹窗
     deleteDialogVisible() {
@@ -715,7 +606,7 @@ export default {
     //多选选中添加到记录中
     handleSelectionChange(val) {
       this.multipleSelection = val
-      /////////////////直接获取选中数据///////////////////////////
+      // 直接获取选中数据
       // console.log(this.multipleSelection)
     },
     //修改账号弹窗
@@ -746,23 +637,6 @@ export default {
       this.$refs.manyDialog.organizationId = this.organizationId
       this.$refs.manyDialog.deleteIndex = index
       this.$refs.manyDialog.formLabelAlign.studentId = data.studentId
-      // this.$confirm('此操作将删除：' + data.name + '，是否继续？', '提示', {
-      //   confirmButtonText: '确定',
-      //   cancelButtonText: '取消',
-      //   type: 'warning'
-      // })
-      //   .then(() => {
-      //     this.$message({
-      //       type: 'info',
-      //       message: '已删除'
-      //     })
-      //   })
-      //   .catch(() => {
-      //     this.$message({
-      //       type: 'info',
-      //       message: '已取消删除'
-      //     })
-      //   })
     },
     //修改页容量
     handleSizeChange(val) {
@@ -791,13 +665,6 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-// * {
-// line-height: 15px;
-// line-height: 2.8vh;
-
-// color: black;
-// }
-
 // main面板的样式
 .content {
   // 暂定900px
@@ -869,9 +736,9 @@ export default {
 }
 //
 // 使图标对齐文字
-// .buttonMove {
-// margin-left: 20px;
-// }
+.buttonMove {
+  margin: 0 40px;
+}
 .search {
   width: 40vh;
   height: 100px;
@@ -895,6 +762,14 @@ export default {
   /deep/.el-table__body-wrapper::-webkit-scrollbar-thumb {
     background-color: #a1a3a9;
     border-radius: 8px;
+  }
+  // 表格第一行
+  /deep/ th {
+    padding: 5px;
+  }
+  // 筛选图标替换
+  /deep/ .el-icon-arrow-down {
+    color: black;
   }
 }
 </style>

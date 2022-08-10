@@ -8,15 +8,26 @@
           :key="'a' + i1"
         >
           <i
-            class="el-icon-remove"
+            :class="['el-icon-remove', !isEdit ? 'remove-opacity' : '']"
             style="color: #1597db"
             @click="removeItem(item1)"
           ></i>
           <div class="freeView-name-content">
-            <span class="freeView-name">{{ item1.description }}</span>
+            <!-- 超过13个字溢出隐藏 tip显示完整 -->
+            <el-tooltip
+              :content="item1.description"
+              placement="bottom"
+              effect="light"
+              v-if="item1.description.length > 13"
+            >
+              <span class="freeView-name">{{ item1.description }}</span>
+            </el-tooltip>
+            <span class="freeView-name" v-if="item1.description.length <= 13">{{
+              item1.description
+            }}</span>
           </div>
           <!-- 展示选项 -->
-          <select class="freeView-select" v-show="item1.selection">
+          <select class="freeView-select" v-if="item1.selection">
             <option
               selected="selected"
               disabled="disabled"
@@ -27,12 +38,13 @@
               v-for="(item2, index2) in item1.option"
               :key="'op' + index2"
               v-show="item2 != null"
+              :disabled="true"
             >
               {{ item2 }}
             </option>
           </select>
           <!--  展示input框-->
-          <input type="text" v-show="!item1.selection" class="freeView-input" />
+          <input type="text" v-if="!item1.selection" class="freeView-input" />
         </div>
       </div>
     </div>
@@ -123,7 +135,7 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex'
+import { mapMutations, mapState } from 'vuex'
 export default {
   data() {
     return {
@@ -177,7 +189,9 @@ export default {
     },
     //添加自定义选择
     addChoseList() {
-      if (this.isAdd > 5) return this.$message.error('最多自定义五个问题')
+      if (!this.isEdit) return this.$message.error('非编辑模式')
+      if (this.departmentQuestionsList.length >= 5)
+        return this.$message.error('最多自定义五个问题')
       if (this.text2 == '') {
         return this.$message.error('问题不能为空')
       }
@@ -225,7 +239,7 @@ export default {
         }
         que.option = option
         this.departmentQuestionsList.push(que)
-        this.isAdd++
+        // this.isAdd++
         this.addShow = false
         //重新定向到文本问题展示
         this.chooseAdd = 1
@@ -245,8 +259,10 @@ export default {
     },
     //添加自定义文本问题
     addTextQues() {
+      if (!this.isEdit) return this.$message.error('非编辑模式')
       //判断自定义问题是否超过三个
-      if (this.isAdd > 5) return this.$message.error('最多自定义五个问题')
+      if (this.departmentQuestionsList.length >= 5)
+        return this.$message.error('最多自定义五个问题')
       if (this.text1 == '') {
         return this.$message.error('问题不能为空')
       }
@@ -268,7 +284,7 @@ export default {
           }
         }
         this.departmentQuestionsList.push(que)
-        this.isAdd++
+        // this.isAdd++
         this.text1 = ''
         //只有成功提交才会关闭这个添加框
         this.addShow = false
@@ -288,12 +304,13 @@ export default {
     },
     // 删除问题
     removeItem(item1) {
+      if (!this.isEdit) return
       this.departmentQuestionsList = this.departmentQuestionsList.filter(
         (p) => p.description != item1.description
       )
       //同步删减vuex中此问题
       this.removeDepartmentQuestionsList(item1)
-      this.isAdd--
+      // this.isAdd--
     },
     //保存到vuex
     saveToVuex() {
@@ -302,14 +319,27 @@ export default {
       })
     }
   },
-  props: ['departmentId'],
+  props: ['sectionQues', 'departmentId'],
   watch: {
     //弹出框位置修正
     chooseAdd() {
       this.$nextTick(() => {
         this.$refs.addPopover.updatePopper()
       })
+    },
+    sectionQues(newV) {
+      if (newV.length != 0) {
+        newV.forEach((p) => {
+          if (p.departmentId == this.departmentId) {
+            this.updateDepartmentQuestionsList(p)
+            this.departmentQuestionsList.push(p)
+          }
+        })
+      }
     }
+  },
+  computed: {
+    ...mapState('problem', ['isEdit'])
   }
 }
 </script>
@@ -317,43 +347,49 @@ export default {
 <style lang="less" scoped>
 .show-qus {
   .freeView-content {
-    .freeView-title {
-      display: flex;
-      font-size: 18px;
-      color: #989898;
-      margin-left: 65px;
-      margin-bottom: 10px;
-      margin-top: 20px;
-    }
-    margin: 20px 0;
-    display: flex;
-    flex-direction: column;
+    // margin: 20px 0;
+    // display: flex;
+    // flex-direction: column;
     .freeView-item {
       display: flex;
       align-items: center;
-    }
-    .freeView-name-content {
-      display: flex;
-      margin: 10px 10px;
-      width: 200px;
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      .freeView-name {
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
+      .freeView-name-content {
+        display: flex;
+        margin: 10px 10px;
+        width: 220px;
+        margin-right: 20px;
+        text-align: left;
+        // overflow: hidden;
+        // white-space: nowrap;
+        // text-overflow: ellipsis;
+        .freeView-name {
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          // white-space: pre-wrap;
+        }
       }
-    }
-    .freeView-input {
-      width: 166px;
-      border-radius: 5px;
-      border: 1px solid #0f2d2d;
-    }
-    .freeView-select {
-      width: 167px;
-      border-radius: 5px;
-      border: 1px solid #0f2d2d;
+      .freeView-input {
+        border-radius: 5px;
+        border: 1px solid #cecece;
+        height: 18px;
+        width: 166px;
+      }
+      .freeView-select {
+        width: 167px;
+        border-radius: 5px;
+        border: 1px solid #cecece;
+        height: 25px;
+      }
+      .remove-opacity {
+        opacity: 0;
+        cursor: auto;
+      }
+      i {
+        cursor: pointer;
+        align-self: start;
+        margin-top: 14px;
+      }
     }
   }
 }
@@ -364,11 +400,26 @@ export default {
   .add-botton {
     color: white;
     background-color: #02a8ef;
-    margin-bottom: 30px;
+    margin-bottom: 15px;
+    margin-top: 15px;
   }
   .synth-add-chose {
     display: flex;
     justify-content: center;
   }
+}
+input:focus {
+  border: 1px solid #535858 !important;
+  outline: none;
+}
+input {
+  width: 166px !important;
+  padding-left: 10px;
+  box-sizing: border-box;
+  height: 25px !important;
+}
+select:focus {
+  outline: none;
+  border: 1px solid #535858 !important;
 }
 </style>
