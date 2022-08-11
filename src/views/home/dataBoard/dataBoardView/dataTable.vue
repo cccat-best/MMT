@@ -354,15 +354,16 @@ export default {
     // 修改弹窗
     openChangeDialog(data) {
       this.$refs.changeDialog.changeDialogVisible = true
-      console.log(data)
-      this.$refs.changeDialog.studentId = true
+      console.log(data.stuNum+'记得删')
+      this.$refs.changeDialog.studentId = data.stuNum
+      this.$refs.changeDialog.Mymounted()
     },
     // 简历弹窗
-    openResumeDialog() {
+    openResumeDialog(data) {
       this.$refs.resumeDialog.resumeDialogVisible = true
-      this.$refs.resumeDialog.studentId = true
-      // this.$refs.resumeDialog.demo()
-      console.log(data)
+      this.$refs.resumeDialog.studentId = data.stuNum
+      this.$refs.resumeDialog.Mymounted()
+      console.log(data.stuNum+'记得删')
     },
     // 手动刷新
     reFresh() {
@@ -663,25 +664,25 @@ export default {
     // 获取所有筛选项
     requestAllItem() {
       // 获取班级
-      this.$http
-        .get(
-          'api/data-panel/class?admissionId=' +
-            this.admissionId +
-            '&organizationId=' +
-            this.organizationId
-        )
-        .then(
-          (res) => {
-            if (res.data.code == '00000') {
-              this.updateClassNameFilter(res.data.data)
-            } else {
-              this.$message.error(res.data.message)
-            }
-          },
-          (err) => {
-            this.$message.error('获取数据失败' + err)
-          }
-        )
+      // this.$http
+      //   .get(
+      //     'api/data-panel/class?admissionId=' +
+      //       this.admissionId +
+      //       '&organizationId=' +
+      //       this.organizationId
+      //   )
+      //   .then(
+      //     (res) => {
+      //       if (res.data.code == '00000') {
+      //         this.updateClassNameFilter(res.data.data)
+      //       } else {
+      //         this.$message.error(res.data.message)
+      //       }
+      //     },
+      //     (err) => {
+      //       this.$message.error('获取数据失败' + err)
+      //     }
+      //   )
       // 获取社团志愿次序
       this.$http
         .get(
