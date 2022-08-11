@@ -94,7 +94,12 @@
         <div class="zidingyi-content">
           <div class="zidingyi-tilte">自定义问题</div>
           <!-- 自定义文本 -->
-          <el-popover placement="top" width="260" v-model="visible" ref="baseTestPopover">
+          <el-popover
+            placement="top"
+            width="260"
+            v-model="visible"
+            ref="baseTestPopover"
+          >
             <p>添加自定义问题描述</p>
             <div class="my-input" style="margin: 10px 0">
               <el-input
@@ -437,18 +442,18 @@ export default {
   },
   watch: {
     visible(newV) {
-        if(newV&&!this.isEdit) {
+      if (newV && !this.isEdit) {
         this.visible = false
         this.$refs.baseTestPopover.doClose()
         return this.$message.error('非编辑模式')
-        }
+      }
     },
-     visible1(newV) {
-        if(newV&&!this.isEdit) {
+    visible1(newV) {
+      if (newV && !this.isEdit) {
         this.visible1 = false
         this.$refs.baseChoosePopover.doClose()
         return this.$message.error('非编辑模式')
-        }
+      }
     },
     //检测用户是否设置过问题
     allQues(newV) {
@@ -659,6 +664,7 @@ export default {
       margin: 10px 10px;
       width: 185px;
       font-size: 17px;
+      margin-left: 3px;
     }
     .freeView-input {
       width: 166px;

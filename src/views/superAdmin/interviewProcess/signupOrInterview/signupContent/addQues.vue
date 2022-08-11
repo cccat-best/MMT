@@ -322,7 +322,7 @@ export default {
   props: ['sectionQues', 'departmentId'],
   watch: {
     addShow(newV) {
-      if(newV&&!this.isEdit) {
+      if (newV && !this.isEdit) {
         this.addShow = false
         this.$refs.addPopover.doClose()
         return this.$message.error('非编辑模式')

@@ -198,7 +198,7 @@ export default {
   },
   watch: {
     addShow(newV) {
-      if(newV&&!this.isEdit) {
+      if (newV && !this.isEdit) {
         this.addShow = false
         this.$refs.synthPopover.doClose()
         return this.$message.error('非编辑模式')
@@ -427,7 +427,7 @@ export default {
             allocated: this.allocated,
             comprehensiveQuestionsList: this.comprehensiveQuestionsList
           }
-           console.log(qustionList)
+          console.log(qustionList)
           //调用函数发送请求
           this.sendTo(qustionList)
         })
