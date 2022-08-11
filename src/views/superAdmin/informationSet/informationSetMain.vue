@@ -62,6 +62,7 @@
           @click="
             editable = !editable
             gotoSaved()
+            $bus.$emit('postData')
           "
         >
           <i class="el-icon-document-checked"></i>
@@ -81,14 +82,16 @@
 
 <script>
 export default {
+  name: 'informationSetMain',
   data() {
     return {
       //状态变蓝色
       blue: 1,
       //用于存储社团信息
-      communityInformation: {},
+      communityData: {},
       //切换编辑页面和保存页面
-      editable: false
+      editable: false,
+      organizationId: sessionStorage.getItem('loginOrganizationId')
     }
   },
   methods: {
@@ -111,23 +114,38 @@ export default {
         behavior: 'smooth'
       })
     },
-    getCookie() {
-      // this.$http.get('api/set-cookie/b',{})
-      // .then(function (response) {
-      //   console.log(JSON.stringify(response.data));
-      // })
-      // .catch(function (error) {
-      //   console.log(error);
-      // });
+    getCommunityData() {
       this.$http
-        .get('api/set-cookie/b')
-        .then((res) => {
-          console.log(res)
+        .get('/api/organization/information', {
+          organizationId: 1
         })
-        .catch(function (err) {
-          console.log(err)
+        .then((response) => {
+          this.communityData = JSON.parse(JSON.stringify(response.data))
+          // console.log('收到了服务器的响应:结果是', this.communityData)
+          this.$bus.$emit('sendCommunityDataToChild', this.communityData)
+        })
+        .catch(function (error) {
+          console.log(error)
         })
     }
+  },
+  mounted: function () {
+    this.$nextTick(function () {
+      // 仅在整个视图都被渲染之后才会运行的代码
+    })
+    this.$bus.$on('savedNeedData', () => {
+      // console.log('Main组件监听到了savedNeedData的请求，开始发送请求')
+      this.getCommunityData()
+    })
+    this.$bus.$on('editNeedData', () => {
+      // console.log('Main组件监听到了editNeedData的请求，开始发送请求')
+      this.getCommunityData()
+    })
+    this.$bus.$emit('savedNeedData')
+  },
+  beforeDestroy() {
+    this.$bus.$off('savedNeedData')
+    this.$bus.$off('editNeedData')
   }
 }
 </script>
@@ -178,6 +196,10 @@ export default {
   background: rgba(158, 158, 158, 0.381);
 }
 .editBtn {
+  position: fixed;
+  z-index: 10;
+  right: 50px;
+  top: 140px;
   width: 100px;
   height: 40px;
   line-height: 45px;

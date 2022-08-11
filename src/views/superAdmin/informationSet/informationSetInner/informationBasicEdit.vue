@@ -1,5 +1,5 @@
 <template>
-  <div class="informationBasicSaved">
+  <div class="informationBasicSaved" v-if="editShowMain">
     <div class="basicInformationTitle" id="basicInformation">基本信息</div>
     <!-- 下面是基本信息 -->
     <div class="informationBasicSavedMid">
@@ -11,7 +11,10 @@
       <div class="informationRight">
         <div class="upperFlex">
           <span class="informationRightFont">社团名称：</span
-          ><el-input v-model="communityName" placeholder="社团名称"></el-input>
+          ><el-input
+            v-model="editCommunityData.name"
+            placeholder="社团名称"
+          ></el-input>
         </div>
         <div>
           <el-tag size="medium" class="tags" effect="dark">校级组织</el-tag>
@@ -21,7 +24,10 @@
         </div>
         <div class="upperFlex">
           <span class="informationRightFont">简介：</span>
-          <el-input v-model="communityName" placeholder="社团名称"></el-input>
+          <el-input
+            v-model="editCommunityData.briefIntroduction"
+            placeholder="社团名称"
+          ></el-input>
         </div>
       </div>
     </div>
@@ -32,45 +38,243 @@
     <div class="associations">
       <div class="associationsBox">
         <div class="associationsTitleFont">联系方式</div>
-        <div class="associationsTitleFontWhite">xxxxxxxxxxxxx</div>
+        <el-input
+          type="textarea"
+          :rows="7"
+          class="textIpt"
+          placeholder="联系方式"
+          v-model="editCommunityData.contactInfo"
+          resize="none"
+        >
+        </el-input>
       </div>
       <div class="associationsBox">
         <div class="associationsTitleFont">纳新宣言</div>
-        <div class="associationsTitleFontWhite">xxxxxxxxxxxxx</div>
+        <el-input
+          type="textarea"
+          :rows="7"
+          class="textIpt"
+          placeholder="纳新宣言"
+          v-model="editCommunityData.slogan"
+          resize="none"
+        >
+        </el-input>
       </div>
       <div class="associationsBox">
         <div class="associationsTitleFont">社团介绍</div>
-        <div class="associationsTitleFontWhite">xxxxxxxxxxxxx</div>
+        <el-input
+          type="textarea"
+          :rows="7"
+          class="textIpt"
+          placeholder="社团介绍"
+          v-model="editCommunityData.introduction"
+          resize="none"
+        >
+        </el-input>
       </div>
       <div class="associationsBox">
         <div class="associationsTitleFont">社团特色</div>
-        <div class="associationsTitleFontWhite">xxxxxxxxxxxxx</div>
+        <el-input
+          type="textarea"
+          :rows="7"
+          class="textIpt"
+          placeholder="社团特色"
+          v-model="editCommunityData.feature"
+          resize="none"
+        >
+        </el-input>
       </div>
       <div class="associationsBox">
         <div class="associationsTitleFont">社团日常</div>
-        <div class="associationsTitleFontWhite">xxxxxxxxxxxxx</div>
+        <el-input
+          type="textarea"
+          :rows="7"
+          class="textIpt"
+          placeholder="社团日常"
+          v-model="editCommunityData.daily"
+          resize="none"
+        >
+        </el-input>
       </div>
       <div class="associationsBox">
         <div class="associationsTitleFont">更多</div>
-        <div class="associationsTitleFontWhite">xxxxxxxxxxxxx</div>
+        <el-input
+          type="textarea"
+          :rows="7"
+          class="textIpt"
+          placeholder="更多"
+          v-model="editCommunityData.more"
+          maxlength="30"
+          resize="none"
+        >
+        </el-input>
       </div>
     </div>
     <!-- 社团宣传结束 -->
     <el-divider></el-divider>
     <div class="basicInformationTitle" id="departmentRecruiting">纳新部门</div>
     <!--  -->
+    <div class="partDiv">
+      <i
+        class="el-icon-circle-plus-outline icons"
+        @click="pushNewDepartment()"
+      ></i>
+      <Part
+        id="partOne"
+        serial="0"
+        title="部门一"
+        :data="editCommunityData.departmentList[0]"
+      ></Part>
+    </div>
+    <div class="partDiv" v-if="editCommunityData.departmentList[1] != null">
+      <i
+        class="el-icon-remove-outline icons"
+        @click="spliceDepartment(1, '部门二')"
+      ></i>
+      <Part
+        id="partTwo"
+        serial="1"
+        title="部门二"
+        :data="editCommunityData.departmentList[1]"
+      ></Part>
+    </div>
+    <div class="partDiv" v-if="editCommunityData.departmentList[2] != null">
+      <i
+        class="el-icon-remove-outline icons"
+        @click="spliceDepartment(2, '部门三')"
+      ></i>
+      <Part
+        serial="2"
+        title="部门三"
+        :data="editCommunityData.departmentList[2]"
+      ></Part>
+    </div>
+    <div class="partDiv" v-if="editCommunityData.departmentList[3] != null">
+      <i
+        class="el-icon-remove-outline icons"
+        @click="spliceDepartment(3, '部门四')"
+      ></i>
+      <Part
+        serial="3"
+        title="部门四"
+        :data="editCommunityData.departmentList[3]"
+      ></Part>
+    </div>
   </div>
 </template>
 
 <script>
+import Part from './part.vue'
 export default {
+  comments: {
+    Part
+  },
   data() {
     return {
       circleUrl:
         'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
-      communityName: ''
+      editCommunityData: {},
+      editShowMain: false
     }
-  }
+  },
+  methods: {
+    postData() {
+      //取得part组件中的department数据
+      this.$bus.$emit('getParts')
+      //接收并合并department数据
+
+      this.$http.post('/api/organization/information', this.editCommunityData)
+    },
+    successful(val) {
+      this.$message({
+        message: val,
+        type: 'success'
+      })
+    },
+    error(val) {
+      this.$message.error({
+        message: val
+      })
+    },
+    pushNewDepartment() {
+      if (this.editCommunityData.departmentList.length < 4) {
+        this.editCommunityData.departmentList.push({
+          name: '',
+          briefIntroduction: '',
+          introduction: '',
+          standard: ''
+        })
+        this.successful('添加新部门成功~')
+      } else {
+        this.error('添加失败！已经满了四个部门了哦~')
+      }
+    },
+    spliceDepartment(val, partId) {
+      this.$confirm('是否删除' + partId + '?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        .then(() => {
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          })
+          this.editCommunityData.departmentList.splice(val, 1)
+          // console.log(this)
+        })
+        .catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          })
+        })
+    },
+
+    goAnchor(selector) {
+      /*参数selector是id选择器（#anchor14）*/
+      document.querySelector(selector).scrollIntoView({
+        behavior: 'smooth'
+      })
+    }
+  },
+  mounted() {
+    this.$bus.$on('sendCommunityDataToChild', (val) => {
+      // console.log('Edit收到了数据:', val)
+      this.editCommunityData = val.data
+      this.editShowMain = true
+      // console.log(this.editCommunityData.departmentList[0])
+    })
+    this.$bus.$on('postData', () => {
+      this.postData()
+    })
+    this.$bus.$on('department0', (val) => {
+      console.log('监听到了0')
+      this.editCommunityData.departmentList[0] = val
+    })
+    this.$bus.$on('department1', (val) => {
+      console.log('监听到了1')
+      this.editCommunityData.departmentList[1] = val
+    })
+    this.$bus.$on('department2', (val) => {
+      console.log('监听到了2')
+      this.editCommunityData.departmentList[2] = val
+    })
+    this.$bus.$on('department3', (val) => {
+      console.log('监听到了3')
+      this.editCommunityData.departmentList[3] = val
+    })
+    this.$bus.$emit('editNeedData')
+  },
+  beforeDestroy() {
+    this.$bus.$off('sendCommunityDataToChild')
+    this.$bus.$off('postData')
+    this.$bus.$off('department0')
+    this.$bus.$off('department1')
+    this.$bus.$off('department2')
+    this.$bus.$off('department3')
+  },
+  components: { Part }
 }
 </script>
 
@@ -137,6 +341,7 @@ export default {
 .associationsTitleFont {
   font-size: 24px;
   margin: 60px 60px 60px 0px;
+  text-align: left;
 }
 .associationsTitleFontWhite {
   font-size: 20px;
@@ -151,5 +356,21 @@ export default {
 .upperFlex {
   display: flex;
   flex-direction: row;
+}
+.textIpt {
+  width: 75vw;
+}
+.icons {
+  font-size: 30px;
+  color: rgb(92, 182, 255);
+  margin: 80px;
+}
+.icons:hover {
+  color: rgb(39, 158, 255);
+}
+.partDiv {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
 }
 </style>
