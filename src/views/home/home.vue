@@ -66,7 +66,7 @@ export default {
           iconClass: '',
           id: '4',
           title: '实时面试',
-          pagePath: '/home'
+          pagePath: '/home/onInterviewing'
         },
         {
           iconClass: '',
@@ -99,7 +99,7 @@ export default {
     if (this.$route.path == '/home/interviewMain') this.defaultActiveItem = '1'
     if (this.$route.path == '/home/dataBoard') this.defaultActiveItem = '2'
     if (this.$route.path == '/home/arrangement') this.defaultActiveItem = '3'
-    if (this.$route.path == '/home') this.defaultActiveItem = '4'
+    if (this.$route.path == '/home/onInterviewing') this.defaultActiveItem = '4'
     if (this.$route.path == '/home/reply') this.defaultActiveItem = '5'
     if (this.$route.path == '/home/resultInform') this.defaultActiveItem = '5'
   },

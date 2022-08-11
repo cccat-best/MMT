@@ -46,7 +46,13 @@ const routes = [
       {
         path: 'dataBoard',
         component: () => import('../views/home/dataBoard/main.vue')
-      }
+      },
+      {
+        //实时面试
+        path: 'onInterviewing',
+        component: () =>
+          import('../views/home/onInterviewing/onInterviewing.vue')
+      },
     ]
   },
   {
