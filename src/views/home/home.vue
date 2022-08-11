@@ -66,7 +66,7 @@ export default {
           iconClass: '',
           id: '4',
           title: '实时面试',
-          pagePath: '/home'
+          pagePath: '/home/onInterviewing'
         },
         {
           iconClass: '',
@@ -103,6 +103,20 @@ export default {
     if (this.$route.path == '/home') this.defaultActiveItem = '4'
     if (this.$route.path == '/home/reply') this.defaultActiveItem = '5'
     if (this.$route.path == '/home/resultInform') this.defaultActiveItem = '5'
+    let url = 'api/organization/interview/id-all'
+    let params = {
+      organizationId: sessionStorage['loginOrganizationId']
+    }
+    this.$http
+      .get(url, params)
+      .then((response) => {
+        // console.log(response)
+        sessionStorage['homeAdmissionId'] =
+          response.data.data.admissionIdList[0].admissionId
+      })
+      .catch((error) => {
+        console.log(error)
+      })
   },
   methods: {
     update(newValue) {

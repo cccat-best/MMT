@@ -102,7 +102,7 @@ export default {
         address: this.address,
         departmentId: 1,
         round: 1,
-        admissionId: 1
+        admissionId: sessionStorage['homeAdmissionId']
         // studentId: 20200002,
         // startTime: 123456789,
         // address: '时光小镇'
@@ -157,24 +157,24 @@ export default {
     }
   },
   mounted() {
-    this.$bus.$on('order', (data) => {
+    this.$bus.$on('arrangeOrder', (data) => {
       this.order = data
     }),
-      this.$bus.$on('selectionName1', (data) => {
+      this.$bus.$on('arrangeSelectionName1', (data) => {
         this.name = data
       }),
-      this.$bus.$on('selectionStudentId1', (data) => {
+      this.$bus.$on('arrangeSelectionStudentId1', (data) => {
         this.studentId = data
       }),
-      this.$bus.$on('selectiondepartmentName', (data) => {
+      this.$bus.$on('arrangeSelectionDepartmentName', (data) => {
         this.departmentName = data
       })
   },
   beforeDestroy() {
-    this.$bus.$off('order')
-    this.$bus.$off('selectionName1')
-    this.$bus.$off('selectionStudentId1')
-    this.$bus.$off('selectiondepartmentName')
+    this.$bus.$off('arrangeOrder')
+    this.$bus.$off('arrangeSelectionName1')
+    this.$bus.$off('arrangeSelectionStudentId1')
+    this.$bus.$off('arrangeSelectionDepartmentName')
   }
 }
 </script>
