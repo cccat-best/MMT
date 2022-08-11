@@ -197,6 +197,13 @@ export default {
     }
   },
   watch: {
+    addShow(newV) {
+      if(newV&&!this.isEdit) {
+        this.addShow = false
+        this.$refs.synthPopover.doClose()
+        return this.$message.error('非编辑模式')
+      }
+    },
     //弹出框位置修正
     chooseAdd() {
       this.$nextTick(() => {
@@ -245,7 +252,7 @@ export default {
     },
     //添加自定义选择
     addChoseList() {
-      if (!this.isEdit) return this.$message.error('非编辑模式')
+      // if (!this.isEdit) return this.$message.error('非编辑模式')
       if (this.comprehensiveQuestionsList.length >= 5)
         return this.$message.error('最多自定义五个问题')
       if (this.text2 == '') {
@@ -315,7 +322,7 @@ export default {
     },
     //添加自定义文本问题
     addTextQues() {
-      if (!this.isEdit) return this.$message.error('非编辑模式')
+      // if (!this.isEdit) return this.$message.error('非编辑模式')
       //判断自定义问题是否超过三个
       if (this.comprehensiveQuestionsList.length >= 5)
         return this.$message.error('最多自定义五个问题')
@@ -420,7 +427,7 @@ export default {
             allocated: this.allocated,
             comprehensiveQuestionsList: this.comprehensiveQuestionsList
           }
-          // console.log(qustionList)
+           console.log(qustionList)
           //调用函数发送请求
           this.sendTo(qustionList)
         })
