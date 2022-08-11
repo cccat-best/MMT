@@ -52,7 +52,7 @@ const routes = [
         path: 'onInterviewing',
         component: () =>
           import('../views/home/onInterviewing/onInterviewing.vue')
-      }
+      },
     ]
   },
   {
