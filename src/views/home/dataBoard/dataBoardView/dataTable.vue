@@ -354,7 +354,7 @@ export default {
     // 修改弹窗
     openChangeDialog(data) {
       this.$refs.changeDialog.changeDialogVisible = true
-      console.log(data.stuNum+'记得删')
+      console.log(data.stuNum + '记得删')
       this.$refs.changeDialog.studentId = data.stuNum
       this.$refs.changeDialog.Mymounted()
     },
@@ -363,7 +363,7 @@ export default {
       this.$refs.resumeDialog.resumeDialogVisible = true
       this.$refs.resumeDialog.studentId = data.stuNum
       this.$refs.resumeDialog.Mymounted()
-      console.log(data.stuNum+'记得删')
+      console.log(data.stuNum + '记得删')
     },
     // 手动刷新
     reFresh() {
