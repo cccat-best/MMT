@@ -66,11 +66,6 @@
           <el-button slot="reference">选择面试总数</el-button>
         </el-popover>
       </div>
-
-      <!-- 导航内容 -->
-      <!-- <div class="body">
-        <router-view></router-view>
-      </div> -->
     </div>
   </div>
 </template>
@@ -139,6 +134,28 @@ export default {
   min-width: 1200px;
   width: calc(100vw - 200px - 40px);
   margin: 0 auto;
+
+  ::-webkit-scrollbar {
+    /*滚动条整体样式*/
+    width: 10px; /*高宽分别对应横竖滚动条的尺寸*/
+    height: 1px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    /*滚动条里面小方块*/
+    border-radius: 10px;
+    //background-color: #8c8c8c;
+    background-color: rgba(0, 0, 0, 0.25);
+  }
+
+  ::-webkit-scrollbar-track {
+    background-color: #f6f6f6;
+  }
+  ::-webkit-scrollbar-thumb,
+  ::-webkit-scrollbar-track {
+    border: 0;
+  }
+
   .top-content {
     display: flex;
     height: 25px;
@@ -190,6 +207,25 @@ export default {
       /deep/.el-tabs__header {
         margin: 0 0 0 0;
       }
+      /deep/.el-tabs__header {
+        margin: 0 0 0 0;
+      }
+    }
+    .select {
+      position: absolute;
+      top: 45px;
+      left: 88%;
+      background-color: white;
+      height: 60px;
+      line-height: 60px;
+    }
+    .body {
+      // width: 1250px;
+      width: calc(100vw - 200px - 40px);
+      min-height: 450px;
+      min-width: 1200px;
+      height: calc(100vh - 60px - 40px - 25px - 70px);
+      background-color: white;
     }
     .select {
       position: absolute;
