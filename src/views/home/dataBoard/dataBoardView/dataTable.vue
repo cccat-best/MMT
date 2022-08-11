@@ -343,7 +343,9 @@ export default {
       //         } else this.$message.error(res.data.message)
       // 获取数据
       this.admissionId = sessionStorage.getItem('homeAdmissionId')
-      this.requestFilterItem()
+      // 注释一个请求，先使用假数据
+      console.log('显示假数据，等数据库有数据时再删')
+      // this.requestFilterItem()
       // },
       // (err) => {
       //   this.$message.error('获取数据失败' + err)
