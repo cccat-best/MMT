@@ -206,6 +206,12 @@ export default {
                 psw: this.registerForm.password
               })
               this.$router.push('/login')
+            } else {
+              this.$message({
+                showClose: true,
+                message: res.data.message,
+                type: 'error'
+              })
             }
           })
           .catch((err) => {
