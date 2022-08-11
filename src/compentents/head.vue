@@ -115,9 +115,13 @@
               </div>
 
               <el-dropdown-item divided>
-                <el-dropdown @command="changeOrganization" style="width: 140px">
+                <el-dropdown
+                  @command="changeOrganization"
+                  style="width: 140px; text-align: center"
+                >
                   <span class="el-dropdown-link">
-                    切换社团<i class="el-icon-arrow-down el-icon--right"></i>
+                    切换社团
+                    <!-- <i class="el-icon-arrow-down el-icon--right"></i> -->
                   </span>
                   <!-- 贺节介建议这里的下拉框改成向左拉开，不过我不会 -->
                   <el-dropdown-menu slot="dropdown">
@@ -144,7 +148,11 @@
                 </el-dropdown>
               </el-dropdown-item>
 
-              <el-dropdown-item divided>
+              <el-dropdown-item
+                divided
+                @click.native="quitLogin"
+                style="text-align: center"
+              >
                 <el-button
                   type="text"
                   @click="quitLogin"
