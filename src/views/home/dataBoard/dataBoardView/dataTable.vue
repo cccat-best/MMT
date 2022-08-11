@@ -344,7 +344,7 @@ export default {
       // 获取数据
       this.admissionId = sessionStorage.getItem('homeAdmissionId')
       // 注释一个请求，先使用假数据
-        console.log('显示假数据，等数据库有数据时再删')
+      console.log('显示假数据，等数据库有数据时再删')
       // this.requestFilterItem()
       // },
       // (err) => {
