@@ -91,7 +91,7 @@ export default {
   methods: {},
   mounted() {
     this.$bus.$on('sendCommunityDataToChild', (val) => {
-      console.log('Saved收到了数据:', val)
+      // console.log('Saved收到了数据:', val)
       this.communityData = val.data
       this.showMain = true
     })

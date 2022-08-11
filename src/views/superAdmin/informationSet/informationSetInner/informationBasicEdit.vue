@@ -114,11 +114,20 @@
     <el-divider></el-divider>
     <div class="basicInformationTitle" id="departmentRecruiting">纳新部门</div>
     <!--  -->
+    <div class="partDiv">
+      <i class="el-icon-circle-plus-outline icons"></i>
+      <Part title="部门一" :data="editCommunityData.departmentList[0]"></Part>
+    </div>
+    <Part title="部门二" :data="editCommunityData.departmentList[0]"></Part>
   </div>
 </template>
 
 <script>
+import Part from './part.vue'
 export default {
+  comments: {
+    Part
+  },
   data() {
     return {
       circleUrl:
@@ -134,9 +143,10 @@ export default {
   },
   mounted() {
     this.$bus.$on('sendCommunityDataToChild', (val) => {
-      console.log('Edit收到了数据:', val)
+      // console.log('Edit收到了数据:', val)
       this.editCommunityData = val.data
       this.editShowMain = true
+      // console.log(this.editCommunityData.departmentList[0])
     })
     this.$bus.$on('postData', () => {
       this.postData()
@@ -146,7 +156,8 @@ export default {
   beforeDestroy() {
     this.$bus.$off('sendCommunityDataToChild')
     this.$bus.$off('postData')
-  }
+  },
+  components: { Part }
 }
 </script>
 
@@ -231,5 +242,14 @@ export default {
 }
 .textIpt {
   width: 75vw;
+}
+.icons {
+  font-size: 30px;
+  margin: 80px;
+}
+.partDiv {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
 }
 </style>

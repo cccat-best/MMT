@@ -121,7 +121,7 @@ export default {
         })
         .then((response) => {
           this.communityData = JSON.parse(JSON.stringify(response.data))
-          console.log('收到了服务器的响应:结果是', this.communityData)
+          // console.log('收到了服务器的响应:结果是', this.communityData)
           this.$bus.$emit('sendCommunityDataToChild', this.communityData)
         })
         .catch(function (error) {
@@ -134,11 +134,11 @@ export default {
       // 仅在整个视图都被渲染之后才会运行的代码
     })
     this.$bus.$on('savedNeedData', () => {
-      console.log('Main组件监听到了savedNeedData的请求，开始发送请求')
+      // console.log('Main组件监听到了savedNeedData的请求，开始发送请求')
       this.getCommunityData()
     })
     this.$bus.$on('editNeedData', () => {
-      console.log('Main组件监听到了editNeedData的请求，开始发送请求')
+      // console.log('Main组件监听到了editNeedData的请求，开始发送请求')
       this.getCommunityData()
     })
     this.$bus.$emit('savedNeedData')
