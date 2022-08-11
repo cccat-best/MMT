@@ -55,8 +55,18 @@ export default {
     return {}
   },
   props: {
+    serial: String,
     title: String,
     data: Object
+  },
+  mounted() {
+    this.$bus.$on('getParts', () => {
+      console.log('触发了getParts，关键字为：', 'department' + this.serial)
+      this.$bus.$emit('department' + this.serial, this.data)
+    })
+  },
+  beforeDestroy() {
+    this.$bus.$off('getParts')
   }
 }
 </script>

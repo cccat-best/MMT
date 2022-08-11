@@ -71,7 +71,131 @@
     <!-- 社团宣传结束 -->
     <el-divider></el-divider>
     <div class="basicInformationTitle" id="departmentRecruiting">纳新部门</div>
-    <!--  -->
+    <!-- 纳新部门 -->
+    <div class="departmentMain">
+      <div
+        class="departmentBlock"
+        v-if="communityData.departmentList[0] != null"
+      >
+        <div class="departmentTitle">部门一</div>
+        <div class="departmentFourInner">
+          <div class="fourTitleFont">部门名称：</div>
+          <div class="fourInnerFont">
+            {{ communityData.departmentList[0].name }}
+          </div>
+        </div>
+        <div class="departmentFourInner">
+          <div class="fourTitleFont">部门简介：</div>
+          <div class="fourInnerFont">
+            {{ communityData.departmentList[0].briefIntroduction }}
+          </div>
+        </div>
+        <div class="departmentFourInner">
+          <div class="fourTitleFont">部门介绍：</div>
+          <div class="fourInnerFont">
+            {{ communityData.departmentList[0].introduction }}
+          </div>
+        </div>
+        <div class="departmentFourInner">
+          <div class="fourTitleFont">部门要求：</div>
+          <div class="fourInnerFont">
+            {{ communityData.departmentList[0].standard }}
+          </div>
+        </div>
+      </div>
+      <div class="departmentBlock">
+        <div
+          class="departmentTitle"
+          v-if="communityData.departmentList[1] != null"
+        >
+          部门二
+        </div>
+        <div class="departmentFourInner">
+          <div class="fourTitleFont">部门名称：</div>
+          <div class="fourInnerFont">
+            {{ communityData.departmentList[1].name }}
+          </div>
+        </div>
+        <div class="departmentFourInner">
+          <div class="fourTitleFont">部门简介：</div>
+          <div class="fourInnerFont">
+            {{ communityData.departmentList[1].briefIntroduction }}
+          </div>
+        </div>
+        <div class="departmentFourInner">
+          <div class="fourTitleFont">部门介绍：</div>
+          <div class="fourInnerFont">
+            {{ communityData.departmentList[1].introduction }}
+          </div>
+        </div>
+        <div class="departmentFourInner">
+          <div class="fourTitleFont">部门要求：</div>
+          <div class="fourInnerFont">
+            {{ communityData.departmentList[1].standard }}
+          </div>
+        </div>
+      </div>
+      <div
+        class="departmentBlock"
+        v-if="communityData.departmentList[2] != null"
+      >
+        <div class="departmentTitle">部门三</div>
+        <div class="departmentFourInner">
+          <div class="fourTitleFont">部门名称：</div>
+          <div class="fourInnerFont">
+            {{ communityData.departmentList[2].name }}
+          </div>
+        </div>
+        <div class="departmentFourInner">
+          <div class="fourTitleFont">部门简介：</div>
+          <div class="fourInnerFont">
+            {{ communityData.departmentList[2].briefIntroduction }}
+          </div>
+        </div>
+        <div class="departmentFourInner">
+          <div class="fourTitleFont">部门介绍：</div>
+          <div class="fourInnerFont">
+            {{ communityData.departmentList[2].introduction }}
+          </div>
+        </div>
+        <div class="departmentFourInner">
+          <div class="fourTitleFont">部门要求：</div>
+          <div class="fourInnerFont">
+            {{ communityData.departmentList[2].standard }}
+          </div>
+        </div>
+      </div>
+      <div
+        class="departmentBlock"
+        v-if="communityData.departmentList[3] != null"
+      >
+        <div class="departmentTitle">部门一</div>
+        <div class="departmentFourInner">
+          <div class="fourTitleFont">部门名称：</div>
+          <div class="fourInnerFont">
+            {{ communityData.departmentList[3].name }}
+          </div>
+        </div>
+        <div class="departmentFourInner">
+          <div class="fourTitleFont">部门简介：</div>
+          <div class="fourInnerFont">
+            {{ communityData.departmentList[3].briefIntroduction }}
+          </div>
+        </div>
+        <div class="departmentFourInner">
+          <div class="fourTitleFont">部门介绍：</div>
+          <div class="fourInnerFont">
+            {{ communityData.departmentList[3].introduction }}
+          </div>
+        </div>
+        <div class="departmentFourInner">
+          <div class="fourTitleFont">部门要求：</div>
+          <div class="fourInnerFont">
+            {{ communityData.departmentList[3].standard }}
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -178,5 +302,36 @@ export default {
   flex-direction: column;
   justify-content: flex-start;
   margin-bottom: 100px;
+}
+.departmentMain {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 65vw;
+}
+.departmentBlock {
+  margin-top: 80px;
+  width: 900px;
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.departmentFourInner {
+  width: 700px;
+  display: flex;
+  flex-direction: row;
+  margin-top: 20px;
+}
+.departmentTitle {
+  font-size: 24px;
+  margin: 0px 60px 40px 0px;
+  text-align: left;
+}
+.fourTitleFont {
+  font-size: 20px;
+}
+.fourInnerFont {
+  color: rgba(64, 64, 64, 0.759);
 }
 </style>

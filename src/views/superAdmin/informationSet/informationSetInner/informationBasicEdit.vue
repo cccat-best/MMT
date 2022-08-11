@@ -115,10 +115,51 @@
     <div class="basicInformationTitle" id="departmentRecruiting">纳新部门</div>
     <!--  -->
     <div class="partDiv">
-      <i class="el-icon-circle-plus-outline icons"></i>
-      <Part title="部门一" :data="editCommunityData.departmentList[0]"></Part>
+      <i
+        class="el-icon-circle-plus-outline icons"
+        @click="pushNewDepartment()"
+      ></i>
+      <Part
+        id="partOne"
+        serial="0"
+        title="部门一"
+        :data="editCommunityData.departmentList[0]"
+      ></Part>
     </div>
-    <Part title="部门二" :data="editCommunityData.departmentList[0]"></Part>
+    <div class="partDiv" v-if="editCommunityData.departmentList[1] != null">
+      <i
+        class="el-icon-remove-outline icons"
+        @click="spliceDepartment(1, '部门二')"
+      ></i>
+      <Part
+        id="partTwo"
+        serial="1"
+        title="部门二"
+        :data="editCommunityData.departmentList[1]"
+      ></Part>
+    </div>
+    <div class="partDiv" v-if="editCommunityData.departmentList[2] != null">
+      <i
+        class="el-icon-remove-outline icons"
+        @click="spliceDepartment(2, '部门三')"
+      ></i>
+      <Part
+        serial="2"
+        title="部门三"
+        :data="editCommunityData.departmentList[2]"
+      ></Part>
+    </div>
+    <div class="partDiv" v-if="editCommunityData.departmentList[3] != null">
+      <i
+        class="el-icon-remove-outline icons"
+        @click="spliceDepartment(3, '部门四')"
+      ></i>
+      <Part
+        serial="3"
+        title="部门四"
+        :data="editCommunityData.departmentList[3]"
+      ></Part>
+    </div>
   </div>
 </template>
 
@@ -138,7 +179,63 @@ export default {
   },
   methods: {
     postData() {
+      //取得part组件中的department数据
+      this.$bus.$emit('getParts')
+      //接收并合并department数据
+
       this.$http.post('/api/organization/information', this.editCommunityData)
+    },
+    successful(val) {
+      this.$message({
+        message: val,
+        type: 'success'
+      })
+    },
+    error(val) {
+      this.$message.error({
+        message: val
+      })
+    },
+    pushNewDepartment() {
+      if (this.editCommunityData.departmentList.length < 4) {
+        this.editCommunityData.departmentList.push({
+          name: '',
+          briefIntroduction: '',
+          introduction: '',
+          standard: ''
+        })
+        this.successful('添加新部门成功~')
+      } else {
+        this.error('添加失败！已经满了四个部门了哦~')
+      }
+    },
+    spliceDepartment(val, partId) {
+      this.$confirm('是否删除' + partId + '?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        .then(() => {
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          })
+          this.editCommunityData.departmentList.splice(val, 1)
+          // console.log(this)
+        })
+        .catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          })
+        })
+    },
+
+    goAnchor(selector) {
+      /*参数selector是id选择器（#anchor14）*/
+      document.querySelector(selector).scrollIntoView({
+        behavior: 'smooth'
+      })
     }
   },
   mounted() {
@@ -151,11 +248,31 @@ export default {
     this.$bus.$on('postData', () => {
       this.postData()
     })
+    this.$bus.$on('department0', (val) => {
+      console.log('监听到了0')
+      this.editCommunityData.departmentList[0] = val
+    })
+    this.$bus.$on('department1', (val) => {
+      console.log('监听到了1')
+      this.editCommunityData.departmentList[1] = val
+    })
+    this.$bus.$on('department2', (val) => {
+      console.log('监听到了2')
+      this.editCommunityData.departmentList[2] = val
+    })
+    this.$bus.$on('department3', (val) => {
+      console.log('监听到了3')
+      this.editCommunityData.departmentList[3] = val
+    })
     this.$bus.$emit('editNeedData')
   },
   beforeDestroy() {
     this.$bus.$off('sendCommunityDataToChild')
     this.$bus.$off('postData')
+    this.$bus.$off('department0')
+    this.$bus.$off('department1')
+    this.$bus.$off('department2')
+    this.$bus.$off('department3')
   },
   components: { Part }
 }
@@ -245,7 +362,11 @@ export default {
 }
 .icons {
   font-size: 30px;
+  color: rgb(92, 182, 255);
   margin: 80px;
+}
+.icons:hover {
+  color: rgb(39, 158, 255);
 }
 .partDiv {
   display: flex;
