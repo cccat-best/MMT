@@ -17,7 +17,7 @@
         type="text"
         placeholder="部门简介"
         v-model="data.briefIntroduction"
-        maxlength="20"
+        maxlength="35"
         show-word-limit
       ></el-input>
     </div>
@@ -27,7 +27,7 @@
         type="textarea"
         placeholder="部门介绍"
         v-model="data.introduction"
-        maxlength="20"
+        maxlength="200"
         show-word-limit
         resize="none"
         :rows="5"
@@ -39,7 +39,7 @@
         type="textarea"
         placeholder="纳新要求"
         v-model="data.standard"
-        maxlength="100"
+        maxlength="200"
         show-word-limit
         resize="none"
         :rows="5"

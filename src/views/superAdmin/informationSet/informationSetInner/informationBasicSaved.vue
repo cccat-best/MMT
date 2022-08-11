@@ -169,7 +169,7 @@
         class="departmentBlock"
         v-if="communityData.departmentList[3] != null"
       >
-        <div class="departmentTitle">部门一</div>
+        <div class="departmentTitle">部门四</div>
         <div class="departmentFourInner">
           <div class="fourTitleFont">部门名称：</div>
           <div class="fourInnerFont">
@@ -318,7 +318,7 @@ export default {
   align-items: flex-start;
 }
 .departmentFourInner {
-  width: 700px;
+  width: 900px;
   display: flex;
   flex-direction: row;
   margin-top: 20px;
@@ -329,9 +329,12 @@ export default {
   text-align: left;
 }
 .fourTitleFont {
+  width: 150px;
   font-size: 20px;
 }
 .fourInnerFont {
+  width: 700px;
   color: rgba(64, 64, 64, 0.759);
+  text-align: left;
 }
 </style>
