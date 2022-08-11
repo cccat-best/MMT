@@ -33,12 +33,22 @@
         class="rightTop"
         style="display: flex; min-width: 300px; justify-content: right"
       >
-        <img
-          v-if="this.isSuper"
-          src="../assets/img/admin.png"
-          alt=""
-          style="height: 30px; width: 30px"
-        />
+        <el-tooltip
+          class="item"
+          effect="dark"
+          content="点击此处进入超级管理"
+          placement="bottom"
+        >
+          <span>
+            <img
+              v-if="this.isSuper"
+              src="../assets/img/admin.png"
+              alt=""
+              style="height: 30px; width: 30px; cursor: pointer"
+              @click="superAdmin"
+            />
+          </span>
+        </el-tooltip>
         <el-button
           class="color-change"
           type="text"
