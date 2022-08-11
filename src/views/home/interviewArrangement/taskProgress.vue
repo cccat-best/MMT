@@ -37,7 +37,7 @@ export default {
   // created() {
   //   let url = 'api/interview-arrangement/data'
   //   let params = {
-  //     admissionId: sessionStorage['homeAdmissionId']
+  //     admissionId: 20212803
   //   }
   //   this.$http
   //     .get(url, params)

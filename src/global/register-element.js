@@ -1,5 +1,4 @@
 import {
-  Option,
   Radio,
   Select,
   TimePicker,
@@ -16,20 +15,20 @@ import {
   MenuItemGroup,
   Row,
   Col,
-  TimeSelect,
-  Checkbox,
-  Dialog,
-  Popover,
-  MessageBox,
-  Message,
-  Form,
-  FormItem,
   TableColumn,
   Pagination,
+  Dialog,
   Divider,
   Alert,
+  Message,
+  MessageBox,
   Tag,
+  Form,
+  FormItem,
   RadioGroup,
+  TimeSelect,
+  Checkbox,
+  Popover,
   Image,
   Tabs,
   TabPane,
@@ -39,7 +38,6 @@ import {
   Dropdown,
   DropdownMenu,
   DropdownItem,
-  Loading,
   Menu,
   MenuItem,
   Icon,
@@ -47,11 +45,11 @@ import {
   Descriptions,
   DescriptionsItem,
   Drawer,
+  Loading,
   Tooltip
 } from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 const components = [
-  Option,
   Loading,
   Descriptions,
   DescriptionsItem,
@@ -59,6 +57,8 @@ const components = [
   Tooltip,
   Icon,
   MenuItem,
+  Menu,
+
   Select,
   Menu,
   MenuItem,
@@ -102,14 +102,16 @@ const components = [
   Input,
   Form,
   FormItem,
-  InputNumber,
-  TableColumn,
+  Image,
+  Input,
+  FormItem,
   Tabs,
   TabPane,
-  Select,
-  Option,
-  Image,
-  Drawer
+  TableColumn,
+  Tabs,
+  InputNumber,
+  Drawer,
+  Tooltip
 ]
 export default function (Vue) {
   for (const component of components) {

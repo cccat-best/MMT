@@ -705,7 +705,7 @@ export default {
   // height: 34.4px;
   margin-left: 20px;
 }
-// 批量操作按钮
+//
 .batchButton {
   margin: 0 10px;
   font-size: medium;
