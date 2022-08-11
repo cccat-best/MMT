@@ -16,7 +16,20 @@
               @click="removeItem(item1)"
             ></i>
             <div class="freeView-name-content">
-              <span class="freeView-name">{{ item1.description }}</span>
+              <!-- 大于15个字溢出隐藏 tip显示完整 -->
+              <el-tooltip
+                :content="item1.description"
+                placement="bottom"
+                effect="light"
+                v-if="item1.description.length > 15"
+              >
+                <span class="freeView-name">{{ item1.description }}</span>
+              </el-tooltip>
+              <span
+                class="freeView-name"
+                v-if="item1.description.length <= 15"
+                >{{ item1.description }}</span
+              >
             </div>
             <div class="freeView-name-choose">
               <!-- 展示选项 -->
@@ -31,6 +44,7 @@
                   v-for="(item2, index2) in item1.option"
                   :key="'op' + index2"
                   v-show="item2 != null"
+                  :disabled="true"
                 >
                   {{ item2 }}
                 </option>
@@ -406,7 +420,7 @@ export default {
             allocated: this.allocated,
             comprehensiveQuestionsList: this.comprehensiveQuestionsList
           }
-          console.log(qustionList)
+          // console.log(qustionList)
           //调用函数发送请求
           this.sendTo(qustionList)
         })
@@ -461,10 +475,10 @@ export default {
             // white-space: nowrap;
             // text-overflow: ellipsis;
             .freeView-name {
-              // overflow: hidden;
-              // white-space: nowrap;
-              // text-overflow: ellipsis;
-              white-space: pre-wrap;
+              overflow: hidden;
+              white-space: nowrap;
+              text-overflow: ellipsis;
+              // white-space: pre-wrap;
             }
           }
           .freeView-input {
@@ -481,6 +495,7 @@ export default {
           }
           .remove-opacity {
             opacity: 0;
+            cursor: auto;
           }
           i {
             cursor: pointer;

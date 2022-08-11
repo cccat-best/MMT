@@ -17,26 +17,16 @@
         @filter-change="filterChange"
         @selection-change="handleSeclect"
       >
-        <el-table-column type="selection"> </el-table-column>
+        <el-table-column type="selection" width="80"> </el-table-column>
         <el-table-column prop="id" label="ID" type="index" :index="indexMethod">
         </el-table-column>
         <el-table-column prop="studentId" label="学号" sortable="custom">
         </el-table-column>
         <el-table-column prop="studentName" label="姓名"> </el-table-column>
-        <el-table-column
-          v-for="(item, index) in information[0].questionScore"
-          :key="index"
-        >
-          <!-- solt="header"是为了插入表头的，这里遍历listStudent[0],是因为表头都一样，所以取第一行数据的字段做为表头即可 -->
-          <template slot="header"> {{ item.questionName }} </template>
-          <!-- index对应下面动态列（answerList）的索引，取出值渲染 -->
-          <template slot-scope="scope">{{
-            scope.row.questionScore[index].score
-          }}</template>
-        </el-table-column>
+        <el-table-column prop="department" label="部门"> </el-table-column>
         <el-table-column
           prop="totalScore"
-          label="面试总得分"
+          label="面试得分"
           sortable="custom"
           width="120"
         >
@@ -133,10 +123,8 @@
       <div class="detal">
         <el-row> <b>姓名:&nbsp;&nbsp;</b>{{ detal.studentName }} </el-row>
         <el-row> <b>学号:&nbsp;&nbsp;</b>{{ detal.studentId }} </el-row>
-        <el-row v-for="(item, index) in detal.questionScore" :key="index">
-          <b>{{ item.questionName }}:&nbsp;&nbsp;</b>{{ item.score }}
-        </el-row>
-        <el-row> <b>面试总得分:&nbsp;&nbsp;</b>{{ detal.totalScore }} </el-row>
+        <el-row> <b>部门:&nbsp;&nbsp;</b>{{ detal.department }} </el-row>
+        <el-row> <b>面试得分:&nbsp;&nbsp;</b>{{ detal.totalScore }} </el-row>
         <el-row> <b>通过状态:&nbsp;&nbsp;</b>{{ pd(detal.status) }} </el-row>
       </div>
     </el-dialog>
@@ -159,6 +147,7 @@ export default {
       multipleSelection: [],
       search: '',
       departmentId: 0,
+      departmentName: '',
       roomId: 0,
       keyWord: '',
       page: 1,
@@ -170,6 +159,8 @@ export default {
         {
           studentId: 20220001,
           studentName: '卢小1',
+          departmentId: 1,
+          department: '部门1',
           questionScore: [
             {
               questionName: '规划能力',
@@ -186,6 +177,8 @@ export default {
         {
           studentId: 20220002,
           studentName: '卢小2',
+          departmentId: 1,
+          department: '部门1',
           questionScore: [
             {
               questionName: '规划能力',
@@ -202,6 +195,8 @@ export default {
         {
           studentId: 20220003,
           studentName: '卢小3',
+          departmentId: 1,
+          department: '部门1',
           questionScore: [
             {
               questionName: '规划能力',
@@ -218,6 +213,8 @@ export default {
         {
           studentId: 20220004,
           studentName: '卢小4',
+          departmentId: 1,
+          department: '部门1',
           questionScore: [
             {
               questionName: '规划能力',
@@ -234,6 +231,8 @@ export default {
         {
           studentId: 20220005,
           studentName: '卢小5',
+          departmentId: 1,
+          department: '部门1',
           questionScore: [
             {
               questionName: '规划能力',
@@ -250,6 +249,8 @@ export default {
         {
           studentId: 20220006,
           studentName: '卢小6',
+          departmentId: 1,
+          department: '部门1',
           questionScore: [
             {
               questionName: '规划能力',
@@ -266,6 +267,8 @@ export default {
         {
           studentId: 20220007,
           studentName: '卢小7',
+          departmentId: 1,
+          department: '部门1',
           questionScore: [
             {
               questionName: '规划能力',
@@ -282,6 +285,8 @@ export default {
         {
           studentId: 20220008,
           studentName: '卢小8',
+          departmentId: 1,
+          department: '部门1',
           questionScore: [
             {
               questionName: '规划能力',
@@ -298,6 +303,8 @@ export default {
         {
           studentId: 20220009,
           studentName: '卢小9',
+          departmentId: 1,
+          department: '部门1',
           questionScore: [
             {
               questionName: '规划能力',
@@ -314,6 +321,8 @@ export default {
         {
           studentId: 20220010,
           studentName: '卢小10',
+          departmentId: 1,
+          department: '部门1',
           questionScore: [
             {
               questionName: '规划能力',
@@ -330,6 +339,8 @@ export default {
         {
           studentId: 20220011,
           studentName: '卢小11',
+          departmentId: 1,
+          department: '部门1',
           questionScore: [
             {
               questionName: '规划能力',
@@ -373,7 +384,7 @@ export default {
       let params = {}
       if (this.sortOrder == 'descending') {
         params = {
-          organizationId: 1,
+          organizationId: sessionStorage['loginOrganizationId'],
           departmentId: this.departmentId,
           roomId: this.roomId,
           page: this.currentPage,
@@ -382,7 +393,7 @@ export default {
       } else {
         if (this.sortProp == 'studentId') {
           params = {
-            organizationId: 1,
+            organizationId: sessionStorage['loginOrganizationId'],
             departmentId: this.departmentId,
             roomId: this.roomId,
             idSort: 1,
@@ -391,7 +402,7 @@ export default {
           }
         } else if (this.sortProp == 'totalScore') {
           params = {
-            organizationId: 1,
+            organizationId: sessionStorage['loginOrganizationId'],
             departmentId: this.departmentId,
             roomId: this.roomId,
             scoreSort: 1,
@@ -400,7 +411,7 @@ export default {
           }
         } else {
           params = {
-            organizationId: 1,
+            organizationId: sessionStorage['loginOrganizationId'],
             departmentId: this.departmentId,
             roomId: this.roomId,
             page: this.currentPage,
@@ -408,7 +419,6 @@ export default {
           }
         }
       }
-      // let url = 'http://118.195.251.126:38080/interview-reply/stu-info'
       let url = 'api/interview-reply/stu-info'
 
       this.$http
@@ -422,17 +432,21 @@ export default {
         })
     },
     changeStatus2(row) {
-      let studentId = []
-      studentId[0] = row.studentId
+      let studentInfo = []
+      studentInfo[0] = {
+        departmentId: row.departmentId,
+        studentId: row.studentId
+      }
       let sinForm = {
-        studentId: studentId,
-        status: 2
+        status: 2,
+        organizationId: sessionStorage['loginOrganizationId'],
+        studentInfo: studentInfo
       }
       const url1 = 'api/interview-reply/status'
       let post3 = this.$http.post(url1, sinForm)
       post3
         .then((res) => {
-          console.log(res.data.code)
+          console.log(res)
           if (res.data.code == '00000') {
             row.status = 2
           }
@@ -442,18 +456,21 @@ export default {
         })
     },
     changeStatus1(row) {
-      let studentId = []
-      studentId[0] = row.studentId
-      let sinForm = {
-        studentId: studentId,
-        status: 1
+      let studentInfo = []
+      studentInfo[0] = {
+        departmentId: row.departmentId,
+        studentId: row.studentId
       }
-      console.log(sinForm)
+      let sinForm = {
+        status: 1,
+        organizationId: sessionStorage['loginOrganizationId'],
+        studentInfo: studentInfo
+      }
       const url1 = 'api/interview-reply/status'
       let post3 = this.$http.post(url1, sinForm)
       post3
         .then((res) => {
-          console.log(res.data.code)
+          console.log(res)
           if (res.data.code == '00000') {
             row.status = 1
           }
@@ -463,14 +480,16 @@ export default {
         })
     },
     changeStatus3(row) {
-      let studentId = []
-      studentId[0] = row.studentId
-      let sinForm = {
-        studentId: studentId,
-        status: 3
+      let studentInfo = []
+      studentInfo[0] = {
+        departmentId: row.departmentId,
+        studentId: row.studentId
       }
-      console.log(sinForm)
-      // const url1 = 'http://118.195.251.126:38080/interview-reply/status'
+      let sinForm = {
+        status: 3,
+        organizationId: sessionStorage['loginOrganizationId'],
+        studentInfo: studentInfo
+      }
       const url1 = 'api/interview-reply/status'
       let post3 = this.$http.post(url1, sinForm)
       post3
@@ -486,15 +505,13 @@ export default {
     },
     //排序
     sortChange(column) {
-      // sessionStorage['sortProp'] = column.prop
-      // sessionStorage['sortOrder'] = column.order
       this.sortProp = column.prop
       this.sortOrder = column.order
       // ascending 升序/
       let params1 = {}
       if (this.sortOrder == 'descending') {
         params1 = {
-          organizationId: 1,
+          organizationId: sessionStorage['loginOrganizationId'],
           departmentId: this.departmentId,
           roomId: this.roomId,
           filterStatus: this.filterStatus
@@ -502,7 +519,7 @@ export default {
       } else {
         if (this.sortProp == 'studentId') {
           params1 = {
-            organizationId: 1,
+            organizationId: sessionStorage['loginOrganizationId'],
             departmentId: this.departmentId,
             roomId: this.roomId,
             idSort: 1,
@@ -510,7 +527,7 @@ export default {
           }
         } else if (this.sortProp == 'totalScore') {
           params1 = {
-            organizationId: 1,
+            organizationId: sessionStorage['loginOrganizationId'],
             departmentId: this.departmentId,
             roomId: this.roomId,
             scoreSort: 1,
@@ -518,7 +535,7 @@ export default {
           }
         } else {
           params1 = {
-            organizationId: 1,
+            organizationId: sessionStorage['loginOrganizationId'],
             departmentId: this.departmentId,
             roomId: this.roomId,
             filterStatus: this.filterStatus
@@ -545,7 +562,7 @@ export default {
       console.log(sum)
       let url = 'api/interview-reply/stu-info'
       let params2 = {
-        organizationId: 1,
+        organizationId: sessionStorage['loginOrganizationId'],
         departmentId: this.departmentId,
         roomId: this.roomId,
         filterStatus: this.filterStatus,
@@ -570,14 +587,17 @@ export default {
       this.multipleSelection = val
       let selectionName = []
       let selectionStudentId = []
+      let selectionDepartmentId = []
       this.multipleSelection.forEach((element) => {
         selectionName.push(element.name)
         selectionStudentId.push(element.studentId)
+        selectionDepartmentId.push(element.departmentId)
       })
       // console.log('name:', selectionName)
       // console.log('id:', selectionStudentId)
-      // this.$bus.$emit('selectionName', selectionName)
-      this.$bus.$emit('selectionStudentId', selectionStudentId)
+      // console.log('departmentId:', selectionDepartmentId)
+      this.$bus.$emit('replySelectionStudentId', selectionStudentId)
+      this.$bus.$emit('replySelectionDepartmentId', selectionDepartmentId)
     },
     resume(row) {
       this.detal = row
@@ -588,7 +608,7 @@ export default {
     // // let url = 'http://118.195.251.126:38080/interview-reply/stu-info'
     // let url = 'api/interview-reply/stu-info'
     // let params = {
-    //   organizationId: 1,
+    //   organizationId: sessionStorage['loginOrganizationId'],
     //   departmentId: this.departmentId,
     //   roomId: this.roomId,
     //   page: 1
@@ -602,11 +622,11 @@ export default {
     //     this.wait = response.data.data.wait
     //     this.nedit = response.data.data.nedit
     //     this.total = this.win + this.pass + this.wait + this.nedit
-    //     this.$bus.$emit('win', this.win)
-    //     this.$bus.$emit('pass', this.pass)
-    //     this.$bus.$emit('wait', this.wait)
-    //     this.$bus.$emit('nedit', this.nedit)
-    //     this.$bus.$emit('total', this.total)
+    //     this.$bus.$emit('replyWin', this.win)
+    //     this.$bus.$emit('replyPass', this.pass)
+    //     this.$bus.$emit('replyWait', this.wait)
+    //     this.$bus.$emit('replyNedit', this.nedit)
+    //     this.$bus.$emit('replyTotal', this.total)
     //     this.information = response.data.data.information
     //   })
     //   .catch((error) => {
@@ -614,27 +634,31 @@ export default {
     //   })
   },
   created() {
-    this.$bus.$on('departmentId', (data) => {
+    this.$bus.$on('replyDepartmentId', (data) => {
       this.departmentId = data
     }),
-      this.$bus.$on('roomId', (data) => {
+      this.$bus.$on('replyDepartmentName', (data) => {
+        this.departmentName = data
+      }),
+      this.$bus.$on('replyRoomId', (data) => {
         this.roomId = data
       }),
-      this.$bus.$on('input', (data) => {
+      this.$bus.$on('replyInput', (data) => {
         this.keyWord = data
       })
   },
   beforeDestroy() {
-    this.$bus.$off('departmentId')
-    this.$bus.$off('roomId')
-    this.$bus.$off('input')
+    this.$bus.$off('replyDepartmentId')
+    this.$bus.$off('replyDepartmentName')
+    this.$bus.$off('replyRoomId')
+    this.$bus.$off('replyInput')
   },
   computed: {},
   watch: {
     departmentId() {
       let url = 'api/interview-reply/stu-info'
       let params = {
-        organizationId: 1,
+        organizationId: sessionStorage['loginOrganizationId'],
         departmentId: this.departmentId,
         roomId: this.roomId
       }
@@ -650,7 +674,7 @@ export default {
     roomId() {
       let url = 'api/interview-reply/stu-info'
       let params = {
-        organizationId: 1,
+        organizationId: sessionStorage['loginOrganizationId'],
         departmentId: this.departmentId,
         roomId: this.roomId
       }
@@ -669,7 +693,7 @@ export default {
       let url3 = 'api/interview-reply/stu-search'
       let params3 = {
         keyWord: this.keyWord,
-        organizationId: 1,
+        organizationId: sessionStorage['loginOrganizationId'],
         departmentId: this.departmentId,
         roomId: this.roomId
       }

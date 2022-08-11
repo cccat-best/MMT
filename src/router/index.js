@@ -25,6 +25,17 @@ const routes = [
     component: () => import('../views/home/home.vue'),
     children: [
       {
+        //实时面试
+        path: 'onInterviewing',
+        component: () =>
+          import('../views/home/onInterviewing/onInterviewing.vue')
+      },
+      {
+        // 数据看板
+        path: 'dataBoard',
+        component: () => import('../views/home/dataBoard/main.vue')
+      },
+      {
         path: 'arrangement',
         component: () =>
           import('../views/home/interviewArrangement/interviewArrangement.vue')
@@ -57,11 +68,6 @@ const routes = [
       {
         path: 'interviewMain',
         component: () => import('../views/home/interviewMain/interviewMain.vue')
-      },
-      {
-        // 账号管理页面
-        path: 'accountManage',
-        component: () => import('../views/superAdmin/accountManage/main.vue')
       },
       {
         //面试流程页面
