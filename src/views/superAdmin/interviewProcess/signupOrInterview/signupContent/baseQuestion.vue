@@ -438,6 +438,9 @@ export default {
       // vuex存储
       this.updateGeneralQuestions(generalQuestions)
       this.updateQuestionsList(questionsList)
+    },
+    escEdit() {
+      this.isEdit = false
     }
   },
   watch: {

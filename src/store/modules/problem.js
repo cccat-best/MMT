@@ -60,6 +60,10 @@ export default {
     },
     updateIsEdit(state) {
       state.isEdit = !state.isEdit
+    },
+    // 退出编辑模式
+    escEdit(state) {
+      state.isEdit = false
     }
   },
   getters: {}

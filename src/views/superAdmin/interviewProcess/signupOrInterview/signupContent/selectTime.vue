@@ -48,6 +48,9 @@ export default {
       this.isEdit = !this.isEdit
       if (this.isEdit) return this.$message.success('编辑模式')
       if (!this.isEdit) return this.$message('非编辑模式')
+    },
+    escEdit() {
+      this.isEdit = false
     }
   },
   props: ['allQues'],

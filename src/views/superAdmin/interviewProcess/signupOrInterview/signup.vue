@@ -90,6 +90,11 @@ export default {
         .catch((err) => {
           console.log(err)
         })
+    },
+    // 退出编辑模式
+    exitEdit() {
+      this.$refs.time.escEdit()
+      this.$refs.base.escEdit()
     }
   },
   watch: {
