@@ -93,6 +93,7 @@ export default {
     if (this.permission == 'super_admin') {
       this.isSuper = true
     }
+    this.loginOrganizationName = sessionStorage.getItem('loginOrganizationName')
   },
   mounted() {
     // 解决defaultActiveItem 刷新问题
@@ -135,6 +136,7 @@ export default {
             break
           }
           default: {
+            // this.$message.error(res.message)
             throw new Error(JSON.stringify(res))
           }
         }
