@@ -58,6 +58,10 @@
                 ></el-button>
               </el-descriptions-item>
             </el-descriptions>
+            <!-- 生成邀请码测试用 -->
+            <!-- <el-button type="primary" @click="getInvitationCodeRequest()"
+              >生成邀请码</el-button
+            > -->
           </div>
         </el-card>
         <el-card class="box-card" shadow="always">
@@ -244,11 +248,7 @@ export default {
       phone: '',
       organizations: [],
       loginOrganizationName: '',
-      loginOrganizationId: '',
       permission: '',
-      cookie: '',
-      organizationName: '',
-      organizationId: '',
       changePassVisible: false,
       changePhoneVisible: false,
       joinClubVisible: false,
@@ -317,20 +317,8 @@ export default {
     update(newValue) {
       this.loginOrganizationName = newValue
     },
-    getInvitationCodeRequest() {
-      this.$http.get('api/organization/invitation-code').then(
-        (res) => {
-          if (res.data.code == '00000') {
-            this.invitationCode = res.data.data.invitationCode
-          }
-        },
-        (err) => {
-          this.$message.error(err)
-        }
-      )
-    },
     async getLoginStatus() {
-      const url = '/api/login-status/'
+      const url = 'api/login-status'
       try {
         let { data: res } = await this.$http.get(url)
         switch (res.code) {
@@ -346,50 +334,14 @@ export default {
             break
           }
           default: {
+            // this.$message.error(res.message)
             throw new Error(JSON.stringify(res))
-            // this.$message.error(JSON.stringify(res))
           }
         }
       } catch (err) {
         console.log('出错了', err.message)
         this.$message.error('当前未登录或登录已失效')
       }
-    },
-
-    async quitLogin() {
-      const url = '/api/logout'
-      try {
-        let { data: res } = await this.$http.get(url)
-        switch (res.code) {
-          case '00000': {
-            this.$message({
-              message: '退出登录成功',
-              type: 'success'
-            })
-            this.$router.push('/login')
-            break
-          }
-          default: {
-            throw new Error(JSON.stringify(res))
-            // this.$message.error(JSON.stringify(res))
-          }
-        }
-      } catch (err) {
-        console.log('出错了', err.message)
-        this.$message.error('当前未登录或登录已失效')
-      }
-    },
-
-    superAdmin() {
-      this.$router.push('/superAdmin')
-      this.$message({
-        message: '已切换至超级管理',
-        type: 'success'
-      })
-    },
-    // 个人中心顶部左侧返回的实现
-    goBack() {
-      this.$router.go(-1)
     },
     // 获取邀请码，为了方便测试写的
     // getInvitationCodeRequest() {

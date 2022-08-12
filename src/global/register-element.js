@@ -1,5 +1,4 @@
 import {
-  Option,
   Radio,
   Select,
   TimePicker,
@@ -47,11 +46,11 @@ import {
   DescriptionsItem,
   Drawer,
   Loading,
-  Tooltip
+  Tooltip,
+  Option
 } from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 const components = [
-  Option,
   Loading,
   Descriptions,
   DescriptionsItem,
@@ -60,7 +59,7 @@ const components = [
   Icon,
   MenuItem,
   Menu,
-
+  Option,
   Select,
   Menu,
   MenuItem,

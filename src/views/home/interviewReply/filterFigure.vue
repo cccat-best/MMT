@@ -206,7 +206,7 @@ export default {
   mounted() {
     this.drawChar()
     let admissionId = 2
-    let url1 = `api/interview-reply/department/${admissionId}/`
+    let url1 = `api/interview-reply/department/${admissionId}`
     this.$http
       .get(url1)
       .then((response) => {
@@ -220,7 +220,7 @@ export default {
         console.log(error)
       })
 
-    let url2 = `api/interview-reply/room/${admissionId}/`
+    let url2 = `api/interview-reply/room/${admissionId}`
     this.$http
       .get(url2)
       .then((response) => {

@@ -66,7 +66,7 @@ export default {
           iconClass: '',
           id: '4',
           title: '实时面试',
-          pagePath: '/home'
+          pagePath: '/home/onInterviewing'
         },
         {
           iconClass: '',
@@ -93,13 +93,14 @@ export default {
     if (this.permission == 'super_admin') {
       this.isSuper = true
     }
+    this.loginOrganizationName = sessionStorage.getItem('loginOrganizationName')
   },
   mounted() {
     // 解决defaultActiveItem 刷新问题
     if (this.$route.path == '/home/interviewMain') this.defaultActiveItem = '1'
     if (this.$route.path == '/home/dataBoard') this.defaultActiveItem = '2'
     if (this.$route.path == '/home/arrangement') this.defaultActiveItem = '3'
-    if (this.$route.path == '/home') this.defaultActiveItem = '4'
+    if (this.$route.path == '/home/onInterviewing') this.defaultActiveItem = '4'
     if (this.$route.path == '/home/reply') this.defaultActiveItem = '5'
     if (this.$route.path == '/home/resultInform') this.defaultActiveItem = '5'
     let url = 'api/organization/interview/id-all'
@@ -122,7 +123,7 @@ export default {
       this.loginOrganizationName = newValue
     },
     async getLoginStatus() {
-      const url = '/api/login-status/'
+      const url = 'api/login-status/'
       try {
         let { data: res } = await this.$http.get(url)
         switch (res.code) {
@@ -135,6 +136,7 @@ export default {
             break
           }
           default: {
+            // this.$message.error(res.message)
             throw new Error(JSON.stringify(res))
           }
         }
@@ -151,7 +153,7 @@ export default {
       if (to.path == '/home/interviewMain') this.defaultActiveItem = '1'
       if (to.path == '/home/dataBoard') this.defaultActiveItem = '2'
       if (to.path == '/home/arrangement') this.defaultActiveItem = '3'
-      if (to.path == '/home') this.defaultActiveItem = '4'
+      if (to.path == '/home/onInterviewing') this.defaultActiveItem = '4'
       if (to.path == '/home/reply') this.defaultActiveItem = '5'
     }
   }
