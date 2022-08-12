@@ -51,8 +51,26 @@ const routes = [
       },
 
       {
+        //面试总看板
         path: 'interviewMain',
         component: () => import('../views/home/interviewMain/interviewMain.vue')
+      },
+      {
+        //总看板面试前
+        path: 'interviewBefore',
+        component: () =>
+          import('../views/home/interviewMain/interviewBefore.vue')
+      },
+      {
+        //总看板面试中
+        path: 'interviewing',
+        component: () => import('../views/home/interviewMain/interviewing.vue')
+      },
+      {
+        //总看板面试后
+        path: 'interviewAfter',
+        component: () =>
+          import('../views/home/interviewMain/interviewAfter.vue')
       },
       {
         path: 'dataBoard',
