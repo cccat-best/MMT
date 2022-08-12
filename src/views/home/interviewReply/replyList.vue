@@ -149,6 +149,7 @@ export default {
       departmentId: 0,
       departmentName: '',
       roomId: 0,
+      timer: null,
       keyWord: '',
       page: 1,
       win: 3,
@@ -494,7 +495,7 @@ export default {
       let post3 = this.$http.post(url1, sinForm)
       post3
         .then((res) => {
-          console.log(res.data.code)
+          console.log(res)
           if (res.data.code == '00000') {
             row.status = 3
           }
@@ -688,29 +689,33 @@ export default {
         })
     },
     keyWord() {
-      console.log(this.keyWord)
-      // let url3 = 'http://118.195.251.126:38080/interview-reply/stu-search'
-      let url3 = 'api/interview-reply/stu-search'
-      let params3 = {
-        keyWord: this.keyWord,
-        organizationId: sessionStorage['loginOrganizationId'],
-        departmentId: this.departmentId,
-        roomId: this.roomId
-      }
-      this.$http
-        .get(url3, params3)
-        .then((response) => {
-          console.log(response)
-          this.win = response.data.data.win
-          this.pass = response.data.data.pass
-          this.wait = response.data.data.wait
-          this.nedit = response.data.data.nedit
-          this.total = this.win + this.pass + this.wait + this.nedit
-          // this.information = response.data.data.information
-        })
-        .catch((error) => {
-          console.log(error)
-        })
+      // 清除 timer 对应的延时器
+      clearTimeout(this.timer)
+      // 重新启动一个延时器，并把 timerId 赋值给 this.timer
+      this.timer = setTimeout(() => {
+        console.log(this.keyWord)
+        let url3 = 'api/interview-reply/stu-search'
+        let params3 = {
+          keyWord: this.keyWord,
+          organizationId: sessionStorage['loginOrganizationId'],
+          departmentId: this.departmentId,
+          roomId: this.roomId
+        }
+        this.$http
+          .get(url3, params3)
+          .then((response) => {
+            console.log(response)
+            this.win = response.data.data.win
+            this.pass = response.data.data.pass
+            this.wait = response.data.data.wait
+            this.nedit = response.data.data.nedit
+            this.total = this.win + this.pass + this.wait + this.nedit
+            // this.information = response.data.data.information
+          })
+          .catch((error) => {
+            console.log(error)
+          })
+      }, 600)
     }
   }
 }

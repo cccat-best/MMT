@@ -49,7 +49,7 @@ export default {
       selectTotal: 20,
       passNum: 20,
       winNum: 30,
-      status: '通过',
+      status: '失败',
       departmentId: 0,
       roomId: 0
     }
@@ -112,19 +112,20 @@ export default {
       const url1 = 'api/interview-arrangement/getNotice'
       let params = {
         type: 3,
-        organizationId: 1
+        organizationId: sessionStorage['loginOrganizationId']
       }
       this.$http
         .get(url1, params)
         .then((response) => {
           console.log(response)
           this.messageArrary = []
-          this.message = response.data.data.messageTemplate
+          let message0 = response.data.data.messageTemplate
             .replace(/{department}/, this.departmentName)
             .replace(/{round}/, '')
+          this.message = message0.replace(/{name}/, this.name)
           for (let i = 0; i < this.passNum; ++i) {
             this.messageArrary.push(
-              this.message.replace(/{name}/, this.studentName[i])
+              message0.replace(/{name}/, this.studentName[i])
             )
           }
         })
@@ -153,28 +154,29 @@ export default {
             this.studentName.push(e.studentName)
             this.studentId.push(e.studentId)
           })
-          const url1 = 'api/interview-arrangement/getNotice'
-          let params = {
-            type: 2,
-            organizationId: 1
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+      const url1 = 'api/interview-arrangement/getNotice'
+      let params = {
+        type: 2,
+        organizationId: sessionStorage['loginOrganizationId']
+      }
+      this.$http
+        .get(url1, params)
+        .then((response) => {
+          console.log(response)
+          this.messageArrary = []
+          let message0 = response.data.data.messageTemplate
+            .replace(/{department}/, this.departmentName)
+            .replace(/{round}/, '')
+          this.message = message0.replace(/{name}/, this.name)
+          for (let i = 0; i < this.winNum; ++i) {
+            this.messageArrary.push(
+              message0.replace(/{name}/, this.studentName[i])
+            )
           }
-          this.$http
-            .get(url1, params)
-            .then((response) => {
-              console.log(response)
-              this.messageArrary = []
-              this.message = response.data.data.messageTemplate
-                .replace(/{department}/, this.departmentName)
-                .replace(/{round}/, '')
-              for (let i = 0; i < this.winNum; ++i) {
-                this.messageArrary.push(
-                  this.message.replace(/{name}/, this.studentName[i])
-                )
-              }
-            })
-            .catch((error) => {
-              console.log(error)
-            })
         })
         .catch((error) => {
           console.log(error)
@@ -188,69 +190,77 @@ export default {
     ) {
       this.departmentName = sessionStorage['replyDepartmentName']
       this.departmentId = sessionStorage['replyDepartmentId']
-    }
-    let url0 = 'api/interview-reply/stu-info'
-    let params0 = {
-      organizationId: sessionStorage['loginOrganizationId'],
-      departmentId: this.departmentId,
-      roomId: 0
-    }
-    let params2 = {
-      organizationId: sessionStorage['loginOrganizationId'],
-      departmentId: this.departmentId,
-      roomId: 0,
-      filterStatus: 2
-    }
-    this.$http
-      .get(url0, params0)
-      .then((response) => {
-        console.log(response)
-        this.winNum = response.data.data.win
-        this.passNum = response.data.data.pass
-        this.selectTotal = this.passNum
-        this.status = '失败'
-      })
-      .catch((error) => {
-        console.log(error)
-      })
-    this.$http
-      .get(url0, params2)
-      .then((response) => {
-        console.log(response)
-        this.information = response.data.data.information
-        this.studentName = []
-        this.studentId = []
-        this.information.forEach((e) => {
-          this.studentName.push(e.studentName)
-          this.studentId.push(e.studentId)
+
+      let url0 = 'api/interview-reply/stu-info'
+      let params0 = {
+        organizationId: sessionStorage['loginOrganizationId'],
+        departmentId: this.departmentId,
+        roomId: 0
+      }
+      let params2 = {
+        organizationId: sessionStorage['loginOrganizationId'],
+        departmentId: this.departmentId,
+        roomId: 0,
+        filterStatus: 2
+      }
+      this.$http
+        .get(url0, params0)
+        .then((response) => {
+          console.log(response)
+          this.winNum = response.data.data.win
+          this.passNum = response.data.data.pass
+          this.selectTotal = this.passNum
+          this.status = '失败'
         })
-      })
-      .catch((error) => {
-        console.log(error)
-      })
-    const url1 = 'api/interview-arrangement/getNotice'
-    let params = {
-      type: 3,
-      organizationId: 1
+        .catch((error) => {
+          console.log(error)
+        })
+      this.$http
+        .get(url0, params2)
+        .then((response) => {
+          console.log(response)
+          this.information = response.data.data.information
+          this.studentName = []
+          this.studentId = []
+          this.information.forEach((e) => {
+            this.studentName.push(e.studentName)
+            this.studentId.push(e.studentId)
+          })
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+      const url1 = 'api/interview-arrangement/getNotice/'
+      let params = {
+        type: 3,
+        organizationId: 1
+      }
+      this.$http
+        .get(url1, params)
+        .then((response) => {
+          console.log(response)
+          this.messageArrary = []
+          let message0 = response.data.data.messageTemplate
+            .replace(/{department}/, this.departmentName)
+            .replace(/{round}/, '')
+          this.message = message0.replace(/{name}/, this.name)
+          for (let i = 0; i < this.passNum; ++i) {
+            this.messageArrary.push(
+              message0.replace(/{name}/, this.studentName[i])
+            )
+          }
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+    } else {
+      this.winNum = 0
+      this.passNum = 0
+      this.selectTotal = 0
+      setTimeout(() => {
+        alert('请在面试复盘界面选择具体部门！')
+      }, 600)
     }
-    this.$http
-      .get(url1, params)
-      .then((response) => {
-        console.log(response)
-        this.messageArrary = []
-        let message0 = response.data.data.messageTemplate
-          .replace(/{department}/, this.departmentName)
-          .replace(/{round}/, '')
-        this.message = message0.replace(/{name}/, this.name)
-        for (let i = 0; i < this.passNum; ++i) {
-          this.messageArrary.push(
-            message0.replace(/{name}/, this.studentName[i])
-          )
-        }
-      })
-      .catch((error) => {
-        console.log(error)
-      })
   }
 }
 </script>
