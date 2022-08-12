@@ -65,12 +65,25 @@
           style="display: flex; justify-content: center"
         >
           <!-- 控制用户输入选择还是文字题 -->
-          <div @click="chooseAdd = 1" :class="['add-chose-button',chooseAdd==1?'add-chose-button-active':'']">
-              填空
-            </div>
-            <div @click="chooseAdd = 2" :class="['add-chose-button',chooseAdd==2?'add-chose-button-active':'']" style="margin-left:10px">
-              选择
-            </div>
+          <div
+            @click="chooseAdd = 1"
+            :class="[
+              'add-chose-button',
+              chooseAdd == 1 ? 'add-chose-button-active' : ''
+            ]"
+          >
+            填空
+          </div>
+          <div
+            @click="chooseAdd = 2"
+            :class="[
+              'add-chose-button',
+              chooseAdd == 2 ? 'add-chose-button-active' : ''
+            ]"
+            style="margin-left: 10px"
+          >
+            选择
+          </div>
         </div>
         <!-- 填空题收集  v-show判断-->
         <div v-show="chooseAdd === 1">
@@ -434,18 +447,18 @@ select:focus {
   border: 1px solid #535858 !important;
 }
 .add-chose-button {
-  width: 56px ;
-  height: 32px ;
+  width: 56px;
+  height: 32px;
   font-size: 12px;
-  border: 1px solid #DCDFE6;
+  border: 1px solid #dcdfe6;
   cursor: pointer;
-  background: #FFF;
+  background: #fff;
   color: #606266;
   border-radius: 3px;
   text-align: center;
   line-height: 32px;
   &:hover {
-    color: #409EFF;
+    color: #409eff;
     border-color: #c6e2ff;
     background-color: #ecf5ff;
   }
@@ -456,7 +469,7 @@ select:focus {
   // }
 }
 .add-chose-button-active {
-  color: #409EFF !important;
+  color: #409eff !important;
   border-color: #c6e2ff !important;
   background-color: #ecf5ff !important;
 }
