@@ -61,6 +61,7 @@
   </div>
 </template>
 <script>
+import debounce from 'lodash.debounce'
 export default {
   data() {
     return {
@@ -166,18 +167,15 @@ export default {
     format(card) {
       card.percentage = Math.round((card.interviewNum / card.totalNum) * 100)
     },
-    getNowRoomData(roomId) {
-      // console.log(roomId)
+    getNowRoomData: debounce(function (roomId) {
       this.$http.get('/api/interview-data/ongoing/room/back', {
         admissionId: 1,
         organizationId: 1,
         departmentId: 1,
         roomId: roomId
       })
-      // .then((res) => {
-      // console.log(res)
-      // })
-    },
+    }, 500),
+
     //为数组中对象的每一项添加新的属性
     mergeObj(arr, obj) {
       return arr.map((item) => {
@@ -271,7 +269,7 @@ export default {
       background-color: rgba(243, 243, 243, 0.27);
       border-radius: 15px;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);
-      transition: all 0.3s;
+      transition: all 1s;
       .topMargin {
         margin-top: 65px;
       }
