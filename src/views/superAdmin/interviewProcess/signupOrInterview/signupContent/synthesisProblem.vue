@@ -250,6 +250,9 @@ export default {
   },
   methods: {
     ...mapMutations('problem', ['escEdit']),
+    // showIsEdit() {
+    //   if(!this.isEdit) return this.$message.error('非编辑模式')
+    // },
     //动态增减选项
     removeDomain(item) {
       if (this.form.domains.length === 2) {
@@ -396,6 +399,7 @@ export default {
     //如果点击取消回到时间选择页
     cancel() {
       this.$parent.cancel()
+      this.escEdit()
     },
     //是否发送请求给后端
     isSend() {
@@ -602,4 +606,12 @@ select:focus {
   border-color: #c6e2ff !important;
   background-color: #ecf5ff !important;
 }
+// .show-propover-choose-item {
+//     display: flex;
+//     align-items: center;
+//     margin: 10px 0;
+//   }
+// .show-propover-choose-item-title {
+//   width: 50px;
+// }
 </style>

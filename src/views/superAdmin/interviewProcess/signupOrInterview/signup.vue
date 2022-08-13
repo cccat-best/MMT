@@ -74,7 +74,8 @@ export default {
   methods: {
     //最后一页点击取消回到第一页
     cancel() {
-      this.showactive = 1
+      this.showactive = 3
+      this.$refs.base.escEdit()
     },
     // 检测用户是否设置过问题
     getQues() {
@@ -93,7 +94,7 @@ export default {
     },
     // 退出编辑模式
     exitEdit() {
-      this.$refs.time.escEdit()
+      // this.$refs.time.escEdit()
       this.$refs.base.escEdit()
     }
   },
