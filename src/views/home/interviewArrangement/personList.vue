@@ -3,7 +3,7 @@
     <!-- 面试次序 -->
     <div class="dingwei">
       <div>
-        <div class="btn-group" @click="pdBtn" style="border-radius: 50%">
+        <div class="btn-group" @click="pdBtn" style="border-radius: 40%">
           <button type="button" class="btn btn1 btn0" ref="btn1">一面</button>
           <button type="button" class="btn btn2" ref="btn2">二面</button>
           <button type="button" class="btn btn3" ref="btn3">三面</button>
@@ -392,7 +392,7 @@ export default {
         //一面数据发送请求
         let url = 'api/interview-arrangement/info/like'
         let params = {
-          admissionId: sessionStorage['homeAdmissionId']
+          admissionId: 20212803
         }
         this.$http
           .get(url, params)
@@ -424,7 +424,7 @@ export default {
         //二面数据发送请求
         let url = 'api/interview-arrangement/info/like'
         let params = {
-          admissionId: sessionStorage['homeAdmissionId'],
+          admissionId: 20212803,
           round: 2
         }
         this.$http
@@ -457,7 +457,7 @@ export default {
         //三面数据发送请求
         let url = 'api/interview-arrangement/info/like'
         let params = {
-          admissionId: sessionStorage['homeAdmissionId'],
+          admissionId: 20212803,
           round: 3
         }
         this.$http
@@ -482,22 +482,19 @@ export default {
             console.log(error)
           })
       }
-      this.$bus.$emit('arrangeOrder', this.order)
+      this.$bus.$emit('order', this.order)
     },
     getCurrentRow(row) {
-      this.$bus.$emit('arrangeSelectionName1', row.studentName)
-      this.$bus.$emit('arrangeSelectionStudentId1', row.studentId)
-      this.$bus.$emit(
-        'arrangeSelectionDepartmentName',
-        row.departmentName[0].name
-      )
+      this.$bus.$emit('selectionName1', row.studentName)
+      this.$bus.$emit('selectionStudentId1', row.studentId)
+      this.$bus.$emit('selectiondepartmentName', row.departmentName[0].name)
     }
   }
   // created() {
   //   //一面数据发送请求，初始页面渲染
   //   let url = 'api/interview-arrangement/info/like'
   //   let params = {
-  //     admissionId: sessionStorage['homeAdmissionId']
+  //     admissionId: 20212803
   //   }
   //   this.$http
   //     .get(url, params)
@@ -556,11 +553,11 @@ export default {
   text-decoration: none;
 }
 .btn1 {
-  border-radius: 47% 0 0 47%;
+  border-radius: 40% 0 0 40%;
   border-right: 0;
 }
 .btn3 {
-  border-radius: 0 47% 47% 0;
+  border-radius: 0 40% 40% 0;
   border-left: 0;
 }
 .search {

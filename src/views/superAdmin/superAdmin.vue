@@ -189,9 +189,6 @@ export default {
       if (to.path === '/superAdmin/process') this.defaultActiveItem = '3'
       if (to.path === '/superAdmin/accountManage') this.defaultActiveItem = '4'
     }
-  },
-  mounted() {
-    this.organizationName = sessionStorage.getItem('loginOrganizationName')
   }
 }
 </script>

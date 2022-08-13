@@ -33,12 +33,22 @@
         class="rightTop"
         style="display: flex; min-width: 300px; justify-content: right"
       >
-        <img
-          v-if="this.isSuper"
-          src="../assets/img/admin.png"
-          alt=""
-          style="height: 30px; width: 30px"
-        />
+        <el-tooltip
+          class="item"
+          effect="dark"
+          content="点击此处进入超级管理"
+          placement="bottom"
+        >
+          <span>
+            <img
+              v-if="this.isSuper"
+              src="../assets/img/admin.png"
+              alt=""
+              style="height: 30px; width: 30px; cursor: pointer"
+              @click="superAdmin"
+            />
+          </span>
+        </el-tooltip>
         <el-button
           class="color-change"
           type="text"
@@ -115,9 +125,13 @@
               </div>
 
               <el-dropdown-item divided>
-                <el-dropdown @command="changeOrganization" style="width: 140px">
+                <el-dropdown
+                  @command="changeOrganization"
+                  style="width: 140px; text-align: center"
+                >
                   <span class="el-dropdown-link">
-                    切换社团<i class="el-icon-arrow-down el-icon--right"></i>
+                    切换社团
+                    <!-- <i class="el-icon-arrow-down el-icon--right"></i> -->
                   </span>
                   <!-- 贺节介建议这里的下拉框改成向左拉开，不过我不会 -->
                   <el-dropdown-menu slot="dropdown">
@@ -144,7 +158,11 @@
                 </el-dropdown>
               </el-dropdown-item>
 
-              <el-dropdown-item divided>
+              <el-dropdown-item
+                divided
+                @click.native="quitLogin"
+                style="text-align: center"
+              >
                 <el-button
                   type="text"
                   @click="quitLogin"
@@ -229,8 +247,8 @@ export default {
             break
           }
           default: {
+            // this.$message.error(res.message)
             throw new Error(JSON.stringify(res))
-            // this.$message.error(JSON.stringify(res))
           }
         }
       } catch (err) {
@@ -252,8 +270,8 @@ export default {
             break
           }
           default: {
+            // this.$message.error(res.message)
             throw new Error(JSON.stringify(res))
-            // this.$message.error(JSON.stringify(res))
           }
         }
       } catch (err) {

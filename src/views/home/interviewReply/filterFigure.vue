@@ -170,10 +170,9 @@ export default {
       this.departmentName = document.activeElement.innerText
       console.log(this.departmentId)
       console.log(this.departmentName)
-      sessionStorage['replyDepartmentId'] = this.departmentId
-      sessionStorage['replyDepartmentName'] = this.departmentName
-      this.$bus.$emit('replyDepartmentId', this.departmentId)
-      this.$bus.$emit('replyDepartmentName', this.departmentName)
+      sessionStorage['departmentId'] = this.departmentId
+      sessionStorage['departmentName'] = this.departmentName
+      this.$bus.$emit('departmentId', this.departmentId)
     },
     clRoom() {
       let roomBtn = document.querySelectorAll('.roomBtn')
@@ -183,49 +182,48 @@ export default {
       document.activeElement.classList.add('clBtn')
       this.roomId = document.activeElement.id
       console.log(this.roomId)
-      this.$bus.$emit('replyRoomId', this.roomId)
+      sessionStorage['roomId'] = this.roomId
+      this.$bus.$emit('roomId', this.roomId)
     }
   },
   created() {
-    this.$bus.$on('replyWin', (data) => {
+    this.$bus.$on('win', (data) => {
       this.win = data
     }),
-      this.$bus.$on('replyPass', (data) => {
+      this.$bus.$on('pass', (data) => {
         this.pass = data
       }),
-      this.$bus.$on('replyWait', (data) => {
+      this.$bus.$on('wait', (data) => {
         this.wait = data
       }),
-      this.$bus.$on('replyNedit', (data) => {
+      this.$bus.$on('nedit', (data) => {
         this.nedit = data
       }),
-      this.$bus.$on('replyTotal', (data) => {
+      this.$bus.$on('total', (data) => {
         this.total = data
       })
   },
   mounted() {
     this.drawChar()
-    let admissionId = 2
-    let url1 = `api/interview-reply/department/${admissionId}/`
+    let admissionId = 4
+    let url1 = `api/interview-reply/department/${admissionId}`
     this.$http
       .get(url1)
       .then((response) => {
-        console.log(response)
         let department = response.data.data.department
         department.forEach((element) => {
           this.department.push(element)
         })
+        // console.log(this.department)
       })
       .catch((error) => {
         console.log(error)
       })
 
-    let url2 = `api/interview-reply/room/${admissionId}/`
+    let url2 = `api/interview-reply/room/${admissionId}`
     this.$http
       .get(url2)
       .then((response) => {
-        console.log(response)
-
         let room = response.data.data.room
         room.forEach((element) => {
           this.room.push(element)
@@ -237,11 +235,11 @@ export default {
       })
   },
   beforeDestroy() {
-    this.$bus.$off('replyWin')
-    this.$bus.$off('replyPass')
-    this.$bus.$off('replyWait')
-    this.$bus.$off('replyNedit')
-    this.$bus.$off('replyTotal')
+    this.$bus.$off('win')
+    this.$bus.$off('pass')
+    this.$bus.$off('wait')
+    this.$bus.$off('nedit')
+    this.$bus.$off('total')
   }
 }
 </script>

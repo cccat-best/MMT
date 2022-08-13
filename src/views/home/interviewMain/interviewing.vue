@@ -167,17 +167,16 @@ export default {
       card.percentage = Math.round((card.interviewNum / card.totalNum) * 100)
     },
     getNowRoomData(roomId) {
-      console.log(roomId)
-      this.$http
-        .get('/api/interview-data/ongoing/room/back', {
-          admissionId: 1,
-          organizationId: 1,
-          departmentId: 1,
-          roomId: roomId
-        })
-        .then((res) => {
-          console.log(res)
-        })
+      // console.log(roomId)
+      this.$http.get('/api/interview-data/ongoing/room/back', {
+        admissionId: 1,
+        organizationId: 1,
+        departmentId: 1,
+        roomId: roomId
+      })
+      // .then((res) => {
+      // console.log(res)
+      // })
     },
     //为数组中对象的每一项添加新的属性
     mergeObj(arr, obj) {

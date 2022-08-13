@@ -49,10 +49,10 @@ export default {
   align-items: center;
   background-color: white;
   border-radius: 15px;
-  margin-right: 1.5%;
+  margin-right: 2%;
 }
 .right {
-  width: 42.5%;
+  width: 42%;
   height: 100%;
   display: flex;
   flex-direction: column;
