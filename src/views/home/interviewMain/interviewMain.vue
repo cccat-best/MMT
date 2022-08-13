@@ -12,13 +12,13 @@ export default {
         })
         .then((res) => {
           if (res.data.data.admissionStatus === '面试中') {
-            this.$router.push('/home/interviewing')
+            this.$router.push('interviewing')
           }
           if (res.data.data.admissionStatus === '面试中') {
-            this.$router.push('/home/interviewing')
+            this.$router.push('interviewing')
           }
           if (res.data.data.admissionStatus === '面试中') {
-            this.$router.push('/home/interviewing')
+            this.$router.push('interviewing')
           }
         })
     }

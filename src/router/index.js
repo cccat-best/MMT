@@ -88,6 +88,27 @@ const routes = [
         component: () => import('../views/home/interviewMain/interviewMain.vue')
       },
       {
+        //看板面试前
+        path: 'interviewBefore',
+        component: () =>
+          import('../views/home/interviewMain/interviewBefore.vue')
+      },
+      {
+        //看板面试中
+        path: 'interviewing',
+        component: () => import('../views/home/interviewMain/interviewing.vue')
+      },
+      {
+        //看板面试后
+        path: 'interviewAfter',
+        component: () =>
+          import('../views/home/interviewMain/interviewAfter.vue')
+      },
+      {
+        path: 'dataBoard',
+        component: () => import('../views/home/dataBoard/main.vue')
+      },
+      {
         //面试流程页面
         path: 'process',
         component: () => import('../views/superAdmin/interviewProcess/main.vue')
