@@ -80,7 +80,56 @@
               >
                 <el-input v-model="ruleForm.email" disabled></el-input>
               </el-form-item>
+              <el-form-item
+                label="身高"
+                prop="height"
+                v-if="ruleForm.height != null"
+              >
+                <el-input v-model="ruleForm.height" disabled></el-input>
+              </el-form-item>
+
+              <el-form-item
+                label="体重"
+                prop="weight"
+                v-if="ruleForm.weight != null"
+              >
+                <el-input v-model="ruleForm.weight" disabled></el-input>
+              </el-form-item>
             </el-form>
+          </div>
+          <!-- 自定义基本问题 -->
+          <div class="basequestion">
+            <!-- 基本问题（填空） -->
+            <div
+            class="question1"
+            v-for="(item, index) in basicQuestions1"
+            :key="index"
+            >
+              <div class="problem">填空：{{ item.question }}</div>
+              <div class="answer">{{ item.answer }}</div>
+            </div>
+            <!-- 基本问题（选择） -->
+            <div class="question2">
+              <div
+                class="problem"
+                v-for="(item, index) in basicQuestions2"
+                :key="index"
+              >
+                <div style="margin-right: 40px">
+                  选择：{{ item.question }}
+                </div>
+                <div class="answer">
+                  <el-radio
+                    disabled
+                    v-model="item.answer"
+                    :label="item1"
+                    v-for="(item1, index) in item.choices"
+                    :key="index"
+                    >{{ item1 }}</el-radio
+                  >
+                </div>
+              </div>
+            </div>
           </div>
           <!-- 部门问题模块 -->
           <div class="two">
@@ -288,13 +337,17 @@ export default {
       resumeDialogVisible: false,
       // 学号,由主页传过来
       studentId: '',
-      admissionId: 1,
+      admissionId: sessionStorage.getItem('homeAdmissionId'),
       round: 1,
       organizationId: sessionStorage.getItem('loginOrganizationId'),
       //选择问题的渲染
       radio: '选中且禁用',
       //简历表单数据
       ruleForm: {},
+      //基本问题（填空）
+      basicQuestions1:[],
+      // 基本问题（选择）
+      basicQuestions2:[],
       //部门问题数组（填空）
       departmentQuestion1: [],
       // 部门问题数组（选择）
@@ -866,6 +919,10 @@ export default {
       this.bigQuestion1 = []
       //综合问题数组（选择）
       this.bigQuestion2 = []
+      //基本问题数组（填空）
+      this.basicQuestions1=[]
+      //基本问题数组（选择）
+      this.basicQuestions2=[]
       // let studentId = this.studentId
       // let admissionId = this.admissionId
       // let url = `api/student/info/show?studentId=${studentId}&admissionId=${admissionId}`
@@ -882,8 +939,34 @@ export default {
         major: '计算机科学与技术',
         classNum: '1班',
         gender: 2,
-        qq: null,
-        email: null,
+        qq: '2310768059',
+        email: '15155',
+        weight:50,
+        height:180.5,
+        basicQuestions: [
+            {
+                multipleChoice: 0,
+                question: "你的暑假安排",
+                answer: "吃饭吃饭吃饭睡觉睡觉睡觉"
+            },
+            {
+                multipleChoice: 0,
+                question: "你的学习进度",
+                answer: "百分之八十"
+            },
+            {
+                multipleChoice: 1,
+                choices: ['重庆火锅', '四川火锅', '北京火锅'],
+                question: '喜欢重庆火锅还是四川火锅',
+                answer: '重庆火锅'
+            },
+            {
+                multipleChoice: 1,
+                choices: ['吃饭', '睡觉', '都喜欢'],
+                question: '喜欢吃饭还是睡觉',
+                answer: '吃饭'
+            },
+        ],
         questions: [
           {
             department: '部门问题',
@@ -936,7 +1019,16 @@ export default {
       }
       //赋值
       this.ruleForm = data
-      //数据分类
+      //数据分类（basequestion）
+      data.basicQuestions.forEach((item)=>{
+        if(item.multipleChoice==0){
+          this.basicQuestions1.push(item)
+        }
+        if (item.multipleChoice == 1) {
+          this.basicQuestions2.push(item)
+        }
+      })
+      //数据分类（部门和综合问题）
       data.questions.forEach((item) => {
         if (item.department == '部门问题') {
           if (item.multipleChoice == 0) {
@@ -1020,6 +1112,43 @@ export default {
         justify-content: flex-start;
       }
     }
+    .basequestion{
+      .question1 {
+          // background-color: rgb(189, 112, 112);
+          margin-top: 20px;
+          .problem {
+            font-size: 18px;
+            text-align: left;
+          }
+          .answer {
+            margin-top: 20px;
+            text-align: left;
+            margin-left: 30px;
+            margin-right: 30px;
+            font-size: 15px;
+            background-color: #f5f7fa;
+            padding: 17px;
+          }
+        }
+        .question2 {
+          // background-color: rgb(123, 207, 208);
+          margin-top: 20px;
+          .problem {
+            font-size: 18px;
+            text-align: left;
+            margin-bottom: 15px;
+          }
+          .answer {
+            margin-top: 20px;
+            text-align: left;
+            margin-left: 30px;
+            margin-right: 30px;
+            font-size: 15px;
+            background-color: #f5f7fa;
+            padding: 17px;
+          }
+        }
+    }
     //部门问题和综合问题模块
     .two {
       // background-color: rgb(82, 199, 154);
@@ -1052,6 +1181,7 @@ export default {
         .problem {
           font-size: 18px;
           text-align: left;
+          margin-bottom: 15px;
         }
         .answer {
           margin-top: 20px;

@@ -355,13 +355,14 @@ export default {
     openChangeDialog(data) {
       this.$refs.changeDialog.changeDialogVisible = true
       console.log(data)
-      this.$refs.changeDialog.studentId = true
+      this.$refs.changeDialog.studentId = data.stuNum
+      this.$refs.changeDialog.Mymounted()
     },
     // 简历弹窗
-    openResumeDialog() {
+    openResumeDialog(data) {
       this.$refs.resumeDialog.resumeDialogVisible = true
-      this.$refs.resumeDialog.studentId = true
-      // this.$refs.resumeDialog.demo()
+      this.$refs.resumeDialog.studentId = data.stuNum
+      this.$refs.resumeDialog.Mymounted()
       console.log(data)
     },
     // 手动刷新

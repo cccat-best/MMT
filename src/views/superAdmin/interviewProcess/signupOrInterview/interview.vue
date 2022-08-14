@@ -52,9 +52,10 @@
                   <template slot-scope="scope">
                     <el-input
                       size="mini"
-                      type="textarea"
+                      type="number"
                       :rows="1"
                       resize="none"
+                      class="score"
                       v-model="scope.row.score"
                     ></el-input>
                   </template>
@@ -183,18 +184,18 @@
     <!-- 左边导航条 -->
     <div class="left1">
       <div class="nav1">
-        <a href="#one" :class="['text', isSelect1() ? 'blue' : '']"
-          >面试问题设置</a
+        <span :class="['text', isSelect1() ? 'blue' : '']"
+          >面试问题设置</span
         >
       </div>
       <div class="nav1">
-        <a href="#two" :class="['text', isSelect2() ? 'blue' : '']"
-          >面试文案编辑</a
+        <span :class="['text', isSelect2() ? 'blue' : '']"
+          >面试文案编辑</span
         >
       </div>
       <div class="nav1">
-        <a href="#three" :class="['text', isSelect3() ? 'blue' : '']"
-          >结果通知编辑</a
+        <span :class="['text', isSelect3() ? 'blue' : '']"
+          >结果通知编辑</span
         >
       </div>
     </div>
@@ -833,6 +834,14 @@ export default {
       margin-left: 32px;
       color: rgb(82, 82, 82);
     }
+    .score{
+      // background-color: rgb(184, 121, 121);
+      width: 48px;
+    }
+    // /deep/.el-input {
+    //   font-size: 18px;
+    //   width: 100px;
+    // }
     .el-table {
       margin-left: 3%;
     }
@@ -947,5 +956,10 @@ export default {
 /deep/.el-input {
   font-size: 18px;
   width: 255px;
+}
+/deep/.el-input--mini .el-input__inner{
+  font-size: 15px;
+  padding: 0 3px;
+
 }
 </style>

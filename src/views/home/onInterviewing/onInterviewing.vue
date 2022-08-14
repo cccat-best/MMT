@@ -19,6 +19,7 @@
     </div>
     <!-- 改变面试地点 -->
     <div class="two">
+      <span class="address">请选择面试地点:</span>
       <el-select v-model="position" placeholder="选择面试地点" class="select">
         <el-option
           v-for="(item, index) in options"
@@ -50,6 +51,7 @@
       <!-- 点击弹出的页面 -->
       <el-dialog title="签到二维码" :visible.sync="dialogVisible1" width="30%">
         <img style="width: 300px; height: 300px; margin: 0 auto" :src="code" />
+        <div class="tips">请于面试开始前三十分钟之内扫码</div>
         <span slot="footer" class="dialog-footer">
           <el-button type="primary" @click="dialogVisible1 = false"
             >关 闭</el-button
@@ -203,7 +205,57 @@
                             disabled
                           ></el-input>
                         </el-form-item>
+
+                        <el-form-item
+                          label="身高"
+                          prop="height"
+                          v-if="ruleForm.height != null"
+                        >
+                          <el-input v-model="ruleForm.height" disabled></el-input>
+                        </el-form-item>
+
+                        <el-form-item
+                          label="体重"
+                          prop="weight"
+                          v-if="ruleForm.weight != null"
+                        >
+                          <el-input v-model="ruleForm.weight" disabled></el-input>
+                        </el-form-item>
                       </el-form>
+                    </div>
+                    <!-- 自定义基本问题 -->
+                    <div class="basequestion">
+                      <!-- 基本问题（填空） -->
+                      <div
+                      class="question1"
+                      v-for="(item, index) in basicQuestions1"
+                      :key="index"
+                      >
+                        <div class="problem">填空：{{ item.question }}</div>
+                        <div class="answer">{{ item.answer }}</div>
+                      </div>
+                      <!-- 基本问题（选择） -->
+                      <div class="question2">
+                        <div
+                          class="problem"
+                          v-for="(item, index) in basicQuestions2"
+                          :key="index"
+                        >
+                          <div style="margin-right: 40px">
+                            选择：{{ item.question }}
+                          </div>
+                          <div class="answer">
+                            <el-radio
+                              disabled
+                              v-model="item.answer"
+                              :label="item1"
+                              v-for="(item1, index) in item.choices"
+                              :key="index"
+                              >{{ item1 }}</el-radio
+                            >
+                          </div>
+                        </div>
+                      </div>
                     </div>
                     <!-- 部门问题模块 -->
                     <div class="department">
@@ -357,7 +409,8 @@
 export default {
   data() {
     return {
-      admissionId: 1,
+      admissionId: sessionStorage.getItem('homeAdmissionId'),
+      //待拿取
       departmentId: 1,
       round: 1,
       //进度条定时器
@@ -394,6 +447,10 @@ export default {
       tableData: [],
       //简历表单数据
       ruleForm: {},
+      //基本问题（填空）
+      basicQuestions1:[],
+      // 基本问题（选择）
+      basicQuestions2:[],
       //部门问题数组（填空）
       departmentQuestion1: [],
       // 部门问题数组（选择）
@@ -488,10 +545,10 @@ export default {
       // 模拟数据
       let data = [
         {
-          total: 0,
+          total: 8,
           startTime: '00:00',
           endTime: '01:00',
-          proportion: 100
+          proportion: 90
         },
         {
           total: 12,
@@ -543,7 +600,6 @@ export default {
       //生成二维码
       // let sendData ={
       //     admissionId: this.admissionId,
-      //     departmentId: this.departmentId,
       //     round: this.round,
       //     address: this.position
       // }
@@ -559,7 +615,7 @@ export default {
       // }
       //真实数据
       //   let data=res.data
-      //   this.code=data.message
+        // this.code=data.message
       // })
       // .catch(() => {
       //   this.$message({
@@ -680,15 +736,15 @@ export default {
     //获取表格数据（返回空数据）
     getTableData() {
       // console.log('地点'+this.position,'页数'+this.currentPage,'搜索'+this.search)
-      let pageNum = this.currentPage
-      let address = this.position
-      let admissionId = this.admissionId
-      let keyword = this.search
-      let url = `api/real-time-interview/info/all?pageNum=${pageNum}&address=${address}&admissionId=${admissionId}&keyword=${keyword}`
-      let get = this.$http.get(url)
-      get
-        .then((res) => {
-          console.log(res, '获取表格数据')
+      // let pageNum = this.currentPage
+      // let address = this.position
+      // let admissionId = this.admissionId
+      // let keyword = this.search
+      // let url = `api/real-time-interview/info/all?pageNum=${pageNum}&address=${address}&admissionId=${admissionId}&keyword=${keyword}`
+      // let get = this.$http.get(url)
+      // get
+      //   .then((res) => {
+      //     console.log(res, '获取表格数据')
           this.loading = false
           // 模拟数据
           let data = {
@@ -783,16 +839,16 @@ export default {
           })
           this.totalNum = data.total
           this.tableData = data.realTimeInfoParamList
-        })
-        .catch(() => {
-          this.$message({
-            showClose: true,
-            message: '获取表格数据失败',
-            type: 'error',
-            center: true,
-            duration: 2000
-          })
-        })
+        // })
+        // .catch(() => {
+        //   this.$message({
+        //     showClose: true,
+        //     message: '获取表格数据失败',
+        //     type: 'error',
+        //     center: true,
+        //     duration: 2000
+        //   })
+        // })
     },
     //点击搜索
     getSearch() {
@@ -814,6 +870,10 @@ export default {
       this.bigQuestion1 = []
       //综合问题数组（选择）
       this.bigQuestion2 = []
+      //基本问题数组（填空）
+      this.basicQuestions1=[]
+      //基本问题数组（选择）
+      this.basicQuestions2=[]
       this.getResume()
     },
     //获取简历数据(后端没数据目前不能请求)
@@ -834,8 +894,29 @@ export default {
         major: '计算机科学与技术',
         classNum: '1班',
         gender: 2,
-        qq: null,
-        email: null,
+        qq: '2310768059',
+        email: '2310789@qq.com',
+        height: 180.5,
+        weight: 50,
+        basicQuestions: [
+            {
+                multipleChoice: 0,
+                question: "你的暑假安排",
+                answer: "吃饭吃饭吃饭睡觉睡觉睡觉"
+            },
+            {
+                multipleChoice: 1,
+                choices: ['重庆火锅', '四川火锅', '北京火锅'],
+                question: '喜欢重庆火锅还是四川火锅',
+                answer: '重庆火锅'
+            },
+            {
+                multipleChoice: 1,
+                choices: ['吃饭', '睡觉', '都喜欢'],
+                question: '喜欢吃饭还是睡觉',
+                answer: '都喜欢'
+            },
+        ],
         questions: [
           {
             department: '部门问题',
@@ -888,7 +969,16 @@ export default {
       }
       //赋值
       this.ruleForm = data
-      //数据分类
+      //数据分类（basequestion）
+      data.basicQuestions.forEach((item)=>{
+        if(item.multipleChoice==0){
+          this.basicQuestions1.push(item)
+        }
+        if (item.multipleChoice == 1) {
+          this.basicQuestions2.push(item)
+        }
+      })
+      //数据分类（部门和综合问题）
       data.questions.forEach((item) => {
         if (item.department == '部门问题') {
           if (item.multipleChoice == 0) {
@@ -980,8 +1070,16 @@ export default {
     .select {
       // margin-top: 15px;
       width: 200px;
+      margin-left: 30px;
+      float: left;
+    }
+    .address{
       margin-left: 20px;
       float: left;
+      font-size: 20px;
+      margin-top: 5px;
+      color: rgb(82, 82, 82);
+      border-bottom: 2px solid rgb(213, 211, 211);
     }
   }
   .three {
@@ -990,7 +1088,7 @@ export default {
     width: 230px;
     text-align: left;
     margin-left: 20px;
-    margin-top: 10px;
+    margin-top: 18px;
     font-size: 20px;
     color: rgb(82, 82, 82);
     border-bottom: 2px solid rgb(213, 211, 211);
@@ -1014,10 +1112,21 @@ export default {
       position: absolute;
       left: 230px;
     }
+    .tips{
+      font-size: 17px;
+    }
+    /deep/.el-dialog {
+        height: calc(100vh - 250px);
+        // background-color: rgb(58, 145, 129);
+        min-width: 400px;
+        min-height: 485px;
+        // min-height: calc(100vh - 150px);
+        margin: 0 auto 30px;
+      }
   }
   .five {
     .table {
-      height: calc(100vh - 400px);
+      height: calc(100vh - 403px);
     }
     .resumeTable {
       /deep/.el-dialog__body {
@@ -1118,13 +1227,51 @@ export default {
               }
             }
           }
+          .basequestion{
+            .question1 {
+                // background-color: rgb(189, 112, 112);
+                margin-top: 20px;
+                .problem {
+                  font-size: 18px;
+                  text-align: left;
+                }
+                .answer {
+                  margin-top: 20px;
+                  text-align: left;
+                  margin-left: 30px;
+                  margin-right: 30px;
+                  font-size: 15px;
+                  background-color: #f5f7fa;
+                  padding: 17px;
+                }
+              }
+              .question2 {
+                // background-color: rgb(123, 207, 208);
+                margin-top: 20px;
+                .problem {
+                  font-size: 18px;
+                  text-align: left;
+                  margin-bottom: 15px;
+                }
+                .answer {
+                  margin-top: 20px;
+                  text-align: left;
+                  margin-left: 30px;
+                  margin-right: 30px;
+                  font-size: 15px;
+                  background-color: #f5f7fa;
+                  padding: 17px;
+                }
+              }
+            }
+          }
         }
-      }
     }
     .result {
       width: 700px;
       height: 350px;
-      // background-color: rgb(59, 137, 123);
+      min-width: 400px;
+      background-color: white;
       .title {
         font-size: 28px;
         color: rgb(82, 82, 82);
@@ -1135,16 +1282,20 @@ export default {
         margin-top: 15px;
         margin-left: 43px;
         width: 600px;
+        // width: 90%;
         height: 250px;
       }
-      /deep/.el-dialog {
-        height: calc(100vh - 180px);
-        min-width: 840px;
-        min-height: 610px;
+
+
+    }
+    /deep/.el-dialog {
+        height: calc(100vh - 242px);
+        // background-color: rgb(58, 145, 129);
+        min-width: 750px;
+        min-height: 500px;
         // min-height: calc(100vh - 150px);
         margin: 0 auto 30px;
       }
-    }
   }
   .six {
     height: 45px;
