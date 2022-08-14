@@ -76,8 +76,27 @@
             style="display: flex; justify-content: center"
           >
             <!-- 控制用户输入选择还是文字题 -->
-            <el-button size="small" @click="chooseAdd = 1">填空</el-button>
-            <el-button size="small" @click="chooseAdd = 2">选择</el-button>
+            <!-- <el-button size="small" @click="chooseAdd = 1" ref="synthAddTextChose">填空</el-button>
+          <el-button size="small" @click="chooseAdd = 2">选择</el-button> -->
+            <div
+              @click="chooseAdd = 1"
+              :class="[
+                'add-chose-button',
+                chooseAdd == 1 ? 'add-chose-button-active' : ''
+              ]"
+            >
+              填空
+            </div>
+            <div
+              @click="chooseAdd = 2"
+              :class="[
+                'add-chose-button',
+                chooseAdd == 2 ? 'add-chose-button-active' : ''
+              ]"
+              style="margin-left: 10px"
+            >
+              选择
+            </div>
           </div>
           <!-- 填空题收集  v-show判断-->
           <div v-show="chooseAdd === 1">
@@ -168,7 +187,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 export default {
   props: ['allQues'],
   data() {
@@ -197,6 +216,13 @@ export default {
     }
   },
   watch: {
+    addShow(newV) {
+      if (newV && !this.isEdit) {
+        this.addShow = false
+        this.$refs.synthPopover.doClose()
+        return this.$message.error('非编辑模式')
+      }
+    },
     //弹出框位置修正
     chooseAdd() {
       this.$nextTick(() => {
@@ -223,6 +249,10 @@ export default {
     ])
   },
   methods: {
+    ...mapMutations('problem', ['escEdit']),
+    // showIsEdit() {
+    //   if(!this.isEdit) return this.$message.error('非编辑模式')
+    // },
     //动态增减选项
     removeDomain(item) {
       if (this.form.domains.length === 2) {
@@ -245,7 +275,7 @@ export default {
     },
     //添加自定义选择
     addChoseList() {
-      if (!this.isEdit) return this.$message.error('非编辑模式')
+      // if (!this.isEdit) return this.$message.error('非编辑模式')
       if (this.comprehensiveQuestionsList.length >= 5)
         return this.$message.error('最多自定义五个问题')
       if (this.text2 == '') {
@@ -315,7 +345,7 @@ export default {
     },
     //添加自定义文本问题
     addTextQues() {
-      if (!this.isEdit) return this.$message.error('非编辑模式')
+      // if (!this.isEdit) return this.$message.error('非编辑模式')
       //判断自定义问题是否超过三个
       if (this.comprehensiveQuestionsList.length >= 5)
         return this.$message.error('最多自定义五个问题')
@@ -369,6 +399,7 @@ export default {
     //如果点击取消回到时间选择页
     cancel() {
       this.$parent.cancel()
+      this.escEdit()
     },
     //是否发送请求给后端
     isSend() {
@@ -420,7 +451,7 @@ export default {
             allocated: this.allocated,
             comprehensiveQuestionsList: this.comprehensiveQuestionsList
           }
-          // console.log(qustionList)
+          console.log(qustionList)
           //调用函数发送请求
           this.sendTo(qustionList)
         })
@@ -437,6 +468,9 @@ export default {
         .then((res) => {
           if (res.data.code !== '00000')
             return this.$message.error('提交失败' + res.data.message)
+          //成功提交退出编辑模式
+          this.escEdit()
+          this.$parent.exitEdit()
           return this.$message.success('提交成功')
         })
         .catch((err) => err)
@@ -545,4 +579,39 @@ select:focus {
   outline: none;
   border: 1px solid #535858 !important;
 }
+.add-chose-button {
+  width: 56px;
+  height: 32px;
+  font-size: 12px;
+  border: 1px solid #dcdfe6;
+  cursor: pointer;
+  background: #fff;
+  color: #606266;
+  border-radius: 3px;
+  text-align: center;
+  line-height: 32px;
+  &:hover {
+    color: #409eff;
+    border-color: #c6e2ff;
+    background-color: #ecf5ff;
+  }
+  // &:active {
+  //   color: #3a8ee6;
+  //   border-color: #3a8ee6;
+  //   outline: 0;
+  // }
+}
+.add-chose-button-active {
+  color: #409eff !important;
+  border-color: #c6e2ff !important;
+  background-color: #ecf5ff !important;
+}
+// .show-propover-choose-item {
+//     display: flex;
+//     align-items: center;
+//     margin: 10px 0;
+//   }
+// .show-propover-choose-item-title {
+//   width: 50px;
+// }
 </style>
