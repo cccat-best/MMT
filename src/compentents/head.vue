@@ -165,7 +165,6 @@
               >
                 <el-button
                   type="text"
-                  @click="quitLogin"
                   class="el-dropdown-link"
                   style="padding: 0px; margin: 0px"
                   >退出登录</el-button
