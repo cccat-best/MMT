@@ -93,6 +93,7 @@ export default {
     if (this.permission == 'super_admin') {
       this.isSuper = true
     }
+    this.loginOrganizationName = sessionStorage.getItem('loginOrganizationName')
   },
   mounted() {
     // 解决defaultActiveItem 刷新问题
@@ -102,17 +103,19 @@ export default {
     if (this.$route.path == '/home/onInterviewing') this.defaultActiveItem = '4'
     if (this.$route.path == '/home/reply') this.defaultActiveItem = '5'
     if (this.$route.path == '/home/resultInform') this.defaultActiveItem = '5'
-    let url =`api/organization/interview/id-all`
-    let params={
+    let url = 'api/organization/interview/id-all'
+    let params = {
       organizationId: sessionStorage['loginOrganizationId']
     }
     this.$http
-      .get(url,params)
-      .then((res)=>{
-        sessionStorage['homeAdmissionId']=res.data.data.admissionIdList[0].admissionId
+      .get(url, params)
+      .then((response) => {
+        // console.log(response)
+        sessionStorage['homeAdmissionId'] =
+          response.data.data.admissionIdList[0].admissionId
       })
-      .catch((err)=>{
-        console.log(err)
+      .catch((error) => {
+        console.log(error)
       })
   },
   methods: {
@@ -133,6 +136,7 @@ export default {
             break
           }
           default: {
+            // this.$message.error(res.message)
             throw new Error(JSON.stringify(res))
           }
         }

@@ -123,7 +123,7 @@ export default {
         {
           iconClass: 'el-icon-s-home',
           id: '1',
-          pagePath: '/superAdmin/interviewTable',
+          pagePath: '/superAdmin/interviewMain',
           title: '面试面板'
         },
         {
@@ -151,7 +151,7 @@ export default {
   },
   created() {
     // 解决defaultActiveItem 刷新问题
-    if (this.$route.path === '/superAdmin/interviewTable')
+    if (this.$route.path === '/superAdmin/interviewMain')
       this.defaultActiveItem = '1'
     if (this.$route.path === '/superAdmin/informationSet/informationSetSaved')
       this.defaultActiveItem = '2'
