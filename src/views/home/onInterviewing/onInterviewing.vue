@@ -211,7 +211,10 @@
                           prop="height"
                           v-if="ruleForm.height != null"
                         >
-                          <el-input v-model="ruleForm.height" disabled></el-input>
+                          <el-input
+                            v-model="ruleForm.height"
+                            disabled
+                          ></el-input>
                         </el-form-item>
 
                         <el-form-item
@@ -219,7 +222,10 @@
                           prop="weight"
                           v-if="ruleForm.weight != null"
                         >
-                          <el-input v-model="ruleForm.weight" disabled></el-input>
+                          <el-input
+                            v-model="ruleForm.weight"
+                            disabled
+                          ></el-input>
                         </el-form-item>
                       </el-form>
                     </div>
@@ -227,9 +233,9 @@
                     <div class="basequestion">
                       <!-- 基本问题（填空） -->
                       <div
-                      class="question1"
-                      v-for="(item, index) in basicQuestions1"
-                      :key="index"
+                        class="question1"
+                        v-for="(item, index) in basicQuestions1"
+                        :key="index"
                       >
                         <div class="problem">填空：{{ item.question }}</div>
                         <div class="answer">{{ item.answer }}</div>
@@ -448,9 +454,9 @@ export default {
       //简历表单数据
       ruleForm: {},
       //基本问题（填空）
-      basicQuestions1:[],
+      basicQuestions1: [],
       // 基本问题（选择）
-      basicQuestions2:[],
+      basicQuestions2: [],
       //部门问题数组（填空）
       departmentQuestion1: [],
       // 部门问题数组（选择）
@@ -615,7 +621,7 @@ export default {
       // }
       //真实数据
       //   let data=res.data
-        // this.code=data.message
+      // this.code=data.message
       // })
       // .catch(() => {
       //   this.$message({
@@ -745,110 +751,110 @@ export default {
       // get
       //   .then((res) => {
       //     console.log(res, '获取表格数据')
-          this.loading = false
-          // 模拟数据
-          let data = {
-            realTimeInfoParamList: [
-              {
-                studentId: 20200001,
-                studentName: '张1',
-                className: '计算机科学与技术一班',
-                address: '北京',
-                status: 4
-              },
-              {
-                studentId: 20200002,
-                studentName: '张2',
-                className: '计算2',
-                address: '河北',
-                status: 4
-              },
-              {
-                studentId: 20200003,
-                studentName: '张3',
-                className: '计算机科学与技术3班',
-                address: '天津',
-                status: 5
-              },
-              {
-                studentId: 20200004,
-                studentName: '张4',
-                className: '计算机科学与技术4班',
-                address: '河南',
-                status: 5
-              },
-              {
-                studentId: 20200005,
-                studentName: '张5',
-                className: '计算机科学与技术5班',
-                address: '山东',
-                status: 4
-              },
-              {
-                sysId: 1,
-                studentId: 20200006,
-                studentName: '张6',
-                className: '计算机科学与技术6班',
-                address: '山西',
-                status: 4
-              },
-              {
-                sysId: 1,
-                studentId: 20200007,
-                studentName: '张7',
-                className: '计算机科学与技术7班',
-                address: '安徽',
-                status: 5
-              },
-              {
-                sysId: 1,
-                studentId: 20200008,
-                studentName: '张8',
-                className: '计算8',
-                address: '陕西',
-                status: 4
-              },
-              {
-                sysId: 1,
-                studentId: 20200009,
-                studentName: '张9',
-                className: '计算9',
-                address: '安徽',
-                status: 4
-              },
-              {
-                sysId: 1,
-                studentId: 20200010,
-                studentName: '张0',
-                className: '计算0',
-                address: '安徽',
-                status: 5
-              }
-            ],
-            total: 12
+      this.loading = false
+      // 模拟数据
+      let data = {
+        realTimeInfoParamList: [
+          {
+            studentId: 20200001,
+            studentName: '张1',
+            className: '计算机科学与技术一班',
+            address: '北京',
+            status: 4
+          },
+          {
+            studentId: 20200002,
+            studentName: '张2',
+            className: '计算2',
+            address: '河北',
+            status: 4
+          },
+          {
+            studentId: 20200003,
+            studentName: '张3',
+            className: '计算机科学与技术3班',
+            address: '天津',
+            status: 5
+          },
+          {
+            studentId: 20200004,
+            studentName: '张4',
+            className: '计算机科学与技术4班',
+            address: '河南',
+            status: 5
+          },
+          {
+            studentId: 20200005,
+            studentName: '张5',
+            className: '计算机科学与技术5班',
+            address: '山东',
+            status: 4
+          },
+          {
+            sysId: 1,
+            studentId: 20200006,
+            studentName: '张6',
+            className: '计算机科学与技术6班',
+            address: '山西',
+            status: 4
+          },
+          {
+            sysId: 1,
+            studentId: 20200007,
+            studentName: '张7',
+            className: '计算机科学与技术7班',
+            address: '安徽',
+            status: 5
+          },
+          {
+            sysId: 1,
+            studentId: 20200008,
+            studentName: '张8',
+            className: '计算8',
+            address: '陕西',
+            status: 4
+          },
+          {
+            sysId: 1,
+            studentId: 20200009,
+            studentName: '张9',
+            className: '计算9',
+            address: '安徽',
+            status: 4
+          },
+          {
+            sysId: 1,
+            studentId: 20200010,
+            studentName: '张0',
+            className: '计算0',
+            address: '安徽',
+            status: 5
           }
-          //真实
-          // let data=res.data.data
-          data.realTimeInfoParamList.forEach((item) => {
-            if (item.status == 4) {
-              item.status = '未签到'
-            }
-            if (item.status == 5) {
-              item.status = '已签到'
-            }
-          })
-          this.totalNum = data.total
-          this.tableData = data.realTimeInfoParamList
-        // })
-        // .catch(() => {
-        //   this.$message({
-        //     showClose: true,
-        //     message: '获取表格数据失败',
-        //     type: 'error',
-        //     center: true,
-        //     duration: 2000
-        //   })
-        // })
+        ],
+        total: 12
+      }
+      //真实
+      // let data=res.data.data
+      data.realTimeInfoParamList.forEach((item) => {
+        if (item.status == 4) {
+          item.status = '未签到'
+        }
+        if (item.status == 5) {
+          item.status = '已签到'
+        }
+      })
+      this.totalNum = data.total
+      this.tableData = data.realTimeInfoParamList
+      // })
+      // .catch(() => {
+      //   this.$message({
+      //     showClose: true,
+      //     message: '获取表格数据失败',
+      //     type: 'error',
+      //     center: true,
+      //     duration: 2000
+      //   })
+      // })
     },
     //点击搜索
     getSearch() {
@@ -871,9 +877,9 @@ export default {
       //综合问题数组（选择）
       this.bigQuestion2 = []
       //基本问题数组（填空）
-      this.basicQuestions1=[]
+      this.basicQuestions1 = []
       //基本问题数组（选择）
-      this.basicQuestions2=[]
+      this.basicQuestions2 = []
       this.getResume()
     },
     //获取简历数据(后端没数据目前不能请求)
@@ -899,23 +905,23 @@ export default {
         height: 180.5,
         weight: 50,
         basicQuestions: [
-            {
-                multipleChoice: 0,
-                question: "你的暑假安排",
-                answer: "吃饭吃饭吃饭睡觉睡觉睡觉"
-            },
-            {
-                multipleChoice: 1,
-                choices: ['重庆火锅', '四川火锅', '北京火锅'],
-                question: '喜欢重庆火锅还是四川火锅',
-                answer: '重庆火锅'
-            },
-            {
-                multipleChoice: 1,
-                choices: ['吃饭', '睡觉', '都喜欢'],
-                question: '喜欢吃饭还是睡觉',
-                answer: '都喜欢'
-            },
+          {
+            multipleChoice: 0,
+            question: '你的暑假安排',
+            answer: '吃饭吃饭吃饭睡觉睡觉睡觉'
+          },
+          {
+            multipleChoice: 1,
+            choices: ['重庆火锅', '四川火锅', '北京火锅'],
+            question: '喜欢重庆火锅还是四川火锅',
+            answer: '重庆火锅'
+          },
+          {
+            multipleChoice: 1,
+            choices: ['吃饭', '睡觉', '都喜欢'],
+            question: '喜欢吃饭还是睡觉',
+            answer: '都喜欢'
+          }
         ],
         questions: [
           {
@@ -970,8 +976,8 @@ export default {
       //赋值
       this.ruleForm = data
       //数据分类（basequestion）
-      data.basicQuestions.forEach((item)=>{
-        if(item.multipleChoice==0){
+      data.basicQuestions.forEach((item) => {
+        if (item.multipleChoice == 0) {
           this.basicQuestions1.push(item)
         }
         if (item.multipleChoice == 1) {
@@ -1073,7 +1079,7 @@ export default {
       margin-left: 30px;
       float: left;
     }
-    .address{
+    .address {
       margin-left: 20px;
       float: left;
       font-size: 20px;
@@ -1112,17 +1118,17 @@ export default {
       position: absolute;
       left: 230px;
     }
-    .tips{
+    .tips {
       font-size: 17px;
     }
     /deep/.el-dialog {
-        height: calc(100vh - 250px);
-        // background-color: rgb(58, 145, 129);
-        min-width: 400px;
-        min-height: 485px;
-        // min-height: calc(100vh - 150px);
-        margin: 0 auto 30px;
-      }
+      height: calc(100vh - 250px);
+      // background-color: rgb(58, 145, 129);
+      min-width: 400px;
+      min-height: 485px;
+      // min-height: calc(100vh - 150px);
+      margin: 0 auto 30px;
+    }
   }
   .five {
     .table {
@@ -1227,45 +1233,45 @@ export default {
               }
             }
           }
-          .basequestion{
+          .basequestion {
             .question1 {
-                // background-color: rgb(189, 112, 112);
-                margin-top: 20px;
-                .problem {
-                  font-size: 18px;
-                  text-align: left;
-                }
-                .answer {
-                  margin-top: 20px;
-                  text-align: left;
-                  margin-left: 30px;
-                  margin-right: 30px;
-                  font-size: 15px;
-                  background-color: #f5f7fa;
-                  padding: 17px;
-                }
+              // background-color: rgb(189, 112, 112);
+              margin-top: 20px;
+              .problem {
+                font-size: 18px;
+                text-align: left;
               }
-              .question2 {
-                // background-color: rgb(123, 207, 208);
+              .answer {
                 margin-top: 20px;
-                .problem {
-                  font-size: 18px;
-                  text-align: left;
-                  margin-bottom: 15px;
-                }
-                .answer {
-                  margin-top: 20px;
-                  text-align: left;
-                  margin-left: 30px;
-                  margin-right: 30px;
-                  font-size: 15px;
-                  background-color: #f5f7fa;
-                  padding: 17px;
-                }
+                text-align: left;
+                margin-left: 30px;
+                margin-right: 30px;
+                font-size: 15px;
+                background-color: #f5f7fa;
+                padding: 17px;
+              }
+            }
+            .question2 {
+              // background-color: rgb(123, 207, 208);
+              margin-top: 20px;
+              .problem {
+                font-size: 18px;
+                text-align: left;
+                margin-bottom: 15px;
+              }
+              .answer {
+                margin-top: 20px;
+                text-align: left;
+                margin-left: 30px;
+                margin-right: 30px;
+                font-size: 15px;
+                background-color: #f5f7fa;
+                padding: 17px;
               }
             }
           }
         }
+      }
     }
     .result {
       width: 700px;
@@ -1285,17 +1291,15 @@ export default {
         // width: 90%;
         height: 250px;
       }
-
-
     }
     /deep/.el-dialog {
-        height: calc(100vh - 242px);
-        // background-color: rgb(58, 145, 129);
-        min-width: 750px;
-        min-height: 500px;
-        // min-height: calc(100vh - 150px);
-        margin: 0 auto 30px;
-      }
+      height: calc(100vh - 242px);
+      // background-color: rgb(58, 145, 129);
+      min-width: 750px;
+      min-height: 500px;
+      // min-height: calc(100vh - 150px);
+      margin: 0 auto 30px;
+    }
   }
   .six {
     height: 45px;

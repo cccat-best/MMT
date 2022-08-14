@@ -131,9 +131,9 @@
         <div class="basequestion">
           <!-- 基本问题（填空） -->
           <div
-          class="question1"
-          v-for="(item, index) in basicQuestions1"
-          :key="index"
+            class="question1"
+            v-for="(item, index) in basicQuestions1"
+            :key="index"
           >
             <div class="problem">填空：{{ item.question }}</div>
             <div class="answer">{{ item.answer }}</div>
@@ -145,9 +145,7 @@
               v-for="(item, index) in basicQuestions2"
               :key="index"
             >
-              <div style="margin-right: 40px">
-                选择：{{ item.question }}
-              </div>
+              <div style="margin-right: 40px">选择：{{ item.question }}</div>
               <div class="answer">
                 <el-radio
                   disabled
@@ -266,8 +264,8 @@ export default {
         gender: '',
         qq: '',
         email: '',
-        height:'',
-        weight:''
+        height: '',
+        weight: ''
       },
       //部门问题数组（填空）
       departmentQuestion1: [],
@@ -278,9 +276,9 @@ export default {
       //综合问题数组（选择）
       bigQuestion2: [],
       //基本问题（填空）
-      basicQuestions1:[],
+      basicQuestions1: [],
       // 基本问题（选择）
-      basicQuestions2:[],
+      basicQuestions2: [],
       //表单验证规则
       rules: {
         studentName: [
@@ -295,7 +293,7 @@ export default {
         gender: [{ required: true, message: '请输入性别', trigger: 'blur' }],
         email: [{ required: true, message: '请输入邮箱', trigger: 'blur' }],
         height: [{ required: true, message: '请输入身高', trigger: 'blur' }],
-        weight: [{ required: true, message: '请输入体重', trigger: 'blur' }],
+        weight: [{ required: true, message: '请输入体重', trigger: 'blur' }]
       },
       sexs: [
         {
@@ -344,7 +342,7 @@ export default {
     //监视专业改变
     'ruleForm.majorId': {
       handler() {
-        if (this.ruleForm.majorId != ''&&this.ruleForm.majorId != null) {
+        if (this.ruleForm.majorId != '' && this.ruleForm.majorId != null) {
           this.getClass()
         }
       }
@@ -430,9 +428,9 @@ export default {
       //综合问题数组（选择）
       this.bigQuestion2 = []
       //基本问题数组（填空）
-      this.basicQuestions1=[]
+      this.basicQuestions1 = []
       //基本问题数组（选择）
-      this.basicQuestions2=[]
+      this.basicQuestions2 = []
       // let studentId = this.studentId
       // let admissionId = this.admissionId
       // let url = `api/student/info/show?studentId=${studentId}&admissionId=${admissionId}`
@@ -451,31 +449,31 @@ export default {
         gender: 2,
         qq: '2310768059',
         email: '15155',
-        weight:50,
-        height:180.5,
+        weight: 50,
+        height: 180.5,
         basicQuestions: [
-            {
-                multipleChoice: 0,
-                question: "你的暑假安排",
-                answer: "吃饭吃饭吃饭睡觉睡觉睡觉"
-            },
-            {
-                multipleChoice: 0,
-                question: "你的学习进度",
-                answer: "百分之八十"
-            },
-            {
-                multipleChoice: 1,
-                choices: ['重庆火锅', '四川火锅', '北京火锅'],
-                question: '喜欢重庆火锅还是四川火锅',
-                answer: '重庆火锅'
-            },
-            {
-                multipleChoice: 1,
-                choices: ['吃饭', '睡觉', '都喜欢'],
-                question: '喜欢吃饭还是睡觉',
-                answer: '吃饭'
-            },
+          {
+            multipleChoice: 0,
+            question: '你的暑假安排',
+            answer: '吃饭吃饭吃饭睡觉睡觉睡觉'
+          },
+          {
+            multipleChoice: 0,
+            question: '你的学习进度',
+            answer: '百分之八十'
+          },
+          {
+            multipleChoice: 1,
+            choices: ['重庆火锅', '四川火锅', '北京火锅'],
+            question: '喜欢重庆火锅还是四川火锅',
+            answer: '重庆火锅'
+          },
+          {
+            multipleChoice: 1,
+            choices: ['吃饭', '睡觉', '都喜欢'],
+            question: '喜欢吃饭还是睡觉',
+            answer: '吃饭'
+          }
         ],
         questions: [
           {
@@ -545,8 +543,8 @@ export default {
       this.ruleForm.height = data.height
       this.ruleForm.weight = data.weight
       //数据分类（basequestion）
-      data.basicQuestions.forEach((item)=>{
-        if(item.multipleChoice==0){
+      data.basicQuestions.forEach((item) => {
+        if (item.multipleChoice == 0) {
           this.basicQuestions1.push(item)
         }
         if (item.multipleChoice == 1) {
@@ -627,30 +625,30 @@ export default {
       //   "classId" : this.ruleForm.classId,
       //   "email":this.ruleForm.email,
       //   "gender":this.ruleForm.gender
-        // "height":this.ruleForm.height
-        // "weight":this.ruleForm.weight
+      // "height":this.ruleForm.height
+      // "weight":this.ruleForm.weight
       // }
       // let url = `api/student/info/change-student-info`
       // axios.put(url,sendData)
-        // .then(() => {
-          this.changeDialogVisible = false
-          this.$message({
-            showClose: true,
-            message: '修改成功',
-            type: 'success',
-            center: true,
-            duration: 2000
-          })
-          // })
-        // .catch(() => {
-        //   this.$message({
-        //     showClose: true,
-        //     message: '修改失败',
-        //     type: 'error',
-        //     center: true,
-        //     duration: 2000
-        //   })
-        // })
+      // .then(() => {
+      this.changeDialogVisible = false
+      this.$message({
+        showClose: true,
+        message: '修改成功',
+        type: 'success',
+        center: true,
+        duration: 2000
+      })
+      // })
+      // .catch(() => {
+      //   this.$message({
+      //     showClose: true,
+      //     message: '修改失败',
+      //     type: 'error',
+      //     center: true,
+      //     duration: 2000
+      //   })
+      // })
     }
   }
   // mounted(){
@@ -693,43 +691,43 @@ export default {
       justify-content: flex-start;
     }
   }
-  .basequestion{
-      .question1 {
-          // background-color: rgb(189, 112, 112);
-          margin-top: 20px;
-          .problem {
-            font-size: 18px;
-            text-align: left;
-          }
-          .answer {
-            margin-top: 20px;
-            text-align: left;
-            margin-left: 30px;
-            margin-right: 30px;
-            font-size: 15px;
-            background-color: #f5f7fa;
-            padding: 17px;
-          }
-        }
-        .question2 {
-          // background-color: rgb(123, 207, 208);
-          margin-top: 20px;
-          .problem {
-            font-size: 18px;
-            text-align: left;
-            margin-bottom: 15px;
-          }
-          .answer {
-            margin-top: 20px;
-            text-align: left;
-            margin-left: 30px;
-            margin-right: 30px;
-            font-size: 15px;
-            background-color: #f5f7fa;
-            padding: 17px;
-          }
-        }
+  .basequestion {
+    .question1 {
+      // background-color: rgb(189, 112, 112);
+      margin-top: 20px;
+      .problem {
+        font-size: 18px;
+        text-align: left;
+      }
+      .answer {
+        margin-top: 20px;
+        text-align: left;
+        margin-left: 30px;
+        margin-right: 30px;
+        font-size: 15px;
+        background-color: #f5f7fa;
+        padding: 17px;
+      }
     }
+    .question2 {
+      // background-color: rgb(123, 207, 208);
+      margin-top: 20px;
+      .problem {
+        font-size: 18px;
+        text-align: left;
+        margin-bottom: 15px;
+      }
+      .answer {
+        margin-top: 20px;
+        text-align: left;
+        margin-left: 30px;
+        margin-right: 30px;
+        font-size: 15px;
+        background-color: #f5f7fa;
+        padding: 17px;
+      }
+    }
+  }
   .two {
     // background-color: rgb(82, 199, 154);
     margin-top: 20px;
