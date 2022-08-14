@@ -5,8 +5,8 @@
       <div class="mainTitle">
         <div class="mainTitle-left">报名表问题</div>
         <!-- 是否可以编辑 -->
-        <div class="mainTitle-right" @click="canEdit">
-          <i class="el-icon-edit"></i>编辑/取消编辑
+        <div class="mainTitle-right" @click="canEdit" v-show="!isEdit">
+          <i class="el-icon-edit"></i>编辑
         </div>
       </div>
       <div class="inTitle">基本问题</div>
@@ -94,7 +94,12 @@
         <div class="zidingyi-content">
           <div class="zidingyi-tilte">自定义问题</div>
           <!-- 自定义文本 -->
-          <el-popover placement="top" width="260" v-model="visible">
+          <el-popover
+            placement="top"
+            width="260"
+            v-model="visible"
+            ref="baseTestPopover"
+          >
             <p>添加自定义问题描述</p>
             <div class="my-input" style="margin: 10px 0">
               <el-input
@@ -123,7 +128,7 @@
           </el-popover>
           <!-- 自定义选择 -->
           <el-popover
-            ref="baseAddPopover"
+            ref="baseChoosePopover"
             placement="top-start"
             width="300"
             v-model="visible1"
@@ -274,10 +279,10 @@ export default {
       'updateIsEdit'
     ]),
     canEdit() {
-      this.isEdit = !this.isEdit
+      this.isEdit = true
       this.updateIsEdit()
       if (this.isEdit) return this.$message.success('编辑模式')
-      if (!this.isEdit) return this.$message('非编辑模式')
+      // if (!this.isEdit) return this.$message('非编辑模式')
     },
     // 预设问题展示
     yusheIsshow(item) {
@@ -299,7 +304,7 @@ export default {
     },
     //添加自定义文本问题
     addTextQues() {
-      if (!this.isEdit) return this.$message.error('非编辑模式')
+      // if (!this.isEdit) return this.$message.error('非编辑模式')
       //判断自定义问题是否超过三个
       if (this.BaseList.length >= 3)
         return this.$message.error('最多自定义三个问题')
@@ -352,7 +357,7 @@ export default {
     },
     //添加自定义选择
     addChoseList() {
-      if (!this.isEdit) return this.$message.error('非编辑模式')
+      // if (!this.isEdit) return this.$message.error('非编辑模式')
       if (this.isEdit == false) return this.$message.error('非编辑模式')
       if (this.BaseList.length >= 3)
         return this.$message.error('最多自定义三个问题')
@@ -433,9 +438,26 @@ export default {
       // vuex存储
       this.updateGeneralQuestions(generalQuestions)
       this.updateQuestionsList(questionsList)
+    },
+    escEdit() {
+      this.isEdit = false
     }
   },
   watch: {
+    visible(newV) {
+      if (newV && !this.isEdit) {
+        this.visible = false
+        this.$refs.baseTestPopover.doClose()
+        return this.$message.error('非编辑模式')
+      }
+    },
+    visible1(newV) {
+      if (newV && !this.isEdit) {
+        this.visible1 = false
+        this.$refs.baseChoosePopover.doClose()
+        return this.$message.error('非编辑模式')
+      }
+    },
     //检测用户是否设置过问题
     allQues(newV) {
       if (newV.questionsList.length != 0) {
@@ -645,6 +667,7 @@ export default {
       margin: 10px 10px;
       width: 185px;
       font-size: 17px;
+      margin-left: 3px;
     }
     .freeView-input {
       width: 166px;

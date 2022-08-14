@@ -123,8 +123,8 @@ export default {
         {
           iconClass: 'el-icon-s-home',
           id: '1',
-          pagePath: '/superAdmin/interviewMain',
-          title: '面试面板'
+          pagePath: '/superAdmin/interviewTable',
+          title: '面试看板'
         },
         {
           iconClass: 'el-icon-picture',
