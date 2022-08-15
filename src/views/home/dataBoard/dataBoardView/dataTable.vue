@@ -646,25 +646,25 @@ export default {
     // 获取所有筛选项
     requestAllItem() {
       // 获取班级
-      // this.$http
-      //   .get(
-      //     'api/data-panel/class?admissionId=' +
-      //       this.admissionId +
-      //       '&organizationId=' +
-      //       this.organizationId
-      //   )
-      //   .then(
-      //     (res) => {
-      //       if (res.data.code == '00000') {
-      //         this.updateClassNameFilter(res.data.data)
-      //       } else {
-      //         this.$message.error(res.data.message)
-      //       }
-      //     },
-      //     (err) => {
-      //       this.$message.error('获取数据失败' + err)
-      //     }
-      //   )
+      this.$http
+        .get(
+          'api/data-panel/class?admissionId=' +
+            this.admissionId +
+            '&organizationId=' +
+            this.organizationId
+        )
+        .then(
+          (res) => {
+            if (res.data.code == '00000') {
+              this.updateClassNameFilter(res.data.data)
+            } else {
+              this.$message.error(res.data.message)
+            }
+          },
+          (err) => {
+            this.$message.error('获取数据失败' + err)
+          }
+        )
       // 获取社团志愿次序
       this.$http
         .get(
