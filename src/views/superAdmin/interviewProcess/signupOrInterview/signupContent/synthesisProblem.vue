@@ -396,7 +396,7 @@ export default {
       )
       // this.isAdd--
     },
-    //如果点击取消回到时间选择页
+    //如果点击取消回到报名表第一页并取消编辑模式
     cancel() {
       this.$parent.cancel()
       this.escEdit()

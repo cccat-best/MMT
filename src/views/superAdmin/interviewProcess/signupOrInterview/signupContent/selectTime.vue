@@ -49,18 +49,17 @@ export default {
     changeEdit() {
       this.isEdit = true
       return this.$message.success('编辑模式')
-
     },
     escEdit() {
       this.isEdit = false
     },
     isEditTime() {
-      if(this.value1.length===0) return
+      if (this.value1.length === 0) return
       this.isEdit = false
       // return this.$message('非编辑模式')
     },
     exitEdit() {
-      if(this.value1.length != 0) this.isEdit = false
+      if (this.value1.length != 0) this.isEdit = false
     }
   },
   props: ['allQues'],
