@@ -284,7 +284,9 @@ export default {
         d: ''
       },
       // 鼠标滚动效果
-      scrollHeigh: 0
+      scrollHeigh: 0,
+      height1:0,
+      height2:0,
     }
   },
   //接收到的面试轮次
@@ -307,21 +309,26 @@ export default {
   methods: {
     // 随页面滚动触发事件，滚动高度
     handleScroll(e) {
+      let a=this.tableData.length
+      let b=a*48
+      //计算滚动高度
+      this.height1=155+b
+      this.height2=this.height1+320
       this.scrollHeigh = e.srcElement.scrollTop
     },
     //导航动态变化
     isSelect1() {
-      if (this.scrollHeigh < 350 && this.scrollHeigh >= 0) {
+      if (this.scrollHeigh < this.height1 && this.scrollHeigh >= 0 ||this.scrollHeigh==0) {
         return true
       }
     },
     isSelect2() {
-      if (this.scrollHeigh > 350 && this.scrollHeigh < 600) {
+      if (this.scrollHeigh > this.height1 && this.scrollHeigh < this.height2) {
         return true
       }
     },
     isSelect3() {
-      if (this.scrollHeigh > 600) {
+      if (this.scrollHeigh > this.height2) {
         return true
       }
     },
