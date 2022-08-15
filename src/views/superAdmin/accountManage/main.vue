@@ -114,7 +114,11 @@
     <el-table
       stripe
       tooltip-effect="dark"
-      style="color: #666690; font-size: 15px"
+      style="
+        color: #666690;
+        font-size: 15px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);
+      "
       height="76vh"
       :row-style="{ height: '0' }"
       :cell-style="{ padding: '0px' }"
