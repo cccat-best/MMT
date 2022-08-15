@@ -123,7 +123,7 @@ export default {
       this.loginOrganizationName = newValue
     },
     async getLoginStatus() {
-      const url = 'api/login-status/'
+      const url = 'api/login-status'
       try {
         let { data: res } = await this.$http.get(url)
         switch (res.code) {

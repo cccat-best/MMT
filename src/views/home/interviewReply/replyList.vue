@@ -33,7 +33,7 @@
         </el-table-column>
         <el-table-column label="简历">
           <template slot-scope="scope">
-            <span style="cursor: pointer" @click="resume(scope.row)"
+            <span style="cursor: pointer" @click="openResumeDialog(scope.row)"
               ><i class="el-icon-notebook-2"></i
             ></span>
           </template>
@@ -114,26 +114,18 @@
         </div>
       </div>
     </div>
-    <el-dialog
-      title="简历"
-      :visible.sync="centerDialogVisible"
-      width="350px"
-      center
-    >
-      <div class="detal">
-        <el-row> <b>姓名:&nbsp;&nbsp;</b>{{ detal.studentName }} </el-row>
-        <el-row> <b>学号:&nbsp;&nbsp;</b>{{ detal.studentId }} </el-row>
-        <el-row> <b>部门:&nbsp;&nbsp;</b>{{ detal.department }} </el-row>
-        <el-row> <b>面试得分:&nbsp;&nbsp;</b>{{ detal.totalScore }} </el-row>
-        <el-row> <b>通过状态:&nbsp;&nbsp;</b>{{ pd(detal.status) }} </el-row>
-      </div>
-    </el-dialog>
+    <!-- 简历弹窗组件 -->
+    <resume-dialog ref="resumeDialog"></resume-dialog>
   </div>
 </template>
 
 <script>
+import resumeDialog from '../dataBoard/components/resumeDialog.vue'
 export default {
   name: 'replyList',
+  components: {
+    resumeDialog
+  },
   data() {
     return {
       filterStatus: 0,
@@ -543,7 +535,6 @@ export default {
           }
         }
       }
-      // let url = 'http://118.195.251.126:38080/interview-reply/stu-info'
       let url = 'api/interview-reply/stu-info'
 
       this.$http
@@ -600,41 +591,42 @@ export default {
       this.$bus.$emit('replySelectionStudentId', selectionStudentId)
       this.$bus.$emit('replySelectionDepartmentId', selectionDepartmentId)
     },
-    resume(row) {
-      this.detal = row
-      this.centerDialogVisible = true
+    openResumeDialog(data) {
+      this.$refs.resumeDialog.resumeDialogVisible = true
+      this.$refs.resumeDialog.studentId = data.studentId
+      this.$refs.resumeDialog.Mymounted()
+      console.log(data.stuNum + '记得删')
     }
   },
-  mounted() {
-    // // let url = 'http://118.195.251.126:38080/interview-reply/stu-info'
-    // let url = 'api/interview-reply/stu-info'
-    // let params = {
-    //   organizationId: sessionStorage['loginOrganizationId'],
-    //   departmentId: this.departmentId,
-    //   roomId: this.roomId,
-    //   page: 1
-    // }
-    // this.$http
-    //   .get(url, params)
-    //   .then((response) => {
-    //     console.log(response)
-    //     this.win = response.data.data.win
-    //     this.pass = response.data.data.pass
-    //     this.wait = response.data.data.wait
-    //     this.nedit = response.data.data.nedit
-    //     this.total = this.win + this.pass + this.wait + this.nedit
-    //     this.$bus.$emit('replyWin', this.win)
-    //     this.$bus.$emit('replyPass', this.pass)
-    //     this.$bus.$emit('replyWait', this.wait)
-    //     this.$bus.$emit('replyNedit', this.nedit)
-    //     this.$bus.$emit('replyTotal', this.total)
-    //     this.information = response.data.data.information
-    //   })
-    //   .catch((error) => {
-    //     console.log(error)
-    //   })
-  },
   created() {
+    let url = 'api/interview-reply/stu-info'
+    let params = {
+      organizationId: sessionStorage['loginOrganizationId'],
+      departmentId: this.departmentId,
+      roomId: this.roomId,
+      page: 1
+    }
+    this.$http
+      .get(url, params)
+      .then((response) => {
+        console.log(response)
+        this.win = response.data.data.win
+        this.pass = response.data.data.pass
+        this.wait = response.data.data.wait
+        this.nedit = response.data.data.nedit
+        this.total = this.win + this.pass + this.wait + this.nedit
+        this.$bus.$emit('replyWin', this.win)
+        this.$bus.$emit('replyPass', this.pass)
+        this.$bus.$emit('replyWait', this.wait)
+        this.$bus.$emit('replyNedit', this.nedit)
+        this.$bus.$emit('replyTotal', this.total)
+        // this.information = response.data.data.information
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+  },
+  mounted() {
     this.$bus.$on('replyDepartmentId', (data) => {
       this.departmentId = data
     }),
@@ -667,6 +659,12 @@ export default {
         .get(url, params)
         .then((response) => {
           console.log(response)
+          this.win = response.data.data.win
+          this.pass = response.data.data.pass
+          this.wait = response.data.data.wait
+          this.nedit = response.data.data.nedit
+          this.total = this.win + this.pass + this.wait + this.nedit
+          this.information = response.data.data.information
         })
         .catch((error) => {
           console.log(error)
@@ -683,6 +681,12 @@ export default {
         .get(url, params)
         .then((response) => {
           console.log(response)
+          this.win = response.data.data.win
+          this.pass = response.data.data.pass
+          this.wait = response.data.data.wait
+          this.nedit = response.data.data.nedit
+          this.total = this.win + this.pass + this.wait + this.nedit
+          this.information = response.data.data.information
         })
         .catch((error) => {
           console.log(error)

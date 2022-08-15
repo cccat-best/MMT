@@ -63,9 +63,9 @@
         </el-table-column>
         <el-table-column prop="className" label="班级" width="100">
         </el-table-column>
-        <el-table-column prop="departmentName" label="面试部门" width="140">
+        <el-table-column prop="department" label="面试部门" width="140">
           <template slot-scope="scope" style="position: relative">
-            <span>{{ scope.row.departmentName[0].name }}</span>
+            <span>{{ scope.row.department[0].name }}</span>
             <el-dropdown
               trigger="click"
               style="position: absolute; top: 10px; right: 10px"
@@ -83,7 +83,7 @@
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item
                   @click.native="changeDepartment(scope.row)"
-                  v-for="(item, index) in scope.row.departmentName"
+                  v-for="(item, index) in scope.row.department"
                   :key="index"
                   >{{ item.name }}</el-dropdown-item
                 >
@@ -115,19 +115,21 @@ export default {
   name: 'personList',
   data() {
     return {
+      round: 1,
       order: '',
       pagesize: 10,
       currentPage: 1,
       total: 11,
       search: '',
+      timer: null,
       multipleSelection: [],
       radio: '',
       tableData: [
         {
-          studentId: 20220001,
+          studentId: 20200002,
           studentName: '卢小1',
           className: '大数据1班',
-          departmentName: [
+          department: [
             {
               name: '外联部',
               id: 3
@@ -144,10 +146,10 @@ export default {
           status: '已通知'
         },
         {
-          studentId: 20220002,
+          studentId: 20200001,
           studentName: '卢小2',
           className: '大数据1班',
-          departmentName: [
+          department: [
             {
               name: '学生事务中心',
               id: 1
@@ -167,7 +169,7 @@ export default {
           studentId: 20220003,
           studentName: '卢小3',
           className: '大数据1班',
-          departmentName: [
+          department: [
             {
               name: '外联部',
               id: 3
@@ -187,7 +189,7 @@ export default {
           studentId: 20220004,
           studentName: '卢小4',
           className: '大数据1班',
-          departmentName: [
+          department: [
             {
               name: '学生事务中心',
               id: 1
@@ -207,7 +209,7 @@ export default {
           studentId: 20220005,
           studentName: '卢小5',
           className: '大数据1班',
-          departmentName: [
+          department: [
             {
               name: '外联部',
               id: 3
@@ -227,7 +229,7 @@ export default {
           studentId: 20220006,
           studentName: '卢小6',
           className: '大数据1班',
-          departmentName: [
+          department: [
             {
               name: '学生事务中心',
               id: 1
@@ -247,7 +249,7 @@ export default {
           studentId: 20220007,
           studentName: '卢小7',
           className: '大数据1班',
-          departmentName: [
+          department: [
             {
               name: '外联部',
               id: 3
@@ -267,7 +269,7 @@ export default {
           studentId: 20220008,
           studentName: '卢小8',
           className: '大数据1班',
-          departmentName: [
+          department: [
             {
               name: '学生事务中心',
               id: 1
@@ -287,7 +289,7 @@ export default {
           studentId: 20220009,
           studentName: '卢小9',
           className: '大数据1班',
-          departmentName: [
+          department: [
             {
               name: '外联部',
               id: 3
@@ -307,7 +309,7 @@ export default {
           studentId: 20220010,
           studentName: '卢小10',
           className: '大数据1班',
-          departmentName: [
+          department: [
             {
               name: '学生事务中心',
               id: 1
@@ -327,7 +329,7 @@ export default {
           studentId: 20220011,
           studentName: '卢小11',
           className: '大数据1班',
-          departmentName: [
+          department: [
             {
               name: '外联部',
               id: 3
@@ -349,6 +351,29 @@ export default {
   watch: {
     search() {
       this.currentPage = 1
+      // 清除 timer 对应的延时器
+      clearTimeout(this.timer)
+      // 重新启动一个延时器，并把 timerId 赋值给 this.timer
+      this.timer = setTimeout(() => {
+        console.log(this.search)
+        let url = 'api/interview-arrangement/info/like'
+        let params = {
+          admissionId: sessionStorage['homeAdmissionId'],
+          round: this.round,
+          keyword: this.search
+        }
+        this.$http
+          .get(url, params)
+          .then((response) => {
+            console.log(response)
+            this.tableData = []
+            this.total = response.data.data.total
+            this.tableData = response.data.data.infoBackParamList
+          })
+          .catch((error) => {
+            console.log(error)
+          })
+      }, 600)
     }
   },
   computed: {
@@ -388,29 +413,21 @@ export default {
         this.$refs.btn2.classList.remove('btn0')
         this.$refs.btn3.classList.remove('btn0')
         this.order = '一面'
+        this.round = 1
 
         //一面数据发送请求
         let url = 'api/interview-arrangement/info/like'
         let params = {
-          admissionId: sessionStorage['homeAdmissionId']
+          admissionId: sessionStorage['homeAdmissionId'],
+          round: this.round
         }
         this.$http
           .get(url, params)
           .then((response) => {
-            // console.log(response)
+            console.log(response)
             this.tableData = []
             this.total = response.data.data.total
-            this.student0 = response.data.data.infoBackParamList
-            for (let i = 0; i < this.total; i++) {
-              this.tableData.push({
-                key: i.toString(),
-                studentId: ` ${this.student0[i].studentId}`,
-                name: ` ${this.student0[i].studentName}`,
-                class: ` ${this.student0[i].className}`,
-                departmentName: ` ${this.student0[i].departmentName}`,
-                status: ` ${this.student0[i].status}`
-              })
-            }
+            this.tableData = response.data.data.infoBackParamList
           })
           .catch((error) => {
             console.log(error)
@@ -420,30 +437,21 @@ export default {
         this.$refs.btn1.classList.remove('btn0')
         this.$refs.btn3.classList.remove('btn0')
         this.order = '二面'
+        this.round = 2
 
         //二面数据发送请求
         let url = 'api/interview-arrangement/info/like'
         let params = {
           admissionId: sessionStorage['homeAdmissionId'],
-          round: 2
+          round: this.round
         }
         this.$http
           .get(url, params)
           .then((response) => {
-            // console.log(response)
+            console.log(response)
             this.tableData = []
             this.total = response.data.data.total
-            this.student0 = response.data.data.infoBackParamList
-            for (let i = 0; i < this.total; i++) {
-              this.tableData.push({
-                key: i.toString(),
-                studentId: ` ${this.student0[i].studentId}`,
-                name: ` ${this.student0[i].studentName}`,
-                class: ` ${this.student0[i].className}`,
-                departmentName: ` ${this.student0[i].departmentName}`,
-                status: ` ${this.student0[i].status}`
-              })
-            }
+            this.tableData = response.data.data.infoBackParamList
           })
           .catch((error) => {
             console.log(error)
@@ -453,30 +461,21 @@ export default {
         this.$refs.btn1.classList.remove('btn0')
         this.$refs.btn2.classList.remove('btn0')
         this.order = '三面'
+        this.round = 3
 
         //三面数据发送请求
         let url = 'api/interview-arrangement/info/like'
         let params = {
           admissionId: sessionStorage['homeAdmissionId'],
-          round: 3
+          round: this.round
         }
         this.$http
           .get(url, params)
           .then((response) => {
-            // console.log(response)
+            console.log(response)
             this.tableData = []
             this.total = response.data.data.total
-            this.student0 = response.data.data.infoBackParamList
-            for (let i = 0; i < this.total; i++) {
-              this.tableData.push({
-                key: i.toString(),
-                studentId: ` ${this.student0[i].studentId}`,
-                name: ` ${this.student0[i].studentName}`,
-                class: ` ${this.student0[i].className}`,
-                departmentName: ` ${this.student0[i].departmentName}`,
-                status: ` ${this.student0[i].status}`
-              })
-            }
+            this.tableData = response.data.data.infoBackParamList
           })
           .catch((error) => {
             console.log(error)
@@ -485,47 +484,32 @@ export default {
       this.$bus.$emit('arrangeOrder', this.order)
     },
     getCurrentRow(row) {
+      console.log(row)
       this.$bus.$emit('arrangeSelectionName1', row.studentName)
       this.$bus.$emit('arrangeSelectionStudentId1', row.studentId)
-      this.$bus.$emit(
-        'arrangeSelectionDepartmentName',
-        row.departmentName[0].name
-      )
+      this.$bus.$emit('arrangeSelectionDepartmentName', row.department[0].name)
+      this.$bus.$emit('arrangeSelectiondepartmentId', row.department[0].id)
     }
+  },
+  created() {
+    //一面数据发送请求，初始页面渲染
+    let url = 'api/interview-arrangement/info/like'
+    let params = {
+      admissionId: sessionStorage['homeAdmissionId'],
+      round: this.round
+    }
+    this.$http
+      .get(url, params)
+      .then((response) => {
+        console.log(response)
+        // this.tableData = []
+        // this.total = response.data.data.total
+        // this.tableData = response.data.data.infoBackParamList
+      })
+      .catch((error) => {
+        console.log(error)
+      })
   }
-  // created() {
-  //   //一面数据发送请求，初始页面渲染
-  //   let url = 'api/interview-arrangement/info/like'
-  //   let params = {
-  //     admissionId: sessionStorage['homeAdmissionId']
-  //   }
-  //   this.$http
-  //     .get(url, params)
-  //     .then((response) => {
-  //       // console.log(response)
-  //       this.tableData = []
-  //       this.total = response.data.data.total
-  //       this.student0 = response.data.data.infoBackParamList
-  //       for (let i = 0; i < this.total; i++) {
-  //         this.tableData.push({
-  //           key: i.toString(),
-  //           studentId: ` ${this.student0[i].studentId}`,
-  //           name: ` ${this.student0[i].studentName}`,
-  //           class: ` ${this.student0[i].className}`,
-  //           departmentName: ` ${this.student0[i].departmentName}`,
-  //           status: ` ${this.student0[i].status}`
-  //         })
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.log(error)
-  //     })
-  // }
-  // watch: {
-  //   search() {
-  //     console.log(this.search)
-  //   }
-  // }
 }
 </script>
 

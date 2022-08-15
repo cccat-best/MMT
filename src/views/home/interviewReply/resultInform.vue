@@ -39,6 +39,7 @@ export default {
   name: 'resultInform',
   data() {
     return {
+      list: [],
       studentId: [],
       information: [],
       studentName: [],
@@ -51,7 +52,9 @@ export default {
       winNum: 30,
       status: '失败',
       departmentId: 0,
-      roomId: 0
+      roomId: 0,
+      round: 0,
+      order: ''
     }
   },
   methods: {
@@ -62,22 +65,55 @@ export default {
       ) {
         alert('发送失败！请在面试复盘界面选择具体部门！')
       } else {
+        // let url8 = 'api/interview-arrangement/postNotice'
+        // let data8 = {
+        //   // message: this.messageArrary,
+        //   organizationId: sessionStorage['loginOrganizationId'],
+        //   // studentId: this.studentId,
+        //   admissionId: sessionStorage['homeAdmissionId'],
+        //   departmentId: this.departmentId,
+        //   list: this.list
+        // }
+        // this.$http
+        //   .post(url8, data8)
+        //   .then((response) => {
+        //     console.log(response)
+        //   })
+        //   .catch((error) => {
+        //     console.log(error)
+        //   })
         let url8 = 'api/interview-arrangement/postNotice'
-        let data8 = {
-          message: this.messageArrary,
-          organizationId: sessionStorage['loginOrganizationId'],
-          studentId: this.studentId,
-          admissionId: sessionStorage['homeAdmissionId'],
-          departmentId: this.departmentId
+        for (let i = 0; i < this.selectTotal; ++i) {
+          let data8 = {
+            message: this.messageArrary[i],
+            organizationId: sessionStorage['loginOrganizationId'],
+            studentId: this.studentId[i],
+            admissionId: sessionStorage['homeAdmissionId'],
+            departmentId: this.departmentId,
+            round: this.round
+          }
+          this.$http
+            .post(url8, data8)
+            .then((response) => {
+              // console.log(response)
+              console.log('发送成功', i)
+              if (i == this.selectTotal - 1) {
+                if (response.data.code == '00000') {
+                  this.$message({
+                    message: '发送成功！',
+                    type: 'success'
+                  })
+                } else {
+                  console.log('发送失败', response)
+                  this.$message.error(response.data.message)
+                }
+              }
+            })
+            .catch((error) => {
+              console.log(error)
+              this.$message.error('发送失败！')
+            })
         }
-        this.$http
-          .post(url8, data8)
-          .then((response) => {
-            console.log(response)
-          })
-          .catch((error) => {
-            console.log(error)
-          })
       }
     },
     cancel() {
@@ -121,12 +157,19 @@ export default {
           this.messageArrary = []
           let message0 = response.data.data.messageTemplate
             .replace(/{department}/, this.departmentName)
-            .replace(/{round}/, '')
+            .replace(/{round}/, this.order)
           this.message = message0.replace(/{name}/, this.name)
           for (let i = 0; i < this.passNum; ++i) {
             this.messageArrary.push(
               message0.replace(/{name}/, this.studentName[i])
             )
+          }
+          this.list = []
+          for (let i = 0; i < this.passNum; ++i) {
+            this.list.push({
+              message: this.messageArrary[i],
+              studentId: this.studentId[i]
+            })
           }
         })
         .catch((error) => {
@@ -170,12 +213,19 @@ export default {
           this.messageArrary = []
           let message0 = response.data.data.messageTemplate
             .replace(/{department}/, this.departmentName)
-            .replace(/{round}/, '')
+            .replace(/{round}/, this.order)
           this.message = message0.replace(/{name}/, this.name)
           for (let i = 0; i < this.winNum; ++i) {
             this.messageArrary.push(
               message0.replace(/{name}/, this.studentName[i])
             )
+          }
+          this.list = []
+          for (let i = 0; i < this.passNum; ++i) {
+            this.list.push({
+              message: this.messageArrary[i],
+              studentId: this.studentId[i]
+            })
           }
         })
         .catch((error) => {
@@ -209,6 +259,9 @@ export default {
           console.log(response)
           this.winNum = response.data.data.win
           this.passNum = response.data.data.pass
+          if (response.data.data.round) {
+            this.round = response.data.data.round
+          }
           this.selectTotal = this.passNum
           this.status = '失败'
         })
@@ -230,7 +283,7 @@ export default {
         .catch((error) => {
           console.log(error)
         })
-      const url1 = 'api/interview-arrangement/getNotice/'
+      const url1 = 'api/interview-arrangement/getNotice'
       let params = {
         type: 3,
         organizationId: 1
@@ -242,12 +295,19 @@ export default {
           this.messageArrary = []
           let message0 = response.data.data.messageTemplate
             .replace(/{department}/, this.departmentName)
-            .replace(/{round}/, '')
+            .replace(/{round}/, this.order)
           this.message = message0.replace(/{name}/, this.name)
           for (let i = 0; i < this.passNum; ++i) {
             this.messageArrary.push(
               message0.replace(/{name}/, this.studentName[i])
             )
+          }
+          this.list = []
+          for (let i = 0; i < this.passNum; ++i) {
+            this.list.push({
+              message: this.messageArrary[i],
+              studentId: this.studentId[i]
+            })
           }
         })
         .catch((error) => {
@@ -260,6 +320,31 @@ export default {
       setTimeout(() => {
         alert('请在面试复盘界面选择具体部门！')
       }, 600)
+    }
+    if (this.round == 0) {
+      this.order = ''
+    } else if (this.round == 1) {
+      this.order = '一面'
+    } else if (this.round == 2) {
+      this.order = '二面'
+    } else if (this.round == 3) {
+      this.order = '三面'
+    }
+  },
+  watch: {
+    round() {
+      if (this.round == 0) {
+        this.order = ''
+      }
+      if (this.round == 1) {
+        this.order = '一面'
+      }
+      if (this.round == 2) {
+        this.order = '二面'
+      }
+      if (this.round == 3) {
+        this.order = '三面'
+      }
     }
   }
 }

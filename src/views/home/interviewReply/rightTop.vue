@@ -96,11 +96,18 @@ export default {
             console.log(res)
             if (res.data.code == '00000') {
               this.centerDialogVisible = false
+              this.$message({
+                message: '修改成功！',
+                type: 'success'
+              })
+              // location.reload()
+            } else {
+              this.$message.error(res.data.message)
             }
-            // location.reload()
           })
           .catch((err) => {
             console.log(err)
+            this.$message.error('修改失败！')
           })
       }
     },

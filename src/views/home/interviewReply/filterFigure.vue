@@ -204,13 +204,13 @@ export default {
       })
   },
   mounted() {
-    this.drawChar()
-    let admissionId = 2
+    let admissionId = sessionStorage['homeAdmissionId']
     let url1 = `api/interview-reply/department/${admissionId}`
     this.$http
       .get(url1)
       .then((response) => {
         console.log(response)
+        this.drawChar()
         let department = response.data.data.department
         department.forEach((element) => {
           this.department.push(element)
