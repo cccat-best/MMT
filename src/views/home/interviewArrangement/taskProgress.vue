@@ -21,6 +21,7 @@ export default {
   name: 'taskProgress',
   data() {
     return {
+      round: 1,
       done: 10,
       total: 11,
       percentage: 0
@@ -28,28 +29,64 @@ export default {
   },
   methods: {
     format() {
-      this.percentage = (this.done / this.total) * 100
+      if (this.total == 0) {
+        this.percentage = 0
+      } else {
+        this.percentage = (this.done / this.total) * 100
+      }
       return `任务进度条`
     }
+  },
+  watch: {
+    round() {
+      let url = 'api/interview-arrangement/data'
+      let params = {
+        admissionId: sessionStorage['homeAdmissionId'],
+        round: this.round
+      }
+      this.$http
+        .get(url, params)
+        .then((response) => {
+          console.log(response)
+          this.total = response.data.data.totalStu
+          this.done = response.data.data.informedStu
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+    }
+  },
+  created() {
+    this.$bus.$on('arrangeOrder', (data) => {
+      let that = this
+      if (data == '一面') {
+        that.round = 1
+      } else if (data == '二面') {
+        that.round = 2
+      } else if (data == '三面') {
+        that.round = 3
+      }
+    })
+    //任务进度表发送请求，初始页面渲染
+    let url = 'api/interview-arrangement/data'
+    let params = {
+      admissionId: sessionStorage['homeAdmissionId'],
+      round: this.round
+    }
+    this.$http
+      .get(url, params)
+      .then((response) => {
+        console.log(response)
+        this.total = response.data.data.totalStu
+        this.done = response.data.data.informedStu
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+  },
+  beforeDestroy() {
+    this.$bus.$off('arrangeOrder')
   }
-
-  //任务进度表发送请求，初始页面渲染
-  // created() {
-  //   let url = 'api/interview-arrangement/data'
-  //   let params = {
-  //     admissionId: 20212803
-  //   }
-  //   this.$http
-  //     .get(url, params)
-  //     .then((response) => {
-  //       // console.log(response)
-  //       this.total = response.data.data.totalStu
-  //       this.done = response.data.data.informedStu
-  //     })
-  //     .catch((error) => {
-  //       console.log(error)
-  //     })
-  // }
 }
 </script>
 <style scoped>
