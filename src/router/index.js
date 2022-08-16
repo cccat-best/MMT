@@ -77,6 +77,11 @@ const routes = [
     path: '/superAdmin',
     component: () => import('../views/superAdmin/superAdmin.vue'),
     children: [
+      {
+        // 账号管理页面
+        path: 'accountManage',
+        component: () => import('../views/superAdmin/accountManage/main.vue')
+      },
       //面试看板页面
       {
         path: 'interviewMain',
@@ -150,6 +155,7 @@ router.beforeEach((to, from, next) => {
     return next()
   }
   let cookies = document.cookie
+  console.log(cookies)
   if (!cookies) {
     return next('/login')
   }
