@@ -288,7 +288,7 @@ export default {
       resumeDialogVisible: false,
       // 学号,由主页传过来
       studentId: '',
-      admissionId: 1,
+      admissionId: sessionStorage.getItem('homeAdmissionId'),
       round: 1,
       organizationId: sessionStorage.getItem('loginOrganizationId'),
       //选择问题的渲染

@@ -64,15 +64,17 @@ export default {
   name: 'interviewNotice',
   data() {
     return {
-      name: 'Hanry',
-      departmentName: '学生事务中心',
-      studentId: 20220000,
+      name: 'XXX',
+      departmentName: sessionStorage['loginOrganizationName'],
+      departmentId: 1,
+      studentId: 20200001,
       order: '一面',
-      timestamp: 1644346800000,
+      round: 1,
+      timestamp: 123500000,
       dateTime: '',
-      dateValue0: '2022-02-09',
-      timeValue0: '03:00:00',
-      address: '7-115-L03工位桌',
+      dateValue0: '',
+      timeValue0: '',
+      address: '',
       messageTemplate: ''
     }
   },
@@ -100,56 +102,74 @@ export default {
         studentId: this.studentId,
         startTime: this.timestamp,
         address: this.address,
-        departmentId: 1,
-        round: 1,
-        admissionId: 1
-        // studentId: 20200002,
-        // startTime: 123456789,
-        // address: '时光小镇'
+        departmentId: this.departmentId,
+        round: this.round,
+        admissionId: sessionStorage['homeAdmissionId'] * 1
       }
       const url3 = 'api/interview-arrangement/arrangeNotice'
       let post3 = this.$http.post(url3, form3)
       post3
         .then((res) => {
-          console.log('安排成功', res)
-          // 确定获取模板
-          const url1 = 'api/interview-arrangement/getNotice'
-          let params = {
-            type: 1,
-            organizationId: 1
+          if (res.data.code == '00000') {
+            console.log('安排成功', res)
+            // 确定获取模板
+            const url1 = 'api/interview-arrangement/getNotice'
+            let params = {
+              type: 1,
+              organizationId: sessionStorage['loginOrganizationId']
+            }
+            this.$http
+              .get(url1, params)
+              .then((response) => {
+                if (res.data.code == '00000') {
+                  console.log('获取模板成功', response)
+                  this.messageTemplate = response.data.data.messageTemplate
+                    .replace(/{name}/, this.name)
+                    .replace(/{department}/, this.departmentName)
+                    .replace(/{round}/, this.order)
+                    .replace(/{time}/, this.dateValue0 + ' ' + this.timeValue0)
+                    .replace(/{location}/, this.address)
+                  console.log(this.messageTemplate)
+                  // 确定发送通知
+                  var form2 = {
+                    message: this.messageTemplate,
+                    organizationId: sessionStorage['loginOrganizationId'] * 1,
+                    studentId: this.studentId,
+                    admissionId: sessionStorage['homeAdmissionId'] * 1,
+                    departmentId: this.departmentId,
+                    round: this.round
+                  }
+                  // console.log(form2)
+                  const url2 = 'api/interview-arrangement/postNotice'
+                  let post2 = this.$http.post(url2, form2)
+                  post2
+                    .then((res) => {
+                      if (res.data.code == '00000') {
+                        console.log('发送成功', res)
+                        this.$message({
+                          message: '通知成功！',
+                          type: 'success'
+                        })
+                        // location.reload()
+                      } else {
+                        console.log('发送失败', res)
+                        this.$message.error(res.data.message)
+                      }
+                    })
+                    .catch((err) => {
+                      console.log(err)
+                      this.$message.error('通知失败！')
+                    })
+                } else {
+                  console.log('获取模板失败', res)
+                }
+              })
+              .catch((error) => {
+                console.log(error)
+              })
+          } else {
+            console.log('安排面试失败', res)
           }
-          this.$http
-            .get(url1, params)
-            .then((response) => {
-              console.log('获取模板成功', response)
-              this.messageTemplate = response.data.data.messageTemplate
-                .replace(/{name}/, this.name)
-                .replace(/{department}/, this.departmentName)
-                .replace(/{round}/, this.order)
-                .replace(/{time}/, this.dateValue0 + ' ' + this.timeValue0)
-                .replace(/{location}/, this.address)
-              console.log(this.messageTemplate)
-              // 确定发送通知
-              var form2 = {
-                message: this.messageTemplate,
-                organizationId: 2,
-                studentId: this.studentId
-                // studentId: 20200002
-              }
-              const url2 = 'api/interview-arrangement/postNotice'
-              let post2 = this.$http.post(url2, form2)
-              post2
-                .then((res) => {
-                  console.log('发送成功', res)
-                  location.reload()
-                })
-                .catch((err) => {
-                  console.log(err)
-                })
-            })
-            .catch((error) => {
-              console.log(error)
-            })
         })
         .catch((err) => {
           console.log(err)
@@ -157,24 +177,36 @@ export default {
     }
   },
   mounted() {
-    this.$bus.$on('order', (data) => {
+    this.$bus.$on('arrangeOrder', (data) => {
       this.order = data
+      let that = this
+      if (data == '一面') {
+        that.round = 1
+      } else if (data == '二面') {
+        that.round = 2
+      } else if (data == '三面') {
+        that.round = 3
+      }
     }),
-      this.$bus.$on('selectionName1', (data) => {
+      this.$bus.$on('arrangeSelectionName1', (data) => {
         this.name = data
       }),
-      this.$bus.$on('selectionStudentId1', (data) => {
+      this.$bus.$on('arrangeSelectionStudentId1', (data) => {
         this.studentId = data
       }),
-      this.$bus.$on('selectiondepartmentName', (data) => {
+      this.$bus.$on('arrangeSelectionDepartmentName', (data) => {
         this.departmentName = data
+      }),
+      this.$bus.$on('arrangeSelectionDepartmentId', (data) => {
+        this.departmentId = data
       })
   },
   beforeDestroy() {
-    this.$bus.$off('order')
-    this.$bus.$off('selectionName1')
-    this.$bus.$off('selectionStudentId1')
-    this.$bus.$off('selectiondepartmentName')
+    this.$bus.$off('arrangeOrder')
+    this.$bus.$off('arrangeSelectionName1')
+    this.$bus.$off('arrangeSelectionStudentId1')
+    this.$bus.$off('arrangeSelectionDepartmentName')
+    this.$bus.$off('arrangeSelectionDepartmentId')
   }
 }
 </script>
