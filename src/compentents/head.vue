@@ -73,12 +73,13 @@
             placement="bottom"
           >
             <span @click="home"
-              ><el-avatar
+              ><avatar
+                :username="this.name"
                 :size="35"
-                :src="circleUrl"
-                style="vertical-align: middle; cursor: pointer"
-                :click="home"
-              ></el-avatar
+                :rounded="true"
+                inline="true"
+                style="cursor: pointer"
+              ></avatar
             ></span>
           </el-tooltip>
           <el-tooltip
@@ -89,12 +90,13 @@
             placement="bottom"
           >
             <span @click="home"
-              ><el-avatar
+              ><avatar
+                :username="this.name"
                 :size="35"
-                :src="circleUrl"
-                style="vertical-align: middle; cursor: pointer"
-                :click="home"
-              ></el-avatar
+                :rounded="true"
+                inline="true"
+                style="cursor: pointer"
+              ></avatar
             ></span>
           </el-tooltip>
           <el-dropdown trigger="click">
@@ -113,11 +115,12 @@
             </span>
             <el-dropdown-menu slot="dropdown">
               <div style="text-align: center">
-                <el-avatar
+                <avatar
+                  :username="this.name"
                   :size="50"
-                  :src="circleUrl"
-                  style="vertical-align: middle"
-                ></el-avatar>
+                  :rounded="true"
+                  inline="true"
+                ></avatar>
 
                 <div style="font-size: 10px; margin-top: 10px; height: 20px">
                   {{ loginOrganizationName }}
@@ -179,7 +182,11 @@
 </template>
 
 <script>
+import Avatar from 'vue-avatar'
 export default {
+  components: {
+    Avatar
+  },
   props: {
     // 是否是个人中心页面
     isPersonal: {
@@ -215,6 +222,7 @@ export default {
       sizeList: ['large', 'medium', 'small']
     }
   },
+
   methods: {
     async changeOrganization(command) {
       const organization = {
