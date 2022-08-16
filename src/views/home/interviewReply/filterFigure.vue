@@ -211,13 +211,19 @@ export default {
       .then((response) => {
         console.log(response)
         this.drawChar()
-        let department = response.data.data.department
-        department.forEach((element) => {
-          this.department.push(element)
-        })
+        if (response.data.code == '00000') {
+          let department = response.data.data.department
+          department.forEach((element) => {
+            this.department.push(element)
+          })
+        } else {
+          this.$message.error(response.data.message)
+        }
       })
       .catch((error) => {
         console.log(error)
+        this.drawChar()
+        this.$message.error('获取部门信息失败！')
       })
 
     let url2 = `api/interview-reply/room/${admissionId}`
@@ -225,15 +231,18 @@ export default {
       .get(url2)
       .then((response) => {
         console.log(response)
-
-        let room = response.data.data.room
-        room.forEach((element) => {
-          this.room.push(element)
-        })
-        // console.log(this.room)
+        if (response.data.code == '00000') {
+          let room = response.data.data.room
+          room.forEach((element) => {
+            this.room.push(element)
+          })
+        } else {
+          this.$message.error(response.data.message)
+        }
       })
       .catch((error) => {
         console.log(error)
+        this.$message.error('获取场地信息失败！')
       })
   },
   beforeDestroy() {

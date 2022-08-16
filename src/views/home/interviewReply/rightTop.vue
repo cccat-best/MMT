@@ -97,7 +97,7 @@ export default {
             if (res.data.code == '00000') {
               this.centerDialogVisible = false
               this.$message({
-                message: '修改成功！',
+                message: '修改状态成功！',
                 type: 'success'
               })
               // location.reload()
@@ -107,7 +107,7 @@ export default {
           })
           .catch((err) => {
             console.log(err)
-            this.$message.error('修改失败！')
+            this.$message.error('修改状态失败！')
           })
       }
     },

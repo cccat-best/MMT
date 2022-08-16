@@ -48,11 +48,16 @@ export default {
         .get(url, params)
         .then((response) => {
           console.log(response)
-          this.total = response.data.data.totalStu
-          this.done = response.data.data.informedStu
+          if (response.data.code == '00000') {
+            this.total = response.data.data.totalStu
+            this.done = response.data.data.informedStu
+          } else {
+            this.$message.error(response.data.message)
+          }
         })
         .catch((error) => {
           console.log(error)
+          this.$message.error('获取进度条信息失败！')
         })
     }
   },
@@ -77,11 +82,16 @@ export default {
       .get(url, params)
       .then((response) => {
         console.log(response)
-        this.total = response.data.data.totalStu
-        this.done = response.data.data.informedStu
+        if (response.data.code == '00000') {
+          this.total = response.data.data.totalStu
+          this.done = response.data.data.informedStu
+        } else {
+          this.$message.error(response.data.message)
+        }
       })
       .catch((error) => {
         console.log(error)
+        this.$message.error('获取进度条信息失败！')
       })
   },
   beforeDestroy() {

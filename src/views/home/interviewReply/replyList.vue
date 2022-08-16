@@ -418,10 +418,15 @@ export default {
         .get(url, params)
         .then((response) => {
           console.log(response)
-          this.information = response.data.data.information
+          if (response.data.code == '00000') {
+            this.information = response.data.data.information
+          } else {
+            this.$message.error(response.data.message)
+          }
         })
         .catch((error) => {
           console.log(error)
+          this.$message.error('获取页面信息失败！')
         })
     },
     changeStatus2(row) {
@@ -442,10 +447,13 @@ export default {
           console.log(res)
           if (res.data.code == '00000') {
             row.status = 2
+          } else {
+            this.$message.error(res.data.message)
           }
         })
         .catch((err) => {
           console.log(err)
+          this.$message.error('修改状态失败！')
         })
     },
     changeStatus1(row) {
@@ -466,10 +474,13 @@ export default {
           console.log(res)
           if (res.data.code == '00000') {
             row.status = 1
+          } else {
+            this.$message.error(res.data.message)
           }
         })
         .catch((err) => {
           console.log(err)
+          this.$message.error('修改状态失败！')
         })
     },
     changeStatus3(row) {
@@ -490,10 +501,13 @@ export default {
           console.log(res)
           if (res.data.code == '00000') {
             row.status = 3
+          } else {
+            this.$message.error(res.data.message)
           }
         })
         .catch((err) => {
           console.log(err)
+          this.$message.error('修改状态失败！')
         })
     },
     //排序
@@ -541,10 +555,15 @@ export default {
         .get(url, params1)
         .then((response) => {
           console.log(response)
-          this.information = response.data.data.information
+          if (response.data.code == '00000') {
+            this.information = response.data.data.information
+          } else {
+            this.$message.error(response.data.message)
+          }
         })
         .catch((error) => {
           console.log(error)
+          this.$message.error('获取排序信息失败！')
         })
     },
     filterChange(filters) {
@@ -564,15 +583,20 @@ export default {
         .get(url, params2)
         .then((response) => {
           console.log(response)
-          this.win = response.data.data.win
-          this.pass = response.data.data.pass
-          this.wait = response.data.data.wait
-          this.nedit = response.data.data.nedit
-          this.total = this.win + this.pass + this.wait + this.nedit
-          this.information = response.data.data.information
+          if (response.data.code == '00000') {
+            this.win = response.data.data.win
+            this.pass = response.data.data.pass
+            this.wait = response.data.data.wait
+            this.nedit = response.data.data.nedit
+            this.total = this.win + this.pass + this.wait + this.nedit
+            this.information = response.data.data.information
+          } else {
+            this.$message.error(response.data.message)
+          }
         })
         .catch((error) => {
           console.log(error)
+          this.$message.error('获取筛选信息失败！')
         })
     },
     handleSeclect(val) {
@@ -610,20 +634,25 @@ export default {
       .get(url, params)
       .then((response) => {
         console.log(response)
-        this.win = response.data.data.win
-        this.pass = response.data.data.pass
-        this.wait = response.data.data.wait
-        this.nedit = response.data.data.nedit
-        this.total = this.win + this.pass + this.wait + this.nedit
-        this.$bus.$emit('replyWin', this.win)
-        this.$bus.$emit('replyPass', this.pass)
-        this.$bus.$emit('replyWait', this.wait)
-        this.$bus.$emit('replyNedit', this.nedit)
-        this.$bus.$emit('replyTotal', this.total)
-        // this.information = response.data.data.information
+        if (response.data.code == '00000') {
+          this.win = response.data.data.win
+          this.pass = response.data.data.pass
+          this.wait = response.data.data.wait
+          this.nedit = response.data.data.nedit
+          this.total = this.win + this.pass + this.wait + this.nedit
+          this.$bus.$emit('replyWin', this.win)
+          this.$bus.$emit('replyPass', this.pass)
+          this.$bus.$emit('replyWait', this.wait)
+          this.$bus.$emit('replyNedit', this.nedit)
+          this.$bus.$emit('replyTotal', this.total)
+          this.information = response.data.data.information
+        } else {
+          this.$message.error(response.data.message)
+        }
       })
       .catch((error) => {
         console.log(error)
+        this.$message.error('获取表格信息失败！')
       })
   },
   mounted() {
@@ -659,15 +688,20 @@ export default {
         .get(url, params)
         .then((response) => {
           console.log(response)
-          this.win = response.data.data.win
-          this.pass = response.data.data.pass
-          this.wait = response.data.data.wait
-          this.nedit = response.data.data.nedit
-          this.total = this.win + this.pass + this.wait + this.nedit
-          this.information = response.data.data.information
+          if (response.data.code == '00000') {
+            this.win = response.data.data.win
+            this.pass = response.data.data.pass
+            this.wait = response.data.data.wait
+            this.nedit = response.data.data.nedit
+            this.total = this.win + this.pass + this.wait + this.nedit
+            this.information = response.data.data.information
+          } else {
+            this.$message.error(response.data.message)
+          }
         })
         .catch((error) => {
           console.log(error)
+          this.$message.error('获取该部门信息失败！')
         })
     },
     roomId() {
@@ -681,15 +715,20 @@ export default {
         .get(url, params)
         .then((response) => {
           console.log(response)
-          this.win = response.data.data.win
-          this.pass = response.data.data.pass
-          this.wait = response.data.data.wait
-          this.nedit = response.data.data.nedit
-          this.total = this.win + this.pass + this.wait + this.nedit
-          this.information = response.data.data.information
+          if (response.data.code == '00000') {
+            this.win = response.data.data.win
+            this.pass = response.data.data.pass
+            this.wait = response.data.data.wait
+            this.nedit = response.data.data.nedit
+            this.total = this.win + this.pass + this.wait + this.nedit
+            this.information = response.data.data.information
+          } else {
+            this.$message.error(response.data.message)
+          }
         })
         .catch((error) => {
           console.log(error)
+          this.$message.error('获取该场地信息失败！')
         })
     },
     keyWord() {
@@ -709,15 +748,20 @@ export default {
           .get(url3, params3)
           .then((response) => {
             console.log(response)
-            this.win = response.data.data.win
-            this.pass = response.data.data.pass
-            this.wait = response.data.data.wait
-            this.nedit = response.data.data.nedit
-            this.total = this.win + this.pass + this.wait + this.nedit
-            // this.information = response.data.data.information
+            if (response.data.code == '00000') {
+              this.win = response.data.data.win
+              this.pass = response.data.data.pass
+              this.wait = response.data.data.wait
+              this.nedit = response.data.data.nedit
+              this.total = this.win + this.pass + this.wait + this.nedit
+              this.information = response.data.data.information
+            } else {
+              this.$message.error(response.data.message)
+            }
           })
           .catch((error) => {
             console.log(error)
+            this.$message.error('获取搜索信息失败！')
           })
       }, 600)
     }

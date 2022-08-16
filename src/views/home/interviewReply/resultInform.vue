@@ -134,16 +134,21 @@ export default {
         .get(url0, params2)
         .then((response) => {
           console.log(response)
-          this.information = response.data.data.information
-          this.studentName = []
-          this.studentId = []
-          this.information.forEach((e) => {
-            this.studentName.push(e.studentName)
-            this.studentId.push(e.studentId)
-          })
+          if (response.data.code == '00000') {
+            this.information = response.data.data.information
+            this.studentName = []
+            this.studentId = []
+            this.information.forEach((e) => {
+              this.studentName.push(e.studentName)
+              this.studentId.push(e.studentId)
+            })
+          } else {
+            this.$message.error(response.data.message)
+          }
         })
         .catch((error) => {
           console.log(error)
+          this.$message.error('获取信息失败！')
         })
       const url1 = 'api/interview-arrangement/getNotice'
       let params = {
@@ -154,26 +159,31 @@ export default {
         .get(url1, params)
         .then((response) => {
           console.log(response)
-          this.messageArrary = []
-          let message0 = response.data.data.messageTemplate
-            .replace(/{department}/, this.departmentName)
-            .replace(/{round}/, this.order)
-          this.message = message0.replace(/{name}/, this.name)
-          for (let i = 0; i < this.passNum; ++i) {
-            this.messageArrary.push(
-              message0.replace(/{name}/, this.studentName[i])
-            )
-          }
-          this.list = []
-          for (let i = 0; i < this.passNum; ++i) {
-            this.list.push({
-              message: this.messageArrary[i],
-              studentId: this.studentId[i]
-            })
+          if (response.data.code == '00000') {
+            this.messageArrary = []
+            let message0 = response.data.data.messageTemplate
+              .replace(/{department}/, this.departmentName)
+              .replace(/{round}/, this.order)
+            this.message = message0.replace(/{name}/, this.name)
+            for (let i = 0; i < this.passNum; ++i) {
+              this.messageArrary.push(
+                message0.replace(/{name}/, this.studentName[i])
+              )
+            }
+            this.list = []
+            for (let i = 0; i < this.passNum; ++i) {
+              this.list.push({
+                message: this.messageArrary[i],
+                studentId: this.studentId[i]
+              })
+            }
+          } else {
+            this.$message.error(response.data.message)
           }
         })
         .catch((error) => {
           console.log(error)
+          this.$message.error('获取失败模板失败！')
         })
     },
     win() {
@@ -190,16 +200,21 @@ export default {
         .get(url0, params4)
         .then((response) => {
           console.log(response)
-          this.information = response.data.data.information
-          this.studentName = []
-          this.studentId = []
-          this.information.forEach((e) => {
-            this.studentName.push(e.studentName)
-            this.studentId.push(e.studentId)
-          })
+          if (response.data.code == '00000') {
+            this.information = response.data.data.information
+            this.studentName = []
+            this.studentId = []
+            this.information.forEach((e) => {
+              this.studentName.push(e.studentName)
+              this.studentId.push(e.studentId)
+            })
+          } else {
+            this.$message.error(response.data.message)
+          }
         })
         .catch((error) => {
           console.log(error)
+          this.$message.error('获取信息失败！')
         })
       const url1 = 'api/interview-arrangement/getNotice'
       let params = {
@@ -210,26 +225,31 @@ export default {
         .get(url1, params)
         .then((response) => {
           console.log(response)
-          this.messageArrary = []
-          let message0 = response.data.data.messageTemplate
-            .replace(/{department}/, this.departmentName)
-            .replace(/{round}/, this.order)
-          this.message = message0.replace(/{name}/, this.name)
-          for (let i = 0; i < this.winNum; ++i) {
-            this.messageArrary.push(
-              message0.replace(/{name}/, this.studentName[i])
-            )
-          }
-          this.list = []
-          for (let i = 0; i < this.passNum; ++i) {
-            this.list.push({
-              message: this.messageArrary[i],
-              studentId: this.studentId[i]
-            })
+          if (response.data.code == '00000') {
+            this.messageArrary = []
+            let message0 = response.data.data.messageTemplate
+              .replace(/{department}/, this.departmentName)
+              .replace(/{round}/, this.order)
+            this.message = message0.replace(/{name}/, this.name)
+            for (let i = 0; i < this.winNum; ++i) {
+              this.messageArrary.push(
+                message0.replace(/{name}/, this.studentName[i])
+              )
+            }
+            this.list = []
+            for (let i = 0; i < this.passNum; ++i) {
+              this.list.push({
+                message: this.messageArrary[i],
+                studentId: this.studentId[i]
+              })
+            }
+          } else {
+            this.$message.error(response.data.message)
           }
         })
         .catch((error) => {
           console.log(error)
+          this.$message.error('获取通过模板失败！')
         })
     }
   },
@@ -257,31 +277,41 @@ export default {
         .get(url0, params0)
         .then((response) => {
           console.log(response)
-          this.winNum = response.data.data.win
-          this.passNum = response.data.data.pass
-          if (response.data.data.round) {
-            this.round = response.data.data.round
+          if (response.data.code == '00000') {
+            this.winNum = response.data.data.win
+            this.passNum = response.data.data.pass
+            if (response.data.data.round) {
+              this.round = response.data.data.round
+            }
+            this.selectTotal = this.passNum
+            this.status = '失败'
+          } else {
+            this.$message.error(response.data.message)
           }
-          this.selectTotal = this.passNum
-          this.status = '失败'
         })
         .catch((error) => {
           console.log(error)
+          this.$message.error('获取人数信息失败！')
         })
       this.$http
         .get(url0, params2)
         .then((response) => {
           console.log(response)
-          this.information = response.data.data.information
-          this.studentName = []
-          this.studentId = []
-          this.information.forEach((e) => {
-            this.studentName.push(e.studentName)
-            this.studentId.push(e.studentId)
-          })
+          if (response.data.code == '00000') {
+            this.information = response.data.data.information
+            this.studentName = []
+            this.studentId = []
+            this.information.forEach((e) => {
+              this.studentName.push(e.studentName)
+              this.studentId.push(e.studentId)
+            })
+          } else {
+            this.$message.error(response.data.message)
+          }
         })
         .catch((error) => {
           console.log(error)
+          this.$message.error('获取信息失败！')
         })
       const url1 = 'api/interview-arrangement/getNotice'
       let params = {
@@ -292,26 +322,31 @@ export default {
         .get(url1, params)
         .then((response) => {
           console.log(response)
-          this.messageArrary = []
-          let message0 = response.data.data.messageTemplate
-            .replace(/{department}/, this.departmentName)
-            .replace(/{round}/, this.order)
-          this.message = message0.replace(/{name}/, this.name)
-          for (let i = 0; i < this.passNum; ++i) {
-            this.messageArrary.push(
-              message0.replace(/{name}/, this.studentName[i])
-            )
-          }
-          this.list = []
-          for (let i = 0; i < this.passNum; ++i) {
-            this.list.push({
-              message: this.messageArrary[i],
-              studentId: this.studentId[i]
-            })
+          if (response.data.code == '00000') {
+            this.messageArrary = []
+            let message0 = response.data.data.messageTemplate
+              .replace(/{department}/, this.departmentName)
+              .replace(/{round}/, this.order)
+            this.message = message0.replace(/{name}/, this.name)
+            for (let i = 0; i < this.passNum; ++i) {
+              this.messageArrary.push(
+                message0.replace(/{name}/, this.studentName[i])
+              )
+            }
+            this.list = []
+            for (let i = 0; i < this.passNum; ++i) {
+              this.list.push({
+                message: this.messageArrary[i],
+                studentId: this.studentId[i]
+              })
+            }
+          } else {
+            this.$message.error(response.data.message)
           }
         })
         .catch((error) => {
           console.log(error)
+          this.$message.error('获取模板信息失败！')
         })
     } else {
       this.winNum = 0

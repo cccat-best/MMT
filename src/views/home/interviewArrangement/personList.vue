@@ -366,12 +366,17 @@ export default {
           .get(url, params)
           .then((response) => {
             console.log(response)
-            this.tableData = []
-            this.total = response.data.data.total
-            this.tableData = response.data.data.infoBackParamList
+            if (response.data.code == '00000') {
+              this.tableData = []
+              this.total = response.data.data.total
+              this.tableData = response.data.data.infoBackParamList
+            } else {
+              this.$message.error(response.data.message)
+            }
           })
           .catch((error) => {
             console.log(error)
+            this.$message.error('获取表格信息失败！')
           })
       }, 600)
     }
@@ -425,12 +430,17 @@ export default {
           .get(url, params)
           .then((response) => {
             console.log(response)
-            this.tableData = []
-            this.total = response.data.data.total
-            this.tableData = response.data.data.infoBackParamList
+            if (response.data.code == '00000') {
+              this.tableData = []
+              this.total = response.data.data.total
+              this.tableData = response.data.data.infoBackParamList
+            } else {
+              this.$message.error(response.data.message)
+            }
           })
           .catch((error) => {
             console.log(error)
+            this.$message.error('获取一面信息失败！')
           })
       }
       if (btn0 == this.$refs.btn2) {
@@ -449,12 +459,17 @@ export default {
           .get(url, params)
           .then((response) => {
             console.log(response)
-            this.tableData = []
-            this.total = response.data.data.total
-            this.tableData = response.data.data.infoBackParamList
+            if (response.data.code == '00000') {
+              this.tableData = []
+              this.total = response.data.data.total
+              this.tableData = response.data.data.infoBackParamList
+            } else {
+              this.$message.error(response.data.message)
+            }
           })
           .catch((error) => {
             console.log(error)
+            this.$message.error('获取二面信息失败！')
           })
       }
       if (btn0 == this.$refs.btn3) {
@@ -473,12 +488,17 @@ export default {
           .get(url, params)
           .then((response) => {
             console.log(response)
-            this.tableData = []
-            this.total = response.data.data.total
-            this.tableData = response.data.data.infoBackParamList
+            if (response.data.code == '00000') {
+              this.tableData = []
+              this.total = response.data.data.total
+              this.tableData = response.data.data.infoBackParamList
+            } else {
+              this.$message.error(response.data.message)
+            }
           })
           .catch((error) => {
             console.log(error)
+            this.$message.error('获取三面信息失败！')
           })
       }
       this.$bus.$emit('arrangeOrder', this.order)
@@ -502,12 +522,17 @@ export default {
       .get(url, params)
       .then((response) => {
         console.log(response)
-        // this.tableData = []
-        // this.total = response.data.data.total
-        // this.tableData = response.data.data.infoBackParamList
+        if (response.data.code == '00000') {
+          this.tableData = []
+          this.total = response.data.data.total
+          this.tableData = response.data.data.infoBackParamList
+        } else {
+          this.$message.error(response.data.message)
+        }
       })
       .catch((error) => {
         console.log(error)
+        this.$message.error('获取表格信息失败！')
       })
   }
 }
