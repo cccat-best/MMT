@@ -102,7 +102,7 @@
       <el-input
         v-model="searchWord"
         type="search"
-        @input="searchKeyWord"
+        @input="beforeSearchKeyWord"
         class="searchInput"
         size="small"
         prefix-icon="el-icon-search"
@@ -508,7 +508,25 @@ export default {
       this.tableDataChange = datalist
       this.pageCutDouwn(this.tableDataChange)
     },
-
+    //搜索框防抖搜索
+    beforeSearchKeyWord() {
+      // 防抖函数
+      function debounce(func, wait) {
+        var timeout
+        return function (e) {
+          console.log('清除', timeout, e.target.value)
+          clearTimeout(timeout)
+          var context = this,
+            args = arguments
+          console.log('新的', timeout, e.target.value)
+          timeout = setTimeout(function () {
+            console.log('----')
+            func.apply(context, args)
+          }, wait)
+        }
+      }
+      debounce(this.searchKeyWord, 1000)
+    },
     //关键字搜索
     searchKeyWord() {
       // 判断字符串是否为空
