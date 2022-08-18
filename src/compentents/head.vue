@@ -77,7 +77,7 @@
                 :username="this.name"
                 :size="35"
                 :rounded="true"
-                inline="true"
+                :inline="true"
                 style="cursor: pointer"
               ></avatar
             ></span>
@@ -94,7 +94,7 @@
                 :username="this.name"
                 :size="35"
                 :rounded="true"
-                inline="true"
+                :inline="true"
                 style="cursor: pointer"
               ></avatar
             ></span>
@@ -119,7 +119,7 @@
                   :username="this.name"
                   :size="50"
                   :rounded="true"
-                  inline="true"
+                  :inline="true"
                 ></avatar>
 
                 <div style="font-size: 10px; margin-top: 10px; height: 20px">
