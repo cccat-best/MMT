@@ -344,7 +344,7 @@ export default {
       if (index !== -1) {
         this.form.domains.splice(index, 1)
       }
-      this.$refs.baseAddPopover.updatePopper()
+      this.$refs.baseChoosePopover.updatePopper()
     },
     addDomain() {
       if (this.form.domains.length === 4) {
@@ -353,7 +353,7 @@ export default {
       this.form.domains.push({
         value: ''
       })
-      this.$refs.baseAddPopover.updatePopper()
+      this.$refs.baseChoosePopover.updatePopper()
     },
     //添加自定义选择
     addChoseList() {
