@@ -16,7 +16,7 @@
       <el-input
         v-model="searchWord"
         type="search"
-        @input="searchKeyWord"
+        @input="inputSearchKeyWord"
         class="searchInput"
         size="small"
         prefix-icon="el-icon-search"
@@ -257,6 +257,8 @@ export default {
       // 计时器
       myLoading: false,
       timerUpdate: null,
+      // 防抖计时器
+      timeout: null,
       activeThead: {}, //保存排序所选择的表头
       // 关键字搜索
       admissionId: 1, //纳新ID不知道，需要询问////////////////////////
@@ -432,7 +434,12 @@ export default {
       //   console.log('sortModel' + element.sortModel)
       // })
     },
-
+    // input输入防抖
+    inputSearchKeyWord() {
+      // 防抖函数
+      clearTimeout(this.timeout)
+      this.timeout = setTimeout(this.searchKeyWord, 700)
+    },
     //关键字搜索
     searchKeyWord() {
       // loading
