@@ -332,6 +332,7 @@ export default {
     return {
       // 补一个未知报错bug,不知道哪来的none未定义
       none: 0,
+      timeout: null,
       // 批量修改图标颜色
       batchColorChange1: '#666666', //第一个按钮
       batchColorChange2: '#666666', //第二个按钮
@@ -511,21 +512,8 @@ export default {
     //搜索框防抖搜索
     beforeSearchKeyWord() {
       // 防抖函数
-      function debounce(func, wait) {
-        var timeout
-        return function (e) {
-          console.log('清除', timeout, e.target.value)
-          clearTimeout(timeout)
-          var context = this,
-            args = arguments
-          console.log('新的', timeout, e.target.value)
-          timeout = setTimeout(function () {
-            console.log('----')
-            func.apply(context, args)
-          }, wait)
-        }
-      }
-      debounce(this.searchKeyWord, 1000)
+      clearTimeout(this.timeout)
+      this.timeout = setTimeout(this.searchKeyWord, 700)
     },
     //关键字搜索
     searchKeyWord() {
