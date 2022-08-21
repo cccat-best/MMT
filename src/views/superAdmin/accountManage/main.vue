@@ -337,6 +337,7 @@ export default {
     return {
       // 补一个未知报错bug,不知道哪来的none未定义
       none: 0,
+      // 防抖计时器
       timeout: null,
       // 批量修改图标颜色
       batchColorChange1: '#666666', //第一个按钮
@@ -344,9 +345,8 @@ export default {
       showactive1: 0, //第一个按钮
       showactive2: 0, //第二个按钮
 
-      // 关键字搜索
-      organizationId: 3, ////组织名不知道，需要询问////////////////////////
-      searchWord: '',
+      organizationId: 0, //组织
+      searchWord: '', // 关键字搜索
       data: '', //发请求的data
       order: 'asc', //排序顺序，默认升序
       column: 'permission', //排序变量，默认权限升序
