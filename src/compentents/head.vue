@@ -79,6 +79,7 @@
                 :rounded="true"
                 :inline="true"
                 style="cursor: pointer"
+                color="white"
               ></avatar
             ></span>
           </el-tooltip>
@@ -96,6 +97,7 @@
                 :rounded="true"
                 :inline="true"
                 style="cursor: pointer"
+                color="white"
               ></avatar
             ></span>
           </el-tooltip>
@@ -120,6 +122,7 @@
                   :size="50"
                   :rounded="true"
                   :inline="true"
+                  color="white"
                 ></avatar>
 
                 <div style="font-size: 10px; margin-top: 10px; height: 20px">
