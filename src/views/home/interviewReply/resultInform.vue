@@ -4,11 +4,13 @@
       <div><b style="font-size: 20px">结果通知</b></div>
       <div class="circle">
         <span style="margin-right: 100px">
-          <div class="num_style" @click="pass">{{ passNum }}</div>
+          <div class="pass_num_style cl_num_style" @click="pass">
+            {{ passNum }}
+          </div>
           <div>失败</div>
         </span>
         <span>
-          <div class="num_style" @click="win">{{ winNum }}</div>
+          <div class="win_num_style" @click="win">{{ winNum }}</div>
           <div>通过</div>
         </span>
       </div>
@@ -47,9 +49,9 @@ export default {
       messageArrary: [],
       name: 'XXX',
       departmentName: '我部门',
-      selectTotal: 20,
-      passNum: 20,
-      winNum: 30,
+      selectTotal: 0,
+      passNum: 0,
+      winNum: 0,
       status: '失败',
       departmentId: 0,
       roomId: 0,
@@ -121,6 +123,10 @@ export default {
       this.$router.push('/home/reply')
     },
     pass() {
+      let win = document.querySelector('.win_num_style')
+      win.classList.remove('cl_num_style')
+      let pass = document.querySelector('.pass_num_style')
+      pass.classList.add('cl_num_style')
       this.selectTotal = this.passNum
       this.status = '失败'
       let url0 = 'api/interview-reply/stu-info'
@@ -187,6 +193,10 @@ export default {
         })
     },
     win() {
+      let pass = document.querySelector('.pass_num_style')
+      pass.classList.remove('cl_num_style')
+      let win = document.querySelector('.win_num_style')
+      win.classList.add('cl_num_style')
       this.selectTotal = this.winNum
       this.status = '通过'
       let url0 = 'api/interview-reply/stu-info'
@@ -333,13 +343,13 @@ export default {
                 message0.replace(/{name}/, this.studentName[i])
               )
             }
-            this.list = []
-            for (let i = 0; i < this.passNum; ++i) {
-              this.list.push({
-                message: this.messageArrary[i],
-                studentId: this.studentId[i]
-              })
-            }
+            // this.list = []
+            // for (let i = 0; i < this.passNum; ++i) {
+            //   this.list.push({
+            //     message: this.messageArrary[i],
+            //     studentId: this.studentId[i]
+            //   })
+            // }
           } else {
             this.$message.error(response.data.message)
           }
@@ -354,6 +364,7 @@ export default {
       this.selectTotal = 0
       setTimeout(() => {
         alert('请在面试复盘界面选择具体部门！')
+        window.history.go(-1)
       }, 600)
     }
     if (this.round == 0) {
@@ -385,7 +396,11 @@ export default {
 }
 </script>
 <style scoped>
-.num_style {
+.cl_num_style {
+  border-color: #409eff !important;
+  color: #409eff !important;
+}
+.pass_num_style {
   cursor: pointer;
   border-radius: 50%;
   height: 70px;
@@ -396,8 +411,27 @@ export default {
   text-align: center;
   display: table-cell; /*显示形式为 表格*/
   vertical-align: middle; /*垂直居中*/
-  border: 3px solid #409eff;
-  color: #409eff;
+  border: 3px solid #909399;
+  color: #909399;
+  white-space: nowrap;
+  /*给外边框内距限制数字的位置*/
+  padding: 1px 1px 1px 1px;
+  font-size: 30px;
+  transform: scale(0.8);
+}
+.win_num_style {
+  cursor: pointer;
+  border-radius: 50%;
+  height: 70px;
+  width: 70px;
+  display: inline-block;
+  background: #ffffff;
+  line-height: 13px;
+  text-align: center;
+  display: table-cell; /*显示形式为 表格*/
+  vertical-align: middle; /*垂直居中*/
+  border: 3px solid #909399;
+  color: #909399;
   white-space: nowrap;
   /*给外边框内距限制数字的位置*/
   padding: 1px 1px 1px 1px;

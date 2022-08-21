@@ -80,7 +80,8 @@ export default {
   },
   methods: {
     dateTimeValue() {
-      this.timestamp = this.dateTime.getTime()
+      // this.timestamp = this.dateTime.getTime()
+      this.timestamp = this.dateTime.getTime() / 1000
       var year = this.dateTime.getFullYear() //年
       var month = this.dateTime.getMonth() + 1 //月
       var day = this.dateTime.getDate() //日

@@ -13,12 +13,12 @@
               @click="clDepartment"
               style="margin: 0 10px 10px 0"
               ref="depBtn"
-              class="depBtn"
               plain
               size="small"
               v-for="item in department"
               :key="item.id"
               :id="item.id"
+              :class="item.id == 0 ? 'depBtn clBtn' : 'depBtn'"
               >{{ item.name }}</el-button
             >
           </el-row>
@@ -36,12 +36,12 @@
               @click="clRoom"
               style="margin: 0 10px 10px 0"
               plain
-              class="roomBtn"
               size="small"
               ref="roomBtn"
               v-for="item in room"
               :key="item.id"
               :id="item.id"
+              :class="item.id == 0 ? 'roomBtn clBtn' : 'roomBtn'"
               >{{ item.name }}</el-button
             >
           </el-row>
@@ -203,14 +203,14 @@ export default {
         this.total = data
       })
   },
-  mounted() {
+  beforeMount() {
     let admissionId = sessionStorage['homeAdmissionId']
     let url1 = `api/interview-reply/department/${admissionId}`
     this.$http
       .get(url1)
       .then((response) => {
         console.log(response)
-        this.drawChar()
+        setTimeout(this.drawChar, 100)
         if (response.data.code == '00000') {
           let department = response.data.data.department
           department.forEach((element) => {
@@ -245,6 +245,7 @@ export default {
         this.$message.error('获取场地信息失败！')
       })
   },
+  mounted() {},
   beforeDestroy() {
     this.$bus.$off('replyWin')
     this.$bus.$off('replyPass')

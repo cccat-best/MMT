@@ -36,8 +36,12 @@
           box-shadow: 2px 2px 4px 2px #e5e9f2;
           width: 632px;
         "
-        :row-style="{ height: 0 + 'px' }"
-        :cell-style="{ padding: 0 + 'px', 'text-align': 'center' }"
+        :row-style="{ height: 0 + 'px', 'vertical-align': 'middle' }"
+        :cell-style="{
+          padding: 0 + 'px',
+          'text-align': 'center',
+          'vertical-align': 'middle'
+        }"
       >
         <el-table-column label="" width="50">
           <template slot-scope="scope">
@@ -68,7 +72,7 @@
             <span>{{ scope.row.department[0].name }}</span>
             <el-dropdown
               trigger="click"
-              style="position: absolute; top: 10px; right: 10px"
+              style="position: absolute; right: 10px; vertical-align: middle"
             >
               <span
                 style="
@@ -77,7 +81,7 @@
                   border: 4px solid;
                   border-color: #333 transparent transparent transparent;
                   margin-left: 10px;
-                  margin-top: 2px;
+                  /* margin-top: 2px; */
                 "
               ></span>
               <el-dropdown-menu slot="dropdown">

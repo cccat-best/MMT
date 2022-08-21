@@ -11,7 +11,7 @@
       </div>
       <div class="search">
         <el-input
-          placeholder="请输入内容"
+          placeholder="请输入姓名或学号"
           prefix-icon="el-icon-search"
           v-model="input"
           size="mini"

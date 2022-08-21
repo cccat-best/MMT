@@ -788,6 +788,8 @@ export default {
 }
 .tag {
   color: white;
+  padding-top: 1px;
+  padding-bottom: 1px;
 }
 .el-icon-notebook-2:hover {
   color: #409eff;
