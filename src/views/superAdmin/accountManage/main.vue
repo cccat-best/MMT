@@ -149,7 +149,7 @@
         fixed
       >
       </el-table-column>
-      <el-table-column prop="name" label="姓名" align="center">
+      <el-table-column prop="name" label="姓名" min-width="120px" align="center">
       </el-table-column>
       <!-- :filter-multiple="false"过滤器单选 -->
       <!-- :filter-method="filterPermission" 前端过滤 -->
@@ -531,13 +531,11 @@ export default {
       // 发请求
       this.$http.post('api/account/manage/all', this.data).then(
         (res) => {
-          // 因为请求访问权限异常，res.data.studentList在返回信息中为undefined
-          if (res.data.code == 'A0300') {
-            // 用造的假数据顶上
-            this.$message.error(res.data.message)
-          } else {
+          if (res.data.code == '00000') {
             this.tableData = res.data.data.studentList
             this.total = res.data.data.total
+          } else {
+            this.$message.error(res.data.message)
           }
           // 通知所有相关项更新数据，因为他们使用tableDataChange而不是tableData
           this.orderChange(this.tableData)
