@@ -149,7 +149,12 @@
         fixed
       >
       </el-table-column>
-      <el-table-column prop="name" label="姓名" min-width="120px" align="center">
+      <el-table-column
+        prop="name"
+        label="姓名"
+        min-width="120px"
+        align="center"
+      >
       </el-table-column>
       <!-- :filter-multiple="false"过滤器单选 -->
       <!-- :filter-method="filterPermission" 前端过滤 -->
