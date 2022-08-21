@@ -178,7 +178,7 @@
           {{ scope.row.phone | replacestar }}
         </template>
       </el-table-column>
-      <el-table-column label="操作" min-width="300px" align="center">
+      <el-table-column label="操作" min-width="200px" align="center">
         <!-- 单次删除需要scope来传数据 -->
         <template slot-scope="scope">
           <el-button
@@ -747,7 +747,7 @@ export default {
 //
 // 使图标对齐文字
 .buttonMove {
-  margin: 0 40px;
+  margin: 0 25px;
 }
 .search {
   width: 40vh;
