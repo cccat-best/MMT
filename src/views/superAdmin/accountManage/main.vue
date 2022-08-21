@@ -747,7 +747,7 @@ export default {
 //
 // 使图标对齐文字
 .buttonMove {
-  margin: 0 25px;
+  margin: 0 20px;
 }
 .search {
   width: 40vh;
