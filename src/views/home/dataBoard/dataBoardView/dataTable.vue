@@ -261,8 +261,8 @@ export default {
       timeout: null,
       activeThead: {}, //保存排序所选择的表头
       // 关键字搜索
-      admissionId: 1, //纳新ID不知道，需要询问////////////////////////
-      organizationId: 2, ////组织名不知道，需要询问////////////////////////
+      admissionId: 1, //纳新ID
+      organizationId: 2, //组织名
       searchWord: '',
       // 筛选勾选的请求信息的数组
       className: [],
@@ -814,11 +814,11 @@ export default {
     /**
      * 设置表头排序,允许多个排序高亮
      */
-    handleTheadStyle({ row, column }) {
+    handleTheadStyle({ column }) {
       /**
        * 多列排序
        */
-      console.log(row.length + '未使用定义变量的错误，记得删掉这行信息')
+      // console.log(row.length + '未使用定义变量的错误，记得删掉这行信息')
       if (!this.mutilSort) return
       if (this.activeThead[column.property]) {
         column.order = this.activeThead[column.property]
