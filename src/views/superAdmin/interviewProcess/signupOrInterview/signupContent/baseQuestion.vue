@@ -683,7 +683,6 @@ export default {
     }
   }
 }
-
 input:focus {
   border: 1px solid #535858 !important;
   outline: none;

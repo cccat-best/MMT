@@ -14,6 +14,7 @@
             'special',
             showactive > 2 ? 'active-sp' : ''
           ]"
+          @click="showactive = 3"
         >
           报名表问题
         </div>
@@ -155,7 +156,7 @@ export default {
       }
       .special {
         color: black;
-        cursor: default !important;
+        cursor: pointer;
       }
       .active-sp {
         color: #2e98f9;

@@ -124,7 +124,7 @@ export default {
   .section-title {
     font-size: 30px;
     display: flex;
-    color: #828282;
+    color: #989898;
     margin-bottom: 20px;
   }
   .section-content {
