@@ -7,9 +7,12 @@
     width="30%"
     class="leastWidth"
   >
-    <div style="display: inline-flex">
+    <div style="display: inline-flex" v-loading="myLoading">
       <div style="font-size: medium; margin: auto auto">邀请码：</div>
-      <div :class="[asideShow == 1 ? 'asideactive' : 'invitationCode']">
+      <div
+        :class="[asideShow == 1 ? 'asideactive' : 'invitationCode']"
+        style="width: 140px"
+      >
         {{ invitationCode }}
       </div>
       <div
@@ -59,6 +62,8 @@ export default {
       invitationCode: 'ABCDEFG',
       //邀请码弹窗判断
       DialogVisibleJoin: false,
+      // 邀请码加载
+      myLoading: false,
       // 当前时间
       nowTime: '',
       nowTimeCheck: '',
@@ -124,15 +129,23 @@ export default {
         (res) => {
           if (res.data.code == '00000') {
             this.invitationCode = res.data.data.invitationCode
+          } else {
+            this.$message.error('获取邀请码失败')
           }
+          // 关闭loading
+          this.myLoading = false
         },
         (err) => {
           this.$message.error(err)
+          // 关闭loading
+          this.myLoading = false
         }
       )
     },
     // 获取邀请码
     getInvitationCode() {
+      // 开启loading
+      this.myLoading = true
       this.beforeGetInvitationCode()
     },
     // 复制成功
