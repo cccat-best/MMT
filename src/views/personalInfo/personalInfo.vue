@@ -138,6 +138,7 @@
                 type="password"
                 v-model="pwdForm.password"
                 autocomplete="off"
+                show-password
               ></el-input>
             </el-form-item>
 
@@ -146,6 +147,7 @@
                 type="password"
                 v-model="pwdForm.newPassword"
                 autocomplete="off"
+                show-password
               ></el-input>
             </el-form-item>
 
@@ -154,6 +156,7 @@
                 type="password"
                 v-model="pwdForm.confirmNewPassword"
                 autocomplete="off"
+                show-password
               ></el-input>
             </el-form-item>
           </el-form>
@@ -318,7 +321,7 @@ export default {
       this.loginOrganizationName = newValue
     },
     async getLoginStatus() {
-      const url = '/api/login-status/'
+      const url = 'api/login-status'
       try {
         let { data: res } = await this.$http.get(url)
         switch (res.code) {
