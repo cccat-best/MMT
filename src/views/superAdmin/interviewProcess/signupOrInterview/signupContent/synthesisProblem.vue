@@ -109,7 +109,7 @@
               show-word-limit
               style="margin: 10px 0"
               resize="none"
-              :autofocus='true'
+              :autofocus="true"
             >
             </el-input>
           </div>
