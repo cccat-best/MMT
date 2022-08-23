@@ -11,7 +11,7 @@
       </div>
       <div class="search">
         <el-input
-          placeholder="请输入内容"
+          placeholder="请输入姓名或学号"
           prefix-icon="el-icon-search"
           v-model="input"
           size="mini"
@@ -48,12 +48,6 @@ export default {
   name: 'rightTop',
   data() {
     return {
-      departmentId: 0,
-      roomId: 0,
-      departmentName: '',
-      centerDialogVisible: false,
-      input: '',
-      selectionStudentId: [],
       options: [
         {
           value: 2,
@@ -68,28 +62,54 @@ export default {
           label: '待定'
         }
       ],
+      departmentName: '',
+      centerDialogVisible: false,
+      input: '',
+      selectionStudentId: [],
+      selectionDepartmentId: [],
       value: 2
     }
   },
   methods: {
     //更改通过状态
     submit() {
-      this.centerDialogVisible = false
-      let changeForm = {
-        studentId: this.selectionStudentId,
-        status: this.value
+      if (this.selectionStudentId.length == 0) {
+        alert('请在表格前复选框选择需操作的学生！')
+      } else {
+        let studentInfo = []
+        for (let i = 0; i < this.selectionStudentId.length; ++i) {
+          studentInfo[i] = {
+            departmentId: this.selectionDepartmentId[i],
+            studentId: this.selectionStudentId[i]
+          }
+        }
+        let changeForm = {
+          status: this.value,
+          organizationId: sessionStorage['loginOrganizationId'],
+          studentInfo: studentInfo
+        }
+        console.log(changeForm)
+        const url1 = 'api/interview-reply/status'
+        let post3 = this.$http.post(url1, changeForm)
+        post3
+          .then((res) => {
+            console.log(res)
+            if (res.data.code == '00000') {
+              this.centerDialogVisible = false
+              this.$message({
+                message: '修改状态成功！',
+                type: 'success'
+              })
+              location.reload()
+            } else {
+              this.$message.error(res.data.message)
+            }
+          })
+          .catch((err) => {
+            console.log(err)
+            this.$message.error('修改状态失败！')
+          })
       }
-      // console.log(changeForm)
-      const url1 = 'api/interview-reply/status'
-      let post3 = this.$http.post(url1, changeForm)
-      post3
-        .then((res) => {
-          console.log(res)
-          location.reload()
-        })
-        .catch((err) => {
-          console.log(err)
-        })
     },
     resultInform() {
       //指定跳转地址
@@ -97,16 +117,28 @@ export default {
     }
   },
   mounted() {
-    this.$bus.$on('selectionStudentId', (data) => {
+    this.$bus.$on('replySelectionStudentId', (data) => {
       this.selectionStudentId = data
+    })
+    this.$bus.$on('replySelectionDepartmentId', (data) => {
+      this.selectionDepartmentId = data
+    })
+    this.$bus.$on('replyDepartmentId', (data) => {
+      this.departmentId = data
+    })
+    this.$bus.$on('replyDepartmentName', (data) => {
+      this.departmentName = data
     })
   },
   beforeDestroy() {
-    this.$bus.$off('selectionStudentId')
+    this.$bus.$off('replySelectionStudentId')
+    this.$bus.$off('replySelectionDepartmentId')
+    this.$bus.$off('replyDepartmentId')
+    this.$bus.$off('replyDepartmentName')
   },
   watch: {
     input() {
-      this.$bus.$emit('input', this.input)
+      this.$bus.$emit('replyInput', this.input)
     }
   }
 }
