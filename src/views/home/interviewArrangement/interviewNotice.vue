@@ -32,7 +32,17 @@
             >面试。
           </p>
           <p class="p2">
-            面试时间：<u>{{ dateValue0 }} &nbsp; {{ timeValue0 }}&nbsp; </u>
+            面试时间：<input
+              type="text"
+              style="
+                border: none;
+                border-bottom: 1px solid black;
+                outline: none;
+                width: 130px;
+              "
+              v-model="timeValue"
+              class="line"
+            />
           </p>
           <p class="p2">
             面试地点：<input
@@ -44,7 +54,7 @@
                 width: 130px;
               "
               v-model="address"
-              class="address"
+              class="line"
             />
           </p>
           <p class="p1">请提前做好准备。</p>
@@ -74,6 +84,7 @@ export default {
       dateTime: '',
       dateValue0: '',
       timeValue0: '',
+      timeValue: '',
       address: '',
       messageTemplate: ''
     }
@@ -96,6 +107,7 @@ export default {
       }
       this.timeValue0 = hh + ':' + mm
       // console.log(this.timestamp)
+      this.timeValue = this.dateValue0 + '   ' + this.timeValue0
     },
     queding() {
       // 确定安排面试

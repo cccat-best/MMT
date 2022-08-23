@@ -100,7 +100,7 @@ export default {
                 message: '修改状态成功！',
                 type: 'success'
               })
-              // location.reload()
+              location.reload()
             } else {
               this.$message.error(res.data.message)
             }

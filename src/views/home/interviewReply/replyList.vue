@@ -8,7 +8,7 @@
             currentPage * pagesize
           )
         "
-        height="auto"
+        height="296px"
         :header-cell-style="{ 'text-align': 'center', height: 0 + 'px' }"
         style="width: 100%; border-radius: 8px; overflow: hidden"
         :row-style="{ height: 0 + 'px' }"
@@ -135,7 +135,7 @@ export default {
       detal: {},
       pagesize: 10,
       currentPage: 1,
-      total: 11,
+      total: 0,
       multipleSelection: [],
       search: '',
       departmentId: 0,
@@ -144,210 +144,11 @@ export default {
       timer: null,
       keyWord: '',
       page: 1,
-      win: 3,
-      pass: 3,
-      wait: 3,
-      nedit: 2,
-      information: [
-        {
-          studentId: 20220001,
-          studentName: '卢小1',
-          departmentId: 1,
-          department: '部门1',
-          questionScore: [
-            {
-              questionName: '规划能力',
-              score: 60
-            },
-            {
-              questionName: '专业能力',
-              score: 100
-            }
-          ],
-          totalScore: 80,
-          status: 0
-        },
-        {
-          studentId: 20220002,
-          studentName: '卢小2',
-          departmentId: 1,
-          department: '部门1',
-          questionScore: [
-            {
-              questionName: '规划能力',
-              score: 80
-            },
-            {
-              questionName: '专业能力',
-              score: 90
-            }
-          ],
-          totalScore: 85,
-          status: 3
-        },
-        {
-          studentId: 20220003,
-          studentName: '卢小3',
-          departmentId: 1,
-          department: '部门1',
-          questionScore: [
-            {
-              questionName: '规划能力',
-              score: 60
-            },
-            {
-              questionName: '专业能力',
-              score: 100
-            }
-          ],
-          totalScore: 80,
-          status: 3
-        },
-        {
-          studentId: 20220004,
-          studentName: '卢小4',
-          departmentId: 1,
-          department: '部门1',
-          questionScore: [
-            {
-              questionName: '规划能力',
-              score: 80
-            },
-            {
-              questionName: '专业能力',
-              score: 90
-            }
-          ],
-          totalScore: 85,
-          status: 3
-        },
-        {
-          studentId: 20220005,
-          studentName: '卢小5',
-          departmentId: 1,
-          department: '部门1',
-          questionScore: [
-            {
-              questionName: '规划能力',
-              score: 60
-            },
-            {
-              questionName: '专业能力',
-              score: 100
-            }
-          ],
-          totalScore: 80,
-          status: 0
-        },
-        {
-          studentId: 20220006,
-          studentName: '卢小6',
-          departmentId: 1,
-          department: '部门1',
-          questionScore: [
-            {
-              questionName: '规划能力',
-              score: 80
-            },
-            {
-              questionName: '专业能力',
-              score: 90
-            }
-          ],
-          totalScore: 85,
-          status: 1
-        },
-        {
-          studentId: 20220007,
-          studentName: '卢小7',
-          departmentId: 1,
-          department: '部门1',
-          questionScore: [
-            {
-              questionName: '规划能力',
-              score: 60
-            },
-            {
-              questionName: '专业能力',
-              score: 100
-            }
-          ],
-          totalScore: 80,
-          status: 1
-        },
-        {
-          studentId: 20220008,
-          studentName: '卢小8',
-          departmentId: 1,
-          department: '部门1',
-          questionScore: [
-            {
-              questionName: '规划能力',
-              score: 80
-            },
-            {
-              questionName: '专业能力',
-              score: 90
-            }
-          ],
-          totalScore: 85,
-          status: 2
-        },
-        {
-          studentId: 20220009,
-          studentName: '卢小9',
-          departmentId: 1,
-          department: '部门1',
-          questionScore: [
-            {
-              questionName: '规划能力',
-              score: 60
-            },
-            {
-              questionName: '专业能力',
-              score: 100
-            }
-          ],
-          totalScore: 80,
-          status: 1
-        },
-        {
-          studentId: 20220010,
-          studentName: '卢小10',
-          departmentId: 1,
-          department: '部门1',
-          questionScore: [
-            {
-              questionName: '规划能力',
-              score: 80
-            },
-            {
-              questionName: '专业能力',
-              score: 90
-            }
-          ],
-          totalScore: 85,
-          status: 2
-        },
-        {
-          studentId: 20220011,
-          studentName: '卢小11',
-          departmentId: 1,
-          department: '部门1',
-          questionScore: [
-            {
-              questionName: '规划能力',
-              score: 60
-            },
-            {
-              questionName: '专业能力',
-              score: 100
-            }
-          ],
-          totalScore: 80,
-          status: 2
-        }
-      ]
+      win: 0,
+      pass: 0,
+      wait: 0,
+      nedit: 0,
+      information: []
     }
   },
   methods: {
@@ -640,11 +441,6 @@ export default {
           this.wait = response.data.data.wait
           this.nedit = response.data.data.nedit
           this.total = this.win + this.pass + this.wait + this.nedit
-          this.$bus.$emit('replyWin', this.win)
-          this.$bus.$emit('replyPass', this.pass)
-          this.$bus.$emit('replyWait', this.wait)
-          this.$bus.$emit('replyNedit', this.nedit)
-          this.$bus.$emit('replyTotal', this.total)
           this.information = response.data.data.information
         } else {
           this.$message.error(response.data.message)
@@ -764,6 +560,21 @@ export default {
             this.$message.error('获取搜索信息失败！')
           })
       }, 600)
+    },
+    win() {
+      this.$bus.$emit('replyWin', this.win)
+    },
+    pass() {
+      this.$bus.$emit('replyPass', this.pass)
+    },
+    wait() {
+      this.$bus.$emit('replyWait', this.wait)
+    },
+    nedit() {
+      this.$bus.$emit('replyNedit', this.nedit)
+    },
+    total() {
+      this.$bus.$emit('replyTotal', this.total)
     }
   }
 }

@@ -89,11 +89,11 @@ export default {
   name: 'filterFigure',
   data() {
     return {
-      win: 3,
-      pass: 3,
-      wait: 3,
-      nedit: 2,
-      total: 11,
+      win: 0,
+      pass: 0,
+      wait: 0,
+      nedit: 0,
+      total: 0,
       department: [],
       room: [],
       departmentId: 0,
@@ -104,6 +104,7 @@ export default {
   methods: {
     drawChar() {
       // 基于准备好的dom，初始化echarts实例
+      echarts.init(this.$refs.pie).dispose()
       var myChart = echarts.init(this.$refs.pie)
       // 绘制图表
       myChart.setOption({
@@ -203,6 +204,11 @@ export default {
         this.total = data
       })
   },
+  watch: {
+    total() {
+      this.drawChar()
+    }
+  },
   beforeMount() {
     let admissionId = sessionStorage['homeAdmissionId']
     let url1 = `api/interview-reply/department/${admissionId}`
@@ -210,7 +216,7 @@ export default {
       .get(url1)
       .then((response) => {
         console.log(response)
-        setTimeout(this.drawChar, 100)
+        // setTimeout(this.drawChar, 100)
         if (response.data.code == '00000') {
           let department = response.data.data.department
           department.forEach((element) => {
@@ -222,7 +228,7 @@ export default {
       })
       .catch((error) => {
         console.log(error)
-        this.drawChar()
+        // this.drawChar()
         this.$message.error('获取部门信息失败！')
       })
 
