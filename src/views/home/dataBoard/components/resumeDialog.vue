@@ -138,7 +138,9 @@
               v-for="(item, index) in departmentQuestion1"
               :key="index"
             >
-              <div class="problem">{{item.department}}：{{ item.question }}</div>
+              <div class="problem">
+                {{ item.department }}：{{ item.question }}
+              </div>
               <div class="answer">{{ item.answer }}</div>
             </div>
             <!-- 自定义选择 -->
@@ -148,7 +150,9 @@
                 v-for="(item, index) in departmentQuestion2"
                 :key="index"
               >
-                <div style="margin-right: 40px">{{item.department}}：{{ item.question }}</div>
+                <div style="margin-right: 40px">
+                  {{ item.department }}：{{ item.question }}
+                </div>
                 <div class="answer">
                   <el-radio
                     disabled
@@ -298,8 +302,9 @@
                       <span
                         v-for="(item, index) in item.evaluation"
                         :key="index"
-                        ><strong>{{item.name}}</strong>:{{ item.comment }}<br
-                      /><br/></span>
+                        ><strong>{{ item.name }}</strong
+                        >:{{ item.comment }}<br /><br
+                      /></span>
                     </td>
                   </tr>
                 </table>
@@ -479,7 +484,7 @@ export default {
           //   }
           // ]
           //真实数据
-          let data=res.data.data
+          let data = res.data.data
           data.forEach((item) => {
             item.time = this.time(item.time)
             if (item.answer == 0) {
@@ -536,7 +541,7 @@ export default {
           //   }
           // ]
           //真实数据
-          let data=res.data.data
+          let data = res.data.data
           data.forEach((item) => {
             item.time = this.time(item.time)
             if (item.status == 1) {
@@ -594,7 +599,7 @@ export default {
           //   }
           // ]
           //真实数据
-          let data=res.data.data
+          let data = res.data.data
           data.forEach((item) => {
             item.time = this.time(item.time)
             if (item.rounds == 1) {
@@ -648,7 +653,7 @@ export default {
           //   }
           // ]
           //真实数据
-          let data=res.data.data
+          let data = res.data.data
           data.forEach((item) => {
             item.time = this.time(item.time)
           })
@@ -694,7 +699,7 @@ export default {
           //   }
           // ]
           //真实数据
-          let data=res.data.data
+          let data = res.data.data
           data.forEach((item) => {
             if (item.rounds == 1) {
               item.rounds = '一面'
@@ -757,7 +762,7 @@ export default {
           //   }
           // ]
           //真实数据
-          let data=res.data.data
+          let data = res.data.data
           data.forEach((item) => {
             item.time = this.time(item.time)
             if (item.rounds == 1) {
@@ -866,7 +871,7 @@ export default {
           //   }
           // ]
           //真实数据
-          let data=res.data.data
+          let data = res.data.data
           if (data.length == 0) {
             //渲染名字
             this.evaluation = [
@@ -929,165 +934,164 @@ export default {
       let get = this.$http.get(url)
       get
         .then((res) => {
-          console.log(res,'简历数据')
-      //模拟数据
-      // let data = {
-      //   studentId: 20222445,
-      //   studentName: '张张张',
-      //   phone: '13000000000',
-      //   academy: '计算机学院',
-      //   major: '计算机科学与技术',
-      //   classNum: '1班',
-      //   gender: 2,
-      //   qq: '2310768059',
-      //   email: '2310789@qq.com',
-      //   height: 180.5,
-      //   weight: 50,
-      //   basicQuestions: [
-      //     {
-      //       multipleChoice: 0,
-      //       question: '你的暑假安排',
-      //       answer: '吃饭吃饭吃饭睡觉睡觉睡觉'
-      //     },
-      //     {
-      //       multipleChoice: 1,
-      //       choices: ['重庆火锅', '四川火锅', '北京火锅'],
-      //       question: '喜欢重庆火锅还是四川火锅',
-      //       answer: 'A'
-      //     },
-      //     {
-      //       multipleChoice: 1,
-      //       choices: ['吃饭', '睡觉', '都喜欢'],
-      //       question: '喜欢吃饭还是睡觉',
-      //       answer: 'B'
-      //     }
-      //   ],
-      //   questions: [
-      //     {
-      //       department: '学习部',
-      //       multipleChoice: 0,
-      //       question: '生涯规划',
-      //       answer: 'haohaohao'
-      //     },
-      //     {
-      //       department: '体育部',
-      //       multipleChoice: 0,
-      //       question: '时间安排是什么样',
-      //       answer: 'goodgood'
-      //     },
-      //     {
-      //       department: '新媒体部',
-      //       multipleChoice: 1,
-      //       choices: ['吃饭', '睡觉', '都不喜欢', '都喜欢'],
-      //       question: '喜欢吃饭还是睡觉',
-      //       answer: 'D'
-      //     },
-      //     {
-      //       department: '科技协会',
-      //       multipleChoice: 1,
-      //       choices: ['重庆火锅', '四川火锅', '北京火锅'],
-      //       question: '喜欢重庆火锅还是四川火锅',
-      //       answer: 'C'
-      //     },
-      //     {
-      //       department: '综合问题',
-      //       multipleChoice: 0,
-      //       question: '综合问题1',
-      //       answer: '哈哈哈哈哈哈哈哈哈'
-      //     },
-      //     {
-      //       department: '综合问题',
-      //       multipleChoice: 1,
-      //       choices: ['选项A8574', '选项B785'],
-      //       question: '综合问题2',
-      //       answer: 'A'
-      //     }
-      //   ]
-      // }
-      //真实数据
-      let data=res.data.data
-      if (data.gender == 1) {
-        data.gender = '男'
-      }
-      if (data.gender == 2) {
-        data.gender = '女'
-      }
-      //赋值
-      this.ruleForm = data
-      //数据分类（basequestion）
-      data.basicQuestions.forEach((item) => {
-        if (item.multipleChoice == 0) {
-          this.basicQuestions1.push(item)
-        }
-        if (item.multipleChoice == 1) {
-          if(item.answer=='A'){
-            item.answer=item.choices[0]
+          console.log(res, '简历数据')
+          //模拟数据
+          // let data = {
+          //   studentId: 20222445,
+          //   studentName: '张张张',
+          //   phone: '13000000000',
+          //   academy: '计算机学院',
+          //   major: '计算机科学与技术',
+          //   classNum: '1班',
+          //   gender: 2,
+          //   qq: '2310768059',
+          //   email: '2310789@qq.com',
+          //   height: 180.5,
+          //   weight: 50,
+          //   basicQuestions: [
+          //     {
+          //       multipleChoice: 0,
+          //       question: '你的暑假安排',
+          //       answer: '吃饭吃饭吃饭睡觉睡觉睡觉'
+          //     },
+          //     {
+          //       multipleChoice: 1,
+          //       choices: ['重庆火锅', '四川火锅', '北京火锅'],
+          //       question: '喜欢重庆火锅还是四川火锅',
+          //       answer: 'A'
+          //     },
+          //     {
+          //       multipleChoice: 1,
+          //       choices: ['吃饭', '睡觉', '都喜欢'],
+          //       question: '喜欢吃饭还是睡觉',
+          //       answer: 'B'
+          //     }
+          //   ],
+          //   questions: [
+          //     {
+          //       department: '学习部',
+          //       multipleChoice: 0,
+          //       question: '生涯规划',
+          //       answer: 'haohaohao'
+          //     },
+          //     {
+          //       department: '体育部',
+          //       multipleChoice: 0,
+          //       question: '时间安排是什么样',
+          //       answer: 'goodgood'
+          //     },
+          //     {
+          //       department: '新媒体部',
+          //       multipleChoice: 1,
+          //       choices: ['吃饭', '睡觉', '都不喜欢', '都喜欢'],
+          //       question: '喜欢吃饭还是睡觉',
+          //       answer: 'D'
+          //     },
+          //     {
+          //       department: '科技协会',
+          //       multipleChoice: 1,
+          //       choices: ['重庆火锅', '四川火锅', '北京火锅'],
+          //       question: '喜欢重庆火锅还是四川火锅',
+          //       answer: 'C'
+          //     },
+          //     {
+          //       department: '综合问题',
+          //       multipleChoice: 0,
+          //       question: '综合问题1',
+          //       answer: '哈哈哈哈哈哈哈哈哈'
+          //     },
+          //     {
+          //       department: '综合问题',
+          //       multipleChoice: 1,
+          //       choices: ['选项A8574', '选项B785'],
+          //       question: '综合问题2',
+          //       answer: 'A'
+          //     }
+          //   ]
+          // }
+          //真实数据
+          let data = res.data.data
+          if (data.gender == 1) {
+            data.gender = '男'
           }
-          if(item.answer=='B'){
-            item.answer=item.choices[1]
+          if (data.gender == 2) {
+            data.gender = '女'
           }
-          if(item.answer=='C'){
-            item.answer=item.choices[2]
-          }
-          if(item.answer=='D'){
-            item.answer=item.choices[3]
-          }
-          this.basicQuestions2.push(item)
-        }
-      })
-      //数据分类（部门和综合问题）
-      data.questions.forEach((item) => {
-        if (item.department == '综合问题') {
-          if (item.multipleChoice == 0) {
-            this.bigQuestion1.push(item)
-          }
-          if (item.multipleChoice == 1) {
-            if(item.answer=='A'){
-            item.answer=item.choices[0]
-          }
-          if(item.answer=='B'){
-            item.answer=item.choices[1]
-          }
-          if(item.answer=='C'){
-            item.answer=item.choices[2]
-          }
-          if(item.answer=='D'){
-            item.answer=item.choices[3]
-          }
-            this.bigQuestion2.push(item)
-          }
-        }
-        else{
+          //赋值
+          this.ruleForm = data
+          //数据分类（basequestion）
+          data.basicQuestions.forEach((item) => {
             if (item.multipleChoice == 0) {
-              this.departmentQuestion1.push(item)
+              this.basicQuestions1.push(item)
             }
             if (item.multipleChoice == 1) {
-              if(item.answer=='A'){
-                item.answer=item.choices[0]
+              if (item.answer == 'A') {
+                item.answer = item.choices[0]
               }
-              if(item.answer=='B'){
-                item.answer=item.choices[1]
+              if (item.answer == 'B') {
+                item.answer = item.choices[1]
               }
-              if(item.answer=='C'){
-                item.answer=item.choices[2]
+              if (item.answer == 'C') {
+                item.answer = item.choices[2]
               }
-              if(item.answer=='D'){
-                item.answer=item.choices[3]
+              if (item.answer == 'D') {
+                item.answer = item.choices[3]
               }
-              this.departmentQuestion2.push(item)
+              this.basicQuestions2.push(item)
             }
-          }
-      })
-      })
-      .catch(() => {
-        this.$message({
-          showClose: true,
-          message: '获取简历失败',
-          type: 'error',
-          center: true,
-          duration: 2000
+          })
+          //数据分类（部门和综合问题）
+          data.questions.forEach((item) => {
+            if (item.department == '综合问题') {
+              if (item.multipleChoice == 0) {
+                this.bigQuestion1.push(item)
+              }
+              if (item.multipleChoice == 1) {
+                if (item.answer == 'A') {
+                  item.answer = item.choices[0]
+                }
+                if (item.answer == 'B') {
+                  item.answer = item.choices[1]
+                }
+                if (item.answer == 'C') {
+                  item.answer = item.choices[2]
+                }
+                if (item.answer == 'D') {
+                  item.answer = item.choices[3]
+                }
+                this.bigQuestion2.push(item)
+              }
+            } else {
+              if (item.multipleChoice == 0) {
+                this.departmentQuestion1.push(item)
+              }
+              if (item.multipleChoice == 1) {
+                if (item.answer == 'A') {
+                  item.answer = item.choices[0]
+                }
+                if (item.answer == 'B') {
+                  item.answer = item.choices[1]
+                }
+                if (item.answer == 'C') {
+                  item.answer = item.choices[2]
+                }
+                if (item.answer == 'D') {
+                  item.answer = item.choices[3]
+                }
+                this.departmentQuestion2.push(item)
+              }
+            }
+          })
         })
-      })
+        .catch(() => {
+          this.$message({
+            showClose: true,
+            message: '获取简历失败',
+            type: 'error',
+            center: true,
+            duration: 2000
+          })
+        })
     }
   }
 }

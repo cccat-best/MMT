@@ -177,17 +177,20 @@
         <div slot="footer" class="dialog-footer">
           <el-button @click="dialogFormVisible = false">取 消</el-button>
 
-          <el-popover
-          placement="top"
-          width="160"
-          v-model="visible">
-          <p>确定更改吗？？？</p>
-          <div style="text-align: right; margin: 0">
-            <el-button size="mini" type="text" @click="visible = false">取消</el-button>
-            <el-button type="primary" size="mini" @click="resetData">确定</el-button>
-          </div>
-          <el-button slot="reference" type="primary"  style="margin-left:10px">确定</el-button>
-        </el-popover>
+          <el-popover placement="top" width="160" v-model="visible">
+            <p>确定更改吗？？？</p>
+            <div style="text-align: right; margin: 0">
+              <el-button size="mini" type="text" @click="visible = false"
+                >取消</el-button
+              >
+              <el-button type="primary" size="mini" @click="resetData"
+                >确定</el-button
+              >
+            </div>
+            <el-button slot="reference" type="primary" style="margin-left: 10px"
+              >确定</el-button
+            >
+          </el-popover>
           <!-- <el-button type="primary" @click="resetData">确 定</el-button> -->
         </div>
       </el-dialog>
@@ -915,8 +918,8 @@ export default {
       }
     }
   }
-  .dialog-footer{
-    /deep/.el-button{
+  .dialog-footer {
+    /deep/.el-button {
       margin-left: 20px;
     }
   }
