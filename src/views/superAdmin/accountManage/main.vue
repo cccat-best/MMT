@@ -102,7 +102,7 @@
       <el-input
         v-model="searchWord"
         type="search"
-        @input="searchKeyWord"
+        @input="beforeSearchKeyWord"
         class="searchInput"
         size="small"
         prefix-icon="el-icon-search"
@@ -114,7 +114,11 @@
     <el-table
       stripe
       tooltip-effect="dark"
-      style="color: #666690; font-size: 15px"
+      style="
+        color: #666690;
+        font-size: 15px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);
+      "
       height="76vh"
       :row-style="{ height: '0' }"
       :cell-style="{ padding: '0px' }"
@@ -145,7 +149,12 @@
         fixed
       >
       </el-table-column>
-      <el-table-column prop="name" label="姓名" align="center">
+      <el-table-column
+        prop="name"
+        label="姓名"
+        min-width="120px"
+        align="center"
+      >
       </el-table-column>
       <!-- :filter-multiple="false"过滤器单选 -->
       <!-- :filter-method="filterPermission" 前端过滤 -->
@@ -174,7 +183,7 @@
           {{ scope.row.phone | replacestar }}
         </template>
       </el-table-column>
-      <el-table-column label="操作" min-width="300px" align="center">
+      <el-table-column label="操作" min-width="200px" align="center">
         <!-- 单次删除需要scope来传数据 -->
         <template slot-scope="scope">
           <el-button
@@ -328,15 +337,16 @@ export default {
     return {
       // 补一个未知报错bug,不知道哪来的none未定义
       none: 0,
+      // 防抖计时器
+      timeout: null,
       // 批量修改图标颜色
       batchColorChange1: '#666666', //第一个按钮
       batchColorChange2: '#666666', //第二个按钮
       showactive1: 0, //第一个按钮
       showactive2: 0, //第二个按钮
 
-      // 关键字搜索
-      organizationId: 3, ////组织名不知道，需要询问////////////////////////
-      searchWord: '',
+      organizationId: 0, //组织
+      searchWord: '', // 关键字搜索
       data: '', //发请求的data
       order: 'asc', //排序顺序，默认升序
       column: 'permission', //排序变量，默认权限升序
@@ -504,7 +514,12 @@ export default {
       this.tableDataChange = datalist
       this.pageCutDouwn(this.tableDataChange)
     },
-
+    //搜索框防抖搜索
+    beforeSearchKeyWord() {
+      // 防抖函数
+      clearTimeout(this.timeout)
+      this.timeout = setTimeout(this.searchKeyWord, 700)
+    },
     //关键字搜索
     searchKeyWord() {
       // 判断字符串是否为空
@@ -521,13 +536,11 @@ export default {
       // 发请求
       this.$http.post('api/account/manage/all', this.data).then(
         (res) => {
-          // 因为请求访问权限异常，res.data.studentList在返回信息中为undefined
-          if (res.data.code == 'A0300') {
-            // 用造的假数据顶上
-            this.$message.error(res.data.message)
-          } else {
+          if (res.data.code == '00000') {
             this.tableData = res.data.data.studentList
             this.total = res.data.data.total
+          } else {
+            this.$message.error(res.data.message)
           }
           // 通知所有相关项更新数据，因为他们使用tableDataChange而不是tableData
           this.orderChange(this.tableData)
@@ -737,7 +750,7 @@ export default {
 //
 // 使图标对齐文字
 .buttonMove {
-  margin: 0 40px;
+  margin: 0 20px;
 }
 .search {
   width: 40vh;

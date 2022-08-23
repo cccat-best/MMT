@@ -109,6 +109,7 @@
               show-word-limit
               style="margin: 10px 0"
               resize="none"
+              :autofocus="true"
             >
             </el-input>
           </div>
@@ -170,14 +171,14 @@
         <el-button
           type="info"
           plain
-          class="bottom-button-item"
+          class="bottom-button-item bottom-button-item-left"
           @click="cancel()"
           >取消</el-button
         >
         <el-button
           type="primary"
           plain
-          class="bottom-button-item"
+          class="bottom-button-item bottom-button-item-right"
           @click="isSend()"
           >提交</el-button
         >
@@ -396,7 +397,7 @@ export default {
       )
       // this.isAdd--
     },
-    //如果点击取消回到时间选择页
+    //如果点击取消回到报名表第一页并取消编辑模式
     cancel() {
       this.$parent.cancel()
       this.escEdit()
@@ -451,7 +452,7 @@ export default {
             allocated: this.allocated,
             comprehensiveQuestionsList: this.comprehensiveQuestionsList
           }
-          console.log(qustionList)
+          //console.log(qustionList)
           //调用函数发送请求
           this.sendTo(qustionList)
         })
@@ -487,7 +488,7 @@ export default {
   .synth-title {
     display: flex;
     font-size: 30px;
-    color: #9e9e9e;
+    color: #989898;
     margin: 10px 0;
   }
   .synth-main-content {
@@ -555,12 +556,19 @@ export default {
     }
     .bottom-button {
       display: flex;
-      justify-content: space-around;
+      margin-top: 25px;
+      // justify-content: space-around;
       .bottom-button-item {
-        width: 120px;
-        height: 20px;
-        font-size: 14px;
+        width: 100px;
+        height: 36px;
+        font-size: 17px;
         line-height: 3px;
+      }
+      .bottom-button-item-left {
+        margin-left: 215px;
+      }
+      .bottom-button-item-right {
+        margin-left: 93px;
       }
     }
   }
