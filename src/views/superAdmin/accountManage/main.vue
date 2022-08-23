@@ -8,7 +8,10 @@
     <div class="seach-header">
       <div>
         <button
-          :class="[showactive1 == 0 ? 'batchButton' : 'activeBatchButton']"
+          :class="[
+            showactive1 == 0 ? 'batchButton' : 'activeBatchButton',
+            this.multipleSelection.length == 0 ? 'disableUse' : ''
+          ]"
           @click="showDialogVisible"
           :disabled="this.multipleSelection.length == 0"
         >
@@ -62,7 +65,10 @@
       </div>
       <div>
         <button
-          :class="[showactive2 == 0 ? 'batchButton' : 'activeBatchButton']"
+          :class="[
+            showactive2 == 0 ? 'batchButton' : 'activeBatchButton',
+            this.multipleSelection.length == 0 ? 'disableUse' : ''
+          ]"
           @click="deleteDialogVisible"
           :disabled="this.multipleSelection.length == 0"
         >
@@ -718,13 +724,21 @@ export default {
   // height: 34.4px;
   margin-left: 20px;
 }
-//
+//禁用
+.disableUse {
+  cursor: not-allowed;
+}
+//解除禁用
+// .ableUse {
+// }
+//未mouseenter
 .batchButton {
   margin: 0 10px;
   font-size: medium;
   color: #666666;
   border: none;
 }
+//mouseenter
 .activeBatchButton {
   margin: 0 10px;
   font-size: medium;
