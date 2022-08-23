@@ -168,7 +168,7 @@
             v-for="(item, index) in departmentQuestion1"
             :key="index"
           >
-            <div class="problem">填空：{{ item.question }}</div>
+            <div class="problem">{{item.department}}：{{ item.question }}</div>
             <div class="answer">{{ item.answer }}</div>
           </div>
           <!-- 自定义选择 -->
@@ -178,7 +178,7 @@
               v-for="(item, index) in departmentQuestion2"
               :key="index"
             >
-              <div style="margin-right: 40px">选择：{{ item.question }}</div>
+              <div style="margin-right: 40px">{{item.department}}：{{ item.question }}</div>
               <div class="answer">
                 <el-radio
                   disabled
@@ -244,7 +244,7 @@
 
 <script>
 //暂时注释掉,是有用的
-// import axios from 'axios'
+import axios from 'axios'
 export default {
   name: 'changeDialog',
   data() {
@@ -253,6 +253,7 @@ export default {
       changeDialogVisible: false,
       // 学号,由主页传过来
       studentId: '',
+      admissionId: sessionStorage.getItem('homeAdmissionId'),
       //表单数据
       ruleForm: {
         studentId: '',
@@ -284,16 +285,24 @@ export default {
         studentName: [
           { required: true, message: '请输入姓名', trigger: 'blur' }
         ],
-        studentId: [{ required: true, message: '请输入学号', trigger: 'blur' }],
-        phone: [{ required: true, message: '请输入电话号', trigger: 'blur' }],
-        academyId: [{ required: true, message: '请选择学院', trigger: 'blur' }],
-        majorId: [{ required: true, message: '请选择专业', trigger: 'blur' }],
-        classId: [{ required: true, message: '请选择班级', trigger: 'blur' }],
-        qq: [{ required: true, message: '请输入QQ', trigger: 'blur' }],
-        gender: [{ required: true, message: '请输入性别', trigger: 'blur' }],
-        email: [{ required: true, message: '请输入邮箱', trigger: 'blur' }],
-        height: [{ required: true, message: '请输入身高', trigger: 'blur' }],
-        weight: [{ required: true, message: '请输入体重', trigger: 'blur' }]
+        studentId: [
+          { required: true, message: '请输入学号', trigger: 'blur' },
+          { pattern:/^202\d{5}$/, message: "学号格式不对", trigger: "blur" },
+        ],
+        phone: [
+          { required: true, message: '请输入电话号', trigger: 'blur' },
+          { pattern:/^(13[0-9]|15[0-9]|17[013678]|18[0-9]|14[57])\d{8}$/, message: "手机号格式不对", trigger: "blur" },
+        ],
+        // academyId: [{ required: true, message: '请选择学院', trigger: 'blur' }],
+        // majorId: [{ required: true, message: '请选择专业', trigger: 'blur' }],
+        // classId: [{ required: true, message: '请选择班级', trigger: 'blur' }],
+        qq: [{ required: true, message: '请输入QQ', trigger: 'blur' },
+              { pattern:/^[123456789]\d{4,9}$/, message: "QQ格式不对", trigger: "blur" },
+        ],
+        // gender: [{ required: true, message: '请输入性别', trigger: 'blur' }],
+        // email: [{ required: true, message: '请输入邮箱', trigger: 'blur' }],
+        // height: [{ required: true, message: '请输入身高', trigger: 'blur' }],
+        // weight: [{ required: true, message: '请输入体重', trigger: 'blur' }]
       },
       sexs: [
         {
@@ -335,6 +344,7 @@ export default {
         if (this.ruleForm.majorId != null) {
           this.ruleForm.majorId = ''
           this.ruleForm.classId = ''
+          this.classIds=[]
           this.getMajor()
         }
       }
@@ -343,6 +353,7 @@ export default {
     'ruleForm.majorId': {
       handler() {
         if (this.ruleForm.majorId != '' && this.ruleForm.majorId != null) {
+          this.ruleForm.classId = ''
           this.getClass()
         }
       }
@@ -354,7 +365,7 @@ export default {
       this.getAcdademy()
       this.getDetail()
     },
-    // 获取学院列表
+    // 获取学院列表(ok)
     getAcdademy() {
       let url = `api/major-info/academy`
       let get = this.$http.get(url)
@@ -372,7 +383,7 @@ export default {
           })
         })
     },
-    // 获取专业列表
+    // 获取专业列表(ok)
     getMajor() {
       //没有选择学院专业列表为空
       if (this.ruleForm.academyId == '') {
@@ -396,7 +407,7 @@ export default {
           })
       }
     },
-    // 获取班级列表
+    // 获取班级列表(ok)
     getClass() {
       let academyId = this.ruleForm.academyId
       let majorId = this.ruleForm.majorId
@@ -416,7 +427,7 @@ export default {
           })
         })
     },
-    // 获取个人信息(后端数据库为空，目前不能请求)
+    // 获取个人信息(ok)
     getDetail() {
       // 清空
       // 部门问题数组（填空）
@@ -431,94 +442,89 @@ export default {
       this.basicQuestions1 = []
       //基本问题数组（选择）
       this.basicQuestions2 = []
-      // let studentId = this.studentId
-      // let admissionId = this.admissionId
-      // let url = `api/student/info/show?studentId=${studentId}&admissionId=${admissionId}`
-      // let get = this.$http.get(url)
-      // get
-      //   .then((res) => {
-      //     console.log(res,'简历数据')
+      let studentId = this.studentId
+      let admissionId = this.admissionId
+      let url = `api/student/info/show?studentId=${studentId}&admissionId=${admissionId}`
+      let get = this.$http.get(url)
+      get
+        .then((res) => {
+          console.log(res,'简历数据')
       //模拟数据
-      let data = {
-        studentId: 20222445,
-        studentName: '张张张',
-        phone: '130000000',
-        academy: '',
-        major: '',
-        classNum: '',
-        gender: 2,
-        qq: '2310768059',
-        email: '15155',
-        weight: 50,
-        height: 180.5,
-        basicQuestions: [
-          {
-            multipleChoice: 0,
-            question: '你的暑假安排',
-            answer: '吃饭吃饭吃饭睡觉睡觉睡觉'
-          },
-          {
-            multipleChoice: 0,
-            question: '你的学习进度',
-            answer: '百分之八十'
-          },
-          {
-            multipleChoice: 1,
-            choices: ['重庆火锅', '四川火锅', '北京火锅'],
-            question: '喜欢重庆火锅还是四川火锅',
-            answer: '重庆火锅'
-          },
-          {
-            multipleChoice: 1,
-            choices: ['吃饭', '睡觉', '都喜欢'],
-            question: '喜欢吃饭还是睡觉',
-            answer: '吃饭'
-          }
-        ],
-        questions: [
-          {
-            department: '部门问题',
-            multipleChoice: 0,
-            question: '生涯规划',
-            answer: 'haohaohao'
-          },
-          {
-            department: '部门问题',
-            multipleChoice: 0,
-            question: '时间安排是什么样',
-            answer: 'goodgood'
-          },
-          {
-            department: '部门问题',
-            multipleChoice: 1,
-            choices: ['吃饭', '睡觉', '都不喜欢', '都喜欢'],
-            question: '喜欢吃饭还是睡觉',
-            answer: '都喜欢'
-          },
-          {
-            department: '部门问题',
-            multipleChoice: 1,
-            choices: ['重庆火锅', '四川火锅', '北京火锅'],
-            question: '喜欢重庆火锅还是四川火锅',
-            answer: '重庆火锅'
-          },
-          {
-            department: '综合问题',
-            multipleChoice: 0,
-            question: '综合问题1',
-            answer: '哈哈哈哈哈哈哈哈哈'
-          },
-          {
-            department: '综合问题',
-            multipleChoice: 1,
-            choices: ['选项A8574', '选项B785'],
-            question: '综合问题2',
-            answer: '选项A8574'
-          }
-        ]
-      }
+      // let data = {
+      //   studentId: 20222445,
+      //   studentName: '张张张',
+      //   phone: '13000000000',
+      //   academy: '计算机学院',
+      //   major: '计算机科学与技术',
+      //   classNum: '1班',
+      //   gender: 2,
+      //   qq: '2310768059',
+      //   email: '2310789@qq.com',
+      //   height: 180.5,
+      //   weight: 50,
+      //   basicQuestions: [
+      //     {
+      //       multipleChoice: 0,
+      //       question: '你的暑假安排',
+      //       answer: '吃饭吃饭吃饭睡觉睡觉睡觉'
+      //     },
+      //     {
+      //       multipleChoice: 1,
+      //       choices: ['重庆火锅', '四川火锅', '北京火锅'],
+      //       question: '喜欢重庆火锅还是四川火锅',
+      //       answer: 'A'
+      //     },
+      //     {
+      //       multipleChoice: 1,
+      //       choices: ['吃饭', '睡觉', '都喜欢'],
+      //       question: '喜欢吃饭还是睡觉',
+      //       answer: 'B'
+      //     }
+      //   ],
+      //   questions: [
+      //     {
+      //       department: '学习部',
+      //       multipleChoice: 0,
+      //       question: '生涯规划',
+      //       answer: 'haohaohao'
+      //     },
+      //     {
+      //       department: '体育部',
+      //       multipleChoice: 0,
+      //       question: '时间安排是什么样',
+      //       answer: 'goodgood'
+      //     },
+      //     {
+      //       department: '新媒体部',
+      //       multipleChoice: 1,
+      //       choices: ['吃饭', '睡觉', '都不喜欢', '都喜欢'],
+      //       question: '喜欢吃饭还是睡觉',
+      //       answer: 'D'
+      //     },
+      //     {
+      //       department: '科技协会',
+      //       multipleChoice: 1,
+      //       choices: ['重庆火锅', '四川火锅', '北京火锅'],
+      //       question: '喜欢重庆火锅还是四川火锅',
+      //       answer: 'C'
+      //     },
+      //     {
+      //       department: '综合问题',
+      //       multipleChoice: 0,
+      //       question: '综合问题1',
+      //       answer: '哈哈哈哈哈哈哈哈哈'
+      //     },
+      //     {
+      //       department: '综合问题',
+      //       multipleChoice: 1,
+      //       choices: ['选项A8574', '选项B785'],
+      //       question: '综合问题2',
+      //       answer: 'A'
+      //     }
+      //   ]
+      // }
       //真实数据
-      // let data=res.data.data
+      let data=res.data.data
       //赋值
       this.ruleForm.studentId = data.studentId
       this.ruleForm.studentName = data.studentName
@@ -548,107 +554,144 @@ export default {
           this.basicQuestions1.push(item)
         }
         if (item.multipleChoice == 1) {
+          if(item.answer=='A'){
+            item.answer=item.choices[0]
+          }
+          if(item.answer=='B'){
+            item.answer=item.choices[1]
+          }
+          if(item.answer=='C'){
+            item.answer=item.choices[2]
+          }
+          if(item.answer=='D'){
+            item.answer=item.choices[3]
+          }
           this.basicQuestions2.push(item)
         }
       })
       //数据分类（部门和综合问题）
       data.questions.forEach((item) => {
-        if (item.department == '部门问题') {
-          if (item.multipleChoice == 0) {
-            this.departmentQuestion1.push(item)
-          }
-          if (item.multipleChoice == 1) {
-            this.departmentQuestion2.push(item)
-          }
-        }
         if (item.department == '综合问题') {
           if (item.multipleChoice == 0) {
             this.bigQuestion1.push(item)
           }
           if (item.multipleChoice == 1) {
+            if(item.answer=='A'){
+            item.answer=item.choices[0]
+          }
+          if(item.answer=='B'){
+            item.answer=item.choices[1]
+          }
+          if(item.answer=='C'){
+            item.answer=item.choices[2]
+          }
+          if(item.answer=='D'){
+            item.answer=item.choices[3]
+          }
             this.bigQuestion2.push(item)
           }
         }
+        else{
+          if (item.multipleChoice == 0) {
+            this.departmentQuestion1.push(item)
+          }
+          if (item.multipleChoice == 1) {
+            if(item.answer=='A'){
+            item.answer=item.choices[0]
+          }
+          if(item.answer=='B'){
+            item.answer=item.choices[1]
+          }
+          if(item.answer=='C'){
+            item.answer=item.choices[2]
+          }
+          if(item.answer=='D'){
+            item.answer=item.choices[3]
+          }
+            this.departmentQuestion2.push(item)
+          }
+        }
       })
-      // })
-      // .catch(() => {
-      //   this.$message({
-      //     showClose: true,
-      //     message: '获取简历失败',
-      //     type: 'error',
-      //     center: true,
-      //     duration: 2000
-      //   })
-      // })
+      })
+      .catch(() => {
+        this.$message({
+          showClose: true,
+          message: '获取简历失败',
+          type: 'error',
+          center: true,
+          duration: 2000
+        })
+      })
     },
-    //点击提交按钮
+    //点击提交按钮(ok)
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           this.submitNumData()
-          this.submitData()
         } else {
           return false
         }
       })
     },
-    //提交修改学号数据(后端数据库为空，目前不能请求)
+    //提交修改学号数据(ok)
     submitNumData() {
-      // let sendData={
-      //   "studentId": this.studentId,
-      //   "newStudentId": this.ruleForm.studentId
-      // }
-      // let url = `api/student/info/change-student-id`
-      // axios.put(url,sendData)
-      //   .then((res) => {
-      //     alert(res)
-      //   })
-      //   .catch(() => {
-      //     this.$message({
-      //       showClose: true,
-      //       message: '修改学号失败',
-      //       type: 'error',
-      //       center: true,
-      //       duration: 2000
-      //     })
-      //   })
+      let sendData={
+        "studentId": Number(this.studentId),
+        "newStudentId": Number(this.ruleForm.studentId)
+      }
+      let url = `api/student/info/change-student-id`
+      axios.put(url,sendData)
+        .then((res) => {
+          console.log(res,'修改学号')
+          this.submitData()
+        })
+        .catch(() => {
+          this.$message({
+            showClose: true,
+            message: '修改学号失败',
+            type: 'error',
+            center: true,
+            duration: 2000
+          })
+        })
     },
-    //修改个人信息(后端数据库为空，目前不能请求)
+    //修改个人信息(是否必传问题)
     submitData() {
-      // let sendData={
-      //   "studentId":this.ruleForm.studentId,
-      //   "studentName":this.ruleForm.studentName,
-      //   "phone": this.ruleForm.phone,
-      //   "qq": this.ruleForm.qq,
-      //   "academyId": this.ruleForm.academyId,
-      //   "majorId": this.ruleForm.majorId,
-      //   "classId" : this.ruleForm.classId,
-      //   "email":this.ruleForm.email,
-      //   "gender":this.ruleForm.gender
-      // "height":this.ruleForm.height
-      // "weight":this.ruleForm.weight
-      // }
-      // let url = `api/student/info/change-student-info`
-      // axios.put(url,sendData)
-      // .then(() => {
-      this.changeDialogVisible = false
-      this.$message({
-        showClose: true,
-        message: '修改成功',
-        type: 'success',
-        center: true,
-        duration: 2000
+      let sendData={
+        "studentId":this.ruleForm.studentId,
+        "studentName":this.ruleForm.studentName,
+        "phone": this.ruleForm.phone,
+        "qq": this.ruleForm.qq,
+        "academyId": this.ruleForm.academyId,
+        "majorId": this.ruleForm.majorId,
+        "classId" : this.ruleForm.classId,
+        "email":this.ruleForm.email,
+        "gender":this.ruleForm.gender,
+        "height":this.ruleForm.height,
+        "weight":this.ruleForm.weight
+      }
+      let url = `api/student/info/change-student-info`
+      axios.put(url,sendData)
+      .then((res) => {
+        console.log(res,'修改个人信息')
+        this.changeDialogVisible = false
+        this.$message({
+          showClose: true,
+          message: '修改成功',
+          type: 'success',
+          center: true,
+          duration: 2000
+        })
       })
-      // })
-      // .catch(() => {
-      //   this.$message({
-      //     showClose: true,
-      //     message: '修改失败',
-      //     type: 'error',
-      //     center: true,
-      //     duration: 2000
-      //   })
-      // })
+      .catch(() => {
+        this.$message({
+          showClose: true,
+          message: '修改失败',
+          type: 'error',
+          center: true,
+          duration: 2000
+        })
+      })
     }
   }
   // mounted(){

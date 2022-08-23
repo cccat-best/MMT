@@ -8,7 +8,7 @@ let data3 = [
     interviewStatus: '二面进行中',
     nextTime: '8/29 15:10',
     nextPlace: '7-112',
-    stuNum: '20210001',
+    stuNum: '20200001',
     wishDepartment: '产品组',
     departmentOrder: '第一志愿'
   },

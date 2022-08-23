@@ -50,7 +50,9 @@
       >
       <!-- 点击弹出的页面 -->
       <el-dialog title="签到二维码" :visible.sync="dialogVisible1" width="30%">
-        <img style="width: 300px; height: 300px; margin: 0 auto" :src="code" />
+        <div v-loading="loadingtwo">
+          <img style="width: 300px; height: 300px; margin: 0 auto" :src="code" />
+        </div>
         <div class="tips">请于面试开始前三十分钟之内扫码</div>
         <span slot="footer" class="dialog-footer">
           <el-button type="primary" @click="dialogVisible1 = false"
@@ -272,7 +274,7 @@
                         v-for="(item, index) in departmentQuestion1"
                         :key="index"
                       >
-                        <div class="problem">填空：{{ item.question }}</div>
+                        <div class="problem">{{item.department}}：{{ item.question }}</div>
                         <div class="answer">{{ item.answer }}</div>
                       </div>
                       <!-- 自定义选择 -->
@@ -283,7 +285,7 @@
                           :key="index"
                         >
                           <div style="margin-right: 40px">
-                            选择：{{ item.question }}
+                            {{item.department}}：{{ item.question }}
                           </div>
                           <div class="answer">
                             <el-radio
@@ -443,6 +445,8 @@ export default {
       code: '',
       //二维码弹出框的显示与隐藏
       dialogVisible1: false,
+      //二维码的loading效果
+      loadingtwo: true,
       //简历弹出框显示与隐藏
       dialogVisible2: false,
       //面试评价弹出框显示与隐藏
@@ -491,32 +495,32 @@ export default {
     clearInterval(this.timer2)
   },
   methods: {
-    //获取departmentid(报错)
+    //获取departmentid(请求已解开，没有数据，目前为假数据)
     getDepartmentId() {
-      // let studentId=this.stdId
-      // console.log(studentId,'学号')
-      // let url = `api/real-time-interview/info/department-id?studentId=${studentId}`
-      // let get = this.$http.get(url)
-      // get
-      //   .then((res) => {
-      //     console.log(res, '获取部门id')
-      let data = 1
-      //真实数据
-      // let data=res.data.data
-      this.departmentId = data
-      //默认展示第一个地点的数据
-      // })
-      // .catch(() => {
-      //   this.$message({
-      //     showClose: true,
-      //     message: '获取失败',
-      //     type: 'error',
-      //     center: true,
-      //     duration: 2000
-      //   })
-      // })
+      let studentId=this.stdId
+      console.log(studentId,'学号')
+      let url = `api/real-time-interview/info/department-id?studentId=${studentId}`
+      let get = this.$http.get(url)
+      get
+        .then((res) => {
+          console.log(res, '获取部门id')
+          let data = 1
+          //真实数据
+          // let data=res.data.data
+          this.departmentId = data
+          this.getEvaluation()
+      })
+      .catch(() => {
+        this.$message({
+          showClose: true,
+          message: '获取失败',
+          type: 'error',
+          center: true,
+          duration: 2000
+        })
+      })
     },
-    //获取地点（返回空数据）
+    //获取地点（请求已解开，没有数据，目前为假数据）
     getLocation() {
       let sendData = {
         admissionId: this.admissionId
@@ -563,7 +567,7 @@ export default {
           })
         })
     },
-    //获取进度条数据(后端没数据目前不能请求)
+    //获取进度条数据(请求报错)
     getProgressBar() {
       // let sendData ={
       //   "admissionId": this.admissionId
@@ -576,10 +580,10 @@ export default {
       // 模拟数据
       let data = [
         {
-          total: 8,
+          total: 0,
           startTime: '00:00',
           endTime: '01:00',
-          proportion: 90
+          proportion: 100
         },
         {
           total: 12,
@@ -625,7 +629,7 @@ export default {
       //   })
       // })
     },
-    //点击生成二维码按钮*
+    //点击生成二维码按钮(ok)
     displayCode() {
       this.dialogVisible1 = true
       //生成二维码
@@ -639,6 +643,7 @@ export default {
       post
         .then((res) => {
           console.log(res, '获取二维码')
+          this.loadingtwo=false
           //模拟数据
           // let data = {
           //     "code":"0000",
@@ -658,29 +663,32 @@ export default {
           })
         })
     },
-    //点击面试评价按钮获取学号和评价(后端没数据目前不能请求)
+    //点击面试评价按钮获取学号和评价(ok)
     openEvaluate(row) {
       this.dialogVisible3 = true
       this.stdId = row.studentId
       this.getDepartmentId()
-      // let sendData ={
-      //   "studentId": this.stdId,
-      //   "admissionId": this.admissionId,
-      //   "departmentId": this.departmentId,
-      //   "round": this.round,
-      // }
-      // let url = `api/real-time-interview/view-appraise`
-      // let post = this.$http.post(url,sendData)
-      // post
-      //   .then((res) => {
-      //     console.log(res,'面试评价数据')
-      // 模拟数据
-      let data = {
-        data: 'good',
-        score: '80'
+    },
+    // 获取面试评价(ok)
+    getEvaluation(){
+      let sendData ={
+        "studentId": this.stdId,
+        "admissionId": this.admissionId,
+        "departmentId": this.departmentId,
+        "round": this.round,
       }
+      let url = `api/real-time-interview/view-appraise`
+      let post = this.$http.post(url,sendData)
+      post
+        .then((res) => {
+          console.log(res,'面试评价数据')
+      // 模拟数据
+      // let data = {
+      //   data: 'good',
+      //   score: '80'
+      // }
       //真实数据
-      // let data=res.data.data
+      let data=res.data.data
       if (data.data == null) {
         data.data = ''
       }
@@ -689,18 +697,18 @@ export default {
       }
       this.estimate = data.data
       this.score = data.score
-      // })
-      // .catch(() => {
-      //   this.$message({
-      //     showClose: true,
-      //     message: '获取面试地点失败',
-      //     type: 'error',
-      //     center: true,
-      //     duration: 2000
-      //   })
-      // })
+      })
+      .catch(() => {
+        this.$message({
+          showClose: true,
+          message: '获取面试地点失败',
+          type: 'error',
+          center: true,
+          duration: 2000
+        })
+      })
     },
-    // 点击发送评价按钮
+    // 点击发送评价按钮(ok)
     clicksendEvaluation() {
       if (this.estimate == '') {
         this.$message({
@@ -724,48 +732,48 @@ export default {
         }
       }
     },
-    //发送评价(后端没数据目前不能请求)
+    //发送评价(ok)
     sendEvaluation() {
       this.dialogVisible3 = false
       //发送面试评价
-      // let sendData ={
-      //   "studentId": this.stdId,
-      //   "admissionId": this.admissionId,
-      //   "departmentId": this.departmentId,
-      //   "score": this.score,
-      //   "round": this.round,
-      //   "data": this.estimate
-      // }
-      // console.log(sendData)
-      // let url = `api/real-time-interview/appraise`
-      // let post = this.$http.post(url,sendData)
-      // post
-      //   .then((res) => {
-      //     console.log(res,'发送面试评价')
-      this.$message({
-        showClose: true,
-        message: '评价成功',
-        type: 'success',
-        center: true,
-        duration: 2000
+      let sendData ={
+        "studentId": this.stdId,
+        "admissionId": this.admissionId,
+        "departmentId": this.departmentId,
+        "score": this.score,
+        "round": this.round,
+        "data": this.estimate
+      }
+      console.log(sendData)
+      let url = `api/real-time-interview/appraise`
+      let post = this.$http.post(url,sendData)
+      post
+        .then((res) => {
+          console.log(res,'发送面试评价')
+          this.$message({
+            showClose: true,
+            message: '评价成功',
+            type: 'success',
+            center: true,
+            duration: 2000
+          })
       })
-      // })
-      // .catch(() => {
-      //   this.$message({
-      //     showClose: true,
-      //     message: '评价失败',
-      //     type: 'error',
-      //     center: true,
-      //     duration: 2000
-      //   })
-      // })
+      .catch(() => {
+        this.$message({
+          showClose: true,
+          message: '评价失败',
+          type: 'error',
+          center: true,
+          duration: 2000
+        })
+      })
     },
-    //当前页发生改变
+    //当前页发生改变(ok)
     handleCurrentChange(val) {
       this.currentPage = val
       this.getTableData()
     },
-    //获取表格数据（返回空数据）
+    //获取表格数据（请求已解开，没有数据，目前为假数据）
     getTableData() {
       // console.log('地点'+this.position,'页数'+this.currentPage,'搜索'+this.search)
       let pageNum = this.currentPage
@@ -882,14 +890,14 @@ export default {
           })
         })
     },
-    //点击搜索
+    //点击搜索(ok)
     getSearch() {
       this.currentPage = 1
       if (this.position != '') {
         this.getTableData()
       }
     },
-    //点击简历按钮获取学号清空数组
+    //点击简历按钮获取学号清空数组(ok)
     openResume(row) {
       this.dialogVisible2 = true
       this.stdId = row.studentId
@@ -908,91 +916,91 @@ export default {
       this.basicQuestions2 = []
       this.getResume()
     },
-    //获取简历数据(后端没数据目前不能请求)
+    //获取简历数据(ok)
     getResume() {
-      // let studentId = this.stdId
-      // let admissionId = this.admissionId
-      // let url = `api/student/info/show?studentId=${studentId}&admissionId=${admissionId}`
-      // let get = this.$http.get(url)
-      // get
-      //   .then((res) => {
-      //     console.log(res,'简历数据')
+      let studentId = this.stdId
+      let admissionId = this.admissionId
+      let url = `api/student/info/show?studentId=${studentId}&admissionId=${admissionId}`
+      let get = this.$http.get(url)
+      get
+        .then((res) => {
+          console.log(res,'简历数据')
       //模拟数据
-      let data = {
-        studentId: 20222445,
-        studentName: '张张张',
-        phone: '13000000000',
-        academy: '计算机学院',
-        major: '计算机科学与技术',
-        classNum: '1班',
-        gender: 2,
-        qq: '2310768059',
-        email: '2310789@qq.com',
-        height: 180.5,
-        weight: 50,
-        basicQuestions: [
-          {
-            multipleChoice: 0,
-            question: '你的暑假安排',
-            answer: '吃饭吃饭吃饭睡觉睡觉睡觉'
-          },
-          {
-            multipleChoice: 1,
-            choices: ['重庆火锅', '四川火锅', '北京火锅'],
-            question: '喜欢重庆火锅还是四川火锅',
-            answer: '重庆火锅'
-          },
-          {
-            multipleChoice: 1,
-            choices: ['吃饭', '睡觉', '都喜欢'],
-            question: '喜欢吃饭还是睡觉',
-            answer: '都喜欢'
-          }
-        ],
-        questions: [
-          {
-            department: '部门问题',
-            multipleChoice: 0,
-            question: '生涯规划',
-            answer: 'haohaohao'
-          },
-          {
-            department: '部门问题',
-            multipleChoice: 0,
-            question: '时间安排是什么样',
-            answer: 'goodgood'
-          },
-          {
-            department: '部门问题',
-            multipleChoice: 1,
-            choices: ['吃饭', '睡觉', '都不喜欢', '都喜欢'],
-            question: '喜欢吃饭还是睡觉',
-            answer: '都喜欢'
-          },
-          {
-            department: '部门问题',
-            multipleChoice: 1,
-            choices: ['重庆火锅', '四川火锅', '北京火锅'],
-            question: '喜欢重庆火锅还是四川火锅',
-            answer: '重庆火锅'
-          },
-          {
-            department: '综合问题',
-            multipleChoice: 0,
-            question: '综合问题1',
-            answer: '哈哈哈哈哈哈哈哈哈'
-          },
-          {
-            department: '综合问题',
-            multipleChoice: 1,
-            choices: ['选项A8574', '选项B785'],
-            question: '综合问题2',
-            answer: '选项A8574'
-          }
-        ]
-      }
+      // let data = {
+      //   studentId: 20222445,
+      //   studentName: '张张张',
+      //   phone: '13000000000',
+      //   academy: '计算机学院',
+      //   major: '计算机科学与技术',
+      //   classNum: '1班',
+      //   gender: 2,
+      //   qq: '2310768059',
+      //   email: '2310789@qq.com',
+      //   height: 180.5,
+      //   weight: 50,
+      //   basicQuestions: [
+      //     {
+      //       multipleChoice: 0,
+      //       question: '你的暑假安排',
+      //       answer: '吃饭吃饭吃饭睡觉睡觉睡觉'
+      //     },
+      //     {
+      //       multipleChoice: 1,
+      //       choices: ['重庆火锅', '四川火锅', '北京火锅'],
+      //       question: '喜欢重庆火锅还是四川火锅',
+      //       answer: 'A'
+      //     },
+      //     {
+      //       multipleChoice: 1,
+      //       choices: ['吃饭', '睡觉', '都喜欢'],
+      //       question: '喜欢吃饭还是睡觉',
+      //       answer: 'B'
+      //     }
+      //   ],
+      //   questions: [
+      //     {
+      //       department: '学习部',
+      //       multipleChoice: 0,
+      //       question: '生涯规划',
+      //       answer: 'haohaohao'
+      //     },
+      //     {
+      //       department: '体育部',
+      //       multipleChoice: 0,
+      //       question: '时间安排是什么样',
+      //       answer: 'goodgood'
+      //     },
+      //     {
+      //       department: '新媒体部',
+      //       multipleChoice: 1,
+      //       choices: ['吃饭', '睡觉', '都不喜欢', '都喜欢'],
+      //       question: '喜欢吃饭还是睡觉',
+      //       answer: 'D'
+      //     },
+      //     {
+      //       department: '科技协会',
+      //       multipleChoice: 1,
+      //       choices: ['重庆火锅', '四川火锅', '北京火锅'],
+      //       question: '喜欢重庆火锅还是四川火锅',
+      //       answer: 'C'
+      //     },
+      //     {
+      //       department: '综合问题',
+      //       multipleChoice: 0,
+      //       question: '综合问题1',
+      //       answer: '哈哈哈哈哈哈哈哈哈'
+      //     },
+      //     {
+      //       department: '综合问题',
+      //       multipleChoice: 1,
+      //       choices: ['选项A8574', '选项B785'],
+      //       question: '综合问题2',
+      //       answer: 'A'
+      //     }
+      //   ]
+      // }
       //真实数据
-      // let data=res.data.data
+      let data=res.data.data
       if (data.gender == 1) {
         data.gender = '男'
       }
@@ -1003,42 +1011,80 @@ export default {
       this.ruleForm = data
       //数据分类（basequestion）
       data.basicQuestions.forEach((item) => {
+        //填空
         if (item.multipleChoice == 0) {
           this.basicQuestions1.push(item)
         }
+        //选择
         if (item.multipleChoice == 1) {
+          if(item.answer=='A'){
+            item.answer=item.choices[0]
+          }
+          if(item.answer=='B'){
+            item.answer=item.choices[1]
+          }
+          if(item.answer=='C'){
+            item.answer=item.choices[2]
+          }
+          if(item.answer=='D'){
+            item.answer=item.choices[3]
+          }
           this.basicQuestions2.push(item)
         }
       })
       //数据分类（部门和综合问题）
       data.questions.forEach((item) => {
-        if (item.department == '部门问题') {
-          if (item.multipleChoice == 0) {
-            this.departmentQuestion1.push(item)
-          }
-          if (item.multipleChoice == 1) {
-            this.departmentQuestion2.push(item)
-          }
-        }
         if (item.department == '综合问题') {
           if (item.multipleChoice == 0) {
             this.bigQuestion1.push(item)
           }
           if (item.multipleChoice == 1) {
+            if(item.answer=='A'){
+            item.answer=item.choices[0]
+            }
+            if(item.answer=='B'){
+              item.answer=item.choices[1]
+            }
+            if(item.answer=='C'){
+              item.answer=item.choices[2]
+            }
+            if(item.answer=='D'){
+              item.answer=item.choices[3]
+            }
             this.bigQuestion2.push(item)
           }
         }
+        else{
+          if (item.multipleChoice == 0) {
+            this.departmentQuestion1.push(item)
+          }
+          if (item.multipleChoice == 1) {
+            if(item.answer=='A'){
+              item.answer=item.choices[0]
+            }
+            if(item.answer=='B'){
+              item.answer=item.choices[1]
+            }
+            if(item.answer=='C'){
+              item.answer=item.choices[2]
+            }
+            if(item.answer=='D'){
+              item.answer=item.choices[3]
+            }
+            this.departmentQuestion2.push(item)
+          }
+        }
       })
-      // })
-      // .catch(() => {
-      //   this.$message({
-      //     showClose: true,
-      //     message: '获取简历失败',
-      //     type: 'error',
-      //     center: true,
-      //     duration: 2000
-      //   })
-      // })
+      })
+      .catch(() => {
+        this.$message({
+          showClose: true,
+          message: '获取简历失败',
+          type: 'error',
+          center: true,
+          duration: 2000
+        })
+      })
     }
   }
 }
@@ -1159,6 +1205,7 @@ export default {
   .five {
     .table {
       height: calc(100vh - 403px);
+      min-height: 330px;
     }
     .resumeTable {
       /deep/.el-dialog__body {

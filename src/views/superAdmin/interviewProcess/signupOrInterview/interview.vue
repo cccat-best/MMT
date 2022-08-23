@@ -176,7 +176,19 @@
         </div>
         <div slot="footer" class="dialog-footer">
           <el-button @click="dialogFormVisible = false">取 消</el-button>
-          <el-button type="primary" @click="resetData">确 定</el-button>
+
+          <el-popover
+          placement="top"
+          width="160"
+          v-model="visible">
+          <p>确定更改吗？？？</p>
+          <div style="text-align: right; margin: 0">
+            <el-button size="mini" type="text" @click="visible = false">取消</el-button>
+            <el-button type="primary" size="mini" @click="resetData">确定</el-button>
+          </div>
+          <el-button slot="reference" type="primary"  style="margin-left:10px">确定</el-button>
+        </el-popover>
+          <!-- <el-button type="primary" @click="resetData">确 定</el-button> -->
         </div>
       </el-dialog>
     </div>
@@ -239,6 +251,8 @@ export default {
     return {
       organizationId: sessionStorage.getItem('loginOrganizationId'),
       //organizationId:2,
+      //弹框的显示与隐藏
+      visible: false,
       // 判断输入问题是否为空
       questionEmpty: false,
       //判断分值是否为空
@@ -735,6 +749,7 @@ export default {
         this.resetInterviewInform()
         this.resetSuccessResult()
         this.resetFaultResult()
+        this.visible = false
         this.dialogFormVisible = false
         this.$message({
           showClose: true,
@@ -898,6 +913,11 @@ export default {
           // padding: 5px 27px 5px 10px;
         }
       }
+    }
+  }
+  .dialog-footer{
+    /deep/.el-button{
+      margin-left: 20px;
     }
   }
 }
