@@ -84,38 +84,38 @@ export default {
         //   .catch((error) => {
         //     console.log(error)
         //   })
-        let url8 = 'api/interview-arrangement/postNotice'
-        for (let i = 0; i < this.selectTotal; ++i) {
-          let data8 = {
-            message: this.messageArrary[i],
-            organizationId: sessionStorage['loginOrganizationId'],
-            studentId: this.studentId[i],
-            admissionId: sessionStorage['homeAdmissionId'],
-            departmentId: this.departmentId,
-            round: this.round
-          }
-          this.$http
-            .post(url8, data8)
-            .then((response) => {
-              // console.log(response)
-              console.log('发送成功', i)
-              if (i == this.selectTotal - 1) {
-                if (response.data.code == '00000') {
-                  this.$message({
-                    message: '发送成功！',
-                    type: 'success'
-                  })
-                } else {
-                  console.log('发送失败', response)
-                  this.$message.error(response.data.message)
-                }
-              }
-            })
-            .catch((error) => {
-              console.log(error)
-              this.$message.error('发送失败！')
-            })
-        }
+        // let url8 = 'api/interview-arrangement/postNotice'
+        // for (let i = 0; i < this.selectTotal; ++i) {
+        //   let data8 = {
+        //     message: this.messageArrary[i],
+        //     organizationId: sessionStorage['loginOrganizationId'],
+        //     studentId: this.studentId[i],
+        //     admissionId: sessionStorage['homeAdmissionId'],
+        //     departmentId: this.departmentId,
+        //     round: this.round
+        //   }
+        //   this.$http
+        //     .post(url8, data8)
+        //     .then((response) => {
+        //       // console.log(response)
+        //       console.log('发送成功', i)
+        //       if (i == this.selectTotal - 1) {
+        //         if (response.data.code == '00000') {
+        //           this.$message({
+        //             message: '发送成功！',
+        //             type: 'success'
+        //           })
+        //         } else {
+        //           console.log('发送失败', response)
+        //           this.$message.error(response.data.message)
+        //         }
+        //       }
+        //     })
+        //     .catch((error) => {
+        //       console.log(error)
+        //       this.$message.error('发送失败！')
+        //     })
+        // }
       }
     },
     cancel() {
