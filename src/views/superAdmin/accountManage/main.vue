@@ -387,6 +387,8 @@ export default {
   methods: {
     //图标变色,第一个
     changeColor() {
+      // 判断是否禁用
+      if (this.multipleSelection.length == 0) return
       if (this.batchColorChange1 == '#666666')
         this.batchColorChange1 = 'rgba(47.94,128.01,255,1)'
       else this.batchColorChange1 = '#666666'
@@ -395,6 +397,8 @@ export default {
     },
     // 第二个
     changeColor2() {
+      // 判断是否禁用
+      if (this.multipleSelection.length == 0) return
       if (this.batchColorChange2 == '#666666')
         this.batchColorChange2 = 'rgba(47.94,128.01,255,1)'
       else this.batchColorChange2 = '#666666'
