@@ -59,7 +59,15 @@
                 </g>
               </svg>
             </div>
-            <div style="font-size: 17px; margin-left: 5px">批量修改</div>
+            <el-tooltip
+              class="item"
+              effect="dark"
+              content="需要选中才能操作"
+              placement="top"
+              :disabled="this.multipleSelection.length != 0"
+            >
+              <div style="font-size: 17px; margin-left: 5px">批量修改</div>
+            </el-tooltip>
           </div>
         </button>
       </div>
@@ -99,7 +107,15 @@
                 </g>
               </svg>
             </div>
-            <div style="font-size: 17px; margin-left: 5px">批量删除</div>
+            <el-tooltip
+              class="item"
+              effect="dark"
+              content="需要选中才能操作"
+              placement="top"
+              :disabled="this.multipleSelection.length != 0"
+            >
+              <div style="font-size: 17px; margin-left: 5px">批量删除</div>
+            </el-tooltip>
           </div>
         </button>
       </div>
