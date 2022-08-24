@@ -2,6 +2,16 @@
   <div class="content">
     <!-- 搜索区域 -->
     <div class="seach-header">
+      <el-tooltip class="item" effect="dark" placement="top">
+        <div slot="content" class="noticeContent">
+          <div style="color: red">请注意:</div>
+          <div style="margin: 2px"></div>
+          <div>排序功能的优先级顺序与您的操作先后顺序一致;</div>
+          <div style="margin: 2px"></div>
+          <div>但是学号排序优先级始终是最小,不受影响</div>
+        </div>
+        <i class="el-icon-warning-outline myRefresh"></i>
+      </el-tooltip>
       <el-tooltip
         class="item"
         effect="dark"
@@ -815,10 +825,7 @@ export default {
      * 设置表头排序,允许多个排序高亮
      */
     handleTheadStyle({ column }) {
-      /**
-       * 多列排序
-       */
-      // console.log(row.length + '未使用定义变量的错误，记得删掉这行信息')
+      //多列排序
       if (!this.mutilSort) return
       if (this.activeThead[column.property]) {
         column.order = this.activeThead[column.property]
@@ -833,6 +840,12 @@ export default {
   // 暂定900px
   min-width: 900px;
   min-height: 500px;
+}
+// 提示信息
+.noticeContent {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
 }
 // tag宽度一致
 .tagStyle {
