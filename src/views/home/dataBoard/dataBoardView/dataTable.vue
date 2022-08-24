@@ -6,9 +6,9 @@
         <div slot="content" class="noticeContent">
           <div style="color: red">请注意:</div>
           <div style="margin: 2px"></div>
-          <div>排序功能的优先级顺序与您的操作先后顺序一致;</div>
-          <div style="margin: 2px"></div>
-          <div>但是学号排序优先级始终是最小,不受影响</div>
+          <div>数据支持多种排序共同使用</div>
+          <!-- <div style="margin: 2px"></div>
+          <div>同时也提供了手动刷新按钮</div> -->
         </div>
         <i class="el-icon-warning-outline myRefresh"></i>
       </el-tooltip>
@@ -856,7 +856,9 @@ export default {
 .noticeContent {
   display: flex;
   flex-direction: column;
-  align-content: center;
+  // align-content: center;
+  // align-items: center;
+  text-align: center;
 }
 // tag宽度一致
 .tagStyle {
