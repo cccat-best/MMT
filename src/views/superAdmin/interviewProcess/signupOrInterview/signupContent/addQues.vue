@@ -47,7 +47,12 @@
           <input type="text" v-if="!item1.selection" class="freeView-input" />
         </div>
         <!-- 没有问题显示 -->
-        <div v-show="departmentQuestionsList.length == 0 && !isEdit" class="noProblem">暂未添加问题</div>
+        <div
+          v-show="departmentQuestionsList.length == 0 && !isEdit"
+          class="noProblem"
+        >
+          暂未添加问题
+        </div>
       </div>
     </div>
     <!-- 添加问题面板 -->
@@ -332,7 +337,7 @@ export default {
       //同步删减vuex中此问题
       this.removeDepartmentQuestionsList(item1)
       // this.isAdd--
-    },
+    }
     //保存到vuex
     // saveToVuex() {
     //   this.departmentQuestionsList.forEach((ques) => {

@@ -72,13 +72,19 @@ export default {
   },
   mounted() {
     this.getDeppartmentList()
-    window.addEventListener('scroll',this.sectionPage,true)
+    window.addEventListener('scroll', this.sectionPage, true)
   },
   methods: {
     ...mapMutations('problem', ['updateMaxDepartment', 'updateAllocated']),
     sectionPage() {
-      console.log('部门问题',this.$refs.sectionPage.getBoundingClientRect().top)
-      if(this.$refs.sectionPage.getBoundingClientRect().top>=157&&this.$refs.sectionPage.getBoundingClientRect().top<=357) {
+      console.log(
+        '部门问题',
+        this.$refs.sectionPage.getBoundingClientRect().top
+      )
+      if (
+        this.$refs.sectionPage.getBoundingClientRect().top >= 157 &&
+        this.$refs.sectionPage.getBoundingClientRect().top <= 357
+      ) {
         this.$parent.sectionShow()
       }
     },
@@ -133,14 +139,14 @@ export default {
     ...mapState('problem', ['isEdit'])
   },
   beforeDestroy() {
-    window.removeEventListener('scroll',this.sectionPage,true)
+    window.removeEventListener('scroll', this.sectionPage, true)
   }
 }
 </script>
 
 <style lang="less" scoped>
 .section {
-    margin-top: 30px;
+  margin-top: 30px;
   .section-title {
     margin-left: 29px;
     font-size: 26px;

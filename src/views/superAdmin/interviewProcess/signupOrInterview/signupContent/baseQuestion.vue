@@ -5,10 +5,12 @@
       <div class="mainTitle">
         <div class="mainTitle-left">报名表问题</div>
       </div>
-      <div :class="['inTitle',!isEdit?'inTitle-noEdit':'']" ref="basePage">基本问题</div>
+      <div :class="['inTitle', !isEdit ? 'inTitle-noEdit' : '']" ref="basePage">
+        基本问题
+      </div>
     </div>
     <div class="base-main">
-            <!-- 预设问题面板 -->
+      <!-- 预设问题面板 -->
       <div class="yushe-content" v-show="isEdit">
         <!-- 标题 -->
         <div class="yushe-title">预设问题</div>
@@ -53,8 +55,10 @@
       </div>
       <!-- 自定义问题展示 -->
       <div class="freeView-content">
-                   <!-- 自定义问题面板 -->
-        <div :class="[!isEdit?'zidingyi-content-noEdit':'zidingyi-content']">
+        <!-- 自定义问题面板 -->
+        <div
+          :class="[!isEdit ? 'zidingyi-content-noEdit' : 'zidingyi-content']"
+        >
           <div class="zidingyi-tilte" style="font-size: 20px">自定义问题</div>
           <!-- 自定义文本 -->
           <el-popover
@@ -192,7 +196,7 @@
 </template>
 
 <script scoped>
-import { mapMutations,mapState } from 'vuex'
+import { mapMutations, mapState } from 'vuex'
 export default {
   mounted() {
     window.addEventListener('scroll', this.basePage, true)
@@ -279,10 +283,16 @@ export default {
     ]),
     basePage() {
       console.log('基本问题', this.$refs.basePage.getBoundingClientRect().top)
-      if(this.$refs.basePage.getBoundingClientRect().top>=84 && this.$refs.basePage.getBoundingClientRect().top<=284) {
+      if (
+        this.$refs.basePage.getBoundingClientRect().top >= 84 &&
+        this.$refs.basePage.getBoundingClientRect().top <= 284
+      ) {
         this.$parent.showBase()
       }
-      if(this.$refs.basePage.getBoundingClientRect().top>284 && this.$refs.basePage.getBoundingClientRect().top<=484) {
+      if (
+        this.$refs.basePage.getBoundingClientRect().top > 284 &&
+        this.$refs.basePage.getBoundingClientRect().top <= 484
+      ) {
         this.$parent.showTime()
       }
     },
@@ -296,7 +306,7 @@ export default {
         .forEach((p) => {
           generalQuestions.push(p.description)
         })
-        this.updateGeneralQuestions(generalQuestions)
+      this.updateGeneralQuestions(generalQuestions)
     },
     // 删除预设问题
     removeYushe(item) {
@@ -308,7 +318,7 @@ export default {
         .forEach((p) => {
           generalQuestions.push(p.description)
         })
-        this.updateGeneralQuestions(generalQuestions)
+      this.updateGeneralQuestions(generalQuestions)
     },
     //删除自定义问题
     removeChoose(item) {
@@ -499,10 +509,10 @@ export default {
     }
   },
   beforeDestroy() {
-    window.removeEventListener('scroll',this.basePage,true)
+    window.removeEventListener('scroll', this.basePage, true)
   },
-  computed:{
-    ...mapState('problem',['isEdit'])
+  computed: {
+    ...mapState('problem', ['isEdit'])
   }
 }
 </script>

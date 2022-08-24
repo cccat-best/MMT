@@ -1,6 +1,6 @@
 <template>
   <div class="synth-content">
-    <div class="synth-title" >综合问题</div>
+    <div class="synth-title">综合问题</div>
     <div class="synth-main-content">
       <!-- 选择的问题展示 -->
       <div class="show-qus">
@@ -420,7 +420,7 @@ export default {
           })
           // 基本问题自定义处理
           let k = 1
-          this.questionsList.forEach(p => {
+          this.questionsList.forEach((p) => {
             p.questionOrder = k
             k++
           })
@@ -480,18 +480,21 @@ export default {
         })
         .catch((err) => err)
     },
-  synthPage() {
-    console.log('综合问题', this.$refs.synthPage.getBoundingClientRect().bottom)
-    if (this.$refs.synthPage.getBoundingClientRect().bottom<=750) {
-      this.$parent.synthShow()
+    synthPage() {
+      console.log(
+        '综合问题',
+        this.$refs.synthPage.getBoundingClientRect().bottom
+      )
+      if (this.$refs.synthPage.getBoundingClientRect().bottom <= 750) {
+        this.$parent.synthShow()
+      }
     }
-  }
   },
   mounted() {
     window.addEventListener('scroll', this.synthPage, true)
   },
   beforeDestroy() {
-    window.removeEventListener('scroll',this.synthPage,true)
+    window.removeEventListener('scroll', this.synthPage, true)
   }
 }
 </script>

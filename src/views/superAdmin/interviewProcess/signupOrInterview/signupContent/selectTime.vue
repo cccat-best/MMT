@@ -33,21 +33,21 @@
 </template>
 
 <script>
-import { mapMutations,mapState } from 'vuex'
+import { mapMutations, mapState } from 'vuex'
 export default {
   data() {
     return {
       value1: [],
       // 不能选择过去时间
-        pickerOptions: {
-          disabledDate(time) {
-            return time.getTime() < Date.now() - 8.64e7;//如果没有后面的-8.64e7就是不可以选择今天的
-         }
+      pickerOptions: {
+        disabledDate(time) {
+          return time.getTime() < Date.now() - 8.64e7 //如果没有后面的-8.64e7就是不可以选择今天的
         }
+      }
     }
   },
   methods: {
-    ...mapMutations('problem', ['updateTime','updateIsEdit']),
+    ...mapMutations('problem', ['updateTime', 'updateIsEdit']),
     // packge() {
     //   this.updateTime(this.value1)
     // },
@@ -60,7 +60,7 @@ export default {
       // this.isEdit = false
       // return this.$message('非编辑模式')
       this.updateTime(this.value1)
-    },
+    }
   },
   props: ['allQues'],
   watch: {
@@ -75,8 +75,8 @@ export default {
       }
     }
   },
-  computed:{
-    ...mapState('problem',['isEdit'])
+  computed: {
+    ...mapState('problem', ['isEdit'])
   }
 }
 </script>

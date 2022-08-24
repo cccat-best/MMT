@@ -2,9 +2,7 @@
   <div class="main">
     <div class="left">
       <div class="nav-title">
-        <div
-          :class="['nav-title-item', showactive == 1 ? 'active' : '']"
-        >
+        <div :class="['nav-title-item', showactive == 1 ? 'active' : '']">
           报名时间
         </div>
         <div
@@ -16,37 +14,22 @@
         >
           报名表问题
         </div>
-        <div
-          :class="['nav-title-item', showactive == 3 ? 'active' : '']"
-        >
+        <div :class="['nav-title-item', showactive == 3 ? 'active' : '']">
           基本问题
         </div>
-        <div
-          :class="['nav-title-item', showactive == 4 ? 'active' : '']"
-        >
+        <div :class="['nav-title-item', showactive == 4 ? 'active' : '']">
           部门问题
         </div>
-        <div
-          :class="['nav-title-item', showactive == 5 ? 'active' : '']"
-        >
+        <div :class="['nav-title-item', showactive == 5 ? 'active' : '']">
           综合问题
         </div>
       </div>
     </div>
     <div class="right">
       <!-- 根据选择渲染组件 -->
-      <selectTime
-        :allQues="allQues"
-        ref="time"
-      ></selectTime>
-      <baseQues
-        :allQues="allQues"
-        ref="base"
-      ></baseQues>
-      <sectionQues
-        :allQues="allQues"
-        ref="section"
-      ></sectionQues>
+      <selectTime :allQues="allQues" ref="time"></selectTime>
+      <baseQues :allQues="allQues" ref="base"></baseQues>
+      <sectionQues :allQues="allQues" ref="section"></sectionQues>
       <synth :allQues="allQues"></synth>
     </div>
   </div>
