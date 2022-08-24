@@ -4,7 +4,6 @@
       <div class="nav-title">
         <div
           :class="['nav-title-item', showactive == 1 ? 'active' : '']"
-          @click="showactive = 1"
         >
           报名时间
         </div>
@@ -14,25 +13,21 @@
             'special',
             showactive > 2 ? 'active-sp' : ''
           ]"
-          @click="showactive = 3"
         >
           报名表问题
         </div>
         <div
           :class="['nav-title-item', showactive == 3 ? 'active' : '']"
-          @click="showactive = 3"
         >
           基本问题
         </div>
         <div
           :class="['nav-title-item', showactive == 4 ? 'active' : '']"
-          @click="showactive = 4"
         >
           部门问题
         </div>
         <div
           :class="['nav-title-item', showactive == 5 ? 'active' : '']"
-          @click="showactive = 5"
         >
           综合问题
         </div>
@@ -42,20 +37,17 @@
       <!-- 根据选择渲染组件 -->
       <selectTime
         :allQues="allQues"
-        v-show="showactive == 1"
         ref="time"
       ></selectTime>
       <baseQues
         :allQues="allQues"
-        v-show="showactive == 3"
         ref="base"
       ></baseQues>
       <sectionQues
         :allQues="allQues"
-        v-show="showactive == 4"
         ref="section"
       ></sectionQues>
-      <synth :allQues="allQues" v-show="showactive == 5"></synth>
+      <synth :allQues="allQues"></synth>
     </div>
   </div>
 </template>
@@ -73,11 +65,6 @@ export default {
     }
   },
   methods: {
-    //最后一页点击取消回到第一页
-    cancel() {
-      this.showactive = 3
-      this.$refs.base.escEdit()
-    },
     // 检测用户是否设置过问题
     getQues() {
       const organizationId = sessionStorage.getItem('loginOrganizationId')
@@ -93,25 +80,32 @@ export default {
           console.log(err)
         })
     },
-    // 退出编辑模式
-    exitEdit() {
-      // this.$refs.time.escEdit()
-      this.$refs.base.escEdit()
+    showBase() {
+      this.showactive = 3
+    },
+    showTime() {
+      this.showactive = 1
+    },
+    sectionShow() {
+      this.showactive = 4
+    },
+    synthShow() {
+      this.showactive = 5
     }
   },
   watch: {
     //四个问题切换时 会暂存用户设置
-    showactive(newv, oldv) {
-      if (oldv == 1) {
-        this.$refs.time.packge()
-      }
-      if (oldv == 3) {
-        this.$refs.base.packgeBaseQue()
-      }
-      if (oldv == 4) {
-        this.$refs.section.packgeSectionQue()
-      }
-    }
+    // showactive(newv, oldv) {
+    //   if (oldv == 1) {
+    //     this.$refs.time.packge()
+    //   }
+    //   if (oldv == 3) {
+    //     this.$refs.base.packgeBaseQue()
+    //   }
+    //   if (oldv == 4) {
+    //     this.$refs.section.packgeSectionQue()
+    //   }
+    // }
   },
   mounted() {
     //查看用户是否设置过问题
@@ -148,7 +142,7 @@ export default {
         display: flex;
         align-items: center;
         padding-left: 10px;
-        cursor: pointer;
+        // cursor: pointer;
       }
       .active {
         border-left: 4px solid #2e98f9 !important;
@@ -156,7 +150,7 @@ export default {
       }
       .special {
         color: black;
-        cursor: pointer;
+        // cursor: pointer;
       }
       .active-sp {
         color: #2e98f9;

@@ -46,10 +46,12 @@
           <!--  展示input框-->
           <input type="text" v-if="!item1.selection" class="freeView-input" />
         </div>
+        <!-- 没有问题显示 -->
+        <div v-show="departmentQuestionsList.length == 0 && !isEdit" class="noProblem">暂未添加问题</div>
       </div>
     </div>
     <!-- 添加问题面板 -->
-    <div class="add-qus">
+    <div class="add-qus" v-show="isEdit">
       <el-popover
         placement="top"
         width="300"
@@ -256,6 +258,7 @@ export default {
         }
         que.option = option
         this.departmentQuestionsList.push(que)
+        this.updateDepartmentQuestionsList(que)
         // this.isAdd++
         this.addShow = false
         //重新定向到文本问题展示
@@ -301,6 +304,7 @@ export default {
           }
         }
         this.departmentQuestionsList.push(que)
+        this.updateDepartmentQuestionsList(que)
         // this.isAdd++
         this.text1 = ''
         //只有成功提交才会关闭这个添加框
@@ -330,11 +334,11 @@ export default {
       // this.isAdd--
     },
     //保存到vuex
-    saveToVuex() {
-      this.departmentQuestionsList.forEach((ques) => {
-        this.updateDepartmentQuestionsList(ques)
-      })
-    }
+    // saveToVuex() {
+    //   this.departmentQuestionsList.forEach((ques) => {
+    //     this.updateDepartmentQuestionsList(ques)
+    //   })
+    // }
   },
   props: ['sectionQues', 'departmentId'],
   watch: {
@@ -415,6 +419,11 @@ export default {
         margin-top: 14px;
       }
     }
+  }
+  .noProblem {
+    display: flex;
+    margin-left: 28px;
+    font-size: 17px;
   }
 }
 .add-qus {
