@@ -32,7 +32,17 @@
             >面试。
           </p>
           <p class="p2">
-            面试时间：<u>{{ dateValue0 }} &nbsp; {{ timeValue0 }}&nbsp; </u>
+            面试时间：<input
+              type="text"
+              style="
+                border: none;
+                border-bottom: 1px solid black;
+                outline: none;
+                width: 130px;
+              "
+              v-model="timeValue"
+              class="line"
+            />
           </p>
           <p class="p2">
             面试地点：<input
@@ -44,7 +54,7 @@
                 width: 130px;
               "
               v-model="address"
-              class="address"
+              class="line"
             />
           </p>
           <p class="p1">请提前做好准备。</p>
@@ -74,13 +84,15 @@ export default {
       dateTime: '',
       dateValue0: '',
       timeValue0: '',
+      timeValue: '',
       address: '',
       messageTemplate: ''
     }
   },
   methods: {
     dateTimeValue() {
-      this.timestamp = this.dateTime.getTime()
+      // this.timestamp = this.dateTime.getTime()
+      this.timestamp = this.dateTime.getTime() / 1000
       var year = this.dateTime.getFullYear() //年
       var month = this.dateTime.getMonth() + 1 //月
       var day = this.dateTime.getDate() //日
@@ -95,6 +107,7 @@ export default {
       }
       this.timeValue0 = hh + ':' + mm
       // console.log(this.timestamp)
+      this.timeValue = this.dateValue0 + '   ' + this.timeValue0
     },
     queding() {
       // 确定安排面试
@@ -110,8 +123,8 @@ export default {
       let post3 = this.$http.post(url3, form3)
       post3
         .then((res) => {
+          console.log('安排面试:', res)
           if (res.data.code == '00000') {
-            console.log('安排成功', res)
             // 确定获取模板
             const url1 = 'api/interview-arrangement/getNotice'
             let params = {
@@ -121,8 +134,8 @@ export default {
             this.$http
               .get(url1, params)
               .then((response) => {
+                console.log('获取模板:', response)
                 if (res.data.code == '00000') {
-                  console.log('获取模板成功', response)
                   this.messageTemplate = response.data.data.messageTemplate
                     .replace(/{name}/, this.name)
                     .replace(/{department}/, this.departmentName)
@@ -144,15 +157,14 @@ export default {
                   let post2 = this.$http.post(url2, form2)
                   post2
                     .then((res) => {
+                      console.log('发送通知:', res)
                       if (res.data.code == '00000') {
-                        console.log('发送成功', res)
                         this.$message({
                           message: '通知成功！',
                           type: 'success'
                         })
                         // location.reload()
                       } else {
-                        console.log('发送失败', res)
                         this.$message.error(res.data.message)
                       }
                     })
@@ -161,18 +173,20 @@ export default {
                       this.$message.error('通知失败！')
                     })
                 } else {
-                  console.log('获取模板失败', res)
+                  this.$message.error(res.data.message)
                 }
               })
               .catch((error) => {
                 console.log(error)
+                this.$message.error('获取模板失败！')
               })
           } else {
-            console.log('安排面试失败', res)
+            this.$message.error(res.data.message)
           }
         })
         .catch((err) => {
           console.log(err)
+          this.$message.error('安排面试失败！')
         })
     }
   },
@@ -221,11 +235,6 @@ export default {
   justify-content: center;
   align-items: center;
 }
-/* .dingwei {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-} */
 .text {
   width: 440px;
   height: 220px;

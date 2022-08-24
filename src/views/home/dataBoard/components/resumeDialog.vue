@@ -80,7 +80,54 @@
               >
                 <el-input v-model="ruleForm.email" disabled></el-input>
               </el-form-item>
+              <el-form-item
+                label="身高"
+                prop="height"
+                v-if="ruleForm.height != null"
+              >
+                <el-input v-model="ruleForm.height" disabled></el-input>
+              </el-form-item>
+
+              <el-form-item
+                label="体重"
+                prop="weight"
+                v-if="ruleForm.weight != null"
+              >
+                <el-input v-model="ruleForm.weight" disabled></el-input>
+              </el-form-item>
             </el-form>
+          </div>
+          <!-- 自定义基本问题 -->
+          <div class="basequestion">
+            <!-- 基本问题（填空） -->
+            <div
+              class="question1"
+              v-for="(item, index) in basicQuestions1"
+              :key="index"
+            >
+              <div class="problem">填空：{{ item.question }}</div>
+              <div class="answer">{{ item.answer }}</div>
+            </div>
+            <!-- 基本问题（选择） -->
+            <div class="question2">
+              <div
+                class="problem"
+                v-for="(item, index) in basicQuestions2"
+                :key="index"
+              >
+                <div style="margin-right: 40px">选择：{{ item.question }}</div>
+                <div class="answer">
+                  <el-radio
+                    disabled
+                    v-model="item.answer"
+                    :label="item1"
+                    v-for="(item1, index) in item.choices"
+                    :key="index"
+                    >{{ item1 }}</el-radio
+                  >
+                </div>
+              </div>
+            </div>
           </div>
           <!-- 部门问题模块 -->
           <div class="two">
@@ -91,7 +138,9 @@
               v-for="(item, index) in departmentQuestion1"
               :key="index"
             >
-              <div class="problem">填空：{{ item.question }}</div>
+              <div class="problem">
+                {{ item.department }}：{{ item.question }}
+              </div>
               <div class="answer">{{ item.answer }}</div>
             </div>
             <!-- 自定义选择 -->
@@ -101,7 +150,9 @@
                 v-for="(item, index) in departmentQuestion2"
                 :key="index"
               >
-                <div style="margin-right: 40px">选择：{{ item.question }}</div>
+                <div style="margin-right: 40px">
+                  {{ item.department }}：{{ item.question }}
+                </div>
                 <div class="answer">
                   <el-radio
                     disabled
@@ -245,11 +296,14 @@
                   </tr>
                   <tr v-for="(item, index) in question" :key="index">
                     <td>{{ item.questionName }}</td>
+                    <!-- <td v-for="(item, index) in item.evaluation" :key="index">{{item.name}}</td>
+                    <td v-for="(item, index) in item.evaluation" :key="index">{{item.comment}}</td> -->
                     <td>
                       <span
                         v-for="(item, index) in item.evaluation"
                         :key="index"
-                        >{{ item.comment }}<br
+                        ><strong>{{ item.name }}</strong
+                        >:{{ item.comment }}<br /><br
                       /></span>
                     </td>
                   </tr>
@@ -295,6 +349,10 @@ export default {
       radio: '选中且禁用',
       //简历表单数据
       ruleForm: {},
+      //基本问题（填空）
+      basicQuestions1: [],
+      // 基本问题（选择）
+      basicQuestions2: [],
       //部门问题数组（填空）
       departmentQuestion1: [],
       // 部门问题数组（选择）
@@ -367,7 +425,7 @@ export default {
       this.getEvaluate()
       this.getResume()
     },
-    //时间格式化函数
+    //时间格式化函数(ok)
     time(dateTime) {
       dateTime = dateTime * 1000
       var time = parseInt(dateTime)
@@ -392,7 +450,7 @@ export default {
       //返回时间格式： 2020-11-09 13:14:52
       return YY + '-' + MM + '-' + DD + ' ' + hh + ':' + mm + ':' + ss
     },
-    //获取面试反馈
+    //获取面试反馈(ok)
     getReply() {
       let organizationId = this.organizationId
       let admissionId = this.admissionId
@@ -403,30 +461,30 @@ export default {
         .then((res) => {
           console.log(res, '获取面试反馈')
           // 模拟数据
-          let data = [
-            {
-              time: '1662949800',
-              address: '7-223',
-              answer: '0'
-            },
-            {
-              time: '1662249800',
-              address: '7-223',
-              answer: '1'
-            },
-            {
-              time: '1662449700',
-              address: '7-223',
-              answer: '2'
-            },
-            {
-              time: '1682449700',
-              address: '7-223',
-              answer: '3'
-            }
-          ]
+          // let data = [
+          //   {
+          //     time: '1662949800',
+          //     address: '7-223',
+          //     answer: '0'
+          //   },
+          //   {
+          //     time: '1662249800',
+          //     address: '7-223',
+          //     answer: '1'
+          //   },
+          //   {
+          //     time: '1662449700',
+          //     address: '7-223',
+          //     answer: '2'
+          //   },
+          //   {
+          //     time: '1682449700',
+          //     address: '7-223',
+          //     answer: '3'
+          //   }
+          // ]
           //真实数据
-          // let data=res.data.data
+          let data = res.data.data
           data.forEach((item) => {
             item.time = this.time(item.time)
             if (item.answer == 0) {
@@ -461,7 +519,7 @@ export default {
           })
         })
     },
-    //获取签到信息
+    //获取签到信息(ok)
     getSign() {
       let organizationId = this.organizationId
       let admissionId = this.admissionId
@@ -472,18 +530,18 @@ export default {
         .then((res) => {
           console.log(res, '获取签到信息')
           // 模拟数据
-          let data = [
-            {
-              time: '1662949800',
-              status: 1
-            },
-            {
-              time: '1962249800',
-              status: 1
-            }
-          ]
+          // let data = [
+          //   {
+          //     time: '1662949800',
+          //     status: 1
+          //   },
+          //   {
+          //     time: '1962249800',
+          //     status: 1
+          //   }
+          // ]
           //真实数据
-          // let data=res.data.data
+          let data = res.data.data
           data.forEach((item) => {
             item.time = this.time(item.time)
             if (item.status == 1) {
@@ -512,7 +570,7 @@ export default {
           })
         })
     },
-    //获取面试安排
+    //获取面试安排(ok)
     getArrange() {
       let organizationId = this.organizationId
       let admissionId = this.admissionId
@@ -523,25 +581,25 @@ export default {
         .then((res) => {
           console.log(res, '获取面试安排')
           // 模拟数据
-          let data = [
-            {
-              rounds: 1,
-              time: 1662249500,
-              address: '7-223'
-            },
-            {
-              rounds: 2,
-              time: 1622949500,
-              address: '7-223'
-            },
-            {
-              rounds: 3,
-              time: 1622956500,
-              address: '7-223'
-            }
-          ]
+          // let data = [
+          //   {
+          //     rounds: 1,
+          //     time: 1662249500,
+          //     address: '7-223'
+          //   },
+          //   {
+          //     rounds: 2,
+          //     time: 1622949500,
+          //     address: '7-223'
+          //   },
+          //   {
+          //     rounds: 3,
+          //     time: 1622956500,
+          //     address: '7-223'
+          //   }
+          // ]
           //真实数据
-          // let data=res.data.data
+          let data = res.data.data
           data.forEach((item) => {
             item.time = this.time(item.time)
             if (item.rounds == 1) {
@@ -566,7 +624,7 @@ export default {
           })
         })
     },
-    //获取面试通知
+    //获取面试通知(ok)
     getInform() {
       let organizationId = this.organizationId
       let admissionId = this.admissionId
@@ -577,25 +635,25 @@ export default {
         .then((res) => {
           console.log(res, '获取面试通知')
           // 模拟数据
-          let data = [
-            {
-              time: 1254449500,
-              message:
-                '欢迎选择并愿意加入协会，请于2022年8月31号 19:30在7-115参加第一轮面试。'
-            },
-            {
-              time: 1625949500,
-              message:
-                '(≧^.^≦)欢迎选择并愿意加入协会，请于2022年8月31号 19:30在7-115参加第一轮面试。'
-            },
-            {
-              time: 2622956500,
-              message:
-                '(≧^.^≦)欢迎选择并愿意加入协会，请于2022年8月31号 19:30在7-115参加第一轮面试。'
-            }
-          ]
+          // let data = [
+          //   {
+          //     time: 1254449500,
+          //     message:
+          //       '欢迎选择并愿意加入协会，请于2022年8月31号 19:30在7-115参加第一轮面试。'
+          //   },
+          //   {
+          //     time: 1625949500,
+          //     message:
+          //       '(≧^.^≦)欢迎选择并愿意加入协会，请于2022年8月31号 19:30在7-115参加第一轮面试。'
+          //   },
+          //   {
+          //     time: 2622956500,
+          //     message:
+          //       '(≧^.^≦)欢迎选择并愿意加入协会，请于2022年8月31号 19:30在7-115参加第一轮面试。'
+          //   }
+          // ]
           //真实数据
-          // let data=res.data.data
+          let data = res.data.data
           data.forEach((item) => {
             item.time = this.time(item.time)
           })
@@ -611,7 +669,7 @@ export default {
           })
         })
     },
-    //获取面试结果
+    //获取面试结果(ok)
     getResult() {
       let organizationId = this.organizationId
       let admissionId = this.admissionId
@@ -622,26 +680,26 @@ export default {
         .then((res) => {
           console.log(res, '获取面试结果')
           // 模拟数据
-          let data = [
-            {
-              rounds: 1,
-              result: 0
-            },
-            {
-              rounds: 2,
-              result: 1
-            },
-            {
-              rounds: 3,
-              result: 2
-            },
-            {
-              rounds: 4,
-              result: 3
-            }
-          ]
+          // let data = [
+          //   {
+          //     rounds: 1,
+          //     result: 0
+          //   },
+          //   {
+          //     rounds: 2,
+          //     result: 1
+          //   },
+          //   {
+          //     rounds: 3,
+          //     result: 2
+          //   },
+          //   {
+          //     rounds: 4,
+          //     result: 3
+          //   }
+          // ]
           //真实数据
-          // let data=res.data.data
+          let data = res.data.data
           data.forEach((item) => {
             if (item.rounds == 1) {
               item.rounds = '一面'
@@ -680,7 +738,7 @@ export default {
           })
         })
     },
-    //获取面试评价
+    //获取面试评价(ok)
     getEvaluate() {
       let organizationId = this.organizationId
       let admissionId = this.admissionId
@@ -691,20 +749,20 @@ export default {
         .then((res) => {
           console.log(res, '获取面试评价1')
           // 模拟数据
-          let data = [
-            {
-              rounds: 1,
-              time: 1614449500,
-              address: '7-223'
-            },
-            {
-              rounds: 2,
-              time: 1622941110,
-              address: '7-223'
-            }
-          ]
+          // let data = [
+          //   {
+          //     rounds: 1,
+          //     time: 1614449500,
+          //     address: '7-223'
+          //   },
+          //   {
+          //     rounds: 2,
+          //     time: 1622941110,
+          //     address: '7-223'
+          //   }
+          // ]
           //真实数据
-          // let data=res.data.data
+          let data = res.data.data
           data.forEach((item) => {
             item.time = this.time(item.time)
             if (item.rounds == 1) {
@@ -730,7 +788,7 @@ export default {
           })
         })
     },
-    //面试评价详细信息
+    //面试评价详细信息(ok)
     getDetail(item) {
       // 每一项的显示与隐藏
       this.isShowdetail = item
@@ -744,76 +802,76 @@ export default {
         .then((res) => {
           console.log(res, '获取面试详细信息')
           // 模拟数据
-          let data = [
-            {
-              questionId: 1,
-              questionName: '问题1',
-              evaluation: [
-                {
-                  name: '张',
-                  comment: '不错！',
-                  score: 90
-                },
-                {
-                  name: '李',
-                  comment: '不错！',
-                  score: 90
-                },
-                {
-                  name: '李',
-                  comment: '不错！',
-                  score: 590
-                }
-              ],
-              rank: 3
-            },
-            {
-              questionId: 2,
-              questionName: '问题2',
-              evaluation: [
-                {
-                  name: '张',
-                  comment: '字符数',
-                  score: 290
-                },
-                {
-                  name: '李',
-                  comment: ' 字符',
-                  score: 590
-                },
-                {
-                  name: '李',
-                  comment: '个的！',
-                  score: 590
-                }
-              ],
-              rank: 6
-            },
-            {
-              questionId: 3,
-              questionName: '问题3',
-              evaluation: [
-                {
-                  name: '张',
-                  comment: '出租车！',
-                  score: 920
-                },
-                {
-                  name: '李',
-                  comment: '正常！',
-                  score: 2
-                },
-                {
-                  name: '李',
-                  comment: '额发！',
-                  score: 590
-                }
-              ],
-              rank: 9
-            }
-          ]
+          // let data = [
+          //   {
+          //     questionId: 1,
+          //     questionName: '问题1',
+          //     evaluation: [
+          //       {
+          //         name: '张哈哈',
+          //         comment: '该生很好哈哈哈哈该生很好哈哈哈哈该生很好哈哈哈哈',
+          //         score: 90
+          //       },
+          //       {
+          //         name: '李大壮',
+          //         comment: '不错2！不错2！不错2！不错2！不错2！不错2！不错2！不错2！不错2！不错2！不错2！不错2！不错2！不错2！不错2！不错2！',
+          //         score: 90
+          //       },
+          //       {
+          //         name: '王小二',
+          //         comment: '不错值得表扬表扬不错值得表扬表扬不错值得表扬表扬不错值得表扬表扬不错值得表扬表扬不错值得表扬表扬不错值得表扬表扬',
+          //         score: 590
+          //       }
+          //     ],
+          //     rank: 3
+          //   },
+          //   {
+          //     questionId: 2,
+          //     questionName: '问题2',
+          //     evaluation: [
+          //       {
+          //         name: '张',
+          //         comment: '字符数',
+          //         score: 290
+          //       },
+          //       {
+          //         name: '李',
+          //         comment: ' 字符',
+          //         score: 590
+          //       },
+          //       {
+          //         name: 'w',
+          //         comment: '个的！',
+          //         score: 590
+          //       }
+          //     ],
+          //     rank: 6
+          //   },
+          //   {
+          //     questionId: 3,
+          //     questionName: '问题3',
+          //     evaluation: [
+          //       {
+          //         name: '张',
+          //         comment: '出租车！',
+          //         score: 920
+          //       },
+          //       {
+          //         name: '李',
+          //         comment: '正常！',
+          //         score: 2
+          //       },
+          //       {
+          //         name: 'w',
+          //         comment: '额发！',
+          //         score: 590
+          //       }
+          //     ],
+          //     rank: 9
+          //   }
+          // ]
           //真实数据
-          // let data=res.data.data
+          let data = res.data.data
           if (data.length == 0) {
             //渲染名字
             this.evaluation = [
@@ -855,7 +913,7 @@ export default {
           })
         })
     },
-    //获取简历数据
+    //获取简历数据(ok)
     getResume() {
       // 清空
       // 部门问题数组（填空）
@@ -866,105 +924,174 @@ export default {
       this.bigQuestion1 = []
       //综合问题数组（选择）
       this.bigQuestion2 = []
-      // let studentId = this.studentId
-      // let admissionId = this.admissionId
-      // let url = `api/student/info/show?studentId=${studentId}&admissionId=${admissionId}`
-      // let get = this.$http.get(url)
-      // get
-      //   .then((res) => {
-      //     console.log(res,'简历数据')
-      //模拟数据
-      let data = {
-        studentId: 20222445,
-        studentName: '张张张',
-        phone: '13000000000',
-        academy: '计算机学院',
-        major: '计算机科学与技术',
-        classNum: '1班',
-        gender: 2,
-        qq: null,
-        email: null,
-        questions: [
-          {
-            department: '部门问题',
-            multipleChoice: 0,
-            question: '生涯规划',
-            answer: 'haohaohao'
-          },
-          {
-            department: '部门问题',
-            multipleChoice: 0,
-            question: '时间安排是什么样',
-            answer: 'goodgood'
-          },
-          {
-            department: '部门问题',
-            multipleChoice: 1,
-            choices: ['吃饭', '睡觉', '都不喜欢', '都喜欢'],
-            question: '喜欢吃饭还是睡觉',
-            answer: '都喜欢'
-          },
-          {
-            department: '部门问题',
-            multipleChoice: 1,
-            choices: ['重庆火锅', '四川火锅', '北京火锅'],
-            question: '喜欢重庆火锅还是四川火锅',
-            answer: '重庆火锅'
-          },
-          {
-            department: '综合问题',
-            multipleChoice: 0,
-            question: '综合问题1',
-            answer: '哈哈哈哈哈哈哈哈哈'
-          },
-          {
-            department: '综合问题',
-            multipleChoice: 1,
-            choices: ['选项A8574', '选项B785'],
-            question: '综合问题2',
-            answer: '选项A8574'
+      //基本问题数组（填空）
+      this.basicQuestions1 = []
+      //基本问题数组（选择）
+      this.basicQuestions2 = []
+      let studentId = this.studentId
+      let admissionId = this.admissionId
+      let url = `api/student/info/show?studentId=${studentId}&admissionId=${admissionId}`
+      let get = this.$http.get(url)
+      get
+        .then((res) => {
+          console.log(res, '简历数据')
+          //模拟数据
+          // let data = {
+          //   studentId: 20222445,
+          //   studentName: '张张张',
+          //   phone: '13000000000',
+          //   academy: '计算机学院',
+          //   major: '计算机科学与技术',
+          //   classNum: '1班',
+          //   gender: 2,
+          //   qq: '2310768059',
+          //   email: '2310789@qq.com',
+          //   height: 180.5,
+          //   weight: 50,
+          //   basicQuestions: [
+          //     {
+          //       multipleChoice: 0,
+          //       question: '你的暑假安排',
+          //       answer: '吃饭吃饭吃饭睡觉睡觉睡觉'
+          //     },
+          //     {
+          //       multipleChoice: 1,
+          //       choices: ['重庆火锅', '四川火锅', '北京火锅'],
+          //       question: '喜欢重庆火锅还是四川火锅',
+          //       answer: 'A'
+          //     },
+          //     {
+          //       multipleChoice: 1,
+          //       choices: ['吃饭', '睡觉', '都喜欢'],
+          //       question: '喜欢吃饭还是睡觉',
+          //       answer: 'B'
+          //     }
+          //   ],
+          //   questions: [
+          //     {
+          //       department: '学习部',
+          //       multipleChoice: 0,
+          //       question: '生涯规划',
+          //       answer: 'haohaohao'
+          //     },
+          //     {
+          //       department: '体育部',
+          //       multipleChoice: 0,
+          //       question: '时间安排是什么样',
+          //       answer: 'goodgood'
+          //     },
+          //     {
+          //       department: '新媒体部',
+          //       multipleChoice: 1,
+          //       choices: ['吃饭', '睡觉', '都不喜欢', '都喜欢'],
+          //       question: '喜欢吃饭还是睡觉',
+          //       answer: 'D'
+          //     },
+          //     {
+          //       department: '科技协会',
+          //       multipleChoice: 1,
+          //       choices: ['重庆火锅', '四川火锅', '北京火锅'],
+          //       question: '喜欢重庆火锅还是四川火锅',
+          //       answer: 'C'
+          //     },
+          //     {
+          //       department: '综合问题',
+          //       multipleChoice: 0,
+          //       question: '综合问题1',
+          //       answer: '哈哈哈哈哈哈哈哈哈'
+          //     },
+          //     {
+          //       department: '综合问题',
+          //       multipleChoice: 1,
+          //       choices: ['选项A8574', '选项B785'],
+          //       question: '综合问题2',
+          //       answer: 'A'
+          //     }
+          //   ]
+          // }
+          //真实数据
+          let data = res.data.data
+          if (data.gender == 1) {
+            data.gender = '男'
           }
-        ]
-      }
-      //真实数据
-      // let data=res.data.data
-      if (data.gender == 1) {
-        data.gender = '男'
-      }
-      if (data.gender == 2) {
-        data.gender = '女'
-      }
-      //赋值
-      this.ruleForm = data
-      //数据分类
-      data.questions.forEach((item) => {
-        if (item.department == '部门问题') {
-          if (item.multipleChoice == 0) {
-            this.departmentQuestion1.push(item)
+          if (data.gender == 2) {
+            data.gender = '女'
           }
-          if (item.multipleChoice == 1) {
-            this.departmentQuestion2.push(item)
-          }
-        }
-        if (item.department == '综合问题') {
-          if (item.multipleChoice == 0) {
-            this.bigQuestion1.push(item)
-          }
-          if (item.multipleChoice == 1) {
-            this.bigQuestion2.push(item)
-          }
-        }
-      })
-      // })
-      // .catch(() => {
-      //   this.$message({
-      //     showClose: true,
-      //     message: '获取简历失败',
-      //     type: 'error',
-      //     center: true,
-      //     duration: 2000
-      //   })
-      // })
+          //赋值
+          this.ruleForm = data
+          //数据分类（basequestion）
+          data.basicQuestions.forEach((item) => {
+            if (item.multipleChoice == 0) {
+              this.basicQuestions1.push(item)
+            }
+            if (item.multipleChoice == 1) {
+              if (item.answer == 'A') {
+                item.answer = item.choices[0]
+              }
+              if (item.answer == 'B') {
+                item.answer = item.choices[1]
+              }
+              if (item.answer == 'C') {
+                item.answer = item.choices[2]
+              }
+              if (item.answer == 'D') {
+                item.answer = item.choices[3]
+              }
+              this.basicQuestions2.push(item)
+            }
+          })
+          //数据分类（部门和综合问题）
+          data.questions.forEach((item) => {
+            if (item.department == '综合问题') {
+              if (item.multipleChoice == 0) {
+                this.bigQuestion1.push(item)
+              }
+              if (item.multipleChoice == 1) {
+                if (item.answer == 'A') {
+                  item.answer = item.choices[0]
+                }
+                if (item.answer == 'B') {
+                  item.answer = item.choices[1]
+                }
+                if (item.answer == 'C') {
+                  item.answer = item.choices[2]
+                }
+                if (item.answer == 'D') {
+                  item.answer = item.choices[3]
+                }
+                this.bigQuestion2.push(item)
+              }
+            } else {
+              if (item.multipleChoice == 0) {
+                this.departmentQuestion1.push(item)
+              }
+              if (item.multipleChoice == 1) {
+                if (item.answer == 'A') {
+                  item.answer = item.choices[0]
+                }
+                if (item.answer == 'B') {
+                  item.answer = item.choices[1]
+                }
+                if (item.answer == 'C') {
+                  item.answer = item.choices[2]
+                }
+                if (item.answer == 'D') {
+                  item.answer = item.choices[3]
+                }
+                this.departmentQuestion2.push(item)
+              }
+            }
+          })
+        })
+        .catch(() => {
+          this.$message({
+            showClose: true,
+            message: '获取简历失败',
+            type: 'error',
+            center: true,
+            duration: 2000
+          })
+        })
     }
   }
 }
@@ -1020,6 +1147,43 @@ export default {
         justify-content: flex-start;
       }
     }
+    .basequestion {
+      .question1 {
+        // background-color: rgb(189, 112, 112);
+        margin-top: 20px;
+        .problem {
+          font-size: 18px;
+          text-align: left;
+        }
+        .answer {
+          margin-top: 20px;
+          text-align: left;
+          margin-left: 30px;
+          margin-right: 30px;
+          font-size: 15px;
+          background-color: #f5f7fa;
+          padding: 17px;
+        }
+      }
+      .question2 {
+        // background-color: rgb(123, 207, 208);
+        margin-top: 20px;
+        .problem {
+          font-size: 18px;
+          text-align: left;
+          margin-bottom: 15px;
+        }
+        .answer {
+          margin-top: 20px;
+          text-align: left;
+          margin-left: 30px;
+          margin-right: 30px;
+          font-size: 15px;
+          background-color: #f5f7fa;
+          padding: 17px;
+        }
+      }
+    }
     //部门问题和综合问题模块
     .two {
       // background-color: rgb(82, 199, 154);
@@ -1052,6 +1216,7 @@ export default {
         .problem {
           font-size: 18px;
           text-align: left;
+          margin-bottom: 15px;
         }
         .answer {
           margin-top: 20px;

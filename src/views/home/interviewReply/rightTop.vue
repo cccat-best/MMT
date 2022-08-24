@@ -11,7 +11,7 @@
       </div>
       <div class="search">
         <el-input
-          placeholder="请输入内容"
+          placeholder="请输入姓名或学号"
           prefix-icon="el-icon-search"
           v-model="input"
           size="mini"
@@ -97,17 +97,17 @@ export default {
             if (res.data.code == '00000') {
               this.centerDialogVisible = false
               this.$message({
-                message: '修改成功！',
+                message: '修改状态成功！',
                 type: 'success'
               })
-              // location.reload()
+              location.reload()
             } else {
               this.$message.error(res.data.message)
             }
           })
           .catch((err) => {
             console.log(err)
-            this.$message.error('修改失败！')
+            this.$message.error('修改状态失败！')
           })
       }
     },
