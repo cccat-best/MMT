@@ -23,6 +23,13 @@ export default {
     updateQuestionsList(state, que) {
       state.questionsList = que
     },
+    // 删除基本问题的自定义问题
+    removeQuestionsListItem(state, que) {
+      state.questionsList = state.questionsList.filter((item) => {
+        return item.description != que.description
+      })
+      console.log('这是删除了基本自定义', que, state.questionsList)
+    },
     //更新部门问题
     updateDepartmentQuestionsList(state, ques) {
       //避免重复添加

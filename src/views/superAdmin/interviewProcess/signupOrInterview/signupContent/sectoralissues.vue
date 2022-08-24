@@ -1,6 +1,6 @@
 <template>
   <div class="section">
-    <div class="section-title">部门问题</div>
+    <div class="section-title" ref="sectionPage">部门问题</div>
     <div class="section-content">
       <!-- 最大可报部门数 是否允许调剂 -->
       <div class="section-content-top">
@@ -14,6 +14,7 @@
             :max="3"
             size="mini"
             :disabled="!isEdit"
+            @change="changeMaxDepartment"
           ></el-input-number>
         </div>
         <!-- 是否允许调剂 -->
@@ -22,6 +23,7 @@
             v-model="allocated"
             v-if="departmentCount >= 2"
             :disabled="!isEdit"
+            @change="changeAllocated"
             >允许调剂</el-checkbox
           >
         </div>
@@ -70,19 +72,32 @@ export default {
   },
   mounted() {
     this.getDeppartmentList()
+    window.addEventListener('scroll', this.sectionPage, true)
   },
   methods: {
     ...mapMutations('problem', ['updateMaxDepartment', 'updateAllocated']),
-    packgeSectionQue() {
-      //保存最大可报部门数 是否调剂
-      this.updateMaxDepartment(this.maxDepartment)
-      this.updateAllocated(this.allocated)
-      //保存问题到vuex （动态给组件绑定了ref a数组代表每一个组件）
-      if (!this.$refs.a) return
-      for (let i = 0; i < this.$refs.a.length; i++) {
-        this.$refs.a[i].saveToVuex()
+    sectionPage() {
+      console.log(
+        '部门问题',
+        this.$refs.sectionPage.getBoundingClientRect().top
+      )
+      if (
+        this.$refs.sectionPage.getBoundingClientRect().top >= 157 &&
+        this.$refs.sectionPage.getBoundingClientRect().top <= 357
+      ) {
+        this.$parent.sectionShow()
       }
     },
+    // packgeSectionQue() {
+    //   //保存最大可报部门数 是否调剂
+    //   this.updateMaxDepartment(this.maxDepartment)
+    //   this.updateAllocated(this.allocated)
+    //   //保存问题到vuex （动态给组件绑定了ref a数组代表每一个组件）
+    //   if (!this.$refs.a) return
+    //   for (let i = 0; i < this.$refs.a.length; i++) {
+    //     this.$refs.a[i].saveToVuex()
+    //   }
+    // },
     async getDeppartmentList() {
       const organizationId = sessionStorage.getItem('loginOrganizationId')
       const { data: res } = await this.$http.get(
@@ -92,6 +107,13 @@ export default {
       if (res.code != '00000') return this.$message.error('部门' + res.message)
       this.departmentCount = res.data.departmentList.length
       this.departmentList = res.data.departmentList
+    },
+    changeAllocated() {
+      // console.log(this.allocated);
+      this.updateAllocated(this.allocated)
+    },
+    changeMaxDepartment() {
+      this.updateMaxDepartment(this.maxDepartment)
     }
   },
   watch: {
@@ -115,20 +137,25 @@ export default {
   },
   computed: {
     ...mapState('problem', ['isEdit'])
+  },
+  beforeDestroy() {
+    window.removeEventListener('scroll', this.sectionPage, true)
   }
 }
 </script>
 
 <style lang="less" scoped>
 .section {
+  margin-top: 30px;
   .section-title {
-    font-size: 30px;
+    margin-left: 29px;
+    font-size: 26px;
     display: flex;
     color: #989898;
     margin-bottom: 20px;
   }
   .section-content {
-    margin-left: 25px;
+    margin-left: 65px;
     .section-content-top {
       display: flex;
       align-items: center;
