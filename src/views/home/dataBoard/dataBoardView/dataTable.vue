@@ -130,7 +130,7 @@
         column-key="interviewStatus"
       >
         <template #default="{ row }">
-          <el-tag :type="row.interviewStatus | statusFilter">
+          <el-tag :type="row.interviewStatus | statusFilter" class="tagStyle">
             {{ row.interviewStatus }}
           </el-tag>
         </template>
@@ -833,6 +833,10 @@ export default {
   // 暂定900px
   min-width: 900px;
   min-height: 500px;
+}
+// tag宽度一致
+.tagStyle {
+  width: 90px;
 }
 // 包含搜索的div
 .seach-header {
