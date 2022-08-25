@@ -8,7 +8,7 @@
       :defaultActiveItem="defaultActiveItem"
     >
       <!-- 侧边栏标题 -->
-      <div slot="asideTitle" class="aside-title">MMT</div>
+      <div slot="asideTitle" class="aside-title">后台管理</div>
       <!-- 头部 -->
       <template slot="header">
         <div class="header">
@@ -76,7 +76,7 @@
             </svg>
             <span class="header-tip-left">{{ organizationName }}</span>
           </div>
-          <div class="header-right" @click="exitAdmin">
+          <div class="header-right edit-super" @click="exitAdmin">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 32 32"
@@ -92,11 +92,9 @@
               <g>
                 <path
                   d="M14 26h-6v-20h10v-2h-12v24h12v-2h-2z"
-                  fill="rgba(16.065,16.065,16.065,1)"
                 ></path>
                 <path
                   d="M22.8 9.2l-1.6 1.6 4.4 4.2h-13.6v2h13.6l-4.4 4.2 1.6 1.6 6.6-6.8z"
-                  fill="rgba(16.065,16.065,16.065,1)"
                 ></path>
               </g>
             </svg>
@@ -194,6 +192,16 @@ export default {
 </script>
 
 <style lang="less" scoped>
+//
+.edit-super{
+  fill:currentColor;
+  // color:red;
+  color: black;
+  &:hover {
+    color: #4159fd;
+  }
+}
+//
 .super-content {
   min-width: 1200px;
   height: 100%;

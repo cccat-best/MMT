@@ -18,11 +18,11 @@
               :content="item1.description"
               placement="bottom"
               effect="light"
-              v-if="item1.description.length > 13"
+              v-if="item1.description.length > 15"
             >
               <span class="freeView-name">{{ item1.description }}</span>
             </el-tooltip>
-            <span class="freeView-name" v-if="item1.description.length <= 13">{{
+            <span class="freeView-name" v-if="item1.description.length <= 15">{{
               item1.description
             }}</span>
           </div>
@@ -389,7 +389,7 @@ export default {
       .freeView-name-content {
         display: flex;
         margin: 10px 10px;
-        width: 220px;
+        width: 240px;
         margin-right: 20px;
         text-align: left;
         // overflow: hidden;
@@ -429,6 +429,8 @@ export default {
     display: flex;
     margin-left: 28px;
     font-size: 17px;
+    height: 40px;
+    align-items: center;
   }
 }
 .add-qus {
@@ -438,8 +440,8 @@ export default {
   .add-botton {
     color: white;
     background-color: #02a8ef;
-    margin-bottom: 15px;
-    margin-top: 15px;
+    // margin-bottom: 15px;
+    // margin-top: 15px;
   }
   .synth-add-chose {
     display: flex;

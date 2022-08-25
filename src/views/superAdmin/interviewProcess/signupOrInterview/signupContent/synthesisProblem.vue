@@ -1,6 +1,6 @@
 <template>
   <div class="synth-content">
-    <div class="synth-title">综合问题</div>
+    <div class="synth-title" ref="synthPage">综合问题</div>
     <div class="synth-main-content">
       <!-- 选择的问题展示 -->
       <div class="show-qus">
@@ -109,7 +109,6 @@
               show-word-limit
               style="margin: 10px 0"
               resize="none"
-              :autofocus="true"
             >
             </el-input>
           </div>
@@ -167,7 +166,7 @@
       </div>
 
       <!-- 取消 提交 -->
-      <div class="bottom-button" ref="synthPage">
+      <div class="bottom-button" v-show="isEdit">
         <el-button
           type="info"
           plain
@@ -457,7 +456,7 @@ export default {
             allocated: this.allocated,
             comprehensiveQuestionsList: this.comprehensiveQuestionsList
           }
-          console.log(qustionList)
+          // console.log(qustionList)
           //调用函数发送请求
           this.sendTo(qustionList)
         })
@@ -481,11 +480,11 @@ export default {
         .catch((err) => err)
     },
     synthPage() {
-      console.log(
-        '综合问题',
-        this.$refs.synthPage.getBoundingClientRect().bottom
-      )
-      if (this.$refs.synthPage.getBoundingClientRect().bottom <= 750) {
+      // console.log(
+      //   '综合问题',
+      //   this.$refs.synthPage.getBoundingClientRect().bottom
+      // )
+      if (this.$refs.synthPage.getBoundingClientRect().bottom <= 664) {
         this.$parent.synthShow()
       }
     }
@@ -501,6 +500,7 @@ export default {
 
 <style lang="less" scoped>
 .synth-content {
+  margin-top: 10px;
   display: flex;
   height: auto;
   flex-direction: column;
@@ -509,12 +509,13 @@ export default {
     font-size: 26px;
     color: #989898;
     margin: 10px 0;
-    margin-left: 29px;
+    // margin-left: 29px;
   }
   .synth-main-content {
     margin-left: 65px;
     .show-qus {
       .freeView-content {
+        margin-bottom: 15px;
         // margin: 20px 0;
         // display: flex;
         // flex-direction: column;
