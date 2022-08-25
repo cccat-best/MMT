@@ -64,7 +64,15 @@
           >超级管理
         </el-button>
         <!-- 应江哥要求，其他页面点击头像进入个人中心，而个人中心点击头像刷新页面，home函数实现 -->
-        <div class="block" style="height: 35px; overflow: hidden">
+        <div
+          class="block"
+          style="
+            height: 35px;
+            overflow: hidden;
+            text-align: center;
+            margin-top: 4px;
+          "
+        >
           <el-tooltip
             v-if="!this.isPersonal"
             class="item"
@@ -75,7 +83,7 @@
             <span @click="home"
               ><avatar
                 :username="this.name"
-                :size="35"
+                :size="31"
                 :rounded="true"
                 :inline="true"
                 style="cursor: pointer"
@@ -93,7 +101,7 @@
             <span @click="home"
               ><avatar
                 :username="this.name"
-                :size="35"
+                :size="31"
                 :rounded="true"
                 :inline="true"
                 style="cursor: pointer"
@@ -111,6 +119,8 @@
                 height: 40px;
                 overflow: hidden;
                 margin-right: 10px;
+                text-align: center;
+                margin-top: 4px;
               "
             >
               {{ name }}<i class="el-icon-arrow-down el-icon--right"></i>
