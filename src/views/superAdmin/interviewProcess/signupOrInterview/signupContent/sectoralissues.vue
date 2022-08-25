@@ -15,7 +15,7 @@
             size="mini"
             :disabled="!isEdit"
             @change="changeMaxDepartment"
-            style="width:100px"
+            style="width: 100px"
           ></el-input-number>
         </div>
         <!-- 是否允许调剂 -->

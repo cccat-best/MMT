@@ -90,9 +90,7 @@
               filter="none"
             >
               <g>
-                <path
-                  d="M14 26h-6v-20h10v-2h-12v24h12v-2h-2z"
-                ></path>
+                <path d="M14 26h-6v-20h10v-2h-12v24h12v-2h-2z"></path>
                 <path
                   d="M22.8 9.2l-1.6 1.6 4.4 4.2h-13.6v2h13.6l-4.4 4.2 1.6 1.6 6.6-6.8z"
                 ></path>
@@ -193,8 +191,8 @@ export default {
 
 <style lang="less" scoped>
 //
-.edit-super{
-  fill:currentColor;
+.edit-super {
+  fill: currentColor;
   // color:red;
   color: black;
   &:hover {
