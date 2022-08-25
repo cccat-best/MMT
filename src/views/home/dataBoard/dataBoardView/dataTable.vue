@@ -6,7 +6,7 @@
         <div slot="content" class="noticeContent">
           <div style="color: red">请注意:</div>
           <div style="margin: 2px"></div>
-          <div>数据支持多种排序共同使用</div>
+          <div>数据支持多种筛选共同使用</div>
           <!-- <div style="margin: 2px"></div>
           <div>同时也提供了手动刷新按钮</div> -->
         </div>
@@ -492,10 +492,7 @@ export default {
             // console.log(res.data)
             // 清除筛选的选中
             this.$refs.filterTable.clearFilter()
-            this.$refs.filterTable.clearSort()
-            // 清除排序
-            ;(this.sort = []),
-              (this.className = []),
+            ;(this.className = []),
               (this.organizationOrder = []),
               (this.departmentOrder = []),
               (this.wishDepartment = []),
