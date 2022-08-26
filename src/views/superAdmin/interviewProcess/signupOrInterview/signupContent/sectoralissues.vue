@@ -3,7 +3,7 @@
     <div class="section-title" ref="sectionPage">部门问题</div>
     <div class="section-content">
       <!-- 最大可报部门数 是否允许调剂 -->
-      <div class="section-content-top">
+      <div class="section-content-top" v-if="departmentCount >= 2">
         <!-- 最大可报部门 -->
         <div class="section-content-top-max">
           <span class="section-content-top-max-title">最多可报名部门数</span>
@@ -15,17 +15,19 @@
             size="mini"
             :disabled="!isEdit"
             @change="changeMaxDepartment"
+            style="width: 100px"
           ></el-input-number>
         </div>
         <!-- 是否允许调剂 -->
         <div class="section-content-top-allocated">
+          <span v-if="departmentCount >= 2">是否允许调剂部门</span>
           <el-checkbox
             v-model="allocated"
             v-if="departmentCount >= 2"
             :disabled="!isEdit"
             @change="changeAllocated"
-            >允许调剂</el-checkbox
-          >
+            class="section-content-top-allocated-checkbox"
+          ></el-checkbox>
         </div>
       </div>
       <!-- 部门&&问题展示 -->
@@ -77,10 +79,10 @@ export default {
   methods: {
     ...mapMutations('problem', ['updateMaxDepartment', 'updateAllocated']),
     sectionPage() {
-      console.log(
-        '部门问题',
-        this.$refs.sectionPage.getBoundingClientRect().top
-      )
+      // console.log(
+      //   '部门问题',
+      //   this.$refs.sectionPage.getBoundingClientRect().top
+      // )
       if (
         this.$refs.sectionPage.getBoundingClientRect().top >= 157 &&
         this.$refs.sectionPage.getBoundingClientRect().top <= 357
@@ -148,7 +150,7 @@ export default {
 .section {
   margin-top: 30px;
   .section-title {
-    margin-left: 29px;
+    // margin-left: 29px;
     font-size: 26px;
     display: flex;
     color: #989898;
@@ -158,18 +160,31 @@ export default {
     margin-left: 65px;
     .section-content-top {
       display: flex;
-      align-items: center;
+      flex-direction: column;
+      // align-items: center;
+      text-align: left;
       .section-content-top-max {
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
         .section-content-top-max-title {
           padding-right: 5px;
-          font-size: 16px;
+          font-size: 20px;
+          margin-right: 101px;
         }
       }
       .section-content-top-allocated {
         display: flex;
         align-items: center;
-        margin-left: 40px;
-        font-size: 16px;
+        // margin-left: 40px;
+        font-size: 20px;
+        span {
+          margin-right: 106px;
+        }
+        .section-content-top-allocated-checkbox {
+          zoom: 179%;
+          margin-top: 3px;
+        }
       }
     }
     // 部门&&问题展示
@@ -178,7 +193,7 @@ export default {
       .section-que-content-title {
         display: flex;
         font-size: 20px;
-        margin-bottom: 20px;
+        margin-bottom: 15px;
       }
     }
   }

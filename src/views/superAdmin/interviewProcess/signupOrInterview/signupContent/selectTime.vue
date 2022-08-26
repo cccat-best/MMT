@@ -84,6 +84,7 @@ export default {
 <style lang="less" scoped>
 .time-content {
   margin-top: 18px;
+  margin-bottom: 50px;
   .time-title {
     margin-top: 10px;
     color: #989898;

@@ -28,7 +28,7 @@ export default {
       state.questionsList = state.questionsList.filter((item) => {
         return item.description != que.description
       })
-      console.log('这是删除了基本自定义', que, state.questionsList)
+      // console.log('这是删除了基本自定义', que, state.questionsList)
     },
     //更新部门问题
     updateDepartmentQuestionsList(state, ques) {

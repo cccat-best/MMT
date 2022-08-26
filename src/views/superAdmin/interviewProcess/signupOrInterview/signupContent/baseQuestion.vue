@@ -282,16 +282,16 @@ export default {
       'removeQuestionsListItem'
     ]),
     basePage() {
-      console.log('基本问题', this.$refs.basePage.getBoundingClientRect().top)
+      // console.log('基本问题', this.$refs.basePage.getBoundingClientRect().top)
       if (
         this.$refs.basePage.getBoundingClientRect().top >= 84 &&
-        this.$refs.basePage.getBoundingClientRect().top <= 284
+        this.$refs.basePage.getBoundingClientRect().top <= 315
       ) {
         this.$parent.showBase()
       }
       if (
-        this.$refs.basePage.getBoundingClientRect().top > 284 &&
-        this.$refs.basePage.getBoundingClientRect().top <= 484
+        this.$refs.basePage.getBoundingClientRect().top > 315 &&
+        this.$refs.basePage.getBoundingClientRect().top <= 514
       ) {
         this.$parent.showTime()
       }
@@ -542,8 +542,8 @@ export default {
       }
     }
     .inTitle {
-      margin-top: 30px;
-      margin-left: 29px;
+      margin-top: 20px;
+      // margin-left: 29px;
       display: flex;
       font-size: 26px;
     }
@@ -653,7 +653,7 @@ export default {
       }
     }
     .zidingyi-content {
-      margin-left: 45px;
+      margin-left: 31px;
       margin-bottom: 20px;
       border-bottom: 1px solid #666262;
       padding-bottom: 20px;
@@ -667,7 +667,7 @@ export default {
       }
       display: flex;
       align-items: center;
-      margin-top: 23px;
+      margin-top: 15px;
       .zidingyi-tilte {
         margin-right: 20px;
         font-size: 18px;
@@ -679,13 +679,13 @@ export default {
       }
     }
     .zidingyi-content-noEdit {
-      margin-left: 45px;
+      margin-left: 31px;
       margin-bottom: 20px;
       // padding-bottom: 20px;
       width: 560px;
       display: flex;
       align-items: center;
-      margin-top: 23px;
+      margin-top: 15px;
     }
   }
   .freeView-content {
