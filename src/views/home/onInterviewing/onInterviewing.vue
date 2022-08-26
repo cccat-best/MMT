@@ -429,7 +429,7 @@ export default {
       //待拿取
       departmentId: 0,
       round: 1,
-      qrround:1,
+      qrround: 1,
       //进度条定时器
       timer: '',
       //定时获取表格数据
