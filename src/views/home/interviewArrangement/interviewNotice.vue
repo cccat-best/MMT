@@ -146,7 +146,7 @@ export default {
       }
       this.timeValue2 = hh + ':' + mm
       // console.log(this.timestamp)
-      this.timeValue += '-' + this.timeValue2
+      // this.timeValue += '-' + this.timeValue2
     },
     queding() {
       // if (this.timestamp == 0) {
