@@ -32,7 +32,7 @@ export default {
 .big {
   height: 100%;
   width: 100%;
-  min-width: 1200px;
+  min-width: 1270px;
   min-height: 590px;
   display: flex;
   /* justify-content: center; */

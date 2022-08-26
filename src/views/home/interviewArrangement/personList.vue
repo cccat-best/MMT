@@ -34,7 +34,7 @@
         style="
           border-radius: 8px;
           box-shadow: 2px 2px 4px 2px #e5e9f2;
-          width: 632px;
+          width: 100%;
         "
         :row-style="{ height: 0 + 'px', 'vertical-align': 'middle' }"
         :cell-style="{
@@ -42,32 +42,34 @@
           'text-align': 'center',
           'vertical-align': 'middle'
         }"
+        @selection-change="handleSeclect"
+        @filter-change="filterChange"
       >
-        <el-table-column label="" width="40">
-          <template slot-scope="scope">
-            <el-radio
-              :label="scope.row.studentId"
-              v-model="radio"
-              @change.native="getCurrentRow(scope.row)"
-              >&nbsp;</el-radio
-            >
-          </template>
-        </el-table-column>
+        <el-table-column type="selection" width="50"> </el-table-column>
         <el-table-column
           prop="id"
           label="ID"
-          width="40"
+          width="60"
           type="index"
           :index="indexMethod"
         >
         </el-table-column>
-        <el-table-column prop="studentId" label="学号" width="90">
+        <el-table-column prop="studentId" label="学号"> </el-table-column>
+        <el-table-column prop="studentName" label="姓名"> </el-table-column>
+        <el-table-column prop="className" label="班级" width="140">
         </el-table-column>
-        <el-table-column prop="studentName" label="姓名" width="90">
+        <el-table-column
+          prop="departmentName[0].name"
+          label="面试部门"
+          width="120"
+          :filters="filterDepartment"
+          column-key="department"
+          filter-placement="bottom-end"
+        >
+          <!-- <span>{{ scope.row.departmentName[0].name }}</span> -->
         </el-table-column>
-        <el-table-column prop="className" label="班级" width="100">
-        </el-table-column>
-        <el-table-column prop="department" label="面试部门" width="140">
+
+        <!-- <el-table-column prop="department" label="面试部门" width="">
           <template slot-scope="scope" style="position: relative">
             <span>{{ scope.row.department[newDep].departmentName }}</span>
             <el-dropdown
@@ -96,12 +98,10 @@
               </el-dropdown-menu>
             </el-dropdown>
           </template>
-        </el-table-column>
-        <el-table-column label="通知状态" width="130">
+        </el-table-column> -->
+        <el-table-column label="通知状态" width="120">
           <template slot-scope="scope">
-            <span
-              >{{ pd(scope.row.department[newDep].status) }}
-            </span></template
+            <span>{{ pd(scope.row.status) }} </span></template
           >
         </el-table-column>
       </el-table>
@@ -126,8 +126,10 @@ export default {
   name: 'personList',
   data() {
     return {
-      statusList: [],
-      newDep: 0,
+      filterDepartment: [],
+      department: [],
+      // statusList: [],
+      // newDep: 0,
       round: 1,
       order: '',
       pagesize: 10,
@@ -137,7 +139,80 @@ export default {
       timer: null,
       multipleSelection: [],
       radio: '',
-      tableData: []
+      tableData: [
+        {
+          studentId: 20220001,
+          studentName: '卢小1',
+          className: '大数据1班',
+          departmentName: [
+            {
+              name: '外联部',
+              id: 3
+            }
+          ],
+          status: 0
+        },
+        {
+          studentId: 20220002,
+          studentName: '卢小2',
+          className: '大数据1班',
+          departmentName: [
+            {
+              name: '学生事务中心',
+              id: 1
+            },
+            {
+              name: '外联部',
+              id: 3
+            },
+            {
+              name: '新媒体部',
+              id: 2
+            }
+          ],
+          status: 1
+        },
+        {
+          studentId: 20220003,
+          studentName: '卢小3',
+          className: '大数据1班',
+          departmentName: [
+            {
+              name: '外联部',
+              id: 3
+            },
+            {
+              name: '新媒体部',
+              id: 2
+            },
+            {
+              name: '学生事务中心',
+              id: 1
+            }
+          ],
+          status: 3
+        },
+        {
+          studentId: 20220004,
+          studentName: '卢小4',
+          className: '大数据1班',
+          departmentName: [
+            {
+              name: '学生事务中心',
+              id: 1
+            },
+            {
+              name: '外联部',
+              id: 3
+            },
+            {
+              name: '新媒体部',
+              id: 2
+            }
+          ],
+          status: 4
+        }
+      ]
     }
   },
   watch: {
@@ -219,13 +294,27 @@ export default {
           return 0
       }
     },
-    changeDepartment(e) {
-      console.log(e)
+    handleSeclect(val) {
+      this.multipleSelection = val
+      console.log(val)
+      let selectionStudentId = []
+      this.multipleSelection.forEach((element) => {
+        selectionStudentId.push(element.studentId)
+      })
+      console.log(selectionStudentId)
     },
-    handleCommand(command) {
-      console.log('click on item ' + command)
-      this.newDep = command
+    filterChange(filters) {
+      let filterDepartment = []
+      filterDepartment = filters.department
+      console.log(filterDepartment)
     },
+    // changeDepartment(e) {
+    //   console.log(e)
+    // },
+    // handleCommand(command) {
+    //   console.log('click on item ' + command)
+    //   this.newDep = command
+    // },
     indexMethod(index) {
       return (this.currentPage - 1) * this.pagesize + index + 1
     },
@@ -324,53 +413,90 @@ export default {
           })
       }
       this.$bus.$emit('arrangeOrder', this.order)
-    },
-    getCurrentRow(row) {
-      console.log(row)
-      this.$bus.$emit('arrangeSelectionName1', row.studentName)
-      this.$bus.$emit('arrangeSelectionStudentId1', row.studentId)
-      this.$bus.$emit(
-        'arrangeSelectionDepartmentName',
-        row.department[this.newDep].departmentName
-      )
-      this.$bus.$emit(
-        'arrangeSelectiondepartmentId',
-        row.department[this.newDep].id
-      )
     }
+    // getCurrentRow(row) {
+    //   console.log(row)
+    //   this.$bus.$emit('arrangeSelectionName1', row.studentName)
+    //   this.$bus.$emit('arrangeSelectionStudentId1', row.studentId)
+    //   this.$bus.$emit(
+    //     'arrangeSelectionDepartmentName',
+    //     row.department[this.newDep].departmentName
+    //   )
+    //   this.$bus.$emit(
+    //     'arrangeSelectiondepartmentId',
+    //     row.department[this.newDep].id
+    //   )
+    // }
   },
-  created() {
-    //一面数据发送请求，初始页面渲染
-    let url = 'api/interview-arrangement/info/like'
-    let params = {
-      admissionId: sessionStorage['homeAdmissionId'],
-      round: this.round
-    }
+  beforeCreate() {
+    let organizationId = sessionStorage['loginOrganizationId']
+    let url1 = `api/interview-reply/department/${organizationId}`
     this.$http
-      .get(url, params)
+      .get(url1)
       .then((response) => {
         console.log(response)
         if (response.data.code == '00000') {
-          this.tableData = []
-          this.total = response.data.data.total
-          this.tableData = response.data.data.infoBackParamList
+          this.department = []
+          this.filterDepartment = []
+          this.department = response.data.data.department
+          this.department.forEach((element) => {
+            this.filterDepartment.push({
+              text: element.name,
+              value: element.id
+            })
+          })
         } else {
           this.$message.error(response.data.message)
         }
       })
       .catch((error) => {
         console.log(error)
-        this.$message.error('获取表格信息失败！')
+        // this.drawChar()
+        this.$message.error('获取部门信息失败！')
       })
+  },
+  created() {
+    // //一面数据发送请求，初始页面渲染
+    // let url = 'api/interview-arrangement/info/like'
+    // let params = {
+    //   admissionId: sessionStorage['homeAdmissionId'],
+    //   round: this.round
+    // }
+    // this.$http
+    //   .get(url, params)
+    //   .then((response) => {
+    //     console.log(response)
+    //     if (response.data.code == '00000') {
+    //       this.tableData = []
+    //       this.total = response.data.data.total
+    //       this.tableData = response.data.data.infoBackParamList
+    //     } else {
+    //       this.$message.error(response.data.message)
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     console.log(error)
+    //     this.$message.error('获取表格信息失败！')
+    //   })
   }
 }
 </script>
 
 <style scoped>
+.bigLeft {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
 .dingwei {
   margin-top: 20px;
   display: flex;
   justify-content: left;
+}
+.table {
+  width: 100%;
 }
 .text1 {
   margin: 30px 0;
