@@ -52,9 +52,10 @@
                   <template slot-scope="scope">
                     <el-input
                       size="mini"
-                      type="textarea"
+                      type="number"
                       :rows="1"
                       resize="none"
+                      class="score"
                       v-model="scope.row.score"
                     ></el-input>
                   </template>
@@ -175,7 +176,22 @@
         </div>
         <div slot="footer" class="dialog-footer">
           <el-button @click="dialogFormVisible = false">取 消</el-button>
-          <el-button type="primary" @click="resetData">确 定</el-button>
+
+          <el-popover placement="top" width="160" v-model="visible">
+            <p>确定更改吗？？？</p>
+            <div style="text-align: right; margin: 0">
+              <el-button size="mini" type="text" @click="visible = false"
+                >取消</el-button
+              >
+              <el-button type="primary" size="mini" @click="resetData"
+                >确定</el-button
+              >
+            </div>
+            <el-button slot="reference" type="primary" style="margin-left: 10px"
+              >确定</el-button
+            >
+          </el-popover>
+          <!-- <el-button type="primary" @click="resetData">确 定</el-button> -->
         </div>
       </el-dialog>
     </div>
@@ -183,19 +199,13 @@
     <!-- 左边导航条 -->
     <div class="left1">
       <div class="nav1">
-        <a href="#one" :class="['text', isSelect1() ? 'blue' : '']"
-          >面试问题设置</a
-        >
+        <span :class="['text', isSelect1() ? 'blue' : '']">面试问题设置</span>
       </div>
       <div class="nav1">
-        <a href="#two" :class="['text', isSelect2() ? 'blue' : '']"
-          >面试文案编辑</a
-        >
+        <span :class="['text', isSelect2() ? 'blue' : '']">面试文案编辑</span>
       </div>
       <div class="nav1">
-        <a href="#three" :class="['text', isSelect3() ? 'blue' : '']"
-          >结果通知编辑</a
-        >
+        <span :class="['text', isSelect3() ? 'blue' : '']">结果通知编辑</span>
       </div>
     </div>
 
@@ -244,6 +254,8 @@ export default {
     return {
       organizationId: sessionStorage.getItem('loginOrganizationId'),
       //organizationId:2,
+      //弹框的显示与隐藏
+      visible: false,
       // 判断输入问题是否为空
       questionEmpty: false,
       //判断分值是否为空
@@ -289,7 +301,9 @@ export default {
         d: ''
       },
       // 鼠标滚动效果
-      scrollHeigh: 0
+      scrollHeigh: 0,
+      height1: 0,
+      height2: 0
     }
   },
   //接收到的面试轮次
@@ -312,21 +326,29 @@ export default {
   methods: {
     // 随页面滚动触发事件，滚动高度
     handleScroll(e) {
+      let a = this.tableData.length
+      let b = a * 48
+      //计算滚动高度
+      this.height1 = 155 + b
+      this.height2 = this.height1 + 320
       this.scrollHeigh = e.srcElement.scrollTop
     },
     //导航动态变化
     isSelect1() {
-      if (this.scrollHeigh < 350 && this.scrollHeigh >= 0) {
+      if (
+        (this.scrollHeigh < this.height1 && this.scrollHeigh >= 0) ||
+        this.scrollHeigh == 0
+      ) {
         return true
       }
     },
     isSelect2() {
-      if (this.scrollHeigh > 350 && this.scrollHeigh < 600) {
+      if (this.scrollHeigh > this.height1 && this.scrollHeigh < this.height2) {
         return true
       }
     },
     isSelect3() {
-      if (this.scrollHeigh > 600) {
+      if (this.scrollHeigh > this.height2) {
         return true
       }
     },
@@ -730,6 +752,7 @@ export default {
         this.resetInterviewInform()
         this.resetSuccessResult()
         this.resetFaultResult()
+        this.visible = false
         this.dialogFormVisible = false
         this.$message({
           showClose: true,
@@ -833,6 +856,14 @@ export default {
       margin-left: 32px;
       color: rgb(82, 82, 82);
     }
+    .score {
+      // background-color: rgb(184, 121, 121);
+      width: 48px;
+    }
+    // /deep/.el-input {
+    //   font-size: 18px;
+    //   width: 100px;
+    // }
     .el-table {
       margin-left: 3%;
     }
@@ -885,6 +916,11 @@ export default {
           // padding: 5px 27px 5px 10px;
         }
       }
+    }
+  }
+  .dialog-footer {
+    /deep/.el-button {
+      margin-left: 20px;
     }
   }
 }
@@ -947,5 +983,9 @@ export default {
 /deep/.el-input {
   font-size: 18px;
   width: 255px;
+}
+/deep/.el-input--mini .el-input__inner {
+  font-size: 15px;
+  padding: 0 3px;
 }
 </style>

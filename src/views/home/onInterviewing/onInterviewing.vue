@@ -19,6 +19,7 @@
     </div>
     <!-- 改变面试地点 -->
     <div class="two">
+      <span class="address">请选择面试地点:</span>
       <el-select v-model="position" placeholder="选择面试地点" class="select">
         <el-option
           v-for="(item, index) in options"
@@ -49,7 +50,13 @@
       >
       <!-- 点击弹出的页面 -->
       <el-dialog title="签到二维码" :visible.sync="dialogVisible1" width="30%">
-        <img style="width: 300px; height: 300px; margin: 0 auto" :src="code" />
+        <div v-loading="loadingtwo">
+          <img
+            style="width: 300px; height: 300px; margin: 0 auto"
+            :src="code"
+          />
+        </div>
+        <div class="tips">请于面试开始前三十分钟之内扫码</div>
         <span slot="footer" class="dialog-footer">
           <el-button type="primary" @click="dialogVisible1 = false"
             >关 闭</el-button
@@ -203,7 +210,63 @@
                             disabled
                           ></el-input>
                         </el-form-item>
+
+                        <el-form-item
+                          label="身高"
+                          prop="height"
+                          v-if="ruleForm.height != null"
+                        >
+                          <el-input
+                            v-model="ruleForm.height"
+                            disabled
+                          ></el-input>
+                        </el-form-item>
+
+                        <el-form-item
+                          label="体重"
+                          prop="weight"
+                          v-if="ruleForm.weight != null"
+                        >
+                          <el-input
+                            v-model="ruleForm.weight"
+                            disabled
+                          ></el-input>
+                        </el-form-item>
                       </el-form>
+                    </div>
+                    <!-- 自定义基本问题 -->
+                    <div class="basequestion">
+                      <!-- 基本问题（填空） -->
+                      <div
+                        class="question1"
+                        v-for="(item, index) in basicQuestions1"
+                        :key="index"
+                      >
+                        <div class="problem">填空：{{ item.question }}</div>
+                        <div class="answer">{{ item.answer }}</div>
+                      </div>
+                      <!-- 基本问题（选择） -->
+                      <div class="question2">
+                        <div
+                          class="problem"
+                          v-for="(item, index) in basicQuestions2"
+                          :key="index"
+                        >
+                          <div style="margin-right: 40px">
+                            选择：{{ item.question }}
+                          </div>
+                          <div class="answer">
+                            <el-radio
+                              disabled
+                              v-model="item.answer"
+                              :label="item1"
+                              v-for="(item1, index) in item.choices"
+                              :key="index"
+                              >{{ item1 }}</el-radio
+                            >
+                          </div>
+                        </div>
+                      </div>
                     </div>
                     <!-- 部门问题模块 -->
                     <div class="department">
@@ -214,7 +277,9 @@
                         v-for="(item, index) in departmentQuestion1"
                         :key="index"
                       >
-                        <div class="problem">填空：{{ item.question }}</div>
+                        <div class="problem">
+                          {{ item.department }}：{{ item.question }}
+                        </div>
                         <div class="answer">{{ item.answer }}</div>
                       </div>
                       <!-- 自定义选择 -->
@@ -225,7 +290,7 @@
                           :key="index"
                         >
                           <div style="margin-right: 40px">
-                            选择：{{ item.question }}
+                            {{ item.department }}：{{ item.question }}
                           </div>
                           <div class="answer">
                             <el-radio
@@ -357,7 +422,8 @@
 export default {
   data() {
     return {
-      admissionId: 1,
+      admissionId: sessionStorage.getItem('homeAdmissionId'),
+      //待拿取
       departmentId: 1,
       round: 1,
       //进度条定时器
@@ -384,6 +450,8 @@ export default {
       code: '',
       //二维码弹出框的显示与隐藏
       dialogVisible1: false,
+      //二维码的loading效果
+      loadingtwo: true,
       //简历弹出框显示与隐藏
       dialogVisible2: false,
       //面试评价弹出框显示与隐藏
@@ -394,6 +462,10 @@ export default {
       tableData: [],
       //简历表单数据
       ruleForm: {},
+      //基本问题（填空）
+      basicQuestions1: [],
+      // 基本问题（选择）
+      basicQuestions2: [],
       //部门问题数组（填空）
       departmentQuestion1: [],
       // 部门问题数组（选择）
@@ -428,7 +500,32 @@ export default {
     clearInterval(this.timer2)
   },
   methods: {
-    //获取地点（返回空数据）
+    //获取departmentid(请求已解开，没有数据，目前为假数据)
+    getDepartmentId() {
+      let studentId = this.stdId
+      console.log(studentId, '学号')
+      let url = `api/real-time-interview/info/department-id?studentId=${studentId}`
+      let get = this.$http.get(url)
+      get
+        .then((res) => {
+          console.log(res, '获取部门id')
+          let data = 1
+          //真实数据
+          // let data=res.data.data
+          this.departmentId = data
+          this.getEvaluation()
+        })
+        .catch(() => {
+          this.$message({
+            showClose: true,
+            message: '获取失败',
+            type: 'error',
+            center: true,
+            duration: 2000
+          })
+        })
+    },
+    //获取地点（请求已解开，没有数据，目前为假数据）
     getLocation() {
       let sendData = {
         admissionId: this.admissionId
@@ -475,7 +572,7 @@ export default {
           })
         })
     },
-    //获取进度条数据(后端没数据目前不能请求)
+    //获取进度条数据(请求报错)
     getProgressBar() {
       // let sendData ={
       //   "admissionId": this.admissionId
@@ -537,82 +634,86 @@ export default {
       //   })
       // })
     },
-    //点击生成二维码按钮(后端没数据目前不能请求)
+    //点击生成二维码按钮(ok)
     displayCode() {
       this.dialogVisible1 = true
       //生成二维码
-      // let sendData ={
-      //     admissionId: this.admissionId,
-      //     departmentId: this.departmentId,
-      //     round: this.round,
-      //     address: this.position
-      // }
-      // let url = `api/real-time-interview/qr-code-base64`
-      // let post = this.$http.post(url,sendData)
-      // post
-      //   .then((res) => {
-      //     console.log(res,'获取二维码')
-      //模拟数据
-      // let data = {
-      //     "code":"0000",
-      //     "message" : "data:image/png;base64,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",
-      // }
-      //真实数据
-      //   let data=res.data
-      //   this.code=data.message
-      // })
-      // .catch(() => {
-      //   this.$message({
-      //     showClose: true,
-      //     message: '获取二维码失败',
-      //     type: 'error',
-      //     center: true,
-      //     duration: 2000
-      //   })
-      // })
+      let sendData = {
+        admissionId: this.admissionId,
+        round: this.round,
+        address: this.position
+      }
+      let url = `api/real-time-interview/qr-code-base64`
+      let post = this.$http.post(url, sendData)
+      post
+        .then((res) => {
+          console.log(res, '获取二维码')
+          this.loadingtwo = false
+          //模拟数据
+          // let data = {
+          //     "code":"0000",
+          //     "message" : "data:image/png;base64,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",
+          // }
+          //真实数据
+          let data = res.data
+          this.code = data.message
+        })
+        .catch(() => {
+          this.$message({
+            showClose: true,
+            message: '获取二维码失败',
+            type: 'error',
+            center: true,
+            duration: 2000
+          })
+        })
     },
-    //点击面试评价按钮获取学号和评价(后端没数据目前不能请求)
+    //点击面试评价按钮获取学号和评价(ok)
     openEvaluate(row) {
       this.dialogVisible3 = true
       this.stdId = row.studentId
-      // let sendData ={
-      //   "studentId": this.stdId,
-      //   "admissionId": this.admissionId,
-      //   "departmentId": this.departmentId,
-      //   "round": this.round,
-      // }
-      // let url = `api/real-time-interview/view-appraise`
-      // let post = this.$http.post(url,sendData)
-      // post
-      //   .then((res) => {
-      //     console.log(res,'面试评价数据')
-      // 模拟数据
-      let data = {
-        data: 'good',
-        score: '80'
-      }
-      //真实数据
-      // let data=res.data.data
-      if (data.data == null) {
-        data.data = ''
-      }
-      if (data.score == null) {
-        data.score = ''
-      }
-      this.estimate = data.data
-      this.score = data.score
-      // })
-      // .catch(() => {
-      //   this.$message({
-      //     showClose: true,
-      //     message: '获取面试地点失败',
-      //     type: 'error',
-      //     center: true,
-      //     duration: 2000
-      //   })
-      // })
+      this.getDepartmentId()
     },
-    // 点击发送评价按钮
+    // 获取面试评价(ok)
+    getEvaluation() {
+      let sendData = {
+        studentId: this.stdId,
+        admissionId: this.admissionId,
+        departmentId: this.departmentId,
+        round: this.round
+      }
+      let url = `api/real-time-interview/view-appraise`
+      let post = this.$http.post(url, sendData)
+      post
+        .then((res) => {
+          console.log(res, '面试评价数据')
+          // 模拟数据
+          // let data = {
+          //   data: 'good',
+          //   score: '80'
+          // }
+          //真实数据
+          let data = res.data.data
+          if (data.data == null) {
+            data.data = ''
+          }
+          if (data.score == null) {
+            data.score = ''
+          }
+          this.estimate = data.data
+          this.score = data.score
+        })
+        .catch(() => {
+          this.$message({
+            showClose: true,
+            message: '获取面试地点失败',
+            type: 'error',
+            center: true,
+            duration: 2000
+          })
+        })
+    },
+    // 点击发送评价按钮(ok)
     clicksendEvaluation() {
       if (this.estimate == '') {
         this.$message({
@@ -636,48 +737,48 @@ export default {
         }
       }
     },
-    //发送评价(后端没数据目前不能请求)
+    //发送评价(ok)
     sendEvaluation() {
       this.dialogVisible3 = false
       //发送面试评价
-      // let sendData ={
-      //   "studentId": this.stdId,
-      //   "admissionId": this.admissionId,
-      //   "departmentId": this.departmentId,
-      //   "score": this.score,
-      //   "round": this.round,
-      //   "data": this.estimate
-      // }
-      // console.log(sendData)
-      // let url = `api/real-time-interview/appraise`
-      // let post = this.$http.post(url,sendData)
-      // post
-      //   .then((res) => {
-      //     console.log(res,'发送面试评价')
-      this.$message({
-        showClose: true,
-        message: '评价成功',
-        type: 'success',
-        center: true,
-        duration: 2000
-      })
-      // })
-      // .catch(() => {
-      //   this.$message({
-      //     showClose: true,
-      //     message: '评价失败',
-      //     type: 'error',
-      //     center: true,
-      //     duration: 2000
-      //   })
-      // })
+      let sendData = {
+        studentId: this.stdId,
+        admissionId: this.admissionId,
+        departmentId: this.departmentId,
+        score: this.score,
+        round: this.round,
+        data: this.estimate
+      }
+      console.log(sendData)
+      let url = `api/real-time-interview/appraise`
+      let post = this.$http.post(url, sendData)
+      post
+        .then((res) => {
+          console.log(res, '发送面试评价')
+          this.$message({
+            showClose: true,
+            message: '评价成功',
+            type: 'success',
+            center: true,
+            duration: 2000
+          })
+        })
+        .catch(() => {
+          this.$message({
+            showClose: true,
+            message: '评价失败',
+            type: 'error',
+            center: true,
+            duration: 2000
+          })
+        })
     },
-    //当前页发生改变
+    //当前页发生改变(ok)
     handleCurrentChange(val) {
       this.currentPage = val
       this.getTableData()
     },
-    //获取表格数据（返回空数据）
+    //获取表格数据（请求已解开，没有数据，目前为假数据）
     getTableData() {
       // console.log('地点'+this.position,'页数'+this.currentPage,'搜索'+this.search)
       let pageNum = this.currentPage
@@ -794,14 +895,14 @@ export default {
           })
         })
     },
-    //点击搜索
+    //点击搜索(ok)
     getSearch() {
       this.currentPage = 1
       if (this.position != '') {
         this.getTableData()
       }
     },
-    //点击简历按钮获取学号清空数组
+    //点击简历按钮获取学号清空数组(ok)
     openResume(row) {
       this.dialogVisible2 = true
       this.stdId = row.studentId
@@ -814,109 +915,180 @@ export default {
       this.bigQuestion1 = []
       //综合问题数组（选择）
       this.bigQuestion2 = []
+      //基本问题数组（填空）
+      this.basicQuestions1 = []
+      //基本问题数组（选择）
+      this.basicQuestions2 = []
       this.getResume()
     },
-    //获取简历数据(后端没数据目前不能请求)
+    //获取简历数据(ok)
     getResume() {
-      // let studentId = this.stdId
-      // let admissionId = this.admissionId
-      // let url = `api/student/info/show?studentId=${studentId}&admissionId=${admissionId}`
-      // let get = this.$http.get(url)
-      // get
-      //   .then((res) => {
-      //     console.log(res,'简历数据')
-      //模拟数据
-      let data = {
-        studentId: 20222445,
-        studentName: '张张张',
-        phone: '13000000000',
-        academy: '计算机学院',
-        major: '计算机科学与技术',
-        classNum: '1班',
-        gender: 2,
-        qq: null,
-        email: null,
-        questions: [
-          {
-            department: '部门问题',
-            multipleChoice: 0,
-            question: '生涯规划',
-            answer: 'haohaohao'
-          },
-          {
-            department: '部门问题',
-            multipleChoice: 0,
-            question: '时间安排是什么样',
-            answer: 'goodgood'
-          },
-          {
-            department: '部门问题',
-            multipleChoice: 1,
-            choices: ['吃饭', '睡觉', '都不喜欢', '都喜欢'],
-            question: '喜欢吃饭还是睡觉',
-            answer: '都喜欢'
-          },
-          {
-            department: '部门问题',
-            multipleChoice: 1,
-            choices: ['重庆火锅', '四川火锅', '北京火锅'],
-            question: '喜欢重庆火锅还是四川火锅',
-            answer: '重庆火锅'
-          },
-          {
-            department: '综合问题',
-            multipleChoice: 0,
-            question: '综合问题1',
-            answer: '哈哈哈哈哈哈哈哈哈'
-          },
-          {
-            department: '综合问题',
-            multipleChoice: 1,
-            choices: ['选项A8574', '选项B785'],
-            question: '综合问题2',
-            answer: '选项A8574'
+      let studentId = this.stdId
+      let admissionId = this.admissionId
+      let url = `api/student/info/show?studentId=${studentId}&admissionId=${admissionId}`
+      let get = this.$http.get(url)
+      get
+        .then((res) => {
+          console.log(res, '简历数据')
+          //模拟数据
+          // let data = {
+          //   studentId: 20222445,
+          //   studentName: '张张张',
+          //   phone: '13000000000',
+          //   academy: '计算机学院',
+          //   major: '计算机科学与技术',
+          //   classNum: '1班',
+          //   gender: 2,
+          //   qq: '2310768059',
+          //   email: '2310789@qq.com',
+          //   height: 180.5,
+          //   weight: 50,
+          //   basicQuestions: [
+          //     {
+          //       multipleChoice: 0,
+          //       question: '你的暑假安排',
+          //       answer: '吃饭吃饭吃饭睡觉睡觉睡觉'
+          //     },
+          //     {
+          //       multipleChoice: 1,
+          //       choices: ['重庆火锅', '四川火锅', '北京火锅'],
+          //       question: '喜欢重庆火锅还是四川火锅',
+          //       answer: 'A'
+          //     },
+          //     {
+          //       multipleChoice: 1,
+          //       choices: ['吃饭', '睡觉', '都喜欢'],
+          //       question: '喜欢吃饭还是睡觉',
+          //       answer: 'B'
+          //     }
+          //   ],
+          //   questions: [
+          //     {
+          //       department: '学习部',
+          //       multipleChoice: 0,
+          //       question: '生涯规划',
+          //       answer: 'haohaohao'
+          //     },
+          //     {
+          //       department: '体育部',
+          //       multipleChoice: 0,
+          //       question: '时间安排是什么样',
+          //       answer: 'goodgood'
+          //     },
+          //     {
+          //       department: '新媒体部',
+          //       multipleChoice: 1,
+          //       choices: ['吃饭', '睡觉', '都不喜欢', '都喜欢'],
+          //       question: '喜欢吃饭还是睡觉',
+          //       answer: 'D'
+          //     },
+          //     {
+          //       department: '科技协会',
+          //       multipleChoice: 1,
+          //       choices: ['重庆火锅', '四川火锅', '北京火锅'],
+          //       question: '喜欢重庆火锅还是四川火锅',
+          //       answer: 'C'
+          //     },
+          //     {
+          //       department: '综合问题',
+          //       multipleChoice: 0,
+          //       question: '综合问题1',
+          //       answer: '哈哈哈哈哈哈哈哈哈'
+          //     },
+          //     {
+          //       department: '综合问题',
+          //       multipleChoice: 1,
+          //       choices: ['选项A8574', '选项B785'],
+          //       question: '综合问题2',
+          //       answer: 'A'
+          //     }
+          //   ]
+          // }
+          //真实数据
+          let data = res.data.data
+          if (data.gender == 1) {
+            data.gender = '男'
           }
-        ]
-      }
-      //真实数据
-      // let data=res.data.data
-      if (data.gender == 1) {
-        data.gender = '男'
-      }
-      if (data.gender == 2) {
-        data.gender = '女'
-      }
-      //赋值
-      this.ruleForm = data
-      //数据分类
-      data.questions.forEach((item) => {
-        if (item.department == '部门问题') {
-          if (item.multipleChoice == 0) {
-            this.departmentQuestion1.push(item)
+          if (data.gender == 2) {
+            data.gender = '女'
           }
-          if (item.multipleChoice == 1) {
-            this.departmentQuestion2.push(item)
-          }
-        }
-        if (item.department == '综合问题') {
-          if (item.multipleChoice == 0) {
-            this.bigQuestion1.push(item)
-          }
-          if (item.multipleChoice == 1) {
-            this.bigQuestion2.push(item)
-          }
-        }
-      })
-      // })
-      // .catch(() => {
-      //   this.$message({
-      //     showClose: true,
-      //     message: '获取简历失败',
-      //     type: 'error',
-      //     center: true,
-      //     duration: 2000
-      //   })
-      // })
+          //赋值
+          this.ruleForm = data
+          //数据分类（basequestion）
+          data.basicQuestions.forEach((item) => {
+            //填空
+            if (item.multipleChoice == 0) {
+              this.basicQuestions1.push(item)
+            }
+            //选择
+            if (item.multipleChoice == 1) {
+              if (item.answer == 'A') {
+                item.answer = item.choices[0]
+              }
+              if (item.answer == 'B') {
+                item.answer = item.choices[1]
+              }
+              if (item.answer == 'C') {
+                item.answer = item.choices[2]
+              }
+              if (item.answer == 'D') {
+                item.answer = item.choices[3]
+              }
+              this.basicQuestions2.push(item)
+            }
+          })
+          //数据分类（部门和综合问题）
+          data.questions.forEach((item) => {
+            if (item.department == '综合问题') {
+              if (item.multipleChoice == 0) {
+                this.bigQuestion1.push(item)
+              }
+              if (item.multipleChoice == 1) {
+                if (item.answer == 'A') {
+                  item.answer = item.choices[0]
+                }
+                if (item.answer == 'B') {
+                  item.answer = item.choices[1]
+                }
+                if (item.answer == 'C') {
+                  item.answer = item.choices[2]
+                }
+                if (item.answer == 'D') {
+                  item.answer = item.choices[3]
+                }
+                this.bigQuestion2.push(item)
+              }
+            } else {
+              if (item.multipleChoice == 0) {
+                this.departmentQuestion1.push(item)
+              }
+              if (item.multipleChoice == 1) {
+                if (item.answer == 'A') {
+                  item.answer = item.choices[0]
+                }
+                if (item.answer == 'B') {
+                  item.answer = item.choices[1]
+                }
+                if (item.answer == 'C') {
+                  item.answer = item.choices[2]
+                }
+                if (item.answer == 'D') {
+                  item.answer = item.choices[3]
+                }
+                this.departmentQuestion2.push(item)
+              }
+            }
+          })
+        })
+        .catch(() => {
+          this.$message({
+            showClose: true,
+            message: '获取简历失败',
+            type: 'error',
+            center: true,
+            duration: 2000
+          })
+        })
     }
   }
 }
@@ -980,8 +1152,16 @@ export default {
     .select {
       // margin-top: 15px;
       width: 200px;
+      margin-left: 30px;
+      float: left;
+    }
+    .address {
       margin-left: 20px;
       float: left;
+      font-size: 20px;
+      margin-top: 5px;
+      color: rgb(82, 82, 82);
+      border-bottom: 2px solid rgb(213, 211, 211);
     }
   }
   .three {
@@ -990,7 +1170,7 @@ export default {
     width: 230px;
     text-align: left;
     margin-left: 20px;
-    margin-top: 10px;
+    margin-top: 18px;
     font-size: 20px;
     color: rgb(82, 82, 82);
     border-bottom: 2px solid rgb(213, 211, 211);
@@ -1014,10 +1194,22 @@ export default {
       position: absolute;
       left: 230px;
     }
+    .tips {
+      font-size: 17px;
+    }
+    /deep/.el-dialog {
+      height: calc(100vh - 250px);
+      // background-color: rgb(58, 145, 129);
+      min-width: 400px;
+      min-height: 485px;
+      // min-height: calc(100vh - 150px);
+      margin: 0 auto 30px;
+    }
   }
   .five {
     .table {
-      height: calc(100vh - 400px);
+      height: calc(100vh - 403px);
+      min-height: 330px;
     }
     .resumeTable {
       /deep/.el-dialog__body {
@@ -1118,13 +1310,51 @@ export default {
               }
             }
           }
+          .basequestion {
+            .question1 {
+              // background-color: rgb(189, 112, 112);
+              margin-top: 20px;
+              .problem {
+                font-size: 18px;
+                text-align: left;
+              }
+              .answer {
+                margin-top: 20px;
+                text-align: left;
+                margin-left: 30px;
+                margin-right: 30px;
+                font-size: 15px;
+                background-color: #f5f7fa;
+                padding: 17px;
+              }
+            }
+            .question2 {
+              // background-color: rgb(123, 207, 208);
+              margin-top: 20px;
+              .problem {
+                font-size: 18px;
+                text-align: left;
+                margin-bottom: 15px;
+              }
+              .answer {
+                margin-top: 20px;
+                text-align: left;
+                margin-left: 30px;
+                margin-right: 30px;
+                font-size: 15px;
+                background-color: #f5f7fa;
+                padding: 17px;
+              }
+            }
+          }
         }
       }
     }
     .result {
       width: 700px;
       height: 350px;
-      // background-color: rgb(59, 137, 123);
+      min-width: 400px;
+      background-color: white;
       .title {
         font-size: 28px;
         color: rgb(82, 82, 82);
@@ -1135,15 +1365,17 @@ export default {
         margin-top: 15px;
         margin-left: 43px;
         width: 600px;
+        // width: 90%;
         height: 250px;
       }
-      /deep/.el-dialog {
-        height: calc(100vh - 180px);
-        min-width: 840px;
-        min-height: 610px;
-        // min-height: calc(100vh - 150px);
-        margin: 0 auto 30px;
-      }
+    }
+    /deep/.el-dialog {
+      height: calc(100vh - 242px);
+      // background-color: rgb(58, 145, 129);
+      min-width: 750px;
+      min-height: 500px;
+      // min-height: calc(100vh - 150px);
+      margin: 0 auto 30px;
     }
   }
   .six {

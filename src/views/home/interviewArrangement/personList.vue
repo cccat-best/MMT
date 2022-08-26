@@ -36,10 +36,14 @@
           box-shadow: 2px 2px 4px 2px #e5e9f2;
           width: 632px;
         "
-        :row-style="{ height: 0 + 'px' }"
-        :cell-style="{ padding: 0 + 'px', 'text-align': 'center' }"
+        :row-style="{ height: 0 + 'px', 'vertical-align': 'middle' }"
+        :cell-style="{
+          padding: 0 + 'px',
+          'text-align': 'center',
+          'vertical-align': 'middle'
+        }"
       >
-        <el-table-column label="" width="50">
+        <el-table-column label="" width="40">
           <template slot-scope="scope">
             <el-radio
               :label="scope.row.studentId"
@@ -52,12 +56,12 @@
         <el-table-column
           prop="id"
           label="ID"
-          width="60"
+          width="40"
           type="index"
           :index="indexMethod"
         >
         </el-table-column>
-        <el-table-column prop="studentId" label="学号" width="100">
+        <el-table-column prop="studentId" label="学号" width="90">
         </el-table-column>
         <el-table-column prop="studentName" label="姓名" width="90">
         </el-table-column>
@@ -65,10 +69,11 @@
         </el-table-column>
         <el-table-column prop="department" label="面试部门" width="140">
           <template slot-scope="scope" style="position: relative">
-            <span>{{ scope.row.department[0].name }}</span>
+            <span>{{ scope.row.department[newDep].departmentName }}</span>
             <el-dropdown
               trigger="click"
-              style="position: absolute; top: 10px; right: 10px"
+              @command="handleCommand"
+              style="position: absolute; right: 10px; margin-top: 8%"
             >
               <span
                 style="
@@ -77,21 +82,27 @@
                   border: 4px solid;
                   border-color: #333 transparent transparent transparent;
                   margin-left: 10px;
-                  margin-top: 2px;
+                  /* margin-top: 2px; */
                 "
               ></span>
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item
                   @click.native="changeDepartment(scope.row)"
                   v-for="(item, index) in scope.row.department"
+                  :command="index"
                   :key="index"
-                  >{{ item.name }}</el-dropdown-item
+                  >{{ item.departmentName }}</el-dropdown-item
                 >
               </el-dropdown-menu>
             </el-dropdown>
           </template>
         </el-table-column>
-        <el-table-column prop="status" label="通知状态" width="90">
+        <el-table-column label="通知状态" width="130">
+          <template slot-scope="scope">
+            <span
+              >{{ pd(scope.row.department[newDep].status) }}
+            </span></template
+          >
         </el-table-column>
       </el-table>
       <div class="foot">
@@ -115,237 +126,18 @@ export default {
   name: 'personList',
   data() {
     return {
+      statusList: [],
+      newDep: 0,
       round: 1,
       order: '',
       pagesize: 10,
       currentPage: 1,
-      total: 11,
+      total: 0,
       search: '',
       timer: null,
       multipleSelection: [],
       radio: '',
-      tableData: [
-        {
-          studentId: 20200002,
-          studentName: '卢小1',
-          className: '大数据1班',
-          department: [
-            {
-              name: '外联部',
-              id: 3
-            },
-            {
-              name: '新媒体部',
-              id: 2
-            },
-            {
-              name: '学生事务中心',
-              id: 1
-            }
-          ],
-          status: '已通知'
-        },
-        {
-          studentId: 20200001,
-          studentName: '卢小2',
-          className: '大数据1班',
-          department: [
-            {
-              name: '学生事务中心',
-              id: 1
-            },
-            {
-              name: '外联部',
-              id: 3
-            },
-            {
-              name: '新媒体部',
-              id: 2
-            }
-          ],
-          status: '已通知'
-        },
-        {
-          studentId: 20220003,
-          studentName: '卢小3',
-          className: '大数据1班',
-          department: [
-            {
-              name: '外联部',
-              id: 3
-            },
-            {
-              name: '新媒体部',
-              id: 2
-            },
-            {
-              name: '学生事务中心',
-              id: 1
-            }
-          ],
-          status: '已通知'
-        },
-        {
-          studentId: 20220004,
-          studentName: '卢小4',
-          className: '大数据1班',
-          department: [
-            {
-              name: '学生事务中心',
-              id: 1
-            },
-            {
-              name: '外联部',
-              id: 3
-            },
-            {
-              name: '新媒体部',
-              id: 2
-            }
-          ],
-          status: '已通知'
-        },
-        {
-          studentId: 20220005,
-          studentName: '卢小5',
-          className: '大数据1班',
-          department: [
-            {
-              name: '外联部',
-              id: 3
-            },
-            {
-              name: '新媒体部',
-              id: 2
-            },
-            {
-              name: '学生事务中心',
-              id: 1
-            }
-          ],
-          status: '已通知'
-        },
-        {
-          studentId: 20220006,
-          studentName: '卢小6',
-          className: '大数据1班',
-          department: [
-            {
-              name: '学生事务中心',
-              id: 1
-            },
-            {
-              name: '外联部',
-              id: 3
-            },
-            {
-              name: '新媒体部',
-              id: 2
-            }
-          ],
-          status: '已通知'
-        },
-        {
-          studentId: 20220007,
-          studentName: '卢小7',
-          className: '大数据1班',
-          department: [
-            {
-              name: '外联部',
-              id: 3
-            },
-            {
-              name: '新媒体部',
-              id: 2
-            },
-            {
-              name: '学生事务中心',
-              id: 1
-            }
-          ],
-          status: '已通知'
-        },
-        {
-          studentId: 20220008,
-          studentName: '卢小8',
-          className: '大数据1班',
-          department: [
-            {
-              name: '学生事务中心',
-              id: 1
-            },
-            {
-              name: '外联部',
-              id: 3
-            },
-            {
-              name: '新媒体部',
-              id: 2
-            }
-          ],
-          status: '已通知'
-        },
-        {
-          studentId: 20220009,
-          studentName: '卢小9',
-          className: '大数据1班',
-          department: [
-            {
-              name: '外联部',
-              id: 3
-            },
-            {
-              name: '新媒体部',
-              id: 2
-            },
-            {
-              name: '学生事务中心',
-              id: 1
-            }
-          ],
-          status: '已通知'
-        },
-        {
-          studentId: 20220010,
-          studentName: '卢小10',
-          className: '大数据1班',
-          department: [
-            {
-              name: '学生事务中心',
-              id: 1
-            },
-            {
-              name: '外联部',
-              id: 3
-            },
-            {
-              name: '新媒体部',
-              id: 2
-            }
-          ],
-          status: '已通知'
-        },
-        {
-          studentId: 20220011,
-          studentName: '卢小11',
-          className: '大数据1班',
-          department: [
-            {
-              name: '外联部',
-              id: 3
-            },
-            {
-              name: '新媒体部',
-              id: 2
-            },
-            {
-              name: '学生事务中心',
-              id: 1
-            }
-          ],
-          status: '未通知'
-        }
-      ]
+      tableData: []
     }
   },
   watch: {
@@ -366,12 +158,17 @@ export default {
           .get(url, params)
           .then((response) => {
             console.log(response)
-            this.tableData = []
-            this.total = response.data.data.total
-            this.tableData = response.data.data.infoBackParamList
+            if (response.data.code == '00000') {
+              this.tableData = []
+              this.total = response.data.data.total
+              this.tableData = response.data.data.infoBackParamList
+            } else {
+              this.$message.error(response.data.message)
+            }
           })
           .catch((error) => {
             console.log(error)
+            this.$message.error('获取表格信息失败！')
           })
       }, 600)
     }
@@ -396,8 +193,38 @@ export default {
     // }
   },
   methods: {
+    pd(t) {
+      switch (t) {
+        case 0:
+          return '拒绝'
+        case 1:
+          return '待定'
+        case 2:
+          return '未安排'
+        case 3:
+          return '已安排未通知'
+        case 4:
+          return '已通知未签到'
+        case 5:
+          return '已签到'
+        case 6:
+          return '面试中'
+        case 7:
+          return '待定'
+        case 8:
+          return '失败'
+        case 9:
+          return '通过'
+        default:
+          return 0
+      }
+    },
     changeDepartment(e) {
       console.log(e)
+    },
+    handleCommand(command) {
+      console.log('click on item ' + command)
+      this.newDep = command
     },
     indexMethod(index) {
       return (this.currentPage - 1) * this.pagesize + index + 1
@@ -425,12 +252,17 @@ export default {
           .get(url, params)
           .then((response) => {
             console.log(response)
-            this.tableData = []
-            this.total = response.data.data.total
-            this.tableData = response.data.data.infoBackParamList
+            if (response.data.code == '00000') {
+              this.tableData = []
+              this.total = response.data.data.total
+              this.tableData = response.data.data.infoBackParamList
+            } else {
+              this.$message.error(response.data.message)
+            }
           })
           .catch((error) => {
             console.log(error)
+            this.$message.error('获取一面信息失败！')
           })
       }
       if (btn0 == this.$refs.btn2) {
@@ -449,12 +281,17 @@ export default {
           .get(url, params)
           .then((response) => {
             console.log(response)
-            this.tableData = []
-            this.total = response.data.data.total
-            this.tableData = response.data.data.infoBackParamList
+            if (response.data.code == '00000') {
+              this.tableData = []
+              this.total = response.data.data.total
+              this.tableData = response.data.data.infoBackParamList
+            } else {
+              this.$message.error(response.data.message)
+            }
           })
           .catch((error) => {
             console.log(error)
+            this.$message.error('获取二面信息失败！')
           })
       }
       if (btn0 == this.$refs.btn3) {
@@ -473,12 +310,17 @@ export default {
           .get(url, params)
           .then((response) => {
             console.log(response)
-            this.tableData = []
-            this.total = response.data.data.total
-            this.tableData = response.data.data.infoBackParamList
+            if (response.data.code == '00000') {
+              this.tableData = []
+              this.total = response.data.data.total
+              this.tableData = response.data.data.infoBackParamList
+            } else {
+              this.$message.error(response.data.message)
+            }
           })
           .catch((error) => {
             console.log(error)
+            this.$message.error('获取三面信息失败！')
           })
       }
       this.$bus.$emit('arrangeOrder', this.order)
@@ -487,8 +329,14 @@ export default {
       console.log(row)
       this.$bus.$emit('arrangeSelectionName1', row.studentName)
       this.$bus.$emit('arrangeSelectionStudentId1', row.studentId)
-      this.$bus.$emit('arrangeSelectionDepartmentName', row.department[0].name)
-      this.$bus.$emit('arrangeSelectiondepartmentId', row.department[0].id)
+      this.$bus.$emit(
+        'arrangeSelectionDepartmentName',
+        row.department[this.newDep].departmentName
+      )
+      this.$bus.$emit(
+        'arrangeSelectiondepartmentId',
+        row.department[this.newDep].id
+      )
     }
   },
   created() {
@@ -502,12 +350,17 @@ export default {
       .get(url, params)
       .then((response) => {
         console.log(response)
-        // this.tableData = []
-        // this.total = response.data.data.total
-        // this.tableData = response.data.data.infoBackParamList
+        if (response.data.code == '00000') {
+          this.tableData = []
+          this.total = response.data.data.total
+          this.tableData = response.data.data.infoBackParamList
+        } else {
+          this.$message.error(response.data.message)
+        }
       })
       .catch((error) => {
         console.log(error)
+        this.$message.error('获取表格信息失败！')
       })
   }
 }
