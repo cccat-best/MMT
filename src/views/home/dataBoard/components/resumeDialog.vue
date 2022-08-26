@@ -405,7 +405,7 @@ export default {
           address: '暂无数据'
         }
       ],
-      oldevaluateTable:[
+      oldevaluateTable: [
         {
           rounds: '暂无数据',
           time: '暂无数据',
@@ -424,7 +424,7 @@ export default {
   },
   methods: {
     Mymounted() {
-      this.isShowdetail=0
+      this.isShowdetail = 0
       this.getReply()
       this.getSign()
       this.getArrange()
@@ -772,9 +772,9 @@ export default {
           //真实数据
           let data = res.data.data
           // console.log(data,'111')
-          this.oldevaluateTable=JSON.parse(JSON.stringify(data))
+          this.oldevaluateTable = JSON.parse(JSON.stringify(data))
           data.forEach((item) => {
-            item.time=this.time(item.time)
+            item.time = this.time(item.time)
             if (item.rounds == 1) {
               item.rounds = '一面'
             } else if (item.rounds == 2) {

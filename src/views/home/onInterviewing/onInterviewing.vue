@@ -18,7 +18,7 @@
       </div>
     </div>
     <!-- <hr /> -->
-    <div style="height:1px ;background-color: #b4a3ae;"></div>
+    <div style="height: 1px; background-color: #b4a3ae"></div>
     <!-- 改变面试地点 -->
     <div class="two">
       <span class="address">面试地点:</span>
@@ -425,10 +425,11 @@ export default {
   data() {
     return {
       admissionId: sessionStorage.getItem('homeAdmissionId'),
-      organizationId:sessionStorage.getItem('loginOrganizationId'),
+      organizationId: sessionStorage.getItem('loginOrganizationId'),
       //待拿取
       departmentId: 0,
       round: 1,
+      qrround:1,
       //进度条定时器
       timer: '',
       //定时获取表格数据
@@ -497,7 +498,7 @@ export default {
       this.currentPage = 1
       this.getTableData()
     },
-    search(){
+    search() {
       this.currentPage = 1
       if (this.position != '') {
         this.getTableData()
@@ -512,26 +513,26 @@ export default {
     //获取departmentid(ok)
     getDepartmentId() {
       let studentId = this.stdId
-      let organizationId=this.organizationId
+      let organizationId = this.organizationId
       // console.log(studentId, '学号')
       let url = `api/real-time-interview/info/department-id?studentId=${studentId}&organizationId=${organizationId}`
       let get = this.$http.get(url)
       get
         .then((res) => {
           console.log(res, '获取departmentid')
-          if(res.data.code=='A0400'){
+          if (res.data.code == 'A0400') {
             this.$message({
-              showClose:true,
-              message:res.data.message,
-              type:'error',
-              center:true,
-              duration:2000
+              showClose: true,
+              message: res.data.message,
+              type: 'error',
+              center: true,
+              duration: 2000
             })
-          }else{
+          } else {
             this.dialogVisible3 = true
             // let data = 1
             //真实数据
-            let data=res.data.data
+            let data = res.data.data
             this.departmentId = data
             this.getRound()
           }
@@ -547,18 +548,18 @@ export default {
         })
     },
     //获取面试轮次(ok)
-    getRound(){
-      let admissionId=this.admissionId
-      let departmentId=this.departmentId
-      let url=`api/interview-data/time/getDepartmentRound?admissionId=${admissionId}&departmentId=${departmentId}`
-      let get=this.$http.get(url)
+    getRound() {
+      let admissionId = this.admissionId
+      let departmentId = this.departmentId
+      let url = `api/interview-data/time/getDepartmentRound?admissionId=${admissionId}&departmentId=${departmentId}`
+      let get = this.$http.get(url)
       get
-        .then((res)=>{
-          console.log(res,'获取面试轮次')
-          this.round=res.data.data.round
+        .then((res) => {
+          console.log(res, '获取面试轮次')
+          this.round = res.data.data.round
           this.getEvaluation()
         })
-        .catch(()=>{
+        .catch(() => {
           this.$message({
             showClose: true,
             message: '获取面试轮次失败',
@@ -587,7 +588,7 @@ export default {
           //     address: '6号楼206'
           //   }]
           //真实数据
-          let data=res.data.data.addressAndDataBackParamList
+          let data = res.data.data.addressAndDataBackParamList
           this.options = data
           //默认展示第一个地点的数据
           if (data.length != 0) {
@@ -610,66 +611,66 @@ export default {
     },
     //获取进度条数据(ok)
     getProgressBar() {
-      let sendData ={
-        "admissionId": this.admissionId,
-        organizationId:this.organizationId
+      let sendData = {
+        admissionId: this.admissionId,
+        organizationId: this.organizationId
       }
       let url = `api/real-time-interview/info/remain`
-      let post = this.$http.post(url,sendData)
+      let post = this.$http.post(url, sendData)
       post
         .then((res) => {
-          console.log(res,'获取进度条数据')
-      // 模拟数据
-      // let data = [
-      //   {
-      //     total: 0,
-      //     startTime: '00:00',
-      //     endTime: '01:00',
-      //     proportion: 100
-      //   },
-      //   {
-      //     total: 12,
-      //     startTime: '01:00',
-      //     endTime: '02:00',
-      //     proportion: 50
-      //   },
-      //   {
-      //     total: 18,
-      //     startTime: '02:00',
-      //     endTime: '03:00',
-      //     proportion: 80
-      //   },
-      //   {
-      //     total: 20,
-      //     startTime: '03:00',
-      //     endTime: '04:00',
-      //     proportion: 20
-      //   }
-      // ]
-      //真实数据
-      let data=res.data.data.remainStuResults
-      if (data.length == 0) {
-        this.barData = [
-          {
-            total: '?',
-            startTime: '无数据',
-            endTime: '无数据',
-            proportion: 0
+          console.log(res, '获取进度条数据')
+          // 模拟数据
+          // let data = [
+          //   {
+          //     total: 0,
+          //     startTime: '00:00',
+          //     endTime: '01:00',
+          //     proportion: 100
+          //   },
+          //   {
+          //     total: 12,
+          //     startTime: '01:00',
+          //     endTime: '02:00',
+          //     proportion: 50
+          //   },
+          //   {
+          //     total: 18,
+          //     startTime: '02:00',
+          //     endTime: '03:00',
+          //     proportion: 80
+          //   },
+          //   {
+          //     total: 20,
+          //     startTime: '03:00',
+          //     endTime: '04:00',
+          //     proportion: 20
+          //   }
+          // ]
+          //真实数据
+          let data = res.data.data.remainStuResults
+          if (data.length == 0) {
+            this.barData = [
+              {
+                total: '?',
+                startTime: '无数据',
+                endTime: '无数据',
+                proportion: 0
+              }
+            ]
+          } else {
+            this.barData = data
           }
-        ]
-      } else {
-        this.barData = data
-      }
-      })
-      .catch(() => {
-        this.$message({
-          showClose: true,
-          message: '获取进度条数据失败',
-          type: 'error',
-          center: true,
-          duration: 2000
         })
-      })
+        .catch(() => {
+          this.$message({
+            showClose: true,
+            message: '获取进度条数据失败',
+            type: 'error',
+            center: true,
+            duration: 2000
+          })
+        })
     },
     //点击生成二维码按钮(ok)
     displayCode() {
@@ -677,8 +678,9 @@ export default {
       //生成二维码
       let sendData = {
         admissionId: this.admissionId,
-        round: this.round,
-        address: this.position
+        qrround: this.round,
+        address: this.position,
+        organizationId: this.organizationId
       }
       let url = `api/real-time-interview/qr-code-base64`
       let post = this.$http.post(url, sendData)
@@ -911,7 +913,7 @@ export default {
           //   total: 12
           // }
           //真实
-          let data=res.data.data
+          let data = res.data.data
           data.realTimeInfoParamList.forEach((item) => {
             if (item.status == 4) {
               item.status = '未签到'
@@ -1213,7 +1215,7 @@ export default {
       margin-left: 4px;
       float: left;
     }
-    /deep/.el-select .el-input__inner{
+    /deep/.el-select .el-input__inner {
       text-align: center;
     }
     .address {
@@ -1252,7 +1254,7 @@ export default {
       top: 0;
       left: 20px;
     }
-    .qrcode{
+    .qrcode {
       float: right;
       margin-right: 50px;
     }

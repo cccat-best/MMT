@@ -667,7 +667,7 @@ export default {
     //提交修改学号数据(ok)
     submitNumData() {
       let sendData = {
-        organizationId: Number(this.organizationId),
+        oranizationId: Number(this.organizationId),
         studentId: Number(this.studentId),
         newStudentId: Number(this.ruleForm.studentId)
       }
@@ -676,16 +676,15 @@ export default {
         .put(url, sendData)
         .then((res) => {
           console.log(res, '修改学号')
-            if(res.data.code=='A0400'){
-              this.$message({
+          if (res.data.code == 'A0400') {
+            this.$message({
               showClose: true,
               message: res.data.message,
               type: 'error',
               center: true,
               duration: 2000
             })
-          }
-          else{
+          } else {
             this.submitData()
           }
         })
@@ -702,7 +701,7 @@ export default {
     //修改个人信息(ok)
     submitData() {
       let sendData = {
-        organizationId: this.organizationId,
+        oranizationId: this.organizationId,
         studentId: this.ruleForm.studentId,
         studentName: this.ruleForm.studentName,
         phone: this.ruleForm.phone,
@@ -720,15 +719,15 @@ export default {
         .put(url, sendData)
         .then((res) => {
           console.log(res, '修改个人信息')
-          if(res.data.code=='A0400'){
-              this.$message({
+          if (res.data.code == 'A0400') {
+            this.$message({
               showClose: true,
               message: res.data.message,
               type: 'error',
               center: true,
               duration: 2000
             })
-          }else{
+          } else {
             this.changeDialogVisible = false
             this.$message({
               showClose: true,
@@ -737,8 +736,8 @@ export default {
               center: true,
               duration: 2000
             })
+            this.$parent.reFreshWithoutSee()
           }
-
         })
         .catch(() => {
           this.$message({

@@ -240,7 +240,9 @@
             <div class="success">{{ success }}</div>
           </el-tab-pane>
           <el-tab-pane label="失败">
-            <div class="fail"><span>{{ fail }}</span></div>
+            <div class="fail">
+              <span>{{ fail }}</span>
+            </div>
           </el-tab-pane>
         </el-tabs>
       </div>
@@ -796,172 +798,6 @@ export default {
     top: 2px;
   }
   .right {
-  position: relative;
-  top: 10px;
-  left: 162px;
-  min-height: 420px;
-  // min-width: 818px;
-  // min-width: 200px;
-  width: 86%;
-  height: 88%;
-  background-color: white;
-  /* 滚动条 */
-  -webkit-overflow-scrolling: touch;
-  overflow-y: auto;
-  white-space: nowrap;
-
-  .problem11 {
-    .tit1 {
-      // background-color: rgb(63, 40, 40);
-      margin-top: 10px;
-      margin-bottom: 30px;
-      height: 50px;
-      line-height: 50px;
-      font-size: 28px;
-      width: 180px;
-      font-weight: 700;
-      margin-left: 32px;
-      color: rgb(82, 82, 82);
-    }
-    .score {
-      // background-color: rgb(184, 121, 121);
-      width: 48px;
-    }
-    // /deep/.el-input {
-    //   font-size: 18px;
-    //   width: 100px;
-    // }
-    .el-table {
-      margin-left: 3%;
-    }
-    .button {
-      margin-top: 16px;
-      // margin-left: 735px;
-      margin-left: 40%;
-      width: 223px;
-    }
-  }
-  .inform1 {
-    margin-top: 30px;
-    .tit2 {
-      height: 50px;
-      line-height: 50px;
-      font-size: 28px;
-      width: 180px;
-      font-weight: 700;
-      margin-left: 32px;
-      color: rgb(82, 82, 82);
-    }
-    .details {
-      width: 600px;
-      height: 240px;
-      background-color: white;
-      margin-left: 3%;
-      margin-top: 30px;
-      // border-radius: 13px;
-      box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
-      padding: 20px;
-      .top {
-        font-weight: 700;
-        font-size: 26px;
-        width: 110px;
-      }
-      .concrete {
-        font-size: 22px;
-        margin-top: 34px;
-        height: 150px;
-        line-height: 45px;
-        text-align: left;
-        width: 476px;
-        margin-left: 62px;
-        white-space: normal;
-        word-break: break-all;
-        overflow: auto;
-        /deep/.el-textarea__inner {
-          padding: auto;
-          width: 450px;
-          // padding: 5px 27px 5px 10px;
-        }
-      }
-    }
-  }
-  .inform2 {
-    margin-top: 30px;
-    margin-bottom: 40px;
-    .tit3 {
-      height: 50px;
-      line-height: 50px;
-      font-size: 28px;
-      width: 180px;
-      font-weight: 700;
-      margin-left: 32px;
-      color: rgb(82, 82, 82);
-    }
-    .result {
-      height: 280px;
-      width: 640px;
-      margin-left: 3%;
-      margin-top: 30px;
-      // border-radius: 13px;
-      box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
-      .success,
-      .fail {
-        font-size: 22px;
-        margin-top: 28px;
-        height: 150px;
-        line-height: 45px;
-        text-align: left;
-        width: 450px;
-        margin-left: 90px;
-        white-space: normal;
-        word-break: break-all;
-        overflow: auto;
-      }
-    }
-  }
-  .dialog-footer {
-    /deep/.el-button {
-      margin-left: 20px;
-    }
-  }
-  /deep/.el-table .cell{
-    text-align: center
-  }
-  }
-  }
-  .left1 {
-    position: absolute;
-    left: 32px;
-    top: 50px;
-    height: 156px;
-    // width: 141px;
-    width: 130px;
-    min-width: 130px;
-    // background-color: rgb(174, 96, 96);
-    .text {
-      text-decoration: none;
-      font-size: 17px;
-      color: black;
-    }
-    .blue {
-      color: #409eff;
-    }
-    .nav1 {
-      margin-left: 2px;
-      padding-left: 10px;
-      height: 30%;
-      background-color: white;
-      // cursor: pointer;
-      text-align: left;
-      line-height: 58px;
-      border-left: 2px solid rgb(213, 211, 211);
-    }
-    // .text:hover {
-      // color: #409eff;
-      // border-left: 2px solid #409eff;
-    // }
-  }
-  .right1 {
     position: relative;
     top: 10px;
     left: 162px;
@@ -1031,22 +867,18 @@ export default {
           font-weight: 700;
           font-size: 26px;
           width: 110px;
-          margin-bottom: 8px;
         }
         .concrete {
           font-size: 22px;
-          // margin-top: 10px;
-          height: 188px;
-          line-height: 37px;
+          margin-top: 34px;
+          height: 150px;
+          line-height: 45px;
           text-align: left;
           width: 476px;
           margin-left: 62px;
           white-space: normal;
           word-break: break-all;
           overflow: auto;
-          display: flex;
-          justify-content: center;
-          align-items: center;
           /deep/.el-textarea__inner {
             padding: auto;
             width: 450px;
@@ -1056,6 +888,176 @@ export default {
       }
     }
     .inform2 {
+      margin-top: 30px;
+      margin-bottom: 40px;
+      .tit3 {
+        height: 50px;
+        line-height: 50px;
+        font-size: 28px;
+        width: 180px;
+        font-weight: 700;
+        margin-left: 32px;
+        color: rgb(82, 82, 82);
+      }
+      .result {
+        height: 280px;
+        width: 640px;
+        margin-left: 3%;
+        margin-top: 30px;
+        // border-radius: 13px;
+        box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+        .success,
+        .fail {
+          font-size: 22px;
+          margin-top: 28px;
+          height: 150px;
+          line-height: 45px;
+          text-align: left;
+          width: 450px;
+          margin-left: 90px;
+          white-space: normal;
+          word-break: break-all;
+          overflow: auto;
+        }
+      }
+    }
+    .dialog-footer {
+      /deep/.el-button {
+        margin-left: 20px;
+      }
+    }
+    /deep/.el-table .cell {
+      text-align: center;
+    }
+  }
+}
+.left1 {
+  position: absolute;
+  left: 32px;
+  top: 50px;
+  height: 156px;
+  // width: 141px;
+  width: 130px;
+  min-width: 130px;
+  // background-color: rgb(174, 96, 96);
+  .text {
+    text-decoration: none;
+    font-size: 17px;
+    color: black;
+  }
+  .blue {
+    color: #409eff;
+  }
+  .nav1 {
+    margin-left: 2px;
+    padding-left: 10px;
+    height: 30%;
+    background-color: white;
+    // cursor: pointer;
+    text-align: left;
+    line-height: 58px;
+    border-left: 2px solid rgb(213, 211, 211);
+  }
+  // .text:hover {
+  // color: #409eff;
+  // border-left: 2px solid #409eff;
+  // }
+}
+.right1 {
+  position: relative;
+  top: 10px;
+  left: 162px;
+  min-height: 420px;
+  // min-width: 818px;
+  // min-width: 200px;
+  width: 86%;
+  height: 88%;
+  background-color: white;
+  /* 滚动条 */
+  -webkit-overflow-scrolling: touch;
+  overflow-y: auto;
+  white-space: nowrap;
+
+  .problem11 {
+    .tit1 {
+      // background-color: rgb(63, 40, 40);
+      margin-top: 10px;
+      margin-bottom: 30px;
+      height: 50px;
+      line-height: 50px;
+      font-size: 28px;
+      width: 180px;
+      font-weight: 700;
+      margin-left: 32px;
+      color: rgb(82, 82, 82);
+    }
+    .score {
+      // background-color: rgb(184, 121, 121);
+      width: 48px;
+    }
+    // /deep/.el-input {
+    //   font-size: 18px;
+    //   width: 100px;
+    // }
+    .el-table {
+      margin-left: 3%;
+    }
+    .button {
+      margin-top: 16px;
+      // margin-left: 735px;
+      margin-left: 40%;
+      width: 223px;
+    }
+  }
+  .inform1 {
+    margin-top: 30px;
+    .tit2 {
+      height: 50px;
+      line-height: 50px;
+      font-size: 28px;
+      width: 180px;
+      font-weight: 700;
+      margin-left: 32px;
+      color: rgb(82, 82, 82);
+    }
+    .details {
+      width: 600px;
+      height: 240px;
+      background-color: white;
+      margin-left: 3%;
+      margin-top: 30px;
+      // border-radius: 13px;
+      box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      .top {
+        font-weight: 700;
+        font-size: 26px;
+        width: 110px;
+        margin-bottom: 8px;
+      }
+      .concrete {
+        font-size: 22px;
+        // margin-top: 10px;
+        height: 188px;
+        line-height: 37px;
+        text-align: left;
+        width: 476px;
+        margin-left: 62px;
+        white-space: normal;
+        word-break: break-all;
+        overflow: auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        /deep/.el-textarea__inner {
+          padding: auto;
+          width: 450px;
+          // padding: 5px 27px 5px 10px;
+        }
+      }
+    }
+  }
+  .inform2 {
     margin-top: 30px;
     margin-bottom: 40px;
     .tit3 {
@@ -1092,15 +1094,15 @@ export default {
       }
     }
   }
-    .dialog-footer {
-      /deep/.el-button {
-        margin-left: 20px;
-      }
-    }
-    /deep/.el-table .cell{
-      text-align: center
+  .dialog-footer {
+    /deep/.el-button {
+      margin-left: 20px;
     }
   }
+  /deep/.el-table .cell {
+    text-align: center;
+  }
+}
 /deep/.el-tabs__item {
   font-size: 17px !important;
   width: 321px !important;
