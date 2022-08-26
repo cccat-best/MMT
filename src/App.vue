@@ -16,4 +16,7 @@ body,
 #app {
   height: 100%;
 }
+body .el-table::before {
+    z-index: inherit;
+}
 </style>
