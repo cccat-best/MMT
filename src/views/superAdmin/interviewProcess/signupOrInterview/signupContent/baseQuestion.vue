@@ -4,14 +4,29 @@
     <div class="baseTitle">
       <div class="mainTitle">
         <div class="mainTitle-left">报名表问题</div>
-        <!-- 是否可以编辑 -->
-        <div class="mainTitle-right" @click="canEdit" v-show="!isEdit">
-          <i class="el-icon-edit"></i>编辑
-        </div>
       </div>
-      <div class="inTitle">基本问题</div>
+      <div :class="['inTitle', !isEdit ? 'inTitle-noEdit' : '']" ref="basePage">
+        基本问题
+      </div>
     </div>
     <div class="base-main">
+      <!-- 预设问题面板 -->
+      <div class="yushe-content" v-show="isEdit">
+        <!-- 标题 -->
+        <div class="yushe-title">预设问题</div>
+        <!-- 预设问题内容 -->
+        <div class="yushe-item-content">
+          <div v-for="(item, i) in preList" :key="i">
+            <div
+              v-if="i < 7"
+              :class="['yushe-item', item.isShow ? 'yushe-active' : '']"
+              @click="yusheIsshow(item)"
+            >
+              {{ item.description }}
+            </div>
+          </div>
+        </div>
+      </div>
       <!-- 必选问题 -->
       <div class="must">
         <div class="must-item" v-for="(must, index) in mustList" :key="index">
@@ -40,65 +55,18 @@
       </div>
       <!-- 自定义问题展示 -->
       <div class="freeView-content">
-        <!-- 自定义问题 -->
-        <div class="freeView-title">自定义基本问题</div>
-        <div
-          class="freeView-item"
-          v-for="(item1, i1) in BaseList"
-          :key="'t' + i1"
-        >
-          <i
-            :class="['el-icon-remove', !isEdit ? 'remove-opacity' : '']"
-            style="color: #1597db"
-            @click="removeChoose(item1)"
-          ></i>
-          <span class="freeView-name">{{ item1.description }}</span>
-          <!-- 选择or文字 -->
-          <select class="freeView-select" v-if="item1.selection">
-            <option
-              selected="selected"
-              disabled="disabled"
-              style="display: none"
-              value=""
-            ></option>
-            <option
-              v-for="(item2, index2) in item1.option"
-              :key="'op' + index2"
-              v-show="item2 != null"
-              :disabled="true"
-            >
-              {{ item2 }}
-            </option>
-          </select>
-          <!--  展示input框-->
-          <input type="text" v-if="!item1.selection" class="freeView-input" />
-        </div>
-      </div>
-      <!-- 预设问题面板 -->
-      <div class="yushe-content">
-        <!-- 标题 -->
-        <div class="yushe-title">预设问题</div>
-        <!-- 预设问题内容 -->
-        <div class="yushe-item-content">
-          <div v-for="(item, i) in preList" :key="i">
-            <div
-              v-if="i < 7"
-              :class="['yushe-item', item.isShow ? 'yushe-active' : '']"
-              @click="yusheIsshow(item)"
-            >
-              {{ item.description }}
-            </div>
-          </div>
-        </div>
         <!-- 自定义问题面板 -->
-        <div class="zidingyi-content">
-          <div class="zidingyi-tilte">自定义问题</div>
+        <div
+          :class="[!isEdit ? 'zidingyi-content-noEdit' : 'zidingyi-content']"
+        >
+          <div class="zidingyi-tilte" style="font-size: 20px">自定义问题</div>
           <!-- 自定义文本 -->
           <el-popover
             placement="top"
             width="260"
             v-model="visible"
             ref="baseTestPopover"
+            v-show="isEdit"
           >
             <p>添加自定义问题描述</p>
             <div class="my-input" style="margin: 10px 0">
@@ -137,6 +105,7 @@
               boundariesElement: 'viewport',
               removeOnDestroy: true
             }"
+            v-show="isEdit"
           >
             <p>添加自定义问题描述</p>
             <el-input
@@ -190,18 +159,51 @@
             >
           </el-popover>
         </div>
+        <div
+          class="freeView-item"
+          v-for="(item1, i1) in BaseList"
+          :key="'t' + i1"
+        >
+          <i
+            :class="['el-icon-remove', !isEdit ? 'remove-opacity' : '']"
+            style="color: #1597db"
+            @click="removeChoose(item1)"
+          ></i>
+          <span class="freeView-name">{{ item1.description }}</span>
+          <!-- 选择or文字 -->
+          <select class="freeView-select" v-if="item1.selection">
+            <option
+              selected="selected"
+              disabled="disabled"
+              style="display: none"
+              value=""
+            ></option>
+            <option
+              v-for="(item2, index2) in item1.option"
+              :key="'op' + index2"
+              v-show="item2 != null"
+              :disabled="true"
+            >
+              {{ item2 }}
+            </option>
+          </select>
+          <!--  展示input框-->
+          <input type="text" v-if="!item1.selection" class="freeView-input" />
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script scoped>
-import { mapMutations } from 'vuex'
+import { mapMutations, mapState } from 'vuex'
 export default {
+  mounted() {
+    window.addEventListener('scroll', this.basePage, true)
+  },
   props: ['allQues'],
   data() {
     return {
-      isEdit: false,
       //isAdd: 1,
       form: {
         //最少两个选项
@@ -276,23 +278,47 @@ export default {
     ...mapMutations('problem', [
       'updateGeneralQuestions',
       'updateQuestionsList',
-      'updateIsEdit'
+      'updateIsEdit',
+      'removeQuestionsListItem'
     ]),
-    canEdit() {
-      this.isEdit = true
-      this.updateIsEdit()
-      if (this.isEdit) return this.$message.success('编辑模式')
-      // if (!this.isEdit) return this.$message('非编辑模式')
+    basePage() {
+      // console.log('基本问题', this.$refs.basePage.getBoundingClientRect().top)
+      if (
+        this.$refs.basePage.getBoundingClientRect().top >= 84 &&
+        this.$refs.basePage.getBoundingClientRect().top <= 315
+      ) {
+        this.$parent.showBase()
+      }
+      if (
+        this.$refs.basePage.getBoundingClientRect().top > 315 &&
+        this.$refs.basePage.getBoundingClientRect().top <= 514
+      ) {
+        this.$parent.showTime()
+      }
     },
     // 预设问题展示
     yusheIsshow(item) {
       if (!this.isEdit) return this.$message.error('非编辑模式')
       item.isShow = !item.isShow
+      let generalQuestions = []
+      this.preList
+        .filter((p) => p.isShow)
+        .forEach((p) => {
+          generalQuestions.push(p.description)
+        })
+      this.updateGeneralQuestions(generalQuestions)
     },
     // 删除预设问题
     removeYushe(item) {
       if (!this.isEdit) return
       item.isShow = !item.isShow
+      let generalQuestions = []
+      this.preList
+        .filter((p) => p.isShow)
+        .forEach((p) => {
+          generalQuestions.push(p.description)
+        })
+      this.updateGeneralQuestions(generalQuestions)
     },
     //删除自定义问题
     removeChoose(item) {
@@ -300,6 +326,7 @@ export default {
       this.BaseList = this.BaseList.filter(
         (p) => p.description != item.description
       )
+      this.removeQuestionsListItem(item)
       // this.isAdd--
     },
     //添加自定义文本问题
@@ -325,6 +352,7 @@ export default {
           }
         }
         this.BaseList.push(que)
+        this.updateQuestionsList(this.BaseList)
         // this.isAdd++
         this.text = ''
         //只有成功提交才会关闭这个添加框
@@ -404,6 +432,7 @@ export default {
         }
         que.option = option
         this.BaseList.push(que)
+        this.updateQuestionsList(this.BaseList)
         // this.isAdd++
         this.visible1 = false
       } else {
@@ -420,25 +449,25 @@ export default {
         }
       ]
     },
-    packgeBaseQue() {
-      let generalQuestions = [] //预设问题选择情况
-      //过滤是否选中此预设问题
-      this.preList
-        .filter((p) => p.isShow)
-        .forEach((p) => {
-          generalQuestions.push(p.description)
-        })
-      let questionsList = this.BaseList
-      // 给问题排序
-      let i = 1
-      questionsList.forEach((p) => {
-        p.questionOrder = i
-        i++
-      })
-      // vuex存储
-      this.updateGeneralQuestions(generalQuestions)
-      this.updateQuestionsList(questionsList)
-    },
+    // packgeBaseQue() {
+    //   let generalQuestions = [] //预设问题选择情况
+    //   //过滤是否选中此预设问题
+    //   this.preList
+    //     .filter((p) => p.isShow)
+    //     .forEach((p) => {
+    //       generalQuestions.push(p.description)
+    //     })
+    //   let questionsList = this.BaseList
+    //   // 给问题排序
+    //   let i = 1
+    //   questionsList.forEach((p) => {
+    //     p.questionOrder = i
+    //     i++
+    //   })
+    //   // vuex存储
+    //   this.updateGeneralQuestions(generalQuestions)
+    //   this.updateQuestionsList(questionsList)
+    // },
     escEdit() {
       this.isEdit = false
     }
@@ -478,6 +507,12 @@ export default {
         }
       }
     }
+  },
+  beforeDestroy() {
+    window.removeEventListener('scroll', this.basePage, true)
+  },
+  computed: {
+    ...mapState('problem', ['isEdit'])
   }
 }
 </script>
@@ -490,6 +525,9 @@ export default {
     color: #9e9e9e;
     display: flex;
     flex-direction: column;
+    .inTitle-noEdit {
+      margin-bottom: 20px;
+    }
     .mainTitle {
       display: flex;
       font-size: 30px;
@@ -504,18 +542,18 @@ export default {
       }
     }
     .inTitle {
-      margin-top: 30px;
-      margin-left: 65px;
+      margin-top: 20px;
+      // margin-left: 29px;
       display: flex;
-      font-size: 22px;
+      font-size: 26px;
     }
   }
   .base-main {
-    margin-top: 30px;
+    // margin-top: 30px;
     .must {
       display: flex;
       justify-content: space-between;
-      margin: 0 17px;
+      margin: 0 40px;
       .must-item {
         display: flex;
         width: 33.33%;
@@ -544,7 +582,7 @@ export default {
       display: flex;
       align-items: center;
       flex-wrap: wrap;
-      margin: 0 17px;
+      margin: 0 40px;
       .choose-item {
         margin-top: 30px;
         width: 33.33%;
@@ -572,15 +610,14 @@ export default {
       }
     }
     .yushe-content {
-      margin-left: 17px;
       display: flex;
       flex-direction: column;
       margin-top: 26px;
-      margin-left: 10px;
+      margin-left: -9px;
       width: 640px;
-      height: 190px;
+      height: 110px;
       margin-bottom: 30px;
-      box-shadow: 4px 4px 8px 4px rgba(0, 0, 0, 0.2);
+      // box-shadow: 4px 4px 8px 4px rgba(0, 0, 0, 0.2);
       padding: 5px 20px;
       border-radius: 6px;
       .yushe-title {
@@ -589,15 +626,15 @@ export default {
         font-size: 20px;
         margin-bottom: 15px;
         margin-left: 35px;
-        margin-top: 14px;
+        // margin-top: 14px;
       }
     }
     .yushe-item-content {
       display: flex;
       align-items: center;
       margin-top: 10px;
-      margin-left: 35px;
-      width: 575px;
+      margin-left: 50px;
+      width: 560px;
       .yushe-item {
         width: 60px;
         height: 30px;
@@ -609,14 +646,18 @@ export default {
         font-size: 17px;
       }
       padding-bottom: 20px;
-      border-bottom: 1px solid #efefef;
+      border-bottom: 1px solid #666262;
       .yushe-active {
         color: #67b5fe !important;
         border: 1px solid #67b5fe !important;
       }
     }
     .zidingyi-content {
-      margin-left: 35px;
+      margin-left: 31px;
+      margin-bottom: 20px;
+      border-bottom: 1px solid #666262;
+      padding-bottom: 20px;
+      width: 560px;
       .form-chose {
         display: flex;
       }
@@ -626,7 +667,7 @@ export default {
       }
       display: flex;
       align-items: center;
-      margin-top: 23px;
+      margin-top: 15px;
       .zidingyi-tilte {
         margin-right: 20px;
         font-size: 18px;
@@ -637,13 +678,22 @@ export default {
         margin-left: 16px;
       }
     }
+    .zidingyi-content-noEdit {
+      margin-left: 31px;
+      margin-bottom: 20px;
+      // padding-bottom: 20px;
+      width: 560px;
+      display: flex;
+      align-items: center;
+      margin-top: 15px;
+    }
   }
   .freeView-content {
     .freeView-title {
       display: flex;
-      font-size: 22px;
+      font-size: 26px;
       color: #989898;
-      margin-left: 65px;
+      margin-left: 29px;
       margin-bottom: 16px;
       margin-top: 20px;
     }
@@ -653,7 +703,7 @@ export default {
     .freeView-item {
       display: flex;
       align-items: center;
-      margin-left: 17px;
+      margin-left: 34px;
       i {
         cursor: pointer;
       }
@@ -683,7 +733,6 @@ export default {
     }
   }
 }
-
 input:focus {
   border: 1px solid #535858 !important;
   outline: none;

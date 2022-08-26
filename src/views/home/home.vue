@@ -198,4 +198,7 @@ export default {
 :deep(.el-menu-item .iconfont) {
   width: 0px;
 }
+:deep(.el-menu) {
+  text-align: left;
+}
 </style>
