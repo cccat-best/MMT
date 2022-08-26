@@ -17,26 +17,18 @@ export const get = (url, params) => {
         params
       })
       .then((res) => {
-
-        if(res.data. code=='A0400') {
-
+        if (res.data.code == 'A0400') {
           Router.push('/login')
-        }else{
+        } else {
           resolve(res)
         }
-
-
       })
       .catch((err) => {
-
-        if(err.data.code=='A0400') {
-
+        if (err.data.code == 'A0400') {
           Router.push('/login')
-        }else{
+        } else {
           reject(err)
         }
-
-
       })
   })
 }
@@ -47,20 +39,16 @@ export const post = (url, data) => {
     $http
       .post(url, data)
       .then((res) => {
-
-        if(res.data.code=='A0400') {
-
+        if (res.data.code == 'A0400') {
           Router.push('/login')
-        }else{
+        } else {
           resolve(res)
         }
       })
       .catch((err) => {
-
-        if(err.data.code=='A0400') {
-
+        if (err.data.code == 'A0400') {
           Router.push('/login')
-        }else{
+        } else {
           reject(err)
         }
       })
