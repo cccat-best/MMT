@@ -1,4 +1,5 @@
 import axios from 'axios'
+import Router from '../router/index'
 
 let baseURL = ''
 
@@ -16,10 +17,26 @@ export const get = (url, params) => {
         params
       })
       .then((res) => {
-        resolve(res)
+
+        if(res.data. code=='A0400') {
+
+          Router.push('/login')
+        }else{
+          resolve(res)
+        }
+
+
       })
       .catch((err) => {
-        reject(err)
+
+        if(err.data.code=='A0400') {
+
+          Router.push('/login')
+        }else{
+          reject(err)
+        }
+
+
       })
   })
 }
@@ -30,10 +47,22 @@ export const post = (url, data) => {
     $http
       .post(url, data)
       .then((res) => {
-        resolve(res)
+
+        if(res.data.code=='A0400') {
+
+          Router.push('/login')
+        }else{
+          resolve(res)
+        }
       })
       .catch((err) => {
-        reject(err)
+
+        if(err.data.code=='A0400') {
+
+          Router.push('/login')
+        }else{
+          reject(err)
+        }
       })
   })
 }
