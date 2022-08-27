@@ -1122,10 +1122,10 @@ export default {
   height: 60vh;
   overflow: auto;
 }
-/deep/.el-dialog__footer{
-  padding:10px 6vw 20px
+/deep/.el-dialog__footer {
+  padding: 10px 6vw 20px;
 }
-/deep/.el-dialog{
+/deep/.el-dialog {
   height: 82vh;
   min-height: 600px;
 }
