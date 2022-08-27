@@ -647,18 +647,18 @@ export default {
           //     proportion: 20
           //   }
           // ]
-          //真实数据
-          let data = res.data.data.remainStuResults
-          if (data.length == 0) {
+          if (res.data.code=='A0400') {
             this.barData = [
               {
-                total: '?',
-                startTime: '无数据',
-                endTime: '无数据',
+                total: '{暂无数据}',
+                startTime: '暂无数据',
+                endTime: '暂无数据',
                 proportion: 0
               }
             ]
           } else {
+            //真实数据
+            let data = res.data.data.remainStuResults
             this.barData = data
           }
         })
@@ -678,7 +678,7 @@ export default {
       //生成二维码
       let sendData = {
         admissionId: this.admissionId,
-        qrround: this.round,
+        round: this.round,
         address: this.position,
         organizationId: this.organizationId
       }

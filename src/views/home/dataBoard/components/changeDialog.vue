@@ -561,7 +561,7 @@ export default {
           this.ruleForm.studentId = data.studentId
           this.ruleForm.studentName = data.studentName
           this.ruleForm.phone = data.phone
-          //学院出现专业和班级才出现
+          //学院出现专业和班级才出现(三个绑定)
           if (data.academy == null) {
             this.ruleForm.academyId = null
             this.ruleForm.majorId = null
@@ -569,10 +569,13 @@ export default {
           }
           //专业出现班级才出现
           if (data.major == null) {
+            this.ruleForm.academyId = null
             this.ruleForm.majorId = null
             this.ruleForm.classId = null
           }
           if (data.classNum == null) {
+            this.ruleForm.academyId = null
+            this.ruleForm.majorId = null
             this.ruleForm.classId = null
           }
           this.ruleForm.gender = data.gender
@@ -667,7 +670,7 @@ export default {
     //提交修改学号数据(ok)
     submitNumData() {
       let sendData = {
-        oranizationId: Number(this.organizationId),
+        organizationId: Number(this.organizationId),
         studentId: Number(this.studentId),
         newStudentId: Number(this.ruleForm.studentId)
       }
@@ -701,7 +704,7 @@ export default {
     //修改个人信息(ok)
     submitData() {
       let sendData = {
-        oranizationId: this.organizationId,
+        organizationId: this.organizationId,
         studentId: this.ruleForm.studentId,
         studentName: this.ruleForm.studentName,
         phone: this.ruleForm.phone,
