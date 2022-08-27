@@ -229,6 +229,15 @@ export default {
 }
 </script>
 <style lang="less" scoped>
+::v-deep input::-webkit-input-placeholder {
+  font-size: 4px;
+}
+::v-deep input::-moz-input-placeholder {
+  font-size: 4px;
+}
+::v-deep input::-ms-input-placeholder {
+  font-size: 4px;
+}
 .father {
   display: flex;
   width: 100%;
@@ -325,7 +334,7 @@ export default {
   font-size: 25px;
   text-align: left;
   font-family: Arial-400;
-  margin-top: 18px;
+  margin-top: 10px;
   width: 289px;
   height: 45px;
   line-height: 18px;
@@ -334,16 +343,18 @@ export default {
 }
 .footer {
   display: flex;
-  align-items: center;
-  margin-left: 127px;
-  margin-top: 8px;
+  justify-content: center;
+  // align-items: center;
+  margin-top: 13px;
+  margin-bottom: 13px;
   font-size: 15px;
   font-family: Arial-400;
 }
 .left-text,
 .right-text {
   color: rgba(134, 116, 116, 100);
-  margin-top: 3px;
+  // margin-top: 3px;
+  // margin-bottom: 3px;
 }
 .right-text:hover {
   color: rgba(26, 113, 185, 100);

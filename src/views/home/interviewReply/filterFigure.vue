@@ -210,18 +210,16 @@ export default {
     }
   },
   beforeMount() {
-    let admissionId = sessionStorage['homeAdmissionId']
-    let url1 = `api/interview-reply/department/${admissionId}`
+    let organizationId = sessionStorage['loginOrganizationId']
+    let url1 = `api/interview-reply/department/${organizationId}`
     this.$http
       .get(url1)
       .then((response) => {
         console.log(response)
         // setTimeout(this.drawChar, 100)
         if (response.data.code == '00000') {
-          let department = response.data.data.department
-          department.forEach((element) => {
-            this.department.push(element)
-          })
+          this.department = []
+          this.department = response.data.data.department
         } else {
           this.$message.error(response.data.message)
         }
@@ -232,16 +230,14 @@ export default {
         this.$message.error('获取部门信息失败！')
       })
 
-    let url2 = `api/interview-reply/room/${admissionId}`
+    let url2 = `api/interview-reply/room/${organizationId}`
     this.$http
       .get(url2)
       .then((response) => {
         console.log(response)
         if (response.data.code == '00000') {
-          let room = response.data.data.room
-          room.forEach((element) => {
-            this.room.push(element)
-          })
+          this.room = []
+          this.room = response.data.data.room
         } else {
           this.$message.error(response.data.message)
         }

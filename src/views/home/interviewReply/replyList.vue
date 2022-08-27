@@ -8,11 +8,11 @@
             currentPage * pagesize
           )
         "
-        height="296px"
+        height="297px"
         :header-cell-style="{ 'text-align': 'center', height: 0 + 'px' }"
         style="width: 100%; border-radius: 8px; overflow: hidden"
         :row-style="{ height: 0 + 'px' }"
-        :cell-style="{ padding: 0 + 'px', 'text-align': 'center' }"
+        :cell-style="{ padding: 4.5 + 'px', 'text-align': 'center' }"
         @sort-change="sortChange"
         @filter-change="filterChange"
         @selection-change="handleSeclect"
@@ -23,7 +23,8 @@
         <el-table-column prop="studentId" label="学号" sortable="custom">
         </el-table-column>
         <el-table-column prop="studentName" label="姓名"> </el-table-column>
-        <el-table-column prop="department" label="部门"> </el-table-column>
+        <el-table-column prop="department" label="部门" width="140">
+        </el-table-column>
         <el-table-column
           prop="totalScore"
           label="面试得分"
@@ -76,7 +77,7 @@
               >&nbsp;待定&nbsp;</span
             >
 
-            <el-dropdown trigger="click" style="position: absolute; top: 10px">
+            <el-dropdown trigger="click" style="position: absolute; top: 15px">
               <span
                 style="
                   cursor: pointer;
@@ -410,9 +411,6 @@ export default {
         selectionStudentId.push(element.studentId)
         selectionDepartmentId.push(element.departmentId)
       })
-      // console.log('name:', selectionName)
-      // console.log('id:', selectionStudentId)
-      // console.log('departmentId:', selectionDepartmentId)
       this.$bus.$emit('replySelectionStudentId', selectionStudentId)
       this.$bus.$emit('replySelectionDepartmentId', selectionDepartmentId)
     },
@@ -599,8 +597,8 @@ export default {
 }
 .tag {
   color: white;
-  padding-top: 1px;
-  padding-bottom: 1px;
+  padding-top: 2px;
+  padding-bottom: 2px;
 }
 .el-icon-notebook-2:hover {
   color: #409eff;
