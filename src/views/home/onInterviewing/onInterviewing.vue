@@ -647,7 +647,7 @@ export default {
           //     proportion: 20
           //   }
           // ]
-          if (res.data.code=='A0400') {
+          if (res.data.code == 'A0400') {
             this.barData = [
               {
                 total: '{暂无数据}',
