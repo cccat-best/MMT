@@ -7,27 +7,46 @@
         <!-- 最大可报部门 -->
         <div class="section-content-top-max">
           <span class="section-content-top-max-title">最多可报名部门数</span>
-          <el-input-number
+          <el-tooltip
+            class="item"
+            effect="dark"
+            content="非编辑模式"
+            placement="bottom"
+            :disabled="isEdit"
+          >
+          <div>
+              <el-input-number
             v-model="maxDepartment"
             controls-position="right"
             :min="1"
             :max="3"
-            size="mini"
             :disabled="!isEdit"
+            size="mini"
             @change="changeMaxDepartment"
             style="width: 100px"
           ></el-input-number>
+          </div>
+          </el-tooltip>
         </div>
         <!-- 是否允许调剂 -->
-        <div class="section-content-top-allocated">
-          <span v-if="departmentCount >= 2">是否允许调剂部门</span>
-          <el-checkbox
-            v-model="allocated"
-            v-if="departmentCount >= 2"
-            :disabled="!isEdit"
-            @change="changeAllocated"
-            class="section-content-top-allocated-checkbox"
-          ></el-checkbox>
+        <div class="section-content-top-allocated" v-if="departmentCount >= 2">
+          <span>是否允许调剂部门</span>
+          <el-tooltip
+            class="item"
+            effect="dark"
+            content="非编辑模式"
+            placement="bottom"
+            :disabled="isEdit"
+          >
+            <div>
+              <el-checkbox
+                v-model="allocated"
+                :disabled="!isEdit"
+                @change="changeAllocated"
+                class="section-content-top-allocated-checkbox"
+              ></el-checkbox>
+            </div>
+          </el-tooltip>
         </div>
       </div>
       <!-- 部门&&问题展示 -->
@@ -136,6 +155,16 @@ export default {
         }, 500)
       }
     }
+    // maxDepartment(newV,oldV) {
+    //   // if(!this.isEdit) {
+    //   //   console.log('11');
+    //   //   this.maxDepartment = oldV
+    //   //   // return this.$message.error('非编辑模式')
+    //   // }
+    //   if (!this.isEdit) {
+    //      this.maxDepartment = oldV
+    //   }
+    // }
   },
   computed: {
     ...mapState('problem', ['isEdit'])
