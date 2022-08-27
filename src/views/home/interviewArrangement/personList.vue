@@ -59,7 +59,7 @@
         <el-table-column prop="className" label="班级" width="140">
         </el-table-column>
         <el-table-column
-          prop="departmentName[0].name"
+          prop="departmentName"
           label="面试部门"
           width="120"
           :filters="filterDepartment"
@@ -126,10 +126,9 @@ export default {
   name: 'personList',
   data() {
     return {
+      departmentId: 0,
       filterDepartment: [],
-      department: [],
-      // statusList: [],
-      // newDep: 0,
+      departmentName: '',
       round: 1,
       order: '',
       pagesize: 10,
@@ -137,82 +136,8 @@ export default {
       total: 0,
       search: '',
       timer: null,
-      multipleSelection: [],
       radio: '',
-      tableData: [
-        {
-          studentId: 20220001,
-          studentName: '卢小1',
-          className: '大数据1班',
-          departmentName: [
-            {
-              name: '外联部',
-              id: 3
-            }
-          ],
-          status: 0
-        },
-        {
-          studentId: 20220002,
-          studentName: '卢小2',
-          className: '大数据1班',
-          departmentName: [
-            {
-              name: '学生事务中心',
-              id: 1
-            },
-            {
-              name: '外联部',
-              id: 3
-            },
-            {
-              name: '新媒体部',
-              id: 2
-            }
-          ],
-          status: 1
-        },
-        {
-          studentId: 20220003,
-          studentName: '卢小3',
-          className: '大数据1班',
-          departmentName: [
-            {
-              name: '外联部',
-              id: 3
-            },
-            {
-              name: '新媒体部',
-              id: 2
-            },
-            {
-              name: '学生事务中心',
-              id: 1
-            }
-          ],
-          status: 3
-        },
-        {
-          studentId: 20220004,
-          studentName: '卢小4',
-          className: '大数据1班',
-          departmentName: [
-            {
-              name: '学生事务中心',
-              id: 1
-            },
-            {
-              name: '外联部',
-              id: 3
-            },
-            {
-              name: '新媒体部',
-              id: 2
-            }
-          ],
-          status: 4
-        }
-      ]
+      tableData: []
     }
   },
   watch: {
@@ -295,13 +220,30 @@ export default {
       }
     },
     handleSeclect(val) {
-      this.multipleSelection = val
+      this.departmentName = []
+      this.departmentId = []
       console.log(val)
+      this.departmentId = val[0].departmentId
+      for (let i = 1; i < val.length; ++i) {
+        if (val[i].departmentId != this.departmentId) {
+          alert('请选择相同面试部门进行通知操作！')
+          return 0
+        }
+      }
+      this.departmentName = val[0].departmentName
+      this.$bus.$emit('arrangeSelectionDepartmentName', this.departmentName)
+      this.$bus.$emit('arrangeSelectiondepartmentId', this.departmentId)
       let selectionStudentId = []
-      this.multipleSelection.forEach((element) => {
+      let selectionStudentName = []
+      val.forEach((element) => {
         selectionStudentId.push(element.studentId)
       })
+      val.forEach((element) => {
+        selectionStudentName.push(element.studentName)
+      })
       console.log(selectionStudentId)
+      this.$bus.$emit('arrangeSelectionStudentId1', selectionStudentId)
+      this.$bus.$emit('arrangeSelectionStudentName', selectionStudentName)
     },
     filterChange(filters) {
       let filterDepartment = []
@@ -414,19 +356,6 @@ export default {
       }
       this.$bus.$emit('arrangeOrder', this.order)
     }
-    // getCurrentRow(row) {
-    //   console.log(row)
-    //   this.$bus.$emit('arrangeSelectionName1', row.studentName)
-    //   this.$bus.$emit('arrangeSelectionStudentId1', row.studentId)
-    //   this.$bus.$emit(
-    //     'arrangeSelectionDepartmentName',
-    //     row.department[this.newDep].departmentName
-    //   )
-    //   this.$bus.$emit(
-    //     'arrangeSelectiondepartmentId',
-    //     row.department[this.newDep].id
-    //   )
-    // }
   },
   beforeCreate() {
     let organizationId = sessionStorage['loginOrganizationId']
@@ -456,28 +385,29 @@ export default {
       })
   },
   created() {
-    // //一面数据发送请求，初始页面渲染
-    // let url = 'api/interview-arrangement/info/like'
-    // let params = {
-    //   admissionId: sessionStorage['homeAdmissionId'],
-    //   round: this.round
-    // }
-    // this.$http
-    //   .get(url, params)
-    //   .then((response) => {
-    //     console.log(response)
-    //     if (response.data.code == '00000') {
-    //       this.tableData = []
-    //       this.total = response.data.data.total
-    //       this.tableData = response.data.data.infoBackParamList
-    //     } else {
-    //       this.$message.error(response.data.message)
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     console.log(error)
-    //     this.$message.error('获取表格信息失败！')
-    //   })
+    //一面数据发送请求，初始页面渲染
+    let url = 'api/interview-arrangement/info/like'
+    let params = {
+      admissionId: sessionStorage['homeAdmissionId'],
+      round: this.round,
+      departmentId: 0
+    }
+    this.$http
+      .get(url, params)
+      .then((response) => {
+        console.log(response)
+        if (response.data.code == '00000') {
+          this.tableData = []
+          this.total = response.data.data.total
+          this.tableData = response.data.data.infoBackParamList
+        } else {
+          this.$message.error(response.data.message)
+        }
+      })
+      .catch((error) => {
+        console.log(error)
+        this.$message.error('获取表格信息失败！')
+      })
   }
 }
 </script>
