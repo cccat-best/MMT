@@ -14,18 +14,18 @@
             placement="bottom"
             :disabled="isEdit"
           >
-          <div>
+            <div>
               <el-input-number
-            v-model="maxDepartment"
-            controls-position="right"
-            :min="1"
-            :max="3"
-            :disabled="!isEdit"
-            size="mini"
-            @change="changeMaxDepartment"
-            style="width: 100px"
-          ></el-input-number>
-          </div>
+                v-model="maxDepartment"
+                controls-position="right"
+                :min="1"
+                :max="3"
+                :disabled="!isEdit"
+                size="mini"
+                @change="changeMaxDepartment"
+                style="width: 100px"
+              ></el-input-number>
+            </div>
           </el-tooltip>
         </div>
         <!-- 是否允许调剂 -->
