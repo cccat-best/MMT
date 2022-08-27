@@ -784,6 +784,7 @@ export default {
       font-size: 28px;
       // background-color: rgb(60, 170, 113);
       text-align: left;
+      margin-bottom: 20px;
     }
     .form {
       // background-color: rgb(78, 200, 186);
