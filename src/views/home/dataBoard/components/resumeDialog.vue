@@ -259,13 +259,13 @@
             </el-table-column>
           </el-table>
           <!-- 打分表格 -->
-          <div v-for="(item, index) in roundnum" :key="index">
+          <div v-for="(item, index) in oldevaluateTable" :key="index">
             <!-- 一面二面 -->
-            <div class="interview" @click="getDetail(item)">
-              {{ item }}面 <i class="el-icon-thumb"></i>
+            <div class="interview" @click="getDetail(item.rounds)">
+              {{ item.rounds }}面 <i class="el-icon-thumb"></i>
             </div>
             <!-- 内部细节 -->
-            <div class="detail" v-if="isShowdetail == item">
+            <div class="detail" v-if="isShowdetail == item.rounds">
               <div class="score">
                 <table border width="82%" cellspacing="0">
                   <!-- 首行 -->
@@ -303,7 +303,7 @@
                         v-for="(item, index) in item.evaluation"
                         :key="index"
                         ><strong>{{ item.name }}</strong
-                        >:{{ item.comment }}<br /><br
+                        >:{{ item.comment }}<br
                       /></span>
                     </td>
                   </tr>
@@ -405,10 +405,17 @@ export default {
           address: '暂无数据'
         }
       ],
+      oldevaluateTable: [
+        {
+          rounds: '暂无数据',
+          time: '暂无数据',
+          address: '暂无数据'
+        }
+      ],
       //面试评价个数
       roundnum: 0,
       //面试评价每一项的显示与隐藏
-      isShowdetail: false,
+      isShowdetail: 0,
       // 面试官姓名评分和评价
       evaluation: [],
       //问题及评分评价
@@ -417,6 +424,7 @@ export default {
   },
   methods: {
     Mymounted() {
+      this.isShowdetail = 0
       this.getReply()
       this.getSign()
       this.getArrange()
@@ -763,6 +771,8 @@ export default {
           // ]
           //真实数据
           let data = res.data.data
+          // console.log(data,'111')
+          this.oldevaluateTable = JSON.parse(JSON.stringify(data))
           data.forEach((item) => {
             item.time = this.time(item.time)
             if (item.rounds == 1) {
@@ -955,6 +965,11 @@ export default {
           //       answer: '吃饭吃饭吃饭睡觉睡觉睡觉'
           //     },
           //     {
+          //       multipleChoice: 0,
+          //       question: '你的暑假安排',
+          //       answer: '吃饭吃饭吃饭睡觉睡觉睡觉'
+          //     },
+          //     {
           //       multipleChoice: 1,
           //       choices: ['重庆火锅', '四川火锅', '北京火锅'],
           //       question: '喜欢重庆火锅还是四川火锅',
@@ -999,6 +1014,19 @@ export default {
           //       multipleChoice: 0,
           //       question: '综合问题1',
           //       answer: '哈哈哈哈哈哈哈哈哈'
+          //     },
+          //     {
+          //       department: '综合问题',
+          //       multipleChoice: 0,
+          //       question: '综合问题1',
+          //       answer: '哈哈哈哈哈哈哈哈哈'
+          //     },
+          //     {
+          //       department: '综合问题',
+          //       multipleChoice: 1,
+          //       choices: ['选项A8574', '选项B785'],
+          //       question: '综合问题2',
+          //       answer: 'A'
           //     },
           //     {
           //       department: '综合问题',
@@ -1150,7 +1178,8 @@ export default {
     .basequestion {
       .question1 {
         // background-color: rgb(189, 112, 112);
-        margin-top: 20px;
+        // margin-top: 0px;
+        margin-bottom: 20px;
         .problem {
           font-size: 18px;
           text-align: left;
