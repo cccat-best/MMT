@@ -20,7 +20,7 @@
         ></myhead>
       </template>
       <template slot="asideTitle">
-        <div class="menuTitle">MMT</div>
+        <div class="menuTitle">后台管理</div>
       </template>
       <template slot="main">
         <router-view></router-view>
@@ -166,7 +166,7 @@ export default {
 }
 .menuTitle {
   color: white;
-  font-size: 28px;
+  font-size: 23px;
   height: 60px;
   line-height: 60px;
   text-align: center;
@@ -197,5 +197,8 @@ export default {
 
 :deep(.el-menu-item .iconfont) {
   width: 0px;
+}
+:deep(.el-menu) {
+  text-align: left;
 }
 </style>

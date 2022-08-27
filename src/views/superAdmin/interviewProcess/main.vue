@@ -63,7 +63,9 @@
             @click="changeRound"
             >确定</el-button
           >
-          <el-button slot="reference">选择面试总数</el-button>
+          <el-button slot="reference" type="primary" plain
+            >设置面试总数</el-button
+          >
         </el-popover>
       </div>
 
@@ -193,7 +195,7 @@ export default {
     }
     .select {
       position: absolute;
-      top: 45px;
+      top: 38px;
       left: 88%;
       background-color: white;
       height: 60px;

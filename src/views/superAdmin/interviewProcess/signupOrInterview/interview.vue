@@ -13,7 +13,7 @@
         width="1080px"
         top="50px"
       >
-        <div class="right1">
+        <div class="right">
           <!-- 包个div使页面部分滚动，浏览器不会出现滚动条 -->
           <div class="el-dialog-div">
             <!-- 问题设置部分 -->
@@ -52,9 +52,10 @@
                   <template slot-scope="scope">
                     <el-input
                       size="mini"
-                      type="textarea"
+                      type="number"
                       :rows="1"
                       resize="none"
+                      class="score"
                       v-model="scope.row.score"
                     ></el-input>
                   </template>
@@ -175,7 +176,22 @@
         </div>
         <div slot="footer" class="dialog-footer">
           <el-button @click="dialogFormVisible = false">取 消</el-button>
-          <el-button type="primary" @click="resetData">确 定</el-button>
+
+          <el-popover placement="top" width="160" v-model="visible">
+            <p>确定更改吗？？？</p>
+            <div style="text-align: right; margin: 0">
+              <el-button size="mini" type="text" @click="visible = false"
+                >取消</el-button
+              >
+              <el-button type="primary" size="mini" @click="resetData"
+                >确定</el-button
+              >
+            </div>
+            <el-button slot="reference" type="primary" style="margin-left: 10px"
+              >确定</el-button
+            >
+          </el-popover>
+          <!-- <el-button type="primary" @click="resetData">确 定</el-button> -->
         </div>
       </el-dialog>
     </div>
@@ -183,19 +199,13 @@
     <!-- 左边导航条 -->
     <div class="left1">
       <div class="nav1">
-        <a href="#one" :class="['text', isSelect1() ? 'blue' : '']"
-          >面试问题设置</a
-        >
+        <span :class="['text', isSelect1() ? 'blue' : '']">面试问题设置</span>
       </div>
       <div class="nav1">
-        <a href="#two" :class="['text', isSelect2() ? 'blue' : '']"
-          >面试文案编辑</a
-        >
+        <span :class="['text', isSelect2() ? 'blue' : '']">面试文案编辑</span>
       </div>
       <div class="nav1">
-        <a href="#three" :class="['text', isSelect3() ? 'blue' : '']"
-          >结果通知编辑</a
-        >
+        <span :class="['text', isSelect3() ? 'blue' : '']">结果通知编辑</span>
       </div>
     </div>
 
@@ -230,7 +240,9 @@
             <div class="success">{{ success }}</div>
           </el-tab-pane>
           <el-tab-pane label="失败">
-            <div class="fail">{{ fail }}</div>
+            <div class="fail">
+              <span>{{ fail }}</span>
+            </div>
           </el-tab-pane>
         </el-tabs>
       </div>
@@ -244,6 +256,8 @@ export default {
     return {
       organizationId: sessionStorage.getItem('loginOrganizationId'),
       //organizationId:2,
+      //弹框的显示与隐藏
+      visible: false,
       // 判断输入问题是否为空
       questionEmpty: false,
       //判断分值是否为空
@@ -289,7 +303,9 @@ export default {
         d: ''
       },
       // 鼠标滚动效果
-      scrollHeigh: 0
+      scrollHeigh: 0,
+      height1: 0,
+      height2: 0
     }
   },
   //接收到的面试轮次
@@ -312,21 +328,29 @@ export default {
   methods: {
     // 随页面滚动触发事件，滚动高度
     handleScroll(e) {
+      let a = this.tableData.length
+      let b = a * 48
+      //计算滚动高度
+      this.height1 = 155 + b
+      this.height2 = this.height1 + 320
       this.scrollHeigh = e.srcElement.scrollTop
     },
     //导航动态变化
     isSelect1() {
-      if (this.scrollHeigh < 350 && this.scrollHeigh >= 0) {
+      if (
+        (this.scrollHeigh < this.height1 && this.scrollHeigh >= 0) ||
+        this.scrollHeigh == 0
+      ) {
         return true
       }
     },
     isSelect2() {
-      if (this.scrollHeigh > 350 && this.scrollHeigh < 600) {
+      if (this.scrollHeigh > this.height1 && this.scrollHeigh < this.height2) {
         return true
       }
     },
     isSelect3() {
-      if (this.scrollHeigh > 600) {
+      if (this.scrollHeigh > this.height2) {
         return true
       }
     },
@@ -730,6 +754,7 @@ export default {
         this.resetInterviewInform()
         this.resetSuccessResult()
         this.resetFaultResult()
+        this.visible = false
         this.dialogFormVisible = false
         this.$message({
           showClose: true,
@@ -772,6 +797,139 @@ export default {
     font-size: 19px;
     top: 2px;
   }
+  .right {
+    position: relative;
+    top: 10px;
+    left: 162px;
+    min-height: 420px;
+    // min-width: 818px;
+    // min-width: 200px;
+    width: 86%;
+    height: 88%;
+    background-color: white;
+    /* 滚动条 */
+    -webkit-overflow-scrolling: touch;
+    overflow-y: auto;
+    white-space: nowrap;
+
+    .problem11 {
+      .tit1 {
+        // background-color: rgb(63, 40, 40);
+        margin-top: 10px;
+        margin-bottom: 30px;
+        height: 50px;
+        line-height: 50px;
+        font-size: 28px;
+        width: 180px;
+        font-weight: 700;
+        margin-left: 32px;
+        color: rgb(82, 82, 82);
+      }
+      .score {
+        // background-color: rgb(184, 121, 121);
+        width: 48px;
+      }
+      // /deep/.el-input {
+      //   font-size: 18px;
+      //   width: 100px;
+      // }
+      .el-table {
+        margin-left: 3%;
+      }
+      .button {
+        margin-top: 16px;
+        // margin-left: 735px;
+        margin-left: 40%;
+        width: 223px;
+      }
+    }
+    .inform1 {
+      margin-top: 30px;
+      .tit2 {
+        height: 50px;
+        line-height: 50px;
+        font-size: 28px;
+        width: 180px;
+        font-weight: 700;
+        margin-left: 32px;
+        color: rgb(82, 82, 82);
+      }
+      .details {
+        width: 600px;
+        height: 240px;
+        background-color: white;
+        margin-left: 3%;
+        margin-top: 30px;
+        // border-radius: 13px;
+        box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        .top {
+          font-weight: 700;
+          font-size: 26px;
+          width: 110px;
+        }
+        .concrete {
+          font-size: 22px;
+          margin-top: 34px;
+          height: 150px;
+          line-height: 45px;
+          text-align: left;
+          width: 476px;
+          margin-left: 62px;
+          white-space: normal;
+          word-break: break-all;
+          overflow: auto;
+          /deep/.el-textarea__inner {
+            padding: auto;
+            width: 450px;
+            // padding: 5px 27px 5px 10px;
+          }
+        }
+      }
+    }
+    .inform2 {
+      margin-top: 30px;
+      margin-bottom: 40px;
+      .tit3 {
+        height: 50px;
+        line-height: 50px;
+        font-size: 28px;
+        width: 180px;
+        font-weight: 700;
+        margin-left: 32px;
+        color: rgb(82, 82, 82);
+      }
+      .result {
+        height: 280px;
+        width: 640px;
+        margin-left: 3%;
+        margin-top: 30px;
+        // border-radius: 13px;
+        box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+        .success,
+        .fail {
+          font-size: 22px;
+          margin-top: 28px;
+          height: 150px;
+          line-height: 45px;
+          text-align: left;
+          width: 450px;
+          margin-left: 90px;
+          white-space: normal;
+          word-break: break-all;
+          overflow: auto;
+        }
+      }
+    }
+    .dialog-footer {
+      /deep/.el-button {
+        margin-left: 20px;
+      }
+    }
+    /deep/.el-table .cell {
+      text-align: center;
+    }
+  }
 }
 .left1 {
   position: absolute;
@@ -795,15 +953,15 @@ export default {
     padding-left: 10px;
     height: 30%;
     background-color: white;
-    cursor: pointer;
+    // cursor: pointer;
     text-align: left;
     line-height: 58px;
     border-left: 2px solid rgb(213, 211, 211);
   }
-  .text:hover {
-    color: #409eff;
-    // border-left: 2px solid #409eff;
-  }
+  // .text:hover {
+  // color: #409eff;
+  // border-left: 2px solid #409eff;
+  // }
 }
 .right1 {
   position: relative;
@@ -833,6 +991,14 @@ export default {
       margin-left: 32px;
       color: rgb(82, 82, 82);
     }
+    .score {
+      // background-color: rgb(184, 121, 121);
+      width: 48px;
+    }
+    // /deep/.el-input {
+    //   font-size: 18px;
+    //   width: 100px;
+    // }
     .el-table {
       margin-left: 3%;
     }
@@ -867,18 +1033,22 @@ export default {
         font-weight: 700;
         font-size: 26px;
         width: 110px;
+        margin-bottom: 8px;
       }
       .concrete {
         font-size: 22px;
-        margin-top: 10px;
-        height: 190px;
-        line-height: 45px;
+        // margin-top: 10px;
+        height: 188px;
+        line-height: 37px;
         text-align: left;
         width: 476px;
         margin-left: 62px;
         white-space: normal;
         word-break: break-all;
-        overflow: hidden;
+        overflow: auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         /deep/.el-textarea__inner {
           padding: auto;
           width: 450px;
@@ -887,39 +1057,50 @@ export default {
       }
     }
   }
-}
-.inform2 {
-  margin-top: 30px;
-  margin-bottom: 40px;
-  .tit3 {
-    height: 50px;
-    line-height: 50px;
-    font-size: 28px;
-    width: 180px;
-    font-weight: 700;
-    margin-left: 32px;
-    color: rgb(82, 82, 82);
-  }
-  .result {
-    height: 280px;
-    width: 640px;
-    margin-left: 3%;
+  .inform2 {
     margin-top: 30px;
-    // border-radius: 13px;
-    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
-    .success,
-    .fail {
-      font-size: 22px;
-      margin-top: 10px;
-      height: 170px;
-      line-height: 45px;
-      text-align: left;
-      width: 450px;
-      margin-left: 90px;
-      white-space: normal;
-      word-break: break-all;
-      overflow: hidden;
+    margin-bottom: 40px;
+    .tit3 {
+      height: 50px;
+      line-height: 50px;
+      font-size: 28px;
+      width: 180px;
+      font-weight: 700;
+      margin-left: 32px;
+      color: rgb(82, 82, 82);
     }
+    .result {
+      height: 280px;
+      width: 640px;
+      margin-left: 3%;
+      margin-top: 30px;
+      // border-radius: 13px;
+      box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+      .success,
+      .fail {
+        font-size: 22px;
+        // margin-top: 10px;
+        height: 204px;
+        line-height: 45px;
+        text-align: left;
+        width: 450px;
+        margin-left: 90px;
+        white-space: normal;
+        word-break: break-all;
+        overflow: auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+  }
+  .dialog-footer {
+    /deep/.el-button {
+      margin-left: 20px;
+    }
+  }
+  /deep/.el-table .cell {
+    text-align: center;
   }
 }
 /deep/.el-tabs__item {
@@ -947,5 +1128,9 @@ export default {
 /deep/.el-input {
   font-size: 18px;
   width: 255px;
+}
+/deep/.el-input--mini .el-input__inner {
+  font-size: 15px;
+  padding: 0 3px;
 }
 </style>

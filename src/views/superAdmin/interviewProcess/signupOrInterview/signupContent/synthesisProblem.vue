@@ -1,6 +1,6 @@
 <template>
   <div class="synth-content">
-    <div class="synth-title">综合问题</div>
+    <div class="synth-title" ref="synthPage">综合问题</div>
     <div class="synth-main-content">
       <!-- 选择的问题展示 -->
       <div class="show-qus">
@@ -60,7 +60,7 @@
         </div>
       </div>
       <!-- 问题选择面板 -->
-      <div class="add-qus">
+      <div class="add-qus" v-show="isEdit">
         <el-popover
           placement="top"
           width="300"
@@ -109,7 +109,6 @@
               show-word-limit
               style="margin: 10px 0"
               resize="none"
-              :autofocus="true"
             >
             </el-input>
           </div>
@@ -167,7 +166,7 @@
       </div>
 
       <!-- 取消 提交 -->
-      <div class="bottom-button">
+      <div class="bottom-button" v-show="isEdit">
         <el-button
           type="info"
           plain
@@ -399,7 +398,6 @@ export default {
     },
     //如果点击取消回到报名表第一页并取消编辑模式
     cancel() {
-      this.$parent.cancel()
       this.escEdit()
     },
     //是否发送请求给后端
@@ -418,6 +416,12 @@ export default {
           this.comprehensiveQuestionsList.forEach((p) => {
             p.questionOrder = i
             i++
+          })
+          // 基本问题自定义处理
+          let k = 1
+          this.questionsList.forEach((p) => {
+            p.questionOrder = k
+            k++
           })
           //解决部门问题的顺序
           //得到所有部门id
@@ -452,7 +456,7 @@ export default {
             allocated: this.allocated,
             comprehensiveQuestionsList: this.comprehensiveQuestionsList
           }
-          //console.log(qustionList)
+          // console.log(qustionList)
           //调用函数发送请求
           this.sendTo(qustionList)
         })
@@ -471,29 +475,47 @@ export default {
             return this.$message.error('提交失败' + res.data.message)
           //成功提交退出编辑模式
           this.escEdit()
-          this.$parent.exitEdit()
           return this.$message.success('提交成功')
         })
         .catch((err) => err)
+    },
+    synthPage() {
+      // console.log(
+      //   '综合问题',
+      //   this.$refs.synthPage.getBoundingClientRect().bottom
+      // )
+      if (this.$refs.synthPage.getBoundingClientRect().bottom <= 664) {
+        this.$parent.synthShow()
+      }
     }
+  },
+  mounted() {
+    window.addEventListener('scroll', this.synthPage, true)
+  },
+  beforeDestroy() {
+    window.removeEventListener('scroll', this.synthPage, true)
   }
 }
 </script>
 
 <style lang="less" scoped>
 .synth-content {
+  margin-top: 10px;
   display: flex;
   height: auto;
   flex-direction: column;
   .synth-title {
     display: flex;
-    font-size: 30px;
+    font-size: 26px;
     color: #989898;
     margin: 10px 0;
+    // margin-left: 29px;
   }
   .synth-main-content {
+    margin-left: 65px;
     .show-qus {
       .freeView-content {
+        margin-bottom: 15px;
         // margin: 20px 0;
         // display: flex;
         // flex-direction: column;
@@ -557,6 +579,7 @@ export default {
     .bottom-button {
       display: flex;
       margin-top: 25px;
+      margin-bottom: 25px;
       // justify-content: space-around;
       .bottom-button-item {
         width: 100px;
@@ -565,7 +588,7 @@ export default {
         line-height: 3px;
       }
       .bottom-button-item-left {
-        margin-left: 215px;
+        margin-left: 220px;
       }
       .bottom-button-item-right {
         margin-left: 93px;
