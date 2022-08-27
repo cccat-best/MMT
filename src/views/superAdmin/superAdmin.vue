@@ -165,7 +165,7 @@ export default {
         type: 'warning'
       })
         .then(() => {
-          this.$router.push('/home')
+          this.$router.push('/home/interviewAfter')
         })
         .catch(() => {
           this.$message({

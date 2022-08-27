@@ -63,7 +63,9 @@
             @click="changeRound"
             >确定</el-button
           >
-          <el-button slot="reference">选择面试总数</el-button>
+          <el-button slot="reference" type="primary" plain
+            >设置面试总数</el-button
+          >
         </el-popover>
       </div>
 

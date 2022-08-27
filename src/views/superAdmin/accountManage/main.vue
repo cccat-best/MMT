@@ -8,7 +8,10 @@
     <div class="seach-header">
       <div>
         <button
-          :class="[showactive1 == 0 ? 'batchButton' : 'activeBatchButton']"
+          :class="[
+            showactive1 == 0 ? 'batchButton' : 'activeBatchButton',
+            this.multipleSelection.length == 0 ? 'disableUse' : ''
+          ]"
           @click="showDialogVisible"
           :disabled="this.multipleSelection.length == 0"
         >
@@ -56,13 +59,24 @@
                 </g>
               </svg>
             </div>
-            <div style="font-size: 17px; margin-left: 5px">批量修改</div>
+            <el-tooltip
+              class="item"
+              effect="dark"
+              content="需要选中才能操作"
+              placement="top"
+              :disabled="this.multipleSelection.length != 0"
+            >
+              <div style="font-size: 17px; margin-left: 5px">批量修改</div>
+            </el-tooltip>
           </div>
         </button>
       </div>
       <div>
         <button
-          :class="[showactive2 == 0 ? 'batchButton' : 'activeBatchButton']"
+          :class="[
+            showactive2 == 0 ? 'batchButton' : 'activeBatchButton',
+            this.multipleSelection.length == 0 ? 'disableUse' : ''
+          ]"
           @click="deleteDialogVisible"
           :disabled="this.multipleSelection.length == 0"
         >
@@ -93,7 +107,15 @@
                 </g>
               </svg>
             </div>
-            <div style="font-size: 17px; margin-left: 5px">批量删除</div>
+            <el-tooltip
+              class="item"
+              effect="dark"
+              content="需要选中才能操作"
+              placement="top"
+              :disabled="this.multipleSelection.length != 0"
+            >
+              <div style="font-size: 17px; margin-left: 5px">批量删除</div>
+            </el-tooltip>
           </div>
         </button>
       </div>
@@ -381,6 +403,8 @@ export default {
   methods: {
     //图标变色,第一个
     changeColor() {
+      // 判断是否禁用
+      if (this.multipleSelection.length == 0) return
       if (this.batchColorChange1 == '#666666')
         this.batchColorChange1 = 'rgba(47.94,128.01,255,1)'
       else this.batchColorChange1 = '#666666'
@@ -389,6 +413,8 @@ export default {
     },
     // 第二个
     changeColor2() {
+      // 判断是否禁用
+      if (this.multipleSelection.length == 0) return
       if (this.batchColorChange2 == '#666666')
         this.batchColorChange2 = 'rgba(47.94,128.01,255,1)'
       else this.batchColorChange2 = '#666666'
@@ -718,13 +744,21 @@ export default {
   // height: 34.4px;
   margin-left: 20px;
 }
-//
+//禁用
+.disableUse {
+  cursor: not-allowed;
+}
+//解除禁用
+// .ableUse {
+// }
+//未mouseenter
 .batchButton {
   margin: 0 10px;
   font-size: medium;
   color: #666666;
   border: none;
 }
+//mouseenter
 .activeBatchButton {
   margin: 0 10px;
   font-size: medium;

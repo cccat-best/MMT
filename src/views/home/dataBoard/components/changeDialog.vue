@@ -253,6 +253,7 @@ export default {
   name: 'changeDialog',
   data() {
     return {
+      organizationId: sessionStorage.getItem('loginOrganizationId'),
       // 控制修改界面弹窗
       changeDialogVisible: false,
       // 学号,由主页传过来
@@ -301,9 +302,9 @@ export default {
             trigger: 'blur'
           }
         ],
-        // academyId: [{ required: true, message: '请选择学院', trigger: 'blur' }],
-        // majorId: [{ required: true, message: '请选择专业', trigger: 'blur' }],
-        // classId: [{ required: true, message: '请选择班级', trigger: 'blur' }],
+        academyId: [{ required: true, message: '请选择学院', trigger: 'blur' }],
+        majorId: [{ required: true, message: '请选择专业', trigger: 'blur' }],
+        classId: [{ required: true, message: '请选择班级', trigger: 'blur' }],
         qq: [
           { required: true, message: '请输入QQ', trigger: 'blur' },
           {
@@ -311,11 +312,11 @@ export default {
             message: 'QQ格式不对',
             trigger: 'blur'
           }
-        ]
-        // gender: [{ required: true, message: '请输入性别', trigger: 'blur' }],
-        // email: [{ required: true, message: '请输入邮箱', trigger: 'blur' }],
-        // height: [{ required: true, message: '请输入身高', trigger: 'blur' }],
-        // weight: [{ required: true, message: '请输入体重', trigger: 'blur' }]
+        ],
+        gender: [{ required: true, message: '请输入性别', trigger: 'blur' }],
+        email: [{ required: true, message: '请输入邮箱', trigger: 'blur' }],
+        height: [{ required: true, message: '请输入身高', trigger: 'blur' }],
+        weight: [{ required: true, message: '请输入体重', trigger: 'blur' }]
       },
       sexs: [
         {
@@ -482,6 +483,11 @@ export default {
           //       answer: '吃饭吃饭吃饭睡觉睡觉睡觉'
           //     },
           //     {
+          //       multipleChoice: 0,
+          //       question: '你的暑假安排',
+          //       answer: '吃饭吃饭吃饭睡觉睡觉睡觉'
+          //     },
+          //     {
           //       multipleChoice: 1,
           //       choices: ['重庆火锅', '四川火锅', '北京火锅'],
           //       question: '喜欢重庆火锅还是四川火锅',
@@ -526,6 +532,19 @@ export default {
           //       multipleChoice: 0,
           //       question: '综合问题1',
           //       answer: '哈哈哈哈哈哈哈哈哈'
+          //     },
+          //     {
+          //       department: '综合问题',
+          //       multipleChoice: 0,
+          //       question: '综合问题1',
+          //       answer: '哈哈哈哈哈哈哈哈哈'
+          //     },
+          //     {
+          //       department: '综合问题',
+          //       multipleChoice: 1,
+          //       choices: ['选项A8574', '选项B785'],
+          //       question: '综合问题2',
+          //       answer: 'A'
           //     },
           //     {
           //       department: '综合问题',
@@ -648,6 +667,7 @@ export default {
     //提交修改学号数据(ok)
     submitNumData() {
       let sendData = {
+        oranizationId: Number(this.organizationId),
         studentId: Number(this.studentId),
         newStudentId: Number(this.ruleForm.studentId)
       }
@@ -656,7 +676,17 @@ export default {
         .put(url, sendData)
         .then((res) => {
           console.log(res, '修改学号')
-          this.submitData()
+          if (res.data.code == 'A0400') {
+            this.$message({
+              showClose: true,
+              message: res.data.message,
+              type: 'error',
+              center: true,
+              duration: 2000
+            })
+          } else {
+            this.submitData()
+          }
         })
         .catch(() => {
           this.$message({
@@ -668,9 +698,10 @@ export default {
           })
         })
     },
-    //修改个人信息(是否必传问题)
+    //修改个人信息(ok)
     submitData() {
       let sendData = {
+        oranizationId: this.organizationId,
         studentId: this.ruleForm.studentId,
         studentName: this.ruleForm.studentName,
         phone: this.ruleForm.phone,
@@ -688,14 +719,25 @@ export default {
         .put(url, sendData)
         .then((res) => {
           console.log(res, '修改个人信息')
-          this.changeDialogVisible = false
-          this.$message({
-            showClose: true,
-            message: '修改成功',
-            type: 'success',
-            center: true,
-            duration: 2000
-          })
+          if (res.data.code == 'A0400') {
+            this.$message({
+              showClose: true,
+              message: res.data.message,
+              type: 'error',
+              center: true,
+              duration: 2000
+            })
+          } else {
+            this.changeDialogVisible = false
+            this.$message({
+              showClose: true,
+              message: '修改成功',
+              type: 'success',
+              center: true,
+              duration: 2000
+            })
+            this.$parent.reFreshWithoutSee()
+          }
         })
         .catch(() => {
           this.$message({
@@ -751,7 +793,7 @@ export default {
   .basequestion {
     .question1 {
       // background-color: rgb(189, 112, 112);
-      margin-top: 20px;
+      margin-bottom: 20px;
       .problem {
         font-size: 18px;
         text-align: left;

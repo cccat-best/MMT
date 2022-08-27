@@ -45,6 +45,8 @@
           placeholder="联系方式"
           v-model="editCommunityData.contactInfo"
           resize="none"
+          maxlength="100"
+          show-word-limit
         >
         </el-input>
       </div>
@@ -57,6 +59,8 @@
           placeholder="纳新宣言"
           v-model="editCommunityData.slogan"
           resize="none"
+          maxlength="100"
+          show-word-limit
         >
         </el-input>
       </div>
@@ -69,6 +73,8 @@
           placeholder="社团介绍"
           v-model="editCommunityData.introduction"
           resize="none"
+          maxlength="100"
+          show-word-limit
         >
         </el-input>
       </div>
@@ -81,6 +87,8 @@
           placeholder="社团特色"
           v-model="editCommunityData.feature"
           resize="none"
+          maxlength="100"
+          show-word-limit
         >
         </el-input>
       </div>
@@ -93,6 +101,8 @@
           placeholder="社团日常"
           v-model="editCommunityData.daily"
           resize="none"
+          maxlength="100"
+          show-word-limit
         >
         </el-input>
       </div>
@@ -104,7 +114,8 @@
           class="textIpt"
           placeholder="更多"
           v-model="editCommunityData.more"
-          maxlength="30"
+          maxlength="100"
+          show-word-limit
           resize="none"
         >
         </el-input>
@@ -178,13 +189,23 @@ export default {
     }
   },
   methods: {
-    postData() {
+    async postData() {
       //取得part组件中的department数据
       this.$bus.$emit('getParts')
       //接收并合并department数据
-
-      this.$http.post('/api/organization/information', this.editCommunityData)
+      let { data: res } = await this.$http.post(
+        '/api/organization/information',
+        this.editCommunityData
+      )
+      if (res.code != '00000') {
+        // if (JSON.stringify(res.message).split('').splice(-4, -1) == '100') {
+        //   this.$message.error('不能超过一百个字')
+        // }
+        console.log('出错了', res.message)
+        this.$message.error(res.message)
+      }
     },
+
     successful(val) {
       this.$message({
         message: val,

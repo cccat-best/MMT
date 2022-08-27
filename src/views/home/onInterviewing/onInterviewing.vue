@@ -17,10 +17,12 @@
         </div>
       </div>
     </div>
+    <!-- <hr /> -->
+    <div style="height: 1px; background-color: #b4a3ae"></div>
     <!-- 改变面试地点 -->
     <div class="two">
-      <span class="address">请选择面试地点:</span>
-      <el-select v-model="position" placeholder="选择面试地点" class="select">
+      <span class="address">面试地点:</span>
+      <el-select v-model="position" placeholder="面试地点" class="select">
         <el-option
           v-for="(item, index) in options"
           :key="index"
@@ -31,7 +33,7 @@
       </el-select>
     </div>
     <!-- 文字：待面试人员名单 -->
-    <div class="three">当前时段待面试人员名单</div>
+    <!-- <div class="three">当前时段待面试人员名单</div> -->
     <!-- 搜索框 二维码-->
     <div class="four">
       <div class="search">
@@ -42,10 +44,10 @@
         >
         </el-input>
       </div>
-      <el-button class="yes" type="primary" plain @click="getSearch"
+      <!-- <el-button class="yes" type="primary" plain @click="getSearch"
         >搜索</el-button
-      >
-      <el-button type="primary" @click="displayCode"
+      > -->
+      <el-button type="primary" @click="displayCode" class="qrcode"
         >点击生成签到二维码</el-button
       >
       <!-- 点击弹出的页面 -->
@@ -56,12 +58,12 @@
             :src="code"
           />
         </div>
-        <div class="tips">请于面试开始前三十分钟之内扫码</div>
-        <span slot="footer" class="dialog-footer">
+        <div class="tips">请于面试开始前<strong>三十分钟</strong>之内扫码</div>
+        <!-- <span slot="footer" class="dialog-footer">
           <el-button type="primary" @click="dialogVisible1 = false"
             >关 闭</el-button
           >
-        </span>
+        </span> -->
       </el-dialog>
     </div>
     <!-- 表格数据 -->
@@ -423,9 +425,11 @@ export default {
   data() {
     return {
       admissionId: sessionStorage.getItem('homeAdmissionId'),
+      organizationId: sessionStorage.getItem('loginOrganizationId'),
       //待拿取
-      departmentId: 1,
+      departmentId: 0,
       round: 1,
+      qrround: 1,
       //进度条定时器
       timer: '',
       //定时获取表格数据
@@ -493,6 +497,12 @@ export default {
     position() {
       this.currentPage = 1
       this.getTableData()
+    },
+    search() {
+      this.currentPage = 1
+      if (this.position != '') {
+        this.getTableData()
+      }
     }
   },
   beforeDestroy() {
@@ -500,32 +510,66 @@ export default {
     clearInterval(this.timer2)
   },
   methods: {
-    //获取departmentid(请求已解开，没有数据，目前为假数据)
+    //获取departmentid(ok)
     getDepartmentId() {
       let studentId = this.stdId
-      console.log(studentId, '学号')
-      let url = `api/real-time-interview/info/department-id?studentId=${studentId}`
+      let organizationId = this.organizationId
+      // console.log(studentId, '学号')
+      let url = `api/real-time-interview/info/department-id?studentId=${studentId}&organizationId=${organizationId}`
       let get = this.$http.get(url)
       get
         .then((res) => {
-          console.log(res, '获取部门id')
-          let data = 1
-          //真实数据
-          // let data=res.data.data
-          this.departmentId = data
-          this.getEvaluation()
+          console.log(res, '获取departmentid')
+          if (res.data.code == 'A0400') {
+            this.$message({
+              showClose: true,
+              message: res.data.message,
+              type: 'error',
+              center: true,
+              duration: 2000
+            })
+          } else {
+            this.dialogVisible3 = true
+            // let data = 1
+            //真实数据
+            let data = res.data.data
+            this.departmentId = data
+            this.getRound()
+          }
         })
         .catch(() => {
           this.$message({
             showClose: true,
-            message: '获取失败',
+            message: '获取departmentid失败',
             type: 'error',
             center: true,
             duration: 2000
           })
         })
     },
-    //获取地点（请求已解开，没有数据，目前为假数据）
+    //获取面试轮次(ok)
+    getRound() {
+      let admissionId = this.admissionId
+      let departmentId = this.departmentId
+      let url = `api/interview-data/time/getDepartmentRound?admissionId=${admissionId}&departmentId=${departmentId}`
+      let get = this.$http.get(url)
+      get
+        .then((res) => {
+          console.log(res, '获取面试轮次')
+          this.round = res.data.data.round
+          this.getEvaluation()
+        })
+        .catch(() => {
+          this.$message({
+            showClose: true,
+            message: '获取面试轮次失败',
+            type: 'error',
+            center: true,
+            duration: 2000
+          })
+        })
+    },
+    //获取地点（ok）
     getLocation() {
       let sendData = {
         admissionId: this.admissionId
@@ -536,22 +580,15 @@ export default {
         .then((res) => {
           console.log(res, '获取地点信息')
           // 模拟数据
-          let data = [
-            {
-              address: '111'
-            },
-            {
-              address: '222'
-            },
-            {
-              address: '555'
-            },
-            {
-              address: '333'
-            }
-          ]
+          // let data = [
+          //   {
+          //     address: '7-115'
+          //   },
+          //   {
+          //     address: '6号楼206'
+          //   }]
           //真实数据
-          // let data=res.data.data.addressAndDataBackParamList
+          let data = res.data.data.addressAndDataBackParamList
           this.options = data
           //默认展示第一个地点的数据
           if (data.length != 0) {
@@ -572,67 +609,68 @@ export default {
           })
         })
     },
-    //获取进度条数据(请求报错)
+    //获取进度条数据(ok)
     getProgressBar() {
-      // let sendData ={
-      //   "admissionId": this.admissionId
-      // }
-      // let url = `api/real-time-interview/info/remain`
-      // let post = this.$http.post(url,sendData)
-      // post
-      //   .then((res) => {
-      //     console.log(res,'获取进度条数据')
-      // 模拟数据
-      let data = [
-        {
-          total: 0,
-          startTime: '00:00',
-          endTime: '01:00',
-          proportion: 100
-        },
-        {
-          total: 12,
-          startTime: '01:00',
-          endTime: '02:00',
-          proportion: 50
-        },
-        {
-          total: 18,
-          startTime: '02:00',
-          endTime: '03:00',
-          proportion: 80
-        },
-        {
-          total: 20,
-          startTime: '03:00',
-          endTime: '04:00',
-          proportion: 20
-        }
-      ]
-      //真实数据
-      // let data=res.data.data.remainStuResults
-      if (data.length == 0) {
-        this.barData = [
-          {
-            total: '?',
-            startTime: '无数据',
-            endTime: '无数据',
-            proportion: 0
-          }
-        ]
-      } else {
-        this.barData = data
+      let sendData = {
+        admissionId: this.admissionId,
+        organizationId: this.organizationId
       }
-      // })
-      // .catch(() => {
-      //   this.$message({
-      //     showClose: true,
-      //     message: '获取进度条数据失败',
-      //     type: 'error',
-      //     center: true,
-      //     duration: 2000
-      //   })
-      // })
+      let url = `api/real-time-interview/info/remain`
+      let post = this.$http.post(url, sendData)
+      post
+        .then((res) => {
+          console.log(res, '获取进度条数据')
+          // 模拟数据
+          // let data = [
+          //   {
+          //     total: 0,
+          //     startTime: '00:00',
+          //     endTime: '01:00',
+          //     proportion: 100
+          //   },
+          //   {
+          //     total: 12,
+          //     startTime: '01:00',
+          //     endTime: '02:00',
+          //     proportion: 50
+          //   },
+          //   {
+          //     total: 18,
+          //     startTime: '02:00',
+          //     endTime: '03:00',
+          //     proportion: 80
+          //   },
+          //   {
+          //     total: 20,
+          //     startTime: '03:00',
+          //     endTime: '04:00',
+          //     proportion: 20
+          //   }
+          // ]
+          //真实数据
+          let data = res.data.data.remainStuResults
+          if (data.length == 0) {
+            this.barData = [
+              {
+                total: '?',
+                startTime: '无数据',
+                endTime: '无数据',
+                proportion: 0
+              }
+            ]
+          } else {
+            this.barData = data
+          }
+        })
+        .catch(() => {
+          this.$message({
+            showClose: true,
+            message: '获取进度条数据失败',
+            type: 'error',
+            center: true,
+            duration: 2000
+          })
+        })
     },
     //点击生成二维码按钮(ok)
     displayCode() {
@@ -640,8 +678,9 @@ export default {
       //生成二维码
       let sendData = {
         admissionId: this.admissionId,
-        round: this.round,
-        address: this.position
+        qrround: this.round,
+        address: this.position,
+        organizationId: this.organizationId
       }
       let url = `api/real-time-interview/qr-code-base64`
       let post = this.$http.post(url, sendData)
@@ -670,9 +709,10 @@ export default {
     },
     //点击面试评价按钮获取学号和评价(ok)
     openEvaluate(row) {
-      this.dialogVisible3 = true
+      // this.dialogVisible3 = true
       this.stdId = row.studentId
       this.getDepartmentId()
+      // this.getEvaluation()
     },
     // 获取面试评价(ok)
     getEvaluation() {
@@ -706,7 +746,7 @@ export default {
         .catch(() => {
           this.$message({
             showClose: true,
-            message: '获取面试地点失败',
+            message: '获取面试评价失败',
             type: 'error',
             center: true,
             duration: 2000
@@ -778,7 +818,7 @@ export default {
       this.currentPage = val
       this.getTableData()
     },
-    //获取表格数据（请求已解开，没有数据，目前为假数据）
+    //获取表格数据（ok）
     getTableData() {
       // console.log('地点'+this.position,'页数'+this.currentPage,'搜索'+this.search)
       let pageNum = this.currentPage
@@ -792,88 +832,88 @@ export default {
           console.log(res, '获取表格数据')
           this.loading = false
           // 模拟数据
-          let data = {
-            realTimeInfoParamList: [
-              {
-                studentId: 20200001,
-                studentName: '张1',
-                className: '计算机科学与技术一班',
-                address: '北京',
-                status: 4
-              },
-              {
-                studentId: 20200002,
-                studentName: '张2',
-                className: '计算2',
-                address: '河北',
-                status: 4
-              },
-              {
-                studentId: 20200003,
-                studentName: '张3',
-                className: '计算机科学与技术3班',
-                address: '天津',
-                status: 5
-              },
-              {
-                studentId: 20200004,
-                studentName: '张4',
-                className: '计算机科学与技术4班',
-                address: '河南',
-                status: 5
-              },
-              {
-                studentId: 20200005,
-                studentName: '张5',
-                className: '计算机科学与技术5班',
-                address: '山东',
-                status: 4
-              },
-              {
-                sysId: 1,
-                studentId: 20200006,
-                studentName: '张6',
-                className: '计算机科学与技术6班',
-                address: '山西',
-                status: 4
-              },
-              {
-                sysId: 1,
-                studentId: 20200007,
-                studentName: '张7',
-                className: '计算机科学与技术7班',
-                address: '安徽',
-                status: 5
-              },
-              {
-                sysId: 1,
-                studentId: 20200008,
-                studentName: '张8',
-                className: '计算8',
-                address: '陕西',
-                status: 4
-              },
-              {
-                sysId: 1,
-                studentId: 20200009,
-                studentName: '张9',
-                className: '计算9',
-                address: '安徽',
-                status: 4
-              },
-              {
-                sysId: 1,
-                studentId: 20200010,
-                studentName: '张0',
-                className: '计算0',
-                address: '安徽',
-                status: 5
-              }
-            ],
-            total: 12
-          }
+          // let data = {
+          //   realTimeInfoParamList: [
+          //     {
+          //       studentId: 20200001,
+          //       studentName: '张1',
+          //       className: '计算机科学与技术一班',
+          //       address: '7-115',
+          //       status: 4
+          //     },
+          //     {
+          //       studentId: 20200002,
+          //       studentName: '张2',
+          //       className: '计算2',
+          //       address: '7-115',
+          //       status: 4
+          //     },
+          //     {
+          //       studentId: 20200003,
+          //       studentName: '张3',
+          //       className: '计算机科学与技术3班',
+          //       address: '7-115',
+          //       status: 5
+          //     },
+          //     {
+          //       studentId: 20200004,
+          //       studentName: '张4',
+          //       className: '计算机科学与技术4班',
+          //       address: '7-118',
+          //       status: 5
+          //     },
+          //     {
+          //       studentId: 20200005,
+          //       studentName: '张5',
+          //       className: '计算机科学与技术5班',
+          //       address: '7-119',
+          //       status: 4
+          //     },
+          //     {
+          //       sysId: 1,
+          //       studentId: 20200006,
+          //       studentName: '张6',
+          //       className: '信息安全4班',
+          //       address: '7-117',
+          //       status: 4
+          //     },
+          //     {
+          //       sysId: 1,
+          //       studentId: 20200007,
+          //       studentName: '张7',
+          //       className: '计算机科学与技术7班',
+          //       address: '7-117',
+          //       status: 5
+          //     },
+          //     {
+          //       sysId: 1,
+          //       studentId: 20200008,
+          //       studentName: '张8',
+          //       className: '大数据科学与技术2班',
+          //       address: '7-114',
+          //       status: 4
+          //     },
+          //     {
+          //       sysId: 1,
+          //       studentId: 20200009,
+          //       studentName: '张9',
+          //       className: '物联网1班',
+          //       address: '7-116',
+          //       status: 4
+          //     },
+          //     {
+          //       sysId: 1,
+          //       studentId: 20200010,
+          //       studentName: '张0',
+          //       className: '计算0',
+          //       address: '7-114',
+          //       status: 5
+          //     }
+          //   ],
+          //   total: 12
+          // }
           //真实
-          // let data=res.data.data
+          let data = res.data.data
           data.realTimeInfoParamList.forEach((item) => {
             if (item.status == 4) {
               item.status = '未签到'
@@ -896,12 +936,12 @@ export default {
         })
     },
     //点击搜索(ok)
-    getSearch() {
-      this.currentPage = 1
-      if (this.position != '') {
-        this.getTableData()
-      }
-    },
+    // getSearch() {
+    //   this.currentPage = 1
+    //   if (this.position != '') {
+    //     this.getTableData()
+    //   }
+    // },
     //点击简历按钮获取学号清空数组(ok)
     openResume(row) {
       this.dialogVisible2 = true
@@ -944,6 +984,11 @@ export default {
           //   height: 180.5,
           //   weight: 50,
           //   basicQuestions: [
+          //     {
+          //       multipleChoice: 0,
+          //       question: '你的暑假安排',
+          //       answer: '吃饭吃饭吃饭睡觉睡觉睡觉'
+          //     },
           //     {
           //       multipleChoice: 0,
           //       question: '你的暑假安排',
@@ -994,6 +1039,19 @@ export default {
           //       multipleChoice: 0,
           //       question: '综合问题1',
           //       answer: '哈哈哈哈哈哈哈哈哈'
+          //     },
+          //     {
+          //       department: '综合问题',
+          //       multipleChoice: 0,
+          //       question: '综合问题1',
+          //       answer: '哈哈哈哈哈哈哈哈哈'
+          //     },
+          //     {
+          //       department: '综合问题',
+          //       multipleChoice: 1,
+          //       choices: ['选项A8574', '选项B785'],
+          //       question: '综合问题2',
+          //       answer: 'A'
           //     },
           //     {
           //       department: '综合问题',
@@ -1097,7 +1155,7 @@ export default {
 <style lang="less" scoped>
 .all {
   width: calc(100vw - 250px);
-  height: calc(100vh - 117px);
+  height: calc(100vh - 102px);
   // background-color: rgb(46, 108, 183);
   background-color: white;
   min-width: 1100px;
@@ -1116,7 +1174,8 @@ export default {
       width: 180px;
       height: 74px;
       margin-top: 15px;
-      margin-left: 20px;
+      // margin-left: 20px;
+      padding: 0 20px;
       background-color: white;
     }
     .time {
@@ -1149,11 +1208,15 @@ export default {
     height: 40px;
     // background-color: rgb(211, 185, 68);
     background-color: white;
+    margin-top: 20px;
     .select {
       // margin-top: 15px;
-      width: 200px;
-      margin-left: 30px;
+      width: 110px;
+      margin-left: 4px;
       float: left;
+    }
+    /deep/.el-select .el-input__inner {
+      text-align: center;
     }
     .address {
       margin-left: 20px;
@@ -1161,19 +1224,20 @@ export default {
       font-size: 20px;
       margin-top: 5px;
       color: rgb(82, 82, 82);
-      border-bottom: 2px solid rgb(213, 211, 211);
+      // border-bottom: 2px solid rgb(213, 211, 211);
     }
   }
   .three {
     // background-color: rgb(110, 168, 207);
     background-color: white;
-    width: 230px;
+    width: 280px;
     text-align: left;
-    margin-left: 20px;
-    margin-top: 18px;
-    font-size: 20px;
+    // margin-left: 20px;
+    margin: 0 auto;
+    margin-top: 9px;
+    font-size: 22px;
     color: rgb(82, 82, 82);
-    border-bottom: 2px solid rgb(213, 211, 211);
+    // border-bottom: 2px solid rgb(213, 211, 211);
   }
   .four {
     // background-color: rgb(196, 85, 107);
@@ -1189,6 +1253,10 @@ export default {
       position: absolute;
       top: 0;
       left: 20px;
+    }
+    .qrcode {
+      float: right;
+      margin-right: 50px;
     }
     .yes {
       position: absolute;
@@ -1208,7 +1276,7 @@ export default {
   }
   .five {
     .table {
-      height: calc(100vh - 403px);
+      height: calc(100vh - 379px);
       min-height: 330px;
     }
     .resumeTable {
@@ -1268,7 +1336,7 @@ export default {
           }
           .department {
             // background-color: rgb(82, 199, 154);
-            margin-top: 15px;
+            margin-top: 20px;
             .tit {
               font-size: 25px;
               // background-color: rgb(60, 170, 113);
@@ -1313,7 +1381,8 @@ export default {
           .basequestion {
             .question1 {
               // background-color: rgb(189, 112, 112);
-              margin-top: 20px;
+              // margin-top: 0px;
+              margin-bottom: 20px;
               .problem {
                 font-size: 18px;
                 text-align: left;
@@ -1334,7 +1403,7 @@ export default {
               .problem {
                 font-size: 18px;
                 text-align: left;
-                margin-bottom: 15px;
+                margin-bottom: 20px;
               }
               .answer {
                 margin-top: 20px;
