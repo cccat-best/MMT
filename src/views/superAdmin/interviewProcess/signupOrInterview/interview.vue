@@ -10,8 +10,8 @@
       <el-dialog
         title=""
         :visible.sync="dialogFormVisible"
-        width="1080px"
-        top="50px"
+        width="70vw"
+        top="10vh"
       >
         <div class="right">
           <!-- 包个div使页面部分滚动，浏览器不会出现滚动条 -->
@@ -800,7 +800,7 @@ export default {
   .right {
     position: relative;
     top: 10px;
-    left: 162px;
+    left: 79px;
     min-height: 420px;
     // min-width: 818px;
     // min-width: 200px;
@@ -1119,8 +1119,15 @@ export default {
   border-bottom: none !important;
 }
 .el-dialog-div {
-  height: 450px;
+  height: 60vh;
   overflow: auto;
+}
+/deep/.el-dialog__footer{
+  padding:10px 6vw 20px
+}
+/deep/.el-dialog{
+  height: 82vh;
+  min-height: 600px;
 }
 /deep/.el-textarea__inner {
   padding: 5px 27px 5px 10px;
