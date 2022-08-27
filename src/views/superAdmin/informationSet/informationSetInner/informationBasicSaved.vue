@@ -1,201 +1,222 @@
 <template>
   <div class="informationBasicSaved" v-if="showMain === true">
-    <div class="basicInformationTitle" id="basicInformation">基本信息</div>
-    <!-- 下面是基本信息 -->
-    <div class="informationBasicSavedMid">
-      <div class="titleAndHeadImg">
-        <div class="headImg">
-          <el-avatar :size="300" :src="circleUrl"></el-avatar>
+    <el-card shadow="always" style="margin-bottom: 70px">
+      <div slot="header" class="clearfix">
+        <span class="basicInformationTitle" id="basicInformation"
+          >基本信息</span
+        >
+      </div>
+      <!-- <div class="basicInformationTitle" id="basicInformation">基本信息</div> -->
+      <!-- 下面是基本信息 -->
+      <div class="informationBasicSavedMid">
+        <div class="titleAndHeadImg">
+          <div class="headImg">
+            <el-avatar :size="200" :src="circleUrl"></el-avatar>
+          </div>
+        </div>
+        <div class="informationRight">
+          <div style="margin-bottom: 30px">
+            <span class="informationRightFont">社团名称：</span
+            ><span style="font-size: 22px">{{ communityData.name }}</span>
+          </div>
+          <div style="margin-bottom: 30px">
+            <el-tag size="medium" class="tags" effect="dark">{{
+              communityData.tag.tagA
+            }}</el-tag>
+            <el-tag size="medium" class="tags" type="success" effect="dark">{{
+              communityData.tag.tagB
+            }}</el-tag>
+          </div>
+          <div style="margin-bottom: 30px">
+            <span class="informationRightFont">简介：</span>
+            <span>{{ communityData.briefIntroduction }}</span>
+          </div>
         </div>
       </div>
-      <div class="informationRight">
-        <div>
-          <span class="informationRightFont">社团名称：</span
-          ><span>{{ communityData.name }}</span>
-        </div>
-        <div>
-          <el-tag size="medium" class="tags" effect="dark">{{
-            communityData.tag.tagA
-          }}</el-tag>
-          <el-tag size="medium" class="tags" type="success" effect="dark">{{
-            communityData.tag.tagB
-          }}</el-tag>
-        </div>
-        <div>
-          <span class="informationRightFont">简介：</span>
-          <span>{{ communityData.briefIntroduction }}</span>
-        </div>
-      </div>
-    </div>
+    </el-card>
     <!-- 基本信息结束 -->
-    <el-divider></el-divider>
-    <div class="basicInformationTitle" id="associations">社团宣传</div>
-    <!-- 下面是社团宣传 -->
-    <div class="associations">
-      <div class="associationsBox">
-        <div
-          class="associationsTitleFont"
-          v-if="communityData.contactInfo != null"
-        >
-          联系方式
+    <el-card shadow="always">
+      <div slot="header" class="clearfix">
+        <span class="basicInformationTitle" id="associations">社团宣传</span>
+      </div>
+      <!-- <div class="basicInformationTitle" id="associations">社团宣传</div> -->
+      <!-- 下面是社团宣传 -->
+      <div class="associations">
+        <div class="associationsBox">
+          <div
+            class="associationsTitleFont"
+            v-if="communityData.contactInfo != null"
+          >
+            联系方式
+          </div>
+          <div class="associationsTitleFontWhite">
+            {{ communityData.contactInfo }}
+          </div>
         </div>
-        <div class="associationsTitleFontWhite">
-          {{ communityData.contactInfo }}
+        <div class="associationsBox" v-if="communityData.slogan != null">
+          <div class="associationsTitleFont">纳新宣言</div>
+          <div class="associationsTitleFontWhite">
+            {{ communityData.slogan }}
+          </div>
+        </div>
+        <div class="associationsBox" v-if="communityData.introduction != null">
+          <div class="associationsTitleFont">社团介绍</div>
+          <div class="associationsTitleFontWhite">
+            {{ communityData.introduction }}
+          </div>
+        </div>
+        <div class="associationsBox" v-if="communityData.feature != null">
+          <div class="associationsTitleFont">社团特色</div>
+          <div class="associationsTitleFontWhite">
+            {{ communityData.feature }}
+          </div>
+        </div>
+        <div class="associationsBox" v-if="communityData.daily != null">
+          <div class="associationsTitleFont">社团日常</div>
+          <div class="associationsTitleFontWhite">
+            {{ communityData.daily }}
+          </div>
+        </div>
+        <div class="associationsBox" v-if="communityData.more != null">
+          <div class="associationsTitleFont">更多</div>
+          <div class="associationsTitleFontWhite">{{ communityData.more }}</div>
         </div>
       </div>
-      <div class="associationsBox" v-if="communityData.slogan != null">
-        <div class="associationsTitleFont">纳新宣言</div>
-        <div class="associationsTitleFontWhite">{{ communityData.slogan }}</div>
-      </div>
-      <div class="associationsBox" v-if="communityData.introduction != null">
-        <div class="associationsTitleFont">社团介绍</div>
-        <div class="associationsTitleFontWhite">
-          {{ communityData.introduction }}
-        </div>
-      </div>
-      <div class="associationsBox" v-if="communityData.feature != null">
-        <div class="associationsTitleFont">社团特色</div>
-        <div class="associationsTitleFontWhite">
-          {{ communityData.feature }}
-        </div>
-      </div>
-      <div class="associationsBox" v-if="communityData.daily != null">
-        <div class="associationsTitleFont">社团日常</div>
-        <div class="associationsTitleFontWhite">{{ communityData.daily }}</div>
-      </div>
-      <div class="associationsBox" v-if="communityData.more != null">
-        <div class="associationsTitleFont">更多</div>
-        <div class="associationsTitleFontWhite">{{ communityData.more }}</div>
-      </div>
-    </div>
+    </el-card>
     <!-- 社团宣传结束 -->
-    <el-divider></el-divider>
-    <div class="basicInformationTitle" id="departmentRecruiting">纳新部门</div>
-    <!-- 纳新部门 -->
-    <div class="departmentMain">
-      <div
-        class="departmentBlock"
-        v-if="communityData.departmentList[0] != null"
-      >
-        <div class="departmentTitle">部门一</div>
-        <div class="departmentFourInner">
-          <div class="fourTitleFont">部门名称：</div>
-          <div class="fourInnerFont">
-            {{ communityData.departmentList[0].name }}
-          </div>
-        </div>
-        <div class="departmentFourInner">
-          <div class="fourTitleFont">部门简介：</div>
-          <div class="fourInnerFont">
-            {{ communityData.departmentList[0].briefIntroduction }}
-          </div>
-        </div>
-        <div class="departmentFourInner">
-          <div class="fourTitleFont">部门介绍：</div>
-          <div class="fourInnerFont">
-            {{ communityData.departmentList[0].introduction }}
-          </div>
-        </div>
-        <div class="departmentFourInner">
-          <div class="fourTitleFont">部门要求：</div>
-          <div class="fourInnerFont">
-            {{ communityData.departmentList[0].standard }}
-          </div>
-        </div>
-      </div>
-      <div class="departmentBlock">
-        <div
-          class="departmentTitle"
-          v-if="communityData.departmentList[1] != null"
+    <el-card shadow="always" style="margin-top: 70px">
+      <div slot="header" class="clearfix">
+        <span class="basicInformationTitle" id="departmentRecruiting"
+          >纳新部门</span
         >
-          部门二
-        </div>
-        <div class="departmentFourInner">
-          <div class="fourTitleFont">部门名称：</div>
-          <div class="fourInnerFont">
-            {{ communityData.departmentList[1].name }}
+      </div>
+      <!-- <div class="basicInformationTitle" id="departmentRecruiting">纳新部门</div> -->
+      <!-- 纳新部门 -->
+      <div class="departmentMain">
+        <div
+          class="departmentBlock"
+          v-if="communityData.departmentList[0] != null"
+        >
+          <div class="departmentTitle">部门一</div>
+          <div class="departmentFourInner">
+            <div class="fourTitleFont">部门名称：</div>
+            <div class="fourInnerFont">
+              {{ communityData.departmentList[0].name }}
+            </div>
+          </div>
+          <div class="departmentFourInner">
+            <div class="fourTitleFont">部门简介：</div>
+            <div class="fourInnerFont">
+              {{ communityData.departmentList[0].briefIntroduction }}
+            </div>
+          </div>
+          <div class="departmentFourInner">
+            <div class="fourTitleFont">部门介绍：</div>
+            <div class="fourInnerFont">
+              {{ communityData.departmentList[0].introduction }}
+            </div>
+          </div>
+          <div class="departmentFourInner">
+            <div class="fourTitleFont">部门要求：</div>
+            <div class="fourInnerFont">
+              {{ communityData.departmentList[0].standard }}
+            </div>
           </div>
         </div>
-        <div class="departmentFourInner">
-          <div class="fourTitleFont">部门简介：</div>
-          <div class="fourInnerFont">
-            {{ communityData.departmentList[1].briefIntroduction }}
+        <div class="departmentBlock">
+          <div
+            class="departmentTitle"
+            v-if="communityData.departmentList[1] != null"
+          >
+            部门二
+          </div>
+          <div class="departmentFourInner">
+            <div class="fourTitleFont">部门名称：</div>
+            <div class="fourInnerFont">
+              {{ communityData.departmentList[1].name }}
+            </div>
+          </div>
+          <div class="departmentFourInner">
+            <div class="fourTitleFont">部门简介：</div>
+            <div class="fourInnerFont">
+              {{ communityData.departmentList[1].briefIntroduction }}
+            </div>
+          </div>
+          <div class="departmentFourInner">
+            <div class="fourTitleFont">部门介绍：</div>
+            <div class="fourInnerFont">
+              {{ communityData.departmentList[1].introduction }}
+            </div>
+          </div>
+          <div class="departmentFourInner">
+            <div class="fourTitleFont">部门要求：</div>
+            <div class="fourInnerFont">
+              {{ communityData.departmentList[1].standard }}
+            </div>
           </div>
         </div>
-        <div class="departmentFourInner">
-          <div class="fourTitleFont">部门介绍：</div>
-          <div class="fourInnerFont">
-            {{ communityData.departmentList[1].introduction }}
+        <div
+          class="departmentBlock"
+          v-if="communityData.departmentList[2] != null"
+        >
+          <div class="departmentTitle">部门三</div>
+          <div class="departmentFourInner">
+            <div class="fourTitleFont">部门名称：</div>
+            <div class="fourInnerFont">
+              {{ communityData.departmentList[2].name }}
+            </div>
+          </div>
+          <div class="departmentFourInner">
+            <div class="fourTitleFont">部门简介：</div>
+            <div class="fourInnerFont">
+              {{ communityData.departmentList[2].briefIntroduction }}
+            </div>
+          </div>
+          <div class="departmentFourInner">
+            <div class="fourTitleFont">部门介绍：</div>
+            <div class="fourInnerFont">
+              {{ communityData.departmentList[2].introduction }}
+            </div>
+          </div>
+          <div class="departmentFourInner">
+            <div class="fourTitleFont">部门要求：</div>
+            <div class="fourInnerFont">
+              {{ communityData.departmentList[2].standard }}
+            </div>
           </div>
         </div>
-        <div class="departmentFourInner">
-          <div class="fourTitleFont">部门要求：</div>
-          <div class="fourInnerFont">
-            {{ communityData.departmentList[1].standard }}
+        <div
+          class="departmentBlock"
+          v-if="communityData.departmentList[3] != null"
+        >
+          <div class="departmentTitle">部门四</div>
+          <div class="departmentFourInner">
+            <div class="fourTitleFont">部门名称：</div>
+            <div class="fourInnerFont">
+              {{ communityData.departmentList[3].name }}
+            </div>
+          </div>
+          <div class="departmentFourInner">
+            <div class="fourTitleFont">部门简介：</div>
+            <div class="fourInnerFont">
+              {{ communityData.departmentList[3].briefIntroduction }}
+            </div>
+          </div>
+          <div class="departmentFourInner">
+            <div class="fourTitleFont">部门介绍：</div>
+            <div class="fourInnerFont">
+              {{ communityData.departmentList[3].introduction }}
+            </div>
+          </div>
+          <div class="departmentFourInner">
+            <div class="fourTitleFont">部门要求：</div>
+            <div class="fourInnerFont">
+              {{ communityData.departmentList[3].standard }}
+            </div>
           </div>
         </div>
       </div>
-      <div
-        class="departmentBlock"
-        v-if="communityData.departmentList[2] != null"
-      >
-        <div class="departmentTitle">部门三</div>
-        <div class="departmentFourInner">
-          <div class="fourTitleFont">部门名称：</div>
-          <div class="fourInnerFont">
-            {{ communityData.departmentList[2].name }}
-          </div>
-        </div>
-        <div class="departmentFourInner">
-          <div class="fourTitleFont">部门简介：</div>
-          <div class="fourInnerFont">
-            {{ communityData.departmentList[2].briefIntroduction }}
-          </div>
-        </div>
-        <div class="departmentFourInner">
-          <div class="fourTitleFont">部门介绍：</div>
-          <div class="fourInnerFont">
-            {{ communityData.departmentList[2].introduction }}
-          </div>
-        </div>
-        <div class="departmentFourInner">
-          <div class="fourTitleFont">部门要求：</div>
-          <div class="fourInnerFont">
-            {{ communityData.departmentList[2].standard }}
-          </div>
-        </div>
-      </div>
-      <div
-        class="departmentBlock"
-        v-if="communityData.departmentList[3] != null"
-      >
-        <div class="departmentTitle">部门四</div>
-        <div class="departmentFourInner">
-          <div class="fourTitleFont">部门名称：</div>
-          <div class="fourInnerFont">
-            {{ communityData.departmentList[3].name }}
-          </div>
-        </div>
-        <div class="departmentFourInner">
-          <div class="fourTitleFont">部门简介：</div>
-          <div class="fourInnerFont">
-            {{ communityData.departmentList[3].briefIntroduction }}
-          </div>
-        </div>
-        <div class="departmentFourInner">
-          <div class="fourTitleFont">部门介绍：</div>
-          <div class="fourInnerFont">
-            {{ communityData.departmentList[3].introduction }}
-          </div>
-        </div>
-        <div class="departmentFourInner">
-          <div class="fourTitleFont">部门要求：</div>
-          <div class="fourInnerFont">
-            {{ communityData.departmentList[3].standard }}
-          </div>
-        </div>
-      </div>
-    </div>
+    </el-card>
   </div>
 </template>
 
@@ -228,6 +249,17 @@ export default {
 </script>
 
 <style scoped>
+.title {
+  font-size: 30px;
+}
+.clearfix:before,
+.clearfix:after {
+  display: table;
+  content: '';
+}
+.clearfix:after {
+  clear: both;
+}
 .informationBasicSaved {
   display: flex;
   flex-direction: column;
@@ -241,8 +273,7 @@ export default {
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
-  margin-bottom: 80px;
-  margin-top: 80px;
+  padding-bottom: 6vh;
 }
 .associations {
   width: 70vw;
@@ -250,8 +281,6 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
-  margin-bottom: 80px;
-  margin-top: 80px;
 }
 .basicInformationTitle {
   width: 150px;
@@ -261,9 +290,9 @@ export default {
   align-self: flex-start;
 }
 .headImg {
-  margin-top: 100px;
-  width: 300px;
-  height: 300px;
+  /* margin-top: 100px; */
+  width: 200px;
+  height: 200px;
 }
 .titleAndHeadImg {
   width: 300px;
@@ -273,26 +302,33 @@ export default {
   align-items: center;
 }
 .informationRight {
-  margin-top: 100px;
-  width: 450px;
-  height: 300px;
+  /* margin-top: 40px;
+  margin-bottom: 40px; */
+
+  width: 550px;
+  height: 250px;
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: center;
   align-items: flex-start;
 }
 .tags {
   margin-right: 20px;
 }
 .informationRightFont {
-  font-size: 26px;
+  margin-bottom: 20px;
+  font-size: 22px;
 }
 .associationsTitleFont {
   font-size: 24px;
-  margin: 60px 60px 60px 0px;
+  /* margin: 60px 60px 60px 0px; */
+  margin-left: 6vw;
+  margin-top: 6vh;
   text-align: left;
 }
 .associationsTitleFontWhite {
+  margin-left: 6vw;
+  margin-top: 2vw;
   font-size: 20px;
   color: rgba(64, 64, 64, 0.759);
   text-align: left;
@@ -301,16 +337,18 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  margin-bottom: 100px;
+  margin-bottom: 20px;
 }
 .departmentMain {
+  padding-left: 6vw;
+  padding-bottom: 6vw;
+  width: 65vw;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  width: 65vw;
 }
 .departmentBlock {
-  margin-top: 80px;
+  margin-top: 40px;
   width: 900px;
   height: 300px;
   display: flex;
@@ -325,7 +363,7 @@ export default {
 }
 .departmentTitle {
   font-size: 24px;
-  margin: 0px 60px 40px 0px;
+  /* margin-bottom: 20px; */
   text-align: left;
 }
 .fourTitleFont {

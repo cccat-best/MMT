@@ -243,19 +243,25 @@ export default {
           })
         })
         .then(() => {
+          console.log('数据', this.lineInnerData)
           var pieChart = echarts.init(this.$refs.line)
-          pieChart.setOption({
-            legend: {
-              orient: 'vertical',
-              right: 5,
-              top: 5
+          pieChart.resize()
+
+          pieChart.setOption(
+            {
+              legend: {
+                orient: 'vertical',
+                right: 5,
+                top: 5
+              },
+              xAxis: {
+                data: this.lineData.time
+              },
+              yAxis: {},
+              series: this.lineInnerData
             },
-            xAxis: {
-              data: this.lineData.time
-            },
-            yAxis: {},
-            series: this.lineInnerData
-          })
+            true
+          )
         })
     }
   },
