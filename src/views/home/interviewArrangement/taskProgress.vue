@@ -22,8 +22,8 @@ export default {
   data() {
     return {
       round: 1,
-      done: 10,
-      total: 11,
+      done: 0,
+      total: 0,
       percentage: 0
     }
   },

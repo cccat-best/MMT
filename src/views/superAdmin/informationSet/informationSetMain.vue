@@ -1,7 +1,7 @@
 <template>
   <div class="informationSetMain">
     <div class="informationSetUpFont">
-      <i class="el-icon-delete"></i>
+      <i class="el-icon-folder-opened"></i>
       宣传管理
     </div>
     <div class="informationSetDown">
@@ -156,7 +156,9 @@ export default {
   flex-flow: column;
 }
 .informationSetUpFont {
-  width: 100px;
+  margin-left: -20px;
+  font-size: 20px;
+  width: 150px;
   height: 30px;
   padding-top: 5px;
   line-height: 14px;
@@ -182,6 +184,7 @@ export default {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);
 }
 .informationBasicMain {
+  padding-bottom: 12vh;
   height: 80vh;
   padding-left: 100px;
   padding-right: 100px;
@@ -198,7 +201,7 @@ export default {
 .editBtn {
   position: fixed;
   z-index: 10;
-  right: 50px;
+  right: 150px;
   top: 140px;
   width: 100px;
   height: 40px;
