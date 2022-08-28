@@ -36,7 +36,7 @@
         <div class="upper">
           <div class="upperLeft">
             <div class="upperLeftInner">
-              <div class="upperLeftInnerFlex">
+              <div class="upperLeftInnerFlex" style="margin-top:20px">
                 <span><i class="el-icon-s-data"></i> 报名总人数 :</span>
                 <span>{{ upperLeftData.totalRegistrations }}人</span>
               </div>
@@ -47,7 +47,7 @@
                 <span> {{ upperLeftData.todayRegistrations }}人 </span>
               </div>
               <div class="upperLeftButtomFont">
-                将该社团设置为第一志愿报名人数：{{
+               第一志愿报名人数：{{
                   upperLeftData.firstChoiceNum
                 }}人
               </div>
@@ -60,44 +60,44 @@
                 v-if="drawDone && pieUseData[0] != null"
               >
                 <span
-                  >{{ pieUseData[0].name }}总人数:{{
+                  >部门一: 总人数: {{
                     pieUseData[0].value
                   }}人</span
                 >
-                <span>今日新增：{{ pieData.pieData[0].todayNum }}人</span>
+                <span> 今日新增：{{ pieData.pieData[0].todayNum }}人</span>
               </div>
               <div
                 class="upperRightInnerFlex"
                 v-if="drawDone && pieUseData[1] != null"
               >
                 <span
-                  >{{ pieUseData[1].name }}总人数:{{
+                  >部门二: 总人数: {{
                     pieUseData[1].value
                   }}人</span
                 >
-                <span>今日新增：{{ pieData.pieData[1].todayNum }}人</span>
+                <span> 今日新增：{{ pieData.pieData[1].todayNum }}人</span>
               </div>
               <div
                 class="upperRightInnerFlex"
                 v-if="drawDone && pieUseData[2] != null"
               >
                 <span
-                  >{{ pieUseData[2].name }}总人数:{{
+                  >部门三: 总人数: {{
                     pieUseData[2].value
                   }}人</span
                 >
-                <span>今日新增：{{ pieData.pieData[2].todayNum }}人</span>
+                <span> 今日新增：{{ pieData.pieData[2].todayNum }}人</span>
               </div>
               <div
                 class="upperRightInnerFlex"
                 v-if="drawDone && pieUseData[3] != null"
               >
                 <span
-                  >{{ pieUseData[3].name }}总人数:{{
+                  >部门四: 总人数: {{
                     pieUseData[3].value
                   }}人</span
                 >
-                <span>今日新增：{{ pieData.pieData[3].todayNum }}人</span>
+                <span> 今日新增：{{ pieData.pieData[3].todayNum }}人</span>
               </div>
             </div>
             <div style="width: 50%; height: 100%" ref="pie"></div>
@@ -188,22 +188,35 @@ export default {
         .then((res) => {
           console.log('饼图数据', res.data.data.pieData)
           this.pieData = res.data.data
-          this.pieUseData = res.data.data.pieData.map((item) => {
+          this.pieUseData = res.data.data.pieData.map((item,index) => {
             // console.log(item)
+            let indexChinese = this.toChinese(index+1)
             return Object.assign(
               {},
-              { value: item.totalNum, name: item.departmentName }
+              { value: item.totalNum, name: '部门'+indexChinese }
             )
           })
         })
         .then(() => {
           var pieChart = echarts.init(this.$refs.pie)
           pieChart.setOption({
+            tooltip: {
+              trigger: 'item'
+            },
             series: [
               {
                 type: 'pie',
                 data: this.pieUseData,
-                radius: '50%'
+                radius: '50%',
+                 label: {
+                  normal: {
+                    show: true,
+                    position: 'inner',
+                    textStyle: {
+                      color: 'white'
+                    }
+                  }
+                }
               }
             ]
           })
@@ -250,6 +263,9 @@ export default {
               right: 5,
               top: 5
             },
+            tooltip: {
+              trigger: 'axis'
+            },
             xAxis: {
               data: this.lineData.time
             },
@@ -257,6 +273,20 @@ export default {
             series: this.lineInnerData
           })
         })
+    },
+    toChinese(val) {
+      let chin = ['一', '二', '三', '四', '五', '六', '七', '八', '九', '十']
+      if (val <= 10) {
+        return chin[val - 1]
+      } else if (val <= 100) {
+        if (val < 20) {
+          return '十' + chin[(val % 10) - 1]
+        } else if (val % 10 === 0) {
+          return chin[Math.floor(val / 10) - 1] + '十'
+        } else {
+          return chin[Math.floor(val / 10) - 1] + '十' + chin[(val % 10) - 1]
+        }
+      }
     }
   },
   mounted() {
@@ -324,10 +354,10 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  justify-content: center;
+  // justify-content: center;
   .upper {
     width: 97%;
-    height: 48%;
+    height: 35%;
     margin: 20px 0px 0px 10px;
     border-radius: 20px;
     display: flex;
@@ -345,12 +375,14 @@ export default {
       align-items: center;
       justify-content: space-around;
       .upperRightInner {
+        letter-spacing:2px;
         width: 60%;
         height: 100%;
         display: flex;
         flex-direction: column;
         justify-content: space-evenly;
         align-items: center;
+        margin-left: 10px;
         .upperRightInnerFlex {
           width: 80%;
           margin-top: -15px;
@@ -370,7 +402,7 @@ export default {
       border-radius: 20px;
       .upperLeftInner {
         width: 65%;
-        height: 110%;
+        height: 100%;
         margin: 0 auto;
         display: flex;
         flex-direction: column;
@@ -393,7 +425,7 @@ export default {
 }
 .buttom {
   width: 97%;
-  height: 48%;
+  height: 61%;
   background-color: rgb(255, 255, 255);
   margin: 20px 0px 0px 10px;
   border-radius: 20px;
