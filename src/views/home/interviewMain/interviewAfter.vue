@@ -36,7 +36,7 @@
         <div class="upper">
           <div class="upperLeft">
             <div class="upperLeftInner">
-              <div class="upperLeftInnerFlex">
+              <div class="upperLeftInnerFlex" style="margin-top: 20px">
                 <span><i class="el-icon-s-data"></i> 通过人数 :</span>
                 <span>{{ upperLeftData.passRegistrations }}人</span>
               </div>
@@ -51,17 +51,26 @@
           </div>
           <div class="upperRight">
             <div class="upperRightInner">
-              <div v-if="drawDone && pieUseData[0] != null">
-                {{ pieUseData[0].name }}:{{ pieUseData[0].value }}人
+              <div
+                v-if="drawDone && pieUseData[0] != null"
+                class="upperRightInner-item"
+              >
+                部门一: {{ pieUseData[0].value }}人
               </div>
-              <div v-if="drawDone && pieUseData[1] != null">
-                {{ pieUseData[1].name }}:{{ pieUseData[1].value }}人
+              <div
+                v-if="drawDone && pieUseData[1] != null"
+                class="upperRightInner-item"
+              >
+                部门二: {{ pieUseData[1].value }}人
               </div>
-              <div v-if="drawDone && pieUseData[2] != null">
-                {{ pieUseData[2].name }}:{{ pieUseData[2].value }}人
+              <div
+                v-if="drawDone && pieUseData[2] != null"
+                class="upperRightInner-item"
+              >
+                部门三: {{ pieUseData[2].value }}人
               </div>
               <div v-if="drawDone && pieUseData[3] != null">
-                {{ pieUseData[3].name }}:{{ pieUseData[3].value }}人
+                部门四: {{ pieUseData[3].value }}人
               </div>
             </div>
             <div style="width: 65%; height: 100%" ref="pie"></div>
@@ -84,7 +93,7 @@
               <el-table-column
                 prop="stuRank"
                 label="名次"
-                width="150"
+                width="135"
                 header-align="center"
                 align="center"
               >
@@ -92,7 +101,7 @@
               <el-table-column
                 prop="stuName"
                 label="姓名"
-                width="150"
+                width="135"
                 header-align="center"
                 align="center"
               >
@@ -100,7 +109,7 @@
               <el-table-column
                 prop="stuCore"
                 label="成绩"
-                width="150"
+                width="135"
                 header-align="center"
                 align="center"
               >
@@ -206,22 +215,35 @@ export default {
         .then((res) => {
           // console.log('饼图数据', res.data.data.pieData)
           this.pieData = res.data.data
-          this.pieUseData = res.data.data.pieData.map((item) => {
+          this.pieUseData = res.data.data.pieData.map((item, index) => {
             // console.log(item)
+            let indexChinese = this.toChinese(index + 1)
             return Object.assign(
               {},
-              { value: item.wishPassNum, name: item.wishName }
+              { value: item.wishPassNum, name: '部门' + indexChinese }
             )
           })
         })
         .then(() => {
           var pieChart = echarts.init(this.$refs.pie)
           pieChart.setOption({
+            tooltip: {
+              trigger: 'item'
+            },
             series: [
               {
                 type: 'pie',
                 data: this.pieUseData,
-                radius: '50%'
+                radius: '50%',
+                label: {
+                  normal: {
+                    show: true,
+                    position: 'inner',
+                    textStyle: {
+                      color: 'white'
+                    }
+                  }
+                }
               }
             ]
           })
@@ -269,12 +291,26 @@ export default {
               top: 5
             },
             xAxis: {
-              data: this.lineData.sequence
+              data: this.lineData.time
             },
             yAxis: {},
             series: this.lineInnerData
           })
         })
+    },
+    toChinese(val) {
+      let chin = ['一', '二', '三', '四', '五', '六', '七', '八', '九', '十']
+      if (val <= 10) {
+        return chin[val - 1]
+      } else if (val <= 100) {
+        if (val < 20) {
+          return '十' + chin[(val % 10) - 1]
+        } else if (val % 10 === 0) {
+          return chin[Math.floor(val / 10) - 1] + '十'
+        } else {
+          return chin[Math.floor(val / 10) - 1] + '十' + chin[(val % 10) - 1]
+        }
+      }
     }
   },
   mounted() {
@@ -343,10 +379,10 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  justify-content: center;
+  // justify-content: center;
   .upper {
     width: 97%;
-    height: 48%;
+    height: 35%;
     margin: 20px 0px 0px 10px;
     border-radius: 20px;
     display: flex;
@@ -368,8 +404,13 @@ export default {
         height: 100%;
         display: flex;
         flex-direction: column;
-        justify-content: space-evenly;
+        justify-content: center;
         align-items: center;
+        letter-spacing: 2px;
+        margin-left: 50px;
+        .upperRightInner-item {
+          margin-bottom: 20px;
+        }
       }
     }
     .upperLeft {
@@ -380,7 +421,7 @@ export default {
       border-radius: 20px;
       .upperLeftInner {
         width: 65%;
-        height: 110%;
+        height: 100%;
         margin: 0 auto;
         display: flex;
         flex-direction: column;
@@ -403,7 +444,7 @@ export default {
 }
 .buttom {
   width: 97%;
-  height: 48%;
+  height: 61%;
   background-color: rgb(255, 255, 255);
   margin: 20px 0px 0px 10px;
   border-radius: 20px;
@@ -415,7 +456,7 @@ export default {
 .interviewingRight {
   width: 29%;
   height: 97%;
-  margin: 20px 0 0 0;
+  margin: 20px 0 0 10px;
   background-color: white;
   border-radius: 20px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);
@@ -460,6 +501,7 @@ export default {
   }
 }
 .el-table2 {
+  text-align: center;
   padding: 0px;
   color: #252525;
   font-size: 15px;
@@ -482,5 +524,13 @@ export default {
     background-color: #a1a3a9; /*滚动条的背景颜色*/
     // rgba(24,144,255,0.50)
   }
+  // /deep/ .el-table__header-wrapper {
+  //   display: flex;
+  //   justify-content: space-around;
+  // }
+  // /deep/ .el-table__row {
+  //   display: flex;
+  //   justify-content: space-around;
+  // }
 }
 </style>

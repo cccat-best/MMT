@@ -111,8 +111,15 @@ export default {
         invitationCode: ''
       },
       rules: {
-        studentId: [{ required: true, message: '请输入学号', trigger: 'blur' }],
-        name: [{ required: true, message: '请输入姓名', trigger: 'blur' }],
+        studentId: [
+          { required: true, message: '请输入学号', trigger: 'blur' },
+          { type: 'number', message: '学号必须为数字值', trigger: 'blur' },
+          { min: 8, max: 8, message: '长度为8个数字', trigger: 'blur' }
+        ],
+        name: [
+          { required: true, message: '请输入姓名', trigger: 'blur' },
+          { min: 2, max: 4, message: '长度为2-4个字符', trigger: 'blur' }
+        ],
         password: [
           { required: true, message: '请输入密码', trigger: 'blur' },
           { validator: validatePass, trigger: 'blur' }
