@@ -65,7 +65,13 @@ export default {
         !sessionStorage['replyDepartmentName'] ||
         sessionStorage['replyDepartmentName'] == '全部'
       ) {
-        alert('发送失败！请在面试复盘界面选择具体部门！')
+        this.$alert('发送失败！请在面试复盘界面选择具体部门！', '提示', {
+          confirmButtonText: '确定',
+          type: 'warning',
+          callback: () => {
+            window.history.go(-1)
+          }
+        })
       } else {
         let url8 = 'api/interview-arrangement/postNotice'
         let data8 = {
@@ -78,7 +84,7 @@ export default {
         this.$http
           .post(url8, data8)
           .then((response) => {
-            console.log(response)
+            // console.log(response)
             if (response.data.code == '00000') {
               this.$message({
                 message: '发送成功！',
@@ -115,7 +121,7 @@ export default {
       this.$http
         .get(url0, params2)
         .then((response) => {
-          console.log(response)
+          // console.log(response)
           if (response.data.code == '00000') {
             this.information = response.data.data.information
             this.studentName = []
@@ -140,7 +146,7 @@ export default {
       this.$http
         .get(url1, params)
         .then((response) => {
-          console.log(response)
+          // console.log(response)
           if (response.data.code == '00000') {
             this.messageArrary = []
             let message0 = response.data.data.messageTemplate
@@ -185,7 +191,7 @@ export default {
       this.$http
         .get(url0, params4)
         .then((response) => {
-          console.log(response)
+          // console.log(response)
           if (response.data.code == '00000') {
             this.information = response.data.data.information
             this.studentName = []
@@ -210,7 +216,7 @@ export default {
       this.$http
         .get(url1, params)
         .then((response) => {
-          console.log(response)
+          // console.log(response)
           if (response.data.code == '00000') {
             this.messageArrary = []
             let message0 = response.data.data.messageTemplate
@@ -262,7 +268,7 @@ export default {
       this.$http
         .get(url0, params0)
         .then((response) => {
-          console.log(response)
+          // console.log(response)
           if (response.data.code == '00000') {
             this.winNum = response.data.data.win
             this.passNum = response.data.data.pass
@@ -291,7 +297,7 @@ export default {
       this.$http
         .get(url0, params2)
         .then((response) => {
-          console.log(response)
+          // console.log(response)
           if (response.data.code == '00000') {
             this.information = response.data.data.information
             this.studentName = []
@@ -316,7 +322,7 @@ export default {
       this.$http
         .get(url1, params)
         .then((response) => {
-          console.log(response)
+          // console.log(response)
           if (response.data.code == '00000') {
             this.messageArrary = []
             let message0 = response.data.data.messageTemplate
@@ -348,8 +354,13 @@ export default {
       this.passNum = 0
       this.selectTotal = 0
       setTimeout(() => {
-        alert('请在面试复盘界面选择具体部门！')
-        window.history.go(-1)
+        this.$alert('请在面试复盘界面选择具体部门！', '提示', {
+          confirmButtonText: '确定',
+          type: 'warning',
+          callback: () => {
+            window.history.go(-1)
+          }
+        })
       }, 600)
     }
   },

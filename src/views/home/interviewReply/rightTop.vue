@@ -74,7 +74,13 @@ export default {
     //更改通过状态
     submit() {
       if (this.selectionStudentId.length == 0) {
-        alert('请在表格前复选框选择需操作的学生！')
+        this.$alert('请在表格前复选框选择需操作的学生！', '提示', {
+          confirmButtonText: '确定',
+          type: 'warning',
+          callback: () => {
+            this.centerDialogVisible = false
+          }
+        })
       } else {
         let studentInfo = []
         for (let i = 0; i < this.selectionStudentId.length; ++i) {
@@ -88,12 +94,12 @@ export default {
           organizationId: sessionStorage['loginOrganizationId'],
           studentInfo: studentInfo
         }
-        console.log(changeForm)
+        // console.log(changeForm)
         const url1 = 'api/interview-reply/status'
         let post3 = this.$http.post(url1, changeForm)
         post3
           .then((res) => {
-            console.log(res)
+            // console.log(res)
             if (res.data.code == '00000') {
               this.centerDialogVisible = false
               this.$message({
