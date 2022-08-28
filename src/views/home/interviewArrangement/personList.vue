@@ -138,7 +138,8 @@ export default {
       search: '',
       timer: null,
       radio: '',
-      tableData: []
+      tableData: [],
+      filterDepartmentId: 0
     }
   },
   watch: {
@@ -288,8 +289,9 @@ export default {
           sum += filterDepartment[i] * Math.pow(10, length - 1 - i)
         }
       }
-      console.log(filterDepartment)
-      console.log(sum)
+      this.filterDepartmentId = sum
+      // console.log(filterDepartment)
+      // console.log(sum)
       let url = 'api/interview-arrangement/info/like'
       let params = {
         admissionId: sessionStorage['homeAdmissionId'],
@@ -319,6 +321,29 @@ export default {
     current_change(currentPage) {
       this.currentPage = currentPage
       // console.log(currentPage)
+      let url = 'api/interview-arrangement/info/like'
+      let params = {
+        pageNum: currentPage,
+        admissionId: sessionStorage['homeAdmissionId'],
+        round: this.round,
+        departmentId: this.filterDepartmentId
+      }
+      this.$http
+        .get(url, params)
+        .then((response) => {
+          console.log(response)
+          if (response.data.code == '00000') {
+            this.tableData = []
+            this.total = response.data.data.total
+            this.tableData = response.data.data.infoBackParamList
+          } else {
+            this.$message.error(response.data.message)
+          }
+        })
+        .catch((error) => {
+          console.log(error)
+          this.$message.error('获取表格信息失败！')
+        })
     },
     pdBtn() {
       var btn0 = document.activeElement
