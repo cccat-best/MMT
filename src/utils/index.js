@@ -15,11 +15,11 @@ export const get = (url, params) => {
         params
       })
       .then((res) => {
-          resolve(res)
-          // console.log(res)
+        resolve(res)
+        // console.log(res)
       })
       .catch((err) => {
-          reject(err)
+        reject(err)
       })
   })
 }
@@ -30,10 +30,10 @@ export const post = (url, data) => {
     $http
       .post(url, data)
       .then((res) => {
-          resolve(res)
+        resolve(res)
       })
       .catch((err) => {
-          reject(err)
+        reject(err)
       })
   })
 }
