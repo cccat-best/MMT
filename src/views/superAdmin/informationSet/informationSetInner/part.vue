@@ -2,7 +2,7 @@
   <div class="part">
     <div class="title">{{ title }}</div>
     <div class="name">
-      <span class="innerSpan">部门名:</span>
+      <span class="innerSpan" id="departmentRecruiting">部门名:</span>
       <el-input
         type="text"
         placeholder="部门名称"
