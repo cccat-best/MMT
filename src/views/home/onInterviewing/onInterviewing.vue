@@ -590,7 +590,14 @@ export default {
           //   }]
           //真实数据
           let data = res.data.data.addressAndDataBackParamList
-          this.options = data
+          let reldata=[]
+          //去掉null项
+          data.forEach((item)=>{
+            if(item!=null){
+              reldata.push(item)
+            }
+          })
+          this.options = reldata
           //默认展示第一个地点的数据
           if (data.length != 0) {
             this.position = data[0].address
@@ -601,6 +608,7 @@ export default {
           }
         })
         .catch(() => {
+          this.loading = false
           this.$message({
             showClose: true,
             message: '获取面试地点失败',
@@ -924,14 +932,14 @@ export default {
           // }
           //真实
           let data = res.data.data
-          data.realTimeInfoParamList.forEach((item,index) => {
+          data.realTimeInfoParamList.forEach((item, index) => {
             if (item.status == 4) {
               item.status = '未签到'
             }
             if (item.status == 5) {
               item.status = '已签到'
             }
-            item.num=(this.currentPage-1)*10+index+1
+            item.num = (this.currentPage - 1) * 10 + index + 1
           })
           this.totalNum = data.total
           this.tableData = data.realTimeInfoParamList
