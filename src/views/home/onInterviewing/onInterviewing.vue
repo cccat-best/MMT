@@ -705,14 +705,14 @@ export default {
         post
           .then((res) => {
             if (res.data.code == 'A0400') {
-            this.$message({
-              showClose: true,
-              message: res.data.message,
-              type: 'error',
-              center: true,
-              duration: 2000
-            })
-          }else{
+              this.$message({
+                showClose: true,
+                message: res.data.message,
+                type: 'error',
+                center: true,
+                duration: 2000
+              })
+            } else {
               // console.log(res, '获取二维码')
               this.loadingtwo = false
               //模拟数据
@@ -765,7 +765,7 @@ export default {
               center: true,
               duration: 2000
             })
-          }else{
+          } else {
             this.dialogVisible3 = true
             // console.log(res, '面试评价数据')
             // 模拟数据
