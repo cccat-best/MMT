@@ -292,7 +292,7 @@ export default {
         ],
         studentId: [
           { required: true, message: '请输入学号', trigger: 'blur' },
-          { pattern: /^202\d{5}$/, message: '学号格式不对', trigger: 'blur' }
+          { pattern: /^20[12]\d{5}$/, message: '学号格式不对', trigger: 'blur' }
         ],
         phone: [
           { required: true, message: '请输入电话号', trigger: 'blur' },

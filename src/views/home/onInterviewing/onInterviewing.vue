@@ -76,9 +76,10 @@
         :cell-style="{ padding: '0' }"
         :row-style="{ height: '0' }"
         v-loading="loading"
+        height="50vh"
       >
         <!-- id -->
-        <el-table-column label="ID" align="center" width="100" type="index">
+        <el-table-column label="ID" align="center" width="100" prop="num">
         </el-table-column>
         <!-- 学号 -->
         <el-table-column prop="studentId" label="学号" align="center">
@@ -923,13 +924,14 @@ export default {
           // }
           //真实
           let data = res.data.data
-          data.realTimeInfoParamList.forEach((item) => {
+          data.realTimeInfoParamList.forEach((item,index) => {
             if (item.status == 4) {
               item.status = '未签到'
             }
             if (item.status == 5) {
               item.status = '已签到'
             }
+            item.num=(this.currentPage-1)*10+index+1
           })
           this.totalNum = data.total
           this.tableData = data.realTimeInfoParamList
@@ -1167,7 +1169,7 @@ export default {
   height: calc(100vh - 102px);
   // background-color: rgb(46, 108, 183);
   background-color: white;
-  min-width: 1100px;
+  min-width: 1000px;
   min-height: 620px;
   .one {
     // background-color: rgb(37, 189, 98);
@@ -1285,7 +1287,8 @@ export default {
   }
   .five {
     .table {
-      height: calc(100vh - 379px);
+      // height: calc(100vh - 379px);
+
       min-height: 330px;
     }
     .resumeTable {
@@ -1477,7 +1480,7 @@ export default {
       display: inline-block;
       position: absolute;
       top: 5px;
-      left: 62%;
+      left: 70%;
     }
   }
 }
