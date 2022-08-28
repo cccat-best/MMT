@@ -24,9 +24,7 @@
         </el-input>
       </div>
       <el-table
-        :data="
-          tableData.slice((currentPage - 1) * pagesize, currentPage * pagesize)
-        "
+        :data="tableData"
         :header-cell-style="{ 'text-align': 'center' }"
         height="291px"
         border
@@ -66,39 +64,8 @@
           column-key="department"
           filter-placement="bottom-end"
         >
-          <!-- <span>{{ scope.row.departmentName[0].name }}</span> -->
         </el-table-column>
 
-        <!-- <el-table-column prop="department" label="面试部门" width="">
-          <template slot-scope="scope" style="position: relative">
-            <span>{{ scope.row.department[newDep].departmentName }}</span>
-            <el-dropdown
-              trigger="click"
-              @command="handleCommand"
-              style="position: absolute; right: 10px; margin-top: 8%"
-            >
-              <span
-                style="
-                  cursor: pointer;
-                  width: 0;
-                  border: 4px solid;
-                  border-color: #333 transparent transparent transparent;
-                  margin-left: 10px;
-                  /* margin-top: 2px; */
-                "
-              ></span>
-              <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item
-                  @click.native="changeDepartment(scope.row)"
-                  v-for="(item, index) in scope.row.department"
-                  :command="index"
-                  :key="index"
-                  >{{ item.departmentName }}</el-dropdown-item
-                >
-              </el-dropdown-menu>
-            </el-dropdown>
-          </template>
-        </el-table-column> -->
         <el-table-column label="通知状态" width="120">
           <template slot-scope="scope">
             <span>{{ pd(scope.row.status) }} </span></template
@@ -112,6 +79,7 @@
             background
             layout="prev, pager, next"
             :total="total"
+            :current-page="currentPage"
             @current-change="current_change"
           >
           </el-pagination>
@@ -256,6 +224,7 @@ export default {
       this.$bus.$emit('arrangeSelectionStudentName', selectionStudentName)
     },
     filterChange(filters) {
+      this.currentPage = 1
       let filterDepartment = []
       filterDepartment = filters.department
       let length = filterDepartment.length
@@ -326,12 +295,13 @@ export default {
         pageNum: currentPage,
         admissionId: sessionStorage['homeAdmissionId'],
         round: this.round,
-        departmentId: this.filterDepartmentId
+        departmentId: this.filterDepartmentId,
+        keyword: this.search
       }
       this.$http
         .get(url, params)
         .then((response) => {
-          console.log(response)
+          // console.log(response)
           if (response.data.code == '00000') {
             this.tableData = []
             this.total = response.data.data.total
@@ -476,7 +446,7 @@ export default {
     this.$http
       .get(url, params)
       .then((response) => {
-        console.log(response)
+        // console.log(response)
         if (response.data.code == '00000') {
           this.tableData = []
           this.total = response.data.data.total

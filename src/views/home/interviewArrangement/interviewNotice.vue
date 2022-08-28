@@ -224,7 +224,7 @@ export default {
                           let timeValuePersonal = hh + ':' + mm
                           let timeValuePersonal0 =
                             dateValuePersonal + '  ' + timeValuePersonal
-                          console.log(timeValuePersonal0)
+                          // console.log(timeValuePersonal0)
                           messages.push(
                             this.messageTemplate
                               .replace(/{name}/, element)

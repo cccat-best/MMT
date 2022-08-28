@@ -1,5 +1,5 @@
 import axios from 'axios'
-import Router from '../router/index'
+// import Router from '../router/index'
 
 let baseURL = ''
 
@@ -18,7 +18,7 @@ export const get = (url, params) => {
       })
       .then((res) => {
         if (res.data.code == 'A0400' || res.data.code == '10003') {
-          Router.push('/login')
+          // Router.push('/login')
           // console.log(res)
         } else {
           resolve(res)
@@ -26,7 +26,7 @@ export const get = (url, params) => {
       })
       .catch((err) => {
         if (err.data.code == 'A0400' || err.data.code == '10003') {
-          Router.push('/login')
+          // Router.push('/login')
         } else {
           reject(err)
         }
@@ -41,14 +41,14 @@ export const post = (url, data) => {
       .post(url, data)
       .then((res) => {
         if (res.data.code == 'A0400' || res.data.code == '10003') {
-          Router.push('/login')
+          // Router.push('/login')
         } else {
           resolve(res)
         }
       })
       .catch((err) => {
         if (err.data.code == 'A0400' || err.data.code == '10003') {
-          Router.push('/login')
+          // Router.push('/login')
         } else {
           reject(err)
         }
