@@ -36,7 +36,7 @@
         <div class="upper">
           <div class="upperLeft">
             <div class="upperLeftInner">
-              <div class="upperLeftInnerFlex" style="margin-top:20px">
+              <div class="upperLeftInnerFlex" style="margin-top: 20px">
                 <span><i class="el-icon-s-data"></i> 报名总人数 :</span>
                 <span>{{ upperLeftData.totalRegistrations }}人</span>
               </div>
@@ -47,9 +47,7 @@
                 <span> {{ upperLeftData.todayRegistrations }}人 </span>
               </div>
               <div class="upperLeftButtomFont">
-               第一志愿报名人数：{{
-                  upperLeftData.firstChoiceNum
-                }}人
+                第一志愿报名人数：{{ upperLeftData.firstChoiceNum }}人
               </div>
             </div>
           </div>
@@ -59,44 +57,28 @@
                 class="upperRightInnerFlex"
                 v-if="drawDone && pieUseData[0] != null"
               >
-                <span
-                  >部门一: 总人数: {{
-                    pieUseData[0].value
-                  }}人</span
-                >
+                <span>部门一: 总人数: {{ pieUseData[0].value }}人</span>
                 <span> 今日新增：{{ pieData.pieData[0].todayNum }}人</span>
               </div>
               <div
                 class="upperRightInnerFlex"
                 v-if="drawDone && pieUseData[1] != null"
               >
-                <span
-                  >部门二: 总人数: {{
-                    pieUseData[1].value
-                  }}人</span
-                >
+                <span>部门二: 总人数: {{ pieUseData[1].value }}人</span>
                 <span> 今日新增：{{ pieData.pieData[1].todayNum }}人</span>
               </div>
               <div
                 class="upperRightInnerFlex"
                 v-if="drawDone && pieUseData[2] != null"
               >
-                <span
-                  >部门三: 总人数: {{
-                    pieUseData[2].value
-                  }}人</span
-                >
+                <span>部门三: 总人数: {{ pieUseData[2].value }}人</span>
                 <span> 今日新增：{{ pieData.pieData[2].todayNum }}人</span>
               </div>
               <div
                 class="upperRightInnerFlex"
                 v-if="drawDone && pieUseData[3] != null"
               >
-                <span
-                  >部门四: 总人数: {{
-                    pieUseData[3].value
-                  }}人</span
-                >
+                <span>部门四: 总人数: {{ pieUseData[3].value }}人</span>
                 <span> 今日新增：{{ pieData.pieData[3].todayNum }}人</span>
               </div>
             </div>
@@ -188,12 +170,12 @@ export default {
         .then((res) => {
           console.log('饼图数据', res.data.data.pieData)
           this.pieData = res.data.data
-          this.pieUseData = res.data.data.pieData.map((item,index) => {
+          this.pieUseData = res.data.data.pieData.map((item, index) => {
             // console.log(item)
-            let indexChinese = this.toChinese(index+1)
+            let indexChinese = this.toChinese(index + 1)
             return Object.assign(
               {},
-              { value: item.totalNum, name: '部门'+indexChinese }
+              { value: item.totalNum, name: '部门' + indexChinese }
             )
           })
         })
@@ -208,7 +190,7 @@ export default {
                 type: 'pie',
                 data: this.pieUseData,
                 radius: '50%',
-                 label: {
+                label: {
                   normal: {
                     show: true,
                     position: 'inner',
@@ -375,7 +357,7 @@ export default {
       align-items: center;
       justify-content: space-around;
       .upperRightInner {
-        letter-spacing:2px;
+        letter-spacing: 2px;
         width: 60%;
         height: 100%;
         display: flex;
