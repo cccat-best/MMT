@@ -290,11 +290,8 @@ export default {
               right: 5,
               top: 5
             },
-            tooltip: {
-              trigger: 'axis'
-            },
             xAxis: {
-              data: this.lineData.sequence
+              data: this.lineData.time
             },
             yAxis: {},
             series: this.lineInnerData
