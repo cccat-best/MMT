@@ -94,12 +94,12 @@ export default {
           organizationId: sessionStorage['loginOrganizationId'],
           studentInfo: studentInfo
         }
-        console.log(changeForm)
+        // console.log(changeForm)
         const url1 = 'api/interview-reply/status'
         let post3 = this.$http.post(url1, changeForm)
         post3
           .then((res) => {
-            console.log(res)
+            // console.log(res)
             if (res.data.code == '00000') {
               this.centerDialogVisible = false
               this.$message({

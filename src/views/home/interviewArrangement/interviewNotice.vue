@@ -117,12 +117,12 @@ export default {
     dateTimeValue() {
       this.timestamp2 = 0
       this.timestamp = this.dateTime.getTime() / 1000
-      var year = this.dateTime.getFullYear() //年
-      var month = this.dateTime.getMonth() + 1 //月
-      var day = this.dateTime.getDate() //日
+      let year = this.dateTime.getFullYear() //年
+      let month = this.dateTime.getMonth() + 1 //月
+      let day = this.dateTime.getDate() //日
       this.dateValue0 = year + '-' + month + '-' + day
-      var hh = this.dateTime.getHours() //时
-      var mm = this.dateTime.getMinutes() //分
+      let hh = this.dateTime.getHours() //时
+      let mm = this.dateTime.getMinutes() //分
       if (hh < 10) {
         hh = '0' + hh
       }
@@ -130,7 +130,6 @@ export default {
         mm = '0' + mm
       }
       this.timeValue0 = hh + ':' + mm
-      // console.log(this.timestamp)
       this.timeValue = this.dateValue0 + '  ' + this.timeValue0
     },
     queding() {
@@ -187,7 +186,7 @@ export default {
             let post3 = this.$http.post(url3, form3)
             post3
               .then((res) => {
-                console.log('安排面试:', res)
+                // console.log('安排面试:', res)
                 if (res.data.code == '00000') {
                   // 确定获取模板
                   const url1 = 'api/interview-arrangement/getNotice'
@@ -198,20 +197,38 @@ export default {
                   this.$http
                     .get(url1, params)
                     .then((res) => {
-                      console.log('获取模板:', res)
+                      // console.log('获取模板:', res)
                       if (res.data.code == '00000') {
                         this.messageTemplate = res.data.data.messageTemplate
                           .replace(/{department}/, this.departmentName)
                           .replace(/{round}/, this.order)
                           .replace(/{location}/, this.address)
                         let messages = []
-                        this.studentName.forEach((element) => {
+                        this.studentName.forEach((element, index) => {
+                          let timestampPersonal =
+                            (this.partTimeNum * 60 * index + this.timestamp) *
+                            1000
+                          let timePersonal = new Date(timestampPersonal)
+                          let year = timePersonal.getFullYear() //年
+                          let month = timePersonal.getMonth() + 1 //月
+                          let day = timePersonal.getDate() //日
+                          let dateValuePersonal = year + '-' + month + '-' + day
+                          let hh = timePersonal.getHours() //时
+                          let mm = timePersonal.getMinutes() //分
+                          if (hh < 10) {
+                            hh = '0' + hh
+                          }
+                          if (mm < 10) {
+                            mm = '0' + mm
+                          }
+                          let timeValuePersonal = hh + ':' + mm
+                          let timeValuePersonal0 =
+                            dateValuePersonal + '  ' + timeValuePersonal
+                          console.log(timeValuePersonal0)
                           messages.push(
-                            this.messageTemplate.replace(/{name}/, element)
-                            // .replace(
-                            //   /{time}/,
-                            //   this.dateValue0 + ' ' + this.timeValue0
-                            // )
+                            this.messageTemplate
+                              .replace(/{name}/, element)
+                              .replace(/{time}/, timeValuePersonal0)
                           )
                         })
                         let postNoticeParams = []
@@ -223,7 +240,7 @@ export default {
                         })
                         // 确定发送通知
                         var form2 = {
-                          message: postNoticeParams,
+                          postNoticeParams: postNoticeParams,
                           studentId: this.studentId,
                           organizationId:
                             sessionStorage['loginOrganizationId'] * 1,
@@ -231,12 +248,12 @@ export default {
                           departmentId: this.departmentId,
                           round: this.round
                         }
-                        console.log(form2)
+                        // console.log(form2)
                         const url2 = 'api/interview-arrangement/postNotice'
                         let post2 = this.$http.post(url2, form2)
                         post2
                           .then((res) => {
-                            console.log('发送通知:', res)
+                            // console.log('发送通知:', res)
                             if (res.data.code == '00000') {
                               this.$message({
                                 message: '发送成功！',

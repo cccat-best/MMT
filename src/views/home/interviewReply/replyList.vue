@@ -175,7 +175,7 @@ export default {
     },
     current_change(currentPage) {
       this.currentPage = currentPage
-      console.log(currentPage)
+      // console.log(currentPage)
       let params = {}
       if (this.sortOrder == 'descending') {
         params = {
@@ -219,7 +219,7 @@ export default {
       this.$http
         .get(url, params)
         .then((response) => {
-          console.log(response)
+          // console.log(response)
           if (response.data.code == '00000') {
             this.information = response.data.data.information
           } else {
@@ -246,7 +246,7 @@ export default {
       let post3 = this.$http.post(url1, sinForm)
       post3
         .then((res) => {
-          console.log(res)
+          // console.log(res)
           if (res.data.code == '00000') {
             row.status = 2
           } else {
@@ -273,7 +273,7 @@ export default {
       let post3 = this.$http.post(url1, sinForm)
       post3
         .then((res) => {
-          console.log(res)
+          // console.log(res)
           if (res.data.code == '00000') {
             row.status = 1
           } else {
@@ -300,7 +300,7 @@ export default {
       let post3 = this.$http.post(url1, sinForm)
       post3
         .then((res) => {
-          console.log(res)
+          // console.log(res)
           if (res.data.code == '00000') {
             row.status = 3
           } else {
@@ -356,7 +356,7 @@ export default {
       this.$http
         .get(url, params1)
         .then((response) => {
-          console.log(response)
+          // console.log(response)
           if (response.data.code == '00000') {
             this.information = response.data.data.information
           } else {
@@ -372,7 +372,7 @@ export default {
       let status = filters.status
       const sum = eval(status.join('+'))
       this.filterStatus = sum
-      console.log(sum)
+      // console.log(sum)
       let url = 'api/interview-reply/stu-info'
       let params2 = {
         organizationId: sessionStorage['loginOrganizationId'],
@@ -384,7 +384,7 @@ export default {
       this.$http
         .get(url, params2)
         .then((response) => {
-          console.log(response)
+          // console.log(response)
           if (response.data.code == '00000') {
             this.win = response.data.data.win
             this.pass = response.data.data.pass
@@ -418,7 +418,7 @@ export default {
       this.$refs.resumeDialog.resumeDialogVisible = true
       this.$refs.resumeDialog.studentId = data.studentId
       this.$refs.resumeDialog.Mymounted()
-      console.log(data.stuNum + '记得删')
+      // console.log(data.stuNum + '记得删')
     }
   },
   created() {
@@ -432,7 +432,7 @@ export default {
     this.$http
       .get(url, params)
       .then((response) => {
-        console.log(response)
+        // console.log(response)
         if (response.data.code == '00000') {
           this.win = response.data.data.win
           this.pass = response.data.data.pass
@@ -481,7 +481,7 @@ export default {
       this.$http
         .get(url, params)
         .then((response) => {
-          console.log(response)
+          // console.log(response)
           if (response.data.code == '00000') {
             this.win = response.data.data.win
             this.pass = response.data.data.pass
@@ -508,7 +508,7 @@ export default {
       this.$http
         .get(url, params)
         .then((response) => {
-          console.log(response)
+          // console.log(response)
           if (response.data.code == '00000') {
             this.win = response.data.data.win
             this.pass = response.data.data.pass
@@ -530,7 +530,7 @@ export default {
       clearTimeout(this.timer)
       // 重新启动一个延时器，并把 timerId 赋值给 this.timer
       this.timer = setTimeout(() => {
-        console.log(this.keyWord)
+        // console.log(this.keyWord)
         let url3 = 'api/interview-reply/stu-search'
         let params3 = {
           keyWord: this.keyWord,
@@ -541,7 +541,7 @@ export default {
         this.$http
           .get(url3, params3)
           .then((response) => {
-            console.log(response)
+            // console.log(response)
             if (response.data.code == '00000') {
               this.win = response.data.data.win
               this.pass = response.data.data.pass

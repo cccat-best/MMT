@@ -151,7 +151,7 @@ export default {
       clearTimeout(this.timer)
       // 重新启动一个延时器，并把 timerId 赋值给 this.timer
       this.timer = setTimeout(() => {
-        console.log(this.search)
+        // console.log(this.search)
         let url = 'api/interview-arrangement/info/like'
         let params = {
           admissionId: sessionStorage['homeAdmissionId'],
@@ -161,7 +161,7 @@ export default {
         this.$http
           .get(url, params)
           .then((response) => {
-            console.log(response)
+            // console.log(response)
             if (response.data.code == '00000') {
               this.tableData = []
               this.total = response.data.data.total
@@ -226,7 +226,7 @@ export default {
     handleSeclect(val) {
       this.departmentName = []
       this.departmentId = []
-      console.log(val)
+      // console.log(val)
       this.departmentId = val[0].departmentId
       for (let i = 1; i < val.length; ++i) {
         if (val[i].departmentId != this.departmentId) {
@@ -250,7 +250,7 @@ export default {
       val.forEach((element) => {
         selectionStudentName.push(element.studentName)
       })
-      console.log(selectionStudentId)
+      // console.log(selectionStudentId)
       this.$bus.$emit('arrangeSelectionStudentId1', selectionStudentId)
       this.$bus.$emit('arrangeSelectionStudentName', selectionStudentName)
     },
@@ -259,19 +259,12 @@ export default {
       filterDepartment = filters.department
       console.log(filterDepartment)
     },
-    // changeDepartment(e) {
-    //   console.log(e)
-    // },
-    // handleCommand(command) {
-    //   console.log('click on item ' + command)
-    //   this.newDep = command
-    // },
     indexMethod(index) {
       return (this.currentPage - 1) * this.pagesize + index + 1
     },
     current_change(currentPage) {
       this.currentPage = currentPage
-      console.log(currentPage)
+      // console.log(currentPage)
     },
     pdBtn() {
       var btn0 = document.activeElement
@@ -291,7 +284,7 @@ export default {
         this.$http
           .get(url, params)
           .then((response) => {
-            console.log(response)
+            // console.log(response)
             if (response.data.code == '00000') {
               this.tableData = []
               this.total = response.data.data.total
@@ -320,7 +313,7 @@ export default {
         this.$http
           .get(url, params)
           .then((response) => {
-            console.log(response)
+            // console.log(response)
             if (response.data.code == '00000') {
               this.tableData = []
               this.total = response.data.data.total
@@ -349,7 +342,7 @@ export default {
         this.$http
           .get(url, params)
           .then((response) => {
-            console.log(response)
+            // console.log(response)
             if (response.data.code == '00000') {
               this.tableData = []
               this.total = response.data.data.total
@@ -372,7 +365,7 @@ export default {
     this.$http
       .get(url1)
       .then((response) => {
-        console.log(response)
+        // console.log(response)
         if (response.data.code == '00000') {
           this.department = []
           this.filterDepartment = []
@@ -404,7 +397,7 @@ export default {
     this.$http
       .get(url, params)
       .then((response) => {
-        console.log(response)
+        // console.log(response)
         if (response.data.code == '00000') {
           this.tableData = []
           this.total = response.data.data.total

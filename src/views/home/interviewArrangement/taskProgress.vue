@@ -47,7 +47,7 @@ export default {
       this.$http
         .get(url, params)
         .then((response) => {
-          console.log(response)
+          // console.log(response)
           if (response.data.code == '00000') {
             this.total = response.data.data.totalStu
             this.done = response.data.data.informedStu
@@ -81,7 +81,7 @@ export default {
     this.$http
       .get(url, params)
       .then((response) => {
-        console.log(response)
+        // console.log(response)
         if (response.data.code == '00000') {
           this.total = response.data.data.totalStu
           this.done = response.data.data.informedStu
