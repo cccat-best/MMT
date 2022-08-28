@@ -96,8 +96,8 @@ export default {
           type: 'error'
         })
       } else if (
-        this.loginForm.studentId < 10000000 ||
-        this.loginForm.studentId > 99999999
+        this.loginForm.studentId < 20110000 ||
+        this.loginForm.studentId > 20299999
       ) {
         this.$message({
           showClose: true,
