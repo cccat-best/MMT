@@ -579,7 +579,7 @@ export default {
       let post = this.$http.post(url, sendData)
       post
         .then((res) => {
-          console.log(res, '获取地点信息')
+          // console.log(res, '获取地点信息')
           // 模拟数据
           // let data = [
           //   {
@@ -628,7 +628,7 @@ export default {
       let post = this.$http.post(url, sendData)
       post
         .then((res) => {
-          console.log(res, '获取进度条数据')
+          // console.log(res, '获取进度条数据')
           // 模拟数据
           // let data = [
           //   {
@@ -703,7 +703,7 @@ export default {
         let post = this.$http.post(url, sendData)
         post
           .then((res) => {
-            console.log(res, '获取二维码')
+            // console.log(res, '获取二维码')
             this.loadingtwo = false
             //模拟数据
             // let data = {
@@ -744,7 +744,7 @@ export default {
       let post = this.$http.post(url, sendData)
       post
         .then((res) => {
-          console.log(res, '面试评价数据')
+          // console.log(res, '面试评价数据')
           // 模拟数据
           // let data = {
           //   data: 'good',
@@ -811,8 +811,8 @@ export default {
       let url = `api/real-time-interview/appraise`
       let post = this.$http.post(url, sendData)
       post
-        .then((res) => {
-          console.log(res, '发送面试评价')
+        .then(() => {
+          // console.log(res, '发送面试评价')
           this.$message({
             showClose: true,
             message: '评价成功',
@@ -847,7 +847,7 @@ export default {
       let get = this.$http.get(url)
       get
         .then((res) => {
-          console.log(res, '获取表格数据')
+          // console.log(res, '获取表格数据')
           this.loading = false
           // 模拟数据
           // let data = {
@@ -988,7 +988,7 @@ export default {
       let get = this.$http.get(url)
       get
         .then((res) => {
-          console.log(res, '简历数据')
+          // console.log(res, '简历数据')
           //模拟数据
           // let data = {
           //   studentId: 20222445,
