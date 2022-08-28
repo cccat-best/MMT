@@ -731,7 +731,7 @@ export default {
           message: '请编辑面试成功通知！！！',
           type: 'error',
           center: true,
-          duration: 2000
+          duration: 3000
         })
         this.successEmpty = false
       } else {
@@ -743,7 +743,7 @@ export default {
           message: '请编辑面试失败通知！！！',
           type: 'error',
           center: true,
-          duration: 2000
+          duration: 4000
         })
         this.failEmpty = false
       } else {
