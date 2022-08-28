@@ -674,15 +674,15 @@ export default {
     },
     //点击生成二维码按钮(ok)
     displayCode() {
-      if(this.position==''){
+      if (this.position == '') {
         this.$message({
-            showClose: true,
-            message: '请先选择面试地点',
-            type: 'error',
-            center: true,
-            duration: 2000
-          })
-      }else{
+          showClose: true,
+          message: '请先选择面试地点',
+          type: 'error',
+          center: true,
+          duration: 2000
+        })
+      } else {
         this.dialogVisible1 = true
         //生成二维码
         let sendData = {
