@@ -36,7 +36,7 @@
             blue === 3 ? 'informationSetDownNavInnerActive' : ''
           ]"
           @click="
-            // gotoRecruiting()
+            goAnchor('#departmentRecruiting')
             blue = 3
           "
         >
@@ -101,11 +101,13 @@ export default {
       this.$router.push({
         path: '/superAdmin/informationSet/informationSetEdit'
       })
+      // this.blue = 1
     },
     gotoSaved() {
       this.$router.push({
         path: '/superAdmin/informationSet/informationSetSaved'
       })
+      // this.blue = 1
     },
     //锚点跳转
     goAnchor(selector) {
