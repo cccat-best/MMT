@@ -281,10 +281,17 @@ export default {
               'loginOrganizationName',
               data.loginOrganizationName
             )
-            if (this.isPersonal) {
-              location.reload()
-            }
+            sessionStorage.setItem(
+              'loginOrganizationId',
+              data.loginOrganizationId
+            )
+            // sessionStorage.setItem('admissionId', data.loginAdmissionId)
+            sessionStorage.setItem('homeAdmissionId', data.loginAdmissionId)
 
+            // if (this.isPersonal) {
+            location.reload()
+            // }
+            // this.$router.go(0)
             this.$message({
               message: '切换成功',
               type: 'success'
