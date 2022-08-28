@@ -19,7 +19,7 @@
         <el-form-item label="账号" class="id" prop="studentId">
           <el-input
             placeholder="请输入学号/账号"
-            v-model="loginForm.studentId"
+            v-model.number="loginForm.studentId"
             class="input-id"
           >
           </el-input>
@@ -46,13 +46,32 @@
 <script>
 import { mapMutations } from 'vuex'
 import { mapState } from 'vuex'
-import loginData from './loginData'
+/* import loginData from './loginData' */
 
 export default {
   name: 'Login',
   data() {
     return {
-      ...loginData.data()
+      url: require('@../../../public/sipc.png'),
+      hideRequired: true,
+      // err: '',
+      loginForm: {
+        studentId: '',
+        password: ''
+      },
+
+      rules: {
+        studentId: [
+          { required: true, message: '请输入学号', trigger: 'blur' },
+          { type: 'number', message: '学号必须为数字值' }
+          // { min: 8, max: 8, message: '长度为8个数字', trigger: 'blur' }
+        ],
+        password: [
+          { required: true, message: '请输入密码', trigger: 'blur' },
+          { message: '密码不正确', trigger: 'blur' },
+          { min: 6, max: 16, message: '长度为6-16个字符', trigger: 'blur' }
+        ]
+      }
     }
   },
   watch: {},
@@ -74,6 +93,15 @@ export default {
         this.$message({
           showClose: true,
           message: '请输入账号',
+          type: 'error'
+        })
+      } else if (
+        this.loginForm.studentId < 10000000 ||
+        this.loginForm.studentId > 99999999
+      ) {
+        this.$message({
+          showClose: true,
+          message: '账号为八位数字',
           type: 'error'
         })
       } else if (this.loginForm.password === '') {

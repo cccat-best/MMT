@@ -1,40 +1,45 @@
 <template>
   <div class="informationBasicSaved" v-if="editShowMain">
-    <div class="basicInformationTitle" id="basicInformation">基本信息</div>
-    <!-- 下面是基本信息 -->
-    <div class="informationBasicSavedMid">
-      <div class="titleAndHeadImg">
-        <div class="headImg">
-          <el-avatar :size="300" :src="circleUrl"></el-avatar>
+    <el-card style="margin-bottom: 70px">
+      <span class="basicInformationTitle" id="basicInformation">基本信息</span>
+      <!-- 下面是基本信息 -->
+      <div class="informationBasicSavedMid">
+        <div class="titleAndHeadImg">
+          <div class="headImg">
+            <el-avatar :size="200" :src="circleUrl"></el-avatar>
+          </div>
+        </div>
+        <div class="informationRight">
+          <div class="upperFlex">
+            <span class="informationRightFont">社团名称：</span
+            ><el-input
+              v-model="editCommunityData.name"
+              placeholder="社团名称"
+              size="small"
+            ></el-input>
+          </div>
+          <div>
+            <el-tag size="medium" class="tags" effect="dark">校级组织</el-tag>
+            <el-tag size="medium" class="tags" type="success" effect="dark"
+              >学术科技</el-tag
+            >
+          </div>
+          <div class="upperFlex">
+            <span class="informationRightFont">简介：</span>
+            <el-input
+              v-model="editCommunityData.briefIntroduction"
+              placeholder="社团名称"
+              size="small"
+            ></el-input>
+          </div>
         </div>
       </div>
-      <div class="informationRight">
-        <div class="upperFlex">
-          <span class="informationRightFont">社团名称：</span
-          ><el-input
-            v-model="editCommunityData.name"
-            placeholder="社团名称"
-          ></el-input>
-        </div>
-        <div>
-          <el-tag size="medium" class="tags" effect="dark">校级组织</el-tag>
-          <el-tag size="medium" class="tags" type="success" effect="dark"
-            >学术科技</el-tag
-          >
-        </div>
-        <div class="upperFlex">
-          <span class="informationRightFont">简介：</span>
-          <el-input
-            v-model="editCommunityData.briefIntroduction"
-            placeholder="社团名称"
-          ></el-input>
-        </div>
-      </div>
-    </div>
+    </el-card>
     <!-- 基本信息结束 -->
+    <!-- <<<<<<< HEAD
     <el-divider></el-divider>
     <div class="basicInformationTitle" id="associations">社团宣传</div>
-    <!-- 下面是社团宣传 -->
+    <!- - 下面是社团宣传 - ->
     <div class="associations">
       <div class="associationsBox">
         <div class="associationsTitleFont">联系方式</div>
@@ -120,57 +125,150 @@
         >
         </el-input>
       </div>
-    </div>
+    </div> -->
+    <el-card style="margin-bottom: 70px; padding-bottom: 70px">
+      <span class="basicInformationTitle" id="associations">社团宣传</span>
+      <!-- 下面是社团宣传 -->
+      <div class="associations">
+        <div class="associationsBox">
+          <div class="associationsTitleFont">联系方式</div>
+          <el-input
+            type="textarea"
+            :rows="7"
+            class="textIpt"
+            placeholder="联系方式"
+            v-model="editCommunityData.contactInfo"
+            resize="none"
+            maxlength="100"
+            show-word-limit
+          >
+          </el-input>
+        </div>
+        <div class="associationsBox">
+          <div class="associationsTitleFont">纳新宣言</div>
+          <el-input
+            type="textarea"
+            :rows="7"
+            class="textIpt"
+            placeholder="纳新宣言"
+            v-model="editCommunityData.slogan"
+            resize="none"
+            maxlength="100"
+            show-word-limit
+          >
+          </el-input>
+        </div>
+        <div class="associationsBox">
+          <div class="associationsTitleFont">社团介绍</div>
+          <el-input
+            type="textarea"
+            :rows="7"
+            class="textIpt"
+            placeholder="社团介绍"
+            v-model="editCommunityData.introduction"
+            resize="none"
+            maxlength="100"
+            show-word-limit
+          >
+          </el-input>
+        </div>
+        <div class="associationsBox">
+          <div class="associationsTitleFont">社团特色</div>
+          <el-input
+            type="textarea"
+            :rows="7"
+            class="textIpt"
+            placeholder="社团特色"
+            v-model="editCommunityData.feature"
+            resize="none"
+            maxlength="100"
+            show-word-limit
+          >
+          </el-input>
+        </div>
+        <div class="associationsBox">
+          <div class="associationsTitleFont">社团日常</div>
+          <el-input
+            type="textarea"
+            :rows="7"
+            class="textIpt"
+            placeholder="社团日常"
+            v-model="editCommunityData.daily"
+            resize="none"
+            maxlength="100"
+            show-word-limit
+          >
+          </el-input>
+        </div>
+        <div class="associationsBox">
+          <div class="associationsTitleFont">更多</div>
+          <el-input
+            type="textarea"
+            :rows="7"
+            class="textIpt"
+            placeholder="更多"
+            v-model="editCommunityData.more"
+            maxlength="100"
+            show-word-limit
+            resize="none"
+          >
+          </el-input>
+        </div>
+      </div>
+    </el-card>
     <!-- 社团宣传结束 -->
-    <el-divider></el-divider>
-    <div class="basicInformationTitle" id="departmentRecruiting">纳新部门</div>
-    <!--  -->
-    <div class="partDiv">
-      <i
-        class="el-icon-circle-plus-outline icons"
-        @click="pushNewDepartment()"
-      ></i>
-      <Part
-        id="partOne"
-        serial="0"
-        title="部门一"
-        :data="editCommunityData.departmentList[0]"
-      ></Part>
-    </div>
-    <div class="partDiv" v-if="editCommunityData.departmentList[1] != null">
-      <i
-        class="el-icon-remove-outline icons"
-        @click="spliceDepartment(1, '部门二')"
-      ></i>
-      <Part
-        id="partTwo"
-        serial="1"
-        title="部门二"
-        :data="editCommunityData.departmentList[1]"
-      ></Part>
-    </div>
-    <div class="partDiv" v-if="editCommunityData.departmentList[2] != null">
-      <i
-        class="el-icon-remove-outline icons"
-        @click="spliceDepartment(2, '部门三')"
-      ></i>
-      <Part
-        serial="2"
-        title="部门三"
-        :data="editCommunityData.departmentList[2]"
-      ></Part>
-    </div>
-    <div class="partDiv" v-if="editCommunityData.departmentList[3] != null">
-      <i
-        class="el-icon-remove-outline icons"
-        @click="spliceDepartment(3, '部门四')"
-      ></i>
-      <Part
-        serial="3"
-        title="部门四"
-        :data="editCommunityData.departmentList[3]"
-      ></Part>
-    </div>
+    <el-card>
+      <span class="basicInformationTitle" id="departmentRecruiting">
+        纳新部门
+      </span>
+      <!--  -->
+      <div class="partDiv">
+        <i
+          class="el-icon-circle-plus-outline icons"
+          @click="pushNewDepartment()"
+        ></i>
+        <Part
+          id="partOne"
+          serial="0"
+          title="部门一"
+          :data="editCommunityData.departmentList[0]"
+        ></Part>
+      </div>
+      <div class="partDiv" v-if="editCommunityData.departmentList[1] != null">
+        <i
+          class="el-icon-remove-outline icons"
+          @click="spliceDepartment(1, '部门二')"
+        ></i>
+        <Part
+          id="partTwo"
+          serial="1"
+          title="部门二"
+          :data="editCommunityData.departmentList[1]"
+        ></Part>
+      </div>
+      <div class="partDiv" v-if="editCommunityData.departmentList[2] != null">
+        <i
+          class="el-icon-remove-outline icons"
+          @click="spliceDepartment(2, '部门三')"
+        ></i>
+        <Part
+          serial="2"
+          title="部门三"
+          :data="editCommunityData.departmentList[2]"
+        ></Part>
+      </div>
+      <div class="partDiv" v-if="editCommunityData.departmentList[3] != null">
+        <i
+          class="el-icon-remove-outline icons"
+          @click="spliceDepartment(3, '部门四')"
+        ></i>
+        <Part
+          serial="3"
+          title="部门四"
+          :data="editCommunityData.departmentList[3]"
+        ></Part>
+      </div>
+    </el-card>
   </div>
 </template>
 
@@ -305,6 +403,7 @@ export default {
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
+  margin-top: 65px;
 }
 .informationBasicSavedMid {
   width: 70vw;
@@ -312,17 +411,15 @@ export default {
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
-  margin-bottom: 80px;
-  margin-top: 80px;
+  padding-bottom: 6vh;
+  margin-top: 6vh;
 }
 .associations {
   width: 70vw;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: flex-start;
-  margin-bottom: 80px;
-  margin-top: 80px;
+  align-items: center;
 }
 .basicInformationTitle {
   width: 150px;
@@ -332,9 +429,8 @@ export default {
   align-self: flex-start;
 }
 .headImg {
-  margin-top: 100px;
-  width: 300px;
-  height: 300px;
+  width: 200px;
+  height: 200px;
 }
 .titleAndHeadImg {
   width: 300px;
@@ -344,9 +440,9 @@ export default {
   align-items: center;
 }
 .informationRight {
-  margin-top: 100px;
   width: 450px;
-  height: 300px;
+  height: 220px;
+  margin-left: -10vw;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
@@ -357,11 +453,11 @@ export default {
 }
 .informationRightFont {
   width: 200px;
-  font-size: 26px;
+  font-size: 21px;
 }
 .associationsTitleFont {
   font-size: 24px;
-  margin: 60px 60px 60px 0px;
+  margin: 60px 0px 20px 0px;
   text-align: left;
 }
 .associationsTitleFontWhite {
@@ -371,15 +467,16 @@ export default {
 .associationsBox {
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  margin-bottom: 100px;
+  justify-content: center;
+  align-items: center;
 }
 .upperFlex {
   display: flex;
   flex-direction: row;
+  margin-bottom: -10px;
 }
 .textIpt {
-  width: 75vw;
+  width: 50vw;
 }
 .icons {
   font-size: 30px;
@@ -393,5 +490,7 @@ export default {
   display: flex;
   flex-direction: row;
   align-items: flex-start;
+  justify-content: space-evenly;
+  width: 70vw;
 }
 </style>

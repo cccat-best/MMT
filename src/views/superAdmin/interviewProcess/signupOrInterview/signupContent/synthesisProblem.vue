@@ -456,7 +456,7 @@ export default {
             allocated: this.allocated,
             comprehensiveQuestionsList: this.comprehensiveQuestionsList
           }
-          // console.log(qustionList)
+          //  console.log(qustionList)
           //调用函数发送请求
           this.sendTo(qustionList)
         })
