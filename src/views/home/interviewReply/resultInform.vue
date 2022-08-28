@@ -65,7 +65,13 @@ export default {
         !sessionStorage['replyDepartmentName'] ||
         sessionStorage['replyDepartmentName'] == '全部'
       ) {
-        alert('发送失败！请在面试复盘界面选择具体部门！')
+        this.$alert('发送失败！请在面试复盘界面选择具体部门！', '提示', {
+          confirmButtonText: '确定',
+          type: 'warning',
+          callback: () => {
+            window.history.go(-1)
+          }
+        })
       } else {
         let url8 = 'api/interview-arrangement/postNotice'
         let data8 = {
@@ -348,8 +354,13 @@ export default {
       this.passNum = 0
       this.selectTotal = 0
       setTimeout(() => {
-        alert('请在面试复盘界面选择具体部门！')
-        window.history.go(-1)
+        this.$alert('请在面试复盘界面选择具体部门！', '提示', {
+          confirmButtonText: '确定',
+          type: 'warning',
+          callback: () => {
+            window.history.go(-1)
+          }
+        })
       }, 600)
     }
   },

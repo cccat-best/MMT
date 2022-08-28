@@ -126,6 +126,7 @@ export default {
   name: 'personList',
   data() {
     return {
+      sameDepartment: true,
       departmentId: 0,
       filterDepartment: [],
       departmentName: '',
@@ -141,6 +142,9 @@ export default {
     }
   },
   watch: {
+    sameDepartment() {
+      this.$bus.$emit('arrangeSameDepartment', this.sameDepartment)
+    },
     search() {
       this.currentPage = 1
       // 清除 timer 对应的延时器
@@ -226,10 +230,15 @@ export default {
       this.departmentId = val[0].departmentId
       for (let i = 1; i < val.length; ++i) {
         if (val[i].departmentId != this.departmentId) {
-          alert('请选择相同面试部门进行通知操作！')
+          this.$alert('请选择相同面试部门进行通知操作！', '提示', {
+            confirmButtonText: '确定',
+            type: 'warning'
+          })
+          this.sameDepartment = false
           return 0
         }
       }
+      this.sameDepartment = true
       this.departmentName = val[0].departmentName
       this.$bus.$emit('arrangeSelectionDepartmentName', this.departmentName)
       this.$bus.$emit('arrangeSelectiondepartmentId', this.departmentId)

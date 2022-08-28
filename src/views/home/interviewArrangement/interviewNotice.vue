@@ -16,21 +16,6 @@
           placeholder="请选择开始日期时间"
         >
         </el-date-picker>
-        <!-- <el-date-picker
-          v-model="dateTime2"
-          type="datetime"
-          style="
-            width: 200px;
-            border-radius: 5px;
-            box-shadow: 1px 1px 3px 1px #e5e9f2;
-            margin-bottom: 0px;
-          "
-          size="small"
-          @change="dateTimeValue2"
-          placeholder="请选择结束日期时间"
-        >
-        </el-date-picker> -->
-        <!-- <span>请选择每人面试时间:</span> -->
         <el-input-number
           v-model="partTimeNum"
           @change="handleChangeTime"
@@ -109,6 +94,7 @@ export default {
   name: 'interviewNotice',
   data() {
     return {
+      sameDepartment: true,
       partTimeNum: undefined,
       name: 'XXX',
       departmentName: sessionStorage['loginOrganizationName'],
@@ -118,13 +104,9 @@ export default {
       order: '一面',
       round: 1,
       timestamp: 0,
-      timestamp2: 0,
       dateTime: '',
-      dateTime2: '',
       dateValue0: '',
-      dateValue2: '',
       timeValue0: '',
-      timeValue2: '',
       timeValue: '',
       address: '',
       messageTemplate: ''
@@ -151,37 +133,32 @@ export default {
       // console.log(this.timestamp)
       this.timeValue = this.dateValue0 + '  ' + this.timeValue0
     },
-    dateTimeValue2() {
-      this.timestamp2 = this.dateTime2.getTime() / 1000
-      if (this.timestamp == 0) {
-        alert('请先选择开始时间！')
-      } else if (this.timestamp > this.timestamp2) {
-        alert('结束时间需晚于开始时间！')
-      } else {
-        var year = this.dateTime2.getFullYear() //年
-        var month = this.dateTime2.getMonth() + 1 //月
-        var day = this.dateTime2.getDate() //日
-        this.dateValue2 = year + '-' + month + '-' + day
-        var hh = this.dateTime2.getHours() //时
-        var mm = this.dateTime2.getMinutes() //分
-        if (hh < 10) {
-          hh = '0' + hh
-        }
-        if (mm < 10) {
-          mm = '0' + mm
-        }
-        this.timeValue2 = hh + ':' + mm
-      }
-    },
     queding() {
-      if (this.studentId.length == 0) {
-        alert('请选择待通知的学生！')
+      if (!this.sameDepartment) {
+        this.$alert('请选择相同面试部门进行通知操作！', '提示', {
+          confirmButtonText: '确定',
+          type: 'warning'
+        })
+      } else if (this.studentId.length == 0) {
+        this.$alert('请选择待通知的学生！', '提示', {
+          confirmButtonText: '确定',
+          type: 'warning'
+        })
       } else if (this.timestamp == 0) {
-        alert('请选择正确的面试时间！')
+        this.$alert('请选择正确的面试时间！', '提示', {
+          confirmButtonText: '确定',
+          type: 'warning'
+        })
       } else if (this.partTimeNum == undefined || this.partTimeNum == 0) {
-        alert('请选择或输入正确的每人面试分钟数！')
+        this.$alert('请选择或输入正确的每人面试分钟数！', '提示', {
+          confirmButtonText: '确定',
+          type: 'warning'
+        })
       } else if (this.address == '') {
-        alert('面试地点不能为空！')
+        this.$alert('面试地点不能为空！', '提示', {
+          confirmButtonText: '确定',
+          type: 'warning'
+        })
       } else {
         this.$confirm('是否确定发送通知?', '提示', {
           confirmButtonText: '确定',
@@ -262,7 +239,7 @@ export default {
                             console.log('发送通知:', res)
                             if (res.data.code == '00000') {
                               this.$message({
-                                message: '通知成功！',
+                                message: '发送成功！',
                                 type: 'success'
                               })
                               location.reload()
@@ -272,7 +249,7 @@ export default {
                           })
                           .catch((err) => {
                             console.log(err)
-                            this.$message.error('通知失败！')
+                            this.$message.error('发送失败！')
                           })
                       } else {
                         this.$message.error(res.data.message)
@@ -293,7 +270,7 @@ export default {
           })
           .catch(() => {
             this.$message({
-              type: 'info',
+              type: 'warning',
               message: '已取消发送'
             })
           })
@@ -301,17 +278,20 @@ export default {
     }
   },
   mounted() {
-    this.$bus.$on('arrangeOrder', (data) => {
-      this.order = data
-      let that = this
-      if (data == '一面') {
-        that.round = 1
-      } else if (data == '二面') {
-        that.round = 2
-      } else if (data == '三面') {
-        that.round = 3
-      }
+    this.$bus.$on('arrangeSameDepartment', (data) => {
+      this.sameDepartment = data
     }),
+      this.$bus.$on('arrangeOrder', (data) => {
+        this.order = data
+        let that = this
+        if (data == '一面') {
+          that.round = 1
+        } else if (data == '二面') {
+          that.round = 2
+        } else if (data == '三面') {
+          that.round = 3
+        }
+      }),
       this.$bus.$on('arrangeSelectionStudentId1', (data) => {
         this.studentId = data
       }),
@@ -326,6 +306,8 @@ export default {
       })
   },
   beforeDestroy() {
+    this.$bus.$off('arrangeSameDepartment')
+
     this.$bus.$off('arrangeOrder')
     this.$bus.$off('arrangeSelectionStudentId1')
     this.$bus.$off('arrangeSelectionStudentName')
