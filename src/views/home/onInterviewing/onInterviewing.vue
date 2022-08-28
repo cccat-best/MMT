@@ -590,10 +590,10 @@ export default {
           //   }]
           //真实数据
           let data = res.data.data.addressAndDataBackParamList
-          let reldata=[]
+          let reldata = []
           //去掉null项
-          data.forEach((item)=>{
-            if(item!=null){
+          data.forEach((item) => {
+            if (item != null) {
               reldata.push(item)
             }
           })
