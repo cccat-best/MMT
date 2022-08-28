@@ -36,7 +36,7 @@
           box-shadow: 2px 2px 4px 2px #e5e9f2;
           width: 100%;
         "
-        :row-style="{ height: 0 + 'px', 'vertical-align': 'middle' }"
+        :row-style="{ height: 50 + 'px', 'vertical-align': 'middle' }"
         :cell-style="{
           padding: 0 + 'px',
           'text-align': 'center',
@@ -138,7 +138,8 @@ export default {
       search: '',
       timer: null,
       radio: '',
-      tableData: []
+      tableData: [],
+      filterDepartmentId: 0
     }
   },
   watch: {
@@ -257,7 +258,62 @@ export default {
     filterChange(filters) {
       let filterDepartment = []
       filterDepartment = filters.department
-      console.log(filterDepartment)
+      let length = filterDepartment.length
+      let sum = 0
+      for (let i = 0; i < length; ++i) {
+        if (filterDepartment[i] == 0) {
+          let url = 'api/interview-arrangement/info/like'
+          let params = {
+            admissionId: sessionStorage['homeAdmissionId'],
+            round: this.round,
+            departmentId: 0
+          }
+          this.$http
+            .get(url, params)
+            .then((response) => {
+              console.log(response)
+              if (response.data.code == '00000') {
+                this.tableData = []
+                this.total = response.data.data.total
+                this.tableData = response.data.data.infoBackParamList
+              } else {
+                this.$message.error(response.data.message)
+              }
+            })
+            .catch((error) => {
+              console.log(error)
+              this.$message.error('获取筛选信息失败！')
+            })
+          return 0
+        } else {
+          sum += filterDepartment[i] * Math.pow(10, length - 1 - i)
+        }
+      }
+      this.filterDepartmentId = sum
+      // console.log(filterDepartment)
+      // console.log(sum)
+      let url = 'api/interview-arrangement/info/like'
+      let params = {
+        admissionId: sessionStorage['homeAdmissionId'],
+        round: this.round,
+        departmentId: sum
+      }
+      this.$http
+        .get(url, params)
+        .then((response) => {
+          console.log(response)
+          if (response.data.code == '00000') {
+            this.tableData = []
+            this.total = response.data.data.total
+            this.tableData = response.data.data.infoBackParamList
+          } else {
+            this.$message.error(response.data.message)
+          }
+        })
+        .catch((error) => {
+          console.log(error)
+          this.$message.error('获取筛选信息失败！')
+        })
     },
     indexMethod(index) {
       return (this.currentPage - 1) * this.pagesize + index + 1
@@ -265,6 +321,29 @@ export default {
     current_change(currentPage) {
       this.currentPage = currentPage
       // console.log(currentPage)
+      let url = 'api/interview-arrangement/info/like'
+      let params = {
+        pageNum: currentPage,
+        admissionId: sessionStorage['homeAdmissionId'],
+        round: this.round,
+        departmentId: this.filterDepartmentId
+      }
+      this.$http
+        .get(url, params)
+        .then((response) => {
+          console.log(response)
+          if (response.data.code == '00000') {
+            this.tableData = []
+            this.total = response.data.data.total
+            this.tableData = response.data.data.infoBackParamList
+          } else {
+            this.$message.error(response.data.message)
+          }
+        })
+        .catch((error) => {
+          console.log(error)
+          this.$message.error('获取表格信息失败！')
+        })
     },
     pdBtn() {
       var btn0 = document.activeElement
@@ -397,7 +476,7 @@ export default {
     this.$http
       .get(url, params)
       .then((response) => {
-        // console.log(response)
+        console.log(response)
         if (response.data.code == '00000') {
           this.tableData = []
           this.total = response.data.data.total
