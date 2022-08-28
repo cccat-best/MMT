@@ -143,7 +143,7 @@
               <el-table-column
                 prop="stuRank"
                 label="名次"
-                width="150"
+                width="135"
                 header-align="center"
                 align="center"
               >
@@ -151,7 +151,7 @@
               <el-table-column
                 prop="stuName"
                 label="姓名"
-                width="150"
+                width="135"
                 header-align="center"
                 align="center"
               >
@@ -159,7 +159,7 @@
               <el-table-column
                 prop="stuCore"
                 label="成绩"
-                width="150"
+                width="135"
                 header-align="center"
                 align="center"
               >
@@ -461,7 +461,7 @@ export default {
 .interviewingRight {
   width: 29%;
   height: 97%;
-  margin: 20px 0 0 0;
+  margin: 20px 0 0 10px;
   background-color: white;
   border-radius: 20px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);

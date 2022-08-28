@@ -93,7 +93,7 @@
               <el-table-column
                 prop="stuRank"
                 label="名次"
-                width="150"
+                width="135"
                 header-align="center"
                 align="center"
               >
@@ -101,7 +101,7 @@
               <el-table-column
                 prop="stuName"
                 label="姓名"
-                width="150"
+                width="135"
                 header-align="center"
                 align="center"
               >
@@ -109,7 +109,7 @@
               <el-table-column
                 prop="stuCore"
                 label="成绩"
-                width="150"
+                width="135"
                 header-align="center"
                 align="center"
               >
@@ -456,7 +456,7 @@ export default {
 .interviewingRight {
   width: 29%;
   height: 97%;
-  margin: 20px 0 0 0;
+  margin: 20px 0 0 10px;
   background-color: white;
   border-radius: 20px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);
@@ -501,6 +501,7 @@ export default {
   }
 }
 .el-table2 {
+  text-align: center;
   padding: 0px;
   color: #252525;
   font-size: 15px;
@@ -523,5 +524,13 @@ export default {
     background-color: #a1a3a9; /*滚动条的背景颜色*/
     // rgba(24,144,255,0.50)
   }
+  // /deep/ .el-table__header-wrapper {
+  //   display: flex;
+  //   justify-content: space-around;
+  // }
+  // /deep/ .el-table__row {
+  //   display: flex;
+  //   justify-content: space-around;
+  // }
 }
 </style>
