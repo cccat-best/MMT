@@ -7,14 +7,11 @@ const $http = axios.create({
   baseURL,
   withCredentails: true
 })
-
+// 请求拦截器
 $http.interceptors.request.use((req) => {
-  if (req.url.indexOf('login') === -1 && req.url.indexOf('register') === -1) {
-    console.log('我是登录请求,我被调用了')
-  }
   return req
 })
-
+// 响应拦截器
 $http.interceptors.response.use((res) => {
   if (
     res.config.url.indexOf('login') === -1 &&
