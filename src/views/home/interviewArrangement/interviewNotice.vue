@@ -259,7 +259,9 @@ export default {
                                 message: '发送成功！',
                                 type: 'success'
                               })
-                              location.reload()
+                              setTimeout(() => {
+                                location.reload()
+                              }, 1000)
                             } else {
                               this.$message.error(res.data.message)
                             }
