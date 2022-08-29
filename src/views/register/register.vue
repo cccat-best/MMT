@@ -113,7 +113,7 @@ export default {
       rules: {
         studentId: [
           { required: true, message: '请输入学号', trigger: 'blur' },
-          { type: 'number', message: '学号必须为数字值', trigger: 'blur' },
+          { type: 'string', message: '学号必须为数字值', trigger: 'blur' },
           { min: 8, max: 8, message: '长度为8个数字', trigger: 'blur' }
         ],
         name: [

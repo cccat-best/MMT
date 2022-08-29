@@ -7,6 +7,23 @@ const $http = axios.create({
   withCredentails: true
 })
 
+$http.interceptors.request.use((req) => {
+  if (req.url.indexOf('login') === -1 && req.url.indexOf('register') === -1) {
+    console.log('我是登录请求,我被调用了')
+  }
+  return req
+})
+
+$http.interceptors.response.use((res) => {
+  if (
+    res.config.url.indexOf('login') === -1 &&
+    res.config.url.indexOf('register') === -1
+  ) {
+    console.log('我是响应请求,我被调用了')
+  }
+  return res
+})
+
 export const get = (url, params) => {
   params = params || {}
   return new Promise((resolve, reject) => {
