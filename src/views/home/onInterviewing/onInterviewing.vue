@@ -564,10 +564,10 @@ export default {
               duration: 2000
             })
           } else {
-          // console.log(res, '获取面试轮次')
-          this.round = res.data.data.round
-          this.dialogVisible3=true
-          this.getEvaluation()
+            // console.log(res, '获取面试轮次')
+            this.round = res.data.data.round
+            this.dialogVisible3 = true
+            this.getEvaluation()
           }
         })
         .catch(() => {
@@ -598,7 +598,7 @@ export default {
           //   {
           //     address: '6号楼206'
           //   }]
-          if(res.data.code=='A0400'){
+          if (res.data.code == 'A0400') {
             this.$message({
               showClose: true,
               message: res.data.message,
@@ -607,28 +607,27 @@ export default {
               duration: 0
             })
             this.loading = false
-          }
-          else{
-          //真实数据
-          let data = res.data.data.addressAndDataBackParamList
-          let reldata = []
-          //去掉null项
-          data.forEach((item) => {
-            if (item != null) {
-              reldata.push(item)
-            }
-          })
-          // this.options = reldata
-          //默认展示第一个地点的数据
-          if (reldata.length != 0) {
-            this.options = reldata
-            this.position = reldata[0].address
-            //在此获取表格数据 添加定时器
-            this.timer2 = setInterval(this.getTableData, 60000)
           } else {
-            this.loading = false
+            //真实数据
+            let data = res.data.data.addressAndDataBackParamList
+            let reldata = []
+            //去掉null项
+            data.forEach((item) => {
+              if (item != null) {
+                reldata.push(item)
+              }
+            })
+            // this.options = reldata
+            //默认展示第一个地点的数据
+            if (reldata.length != 0) {
+              this.options = reldata
+              this.position = reldata[0].address
+              //在此获取表格数据 添加定时器
+              this.timer2 = setInterval(this.getTableData, 60000)
+            } else {
+              this.loading = false
+            }
           }
-        }
         })
         .catch(() => {
           this.loading = false
