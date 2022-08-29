@@ -13,12 +13,12 @@
               @click="clDepartment"
               style="margin: 0 10px 10px 0"
               ref="depBtn"
-              class="depBtn"
               plain
               size="small"
               v-for="item in department"
               :key="item.id"
               :id="item.id"
+              :class="item.id == 0 ? 'depBtn clBtn' : 'depBtn'"
               >{{ item.name }}</el-button
             >
           </el-row>
@@ -36,12 +36,12 @@
               @click="clRoom"
               style="margin: 0 10px 10px 0"
               plain
-              class="roomBtn"
               size="small"
               ref="roomBtn"
               v-for="item in room"
               :key="item.id"
               :id="item.id"
+              :class="item.id == 0 ? 'roomBtn clBtn' : 'roomBtn'"
               >{{ item.name }}</el-button
             >
           </el-row>
@@ -89,11 +89,11 @@ export default {
   name: 'filterFigure',
   data() {
     return {
-      win: 3,
-      pass: 3,
-      wait: 3,
-      nedit: 2,
-      total: 11,
+      win: 0,
+      pass: 0,
+      wait: 0,
+      nedit: 0,
+      total: 0,
       department: [],
       room: [],
       departmentId: 0,
@@ -104,6 +104,7 @@ export default {
   methods: {
     drawChar() {
       // 基于准备好的dom，初始化echarts实例
+      echarts.init(this.$refs.pie).dispose()
       var myChart = echarts.init(this.$refs.pie)
       // 绘制图表
       myChart.setOption({
@@ -168,8 +169,8 @@ export default {
       document.activeElement.classList.add('clBtn')
       this.departmentId = document.activeElement.id
       this.departmentName = document.activeElement.innerText
-      console.log(this.departmentId)
-      console.log(this.departmentName)
+      // console.log(this.departmentId)
+      // console.log(this.departmentName)
       sessionStorage['replyDepartmentId'] = this.departmentId
       sessionStorage['replyDepartmentName'] = this.departmentName
       this.$bus.$emit('replyDepartmentId', this.departmentId)
@@ -182,7 +183,7 @@ export default {
       })
       document.activeElement.classList.add('clBtn')
       this.roomId = document.activeElement.id
-      console.log(this.roomId)
+      // console.log(this.roomId)
       this.$bus.$emit('replyRoomId', this.roomId)
     }
   },
@@ -203,39 +204,49 @@ export default {
         this.total = data
       })
   },
-  mounted() {
-    let admissionId = sessionStorage['homeAdmissionId']
-    let url1 = `api/interview-reply/department/${admissionId}`
+  watch: {
+    total() {
+      this.drawChar()
+    }
+  },
+  beforeMount() {
+    let organizationId = sessionStorage['loginOrganizationId']
+    let url1 = `api/interview-reply/department/${organizationId}`
     this.$http
       .get(url1)
       .then((response) => {
-        console.log(response)
-        this.drawChar()
-        let department = response.data.data.department
-        department.forEach((element) => {
-          this.department.push(element)
-        })
+        // console.log(response)
+        if (response.data.code == '00000') {
+          this.department = []
+          this.department = response.data.data.department
+        } else {
+          this.$message.error(response.data.message)
+        }
       })
       .catch((error) => {
         console.log(error)
+        // this.drawChar()
+        this.$message.error('获取部门信息失败！')
       })
 
-    let url2 = `api/interview-reply/room/${admissionId}`
+    let url2 = `api/interview-reply/room/${organizationId}`
     this.$http
       .get(url2)
       .then((response) => {
-        console.log(response)
-
-        let room = response.data.data.room
-        room.forEach((element) => {
-          this.room.push(element)
-        })
-        // console.log(this.room)
+        // console.log(response)
+        if (response.data.code == '00000') {
+          this.room = []
+          this.room = response.data.data.room
+        } else {
+          this.$message.error(response.data.message)
+        }
       })
       .catch((error) => {
         console.log(error)
+        this.$message.error('获取场地信息失败！')
       })
   },
+  mounted() {},
   beforeDestroy() {
     this.$bus.$off('replyWin')
     this.$bus.$off('replyPass')

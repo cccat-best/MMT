@@ -1,29 +1,52 @@
 <template>
   <div class="section">
-    <div class="section-title">部门问题</div>
+    <div class="section-title" ref="sectionPage">部门问题</div>
     <div class="section-content">
       <!-- 最大可报部门数 是否允许调剂 -->
-      <div class="section-content-top">
+      <div class="section-content-top" v-if="departmentCount >= 2">
         <!-- 最大可报部门 -->
         <div class="section-content-top-max">
           <span class="section-content-top-max-title">最多可报名部门数</span>
-          <el-input-number
-            v-model="maxDepartment"
-            controls-position="right"
-            :min="1"
-            :max="3"
-            size="mini"
-            :disabled="!isEdit"
-          ></el-input-number>
+          <el-tooltip
+            class="item"
+            effect="dark"
+            content="非编辑模式"
+            placement="bottom"
+            :disabled="isEdit"
+          >
+            <div>
+              <el-input-number
+                v-model="maxDepartment"
+                controls-position="right"
+                :min="1"
+                :max="3"
+                :disabled="!isEdit"
+                size="mini"
+                @change="changeMaxDepartment"
+                style="width: 100px"
+              ></el-input-number>
+            </div>
+          </el-tooltip>
         </div>
         <!-- 是否允许调剂 -->
-        <div class="section-content-top-allocated">
-          <el-checkbox
-            v-model="allocated"
-            v-if="departmentCount >= 2"
-            :disabled="!isEdit"
-            >允许调剂</el-checkbox
+        <div class="section-content-top-allocated" v-if="departmentCount >= 2">
+          <span>是否允许调剂部门</span>
+          <el-tooltip
+            class="item"
+            effect="dark"
+            content="非编辑模式"
+            placement="bottom"
+            :disabled="isEdit"
           >
+            <div>
+              <el-checkbox
+                v-model="allocated"
+                :disabled="!isEdit"
+                @change="changeAllocated"
+                class="section-content-top-allocated-checkbox"
+              ></el-checkbox>
+            </div>
+          </el-tooltip>
         </div>
       </div>
       <!-- 部门&&问题展示 -->
@@ -70,19 +93,32 @@ export default {
   },
   mounted() {
     this.getDeppartmentList()
+    window.addEventListener('scroll', this.sectionPage, true)
   },
   methods: {
     ...mapMutations('problem', ['updateMaxDepartment', 'updateAllocated']),
-    packgeSectionQue() {
-      //保存最大可报部门数 是否调剂
-      this.updateMaxDepartment(this.maxDepartment)
-      this.updateAllocated(this.allocated)
-      //保存问题到vuex （动态给组件绑定了ref a数组代表每一个组件）
-      if (!this.$refs.a) return
-      for (let i = 0; i < this.$refs.a.length; i++) {
-        this.$refs.a[i].saveToVuex()
+    sectionPage() {
+      // console.log(
+      //   '部门问题',
+      //   this.$refs.sectionPage.getBoundingClientRect().top
+      // )
+      if (
+        this.$refs.sectionPage.getBoundingClientRect().top >= 157 &&
+        this.$refs.sectionPage.getBoundingClientRect().top <= 357
+      ) {
+        this.$parent.sectionShow()
       }
     },
+    // packgeSectionQue() {
+    //   //保存最大可报部门数 是否调剂
+    //   this.updateMaxDepartment(this.maxDepartment)
+    //   this.updateAllocated(this.allocated)
+    //   //保存问题到vuex （动态给组件绑定了ref a数组代表每一个组件）
+    //   if (!this.$refs.a) return
+    //   for (let i = 0; i < this.$refs.a.length; i++) {
+    //     this.$refs.a[i].saveToVuex()
+    //   }
+    // },
     async getDeppartmentList() {
       const organizationId = sessionStorage.getItem('loginOrganizationId')
       const { data: res } = await this.$http.get(
@@ -92,6 +128,13 @@ export default {
       if (res.code != '00000') return this.$message.error('部门' + res.message)
       this.departmentCount = res.data.departmentList.length
       this.departmentList = res.data.departmentList
+    },
+    changeAllocated() {
+      // console.log(this.allocated);
+      this.updateAllocated(this.allocated)
+    },
+    changeMaxDepartment() {
+      this.updateMaxDepartment(this.maxDepartment)
     }
   },
   watch: {
@@ -112,37 +155,65 @@ export default {
         }, 500)
       }
     }
+    // maxDepartment(newV,oldV) {
+    //   // if(!this.isEdit) {
+    //   //   console.log('11');
+    //   //   this.maxDepartment = oldV
+    //   //   // return this.$message.error('非编辑模式')
+    //   // }
+    //   if (!this.isEdit) {
+    //      this.maxDepartment = oldV
+    //   }
+    // }
   },
   computed: {
     ...mapState('problem', ['isEdit'])
+  },
+  beforeDestroy() {
+    window.removeEventListener('scroll', this.sectionPage, true)
   }
 }
 </script>
 
 <style lang="less" scoped>
 .section {
+  margin-top: 30px;
   .section-title {
-    font-size: 30px;
+    // margin-left: 29px;
+    font-size: 26px;
     display: flex;
-    color: #828282;
+    color: #989898;
     margin-bottom: 20px;
   }
   .section-content {
-    margin-left: 25px;
+    margin-left: 65px;
     .section-content-top {
       display: flex;
-      align-items: center;
+      flex-direction: column;
+      // align-items: center;
+      text-align: left;
       .section-content-top-max {
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
         .section-content-top-max-title {
           padding-right: 5px;
-          font-size: 16px;
+          font-size: 20px;
+          margin-right: 101px;
         }
       }
       .section-content-top-allocated {
         display: flex;
         align-items: center;
-        margin-left: 40px;
-        font-size: 16px;
+        // margin-left: 40px;
+        font-size: 20px;
+        span {
+          margin-right: 106px;
+        }
+        .section-content-top-allocated-checkbox {
+          zoom: 179%;
+          margin-top: 3px;
+        }
       }
     }
     // 部门&&问题展示
@@ -151,7 +222,7 @@ export default {
       .section-que-content-title {
         display: flex;
         font-size: 20px;
-        margin-bottom: 20px;
+        margin-bottom: 15px;
       }
     }
   }

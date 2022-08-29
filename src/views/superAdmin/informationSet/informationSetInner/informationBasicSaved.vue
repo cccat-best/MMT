@@ -285,6 +285,8 @@ export default {
   justify-content: space-around;
   align-items: center;
   padding-bottom: 6vh;
+  /* margin-bottom: 80px; */
+  /* margin-top: 80px; */
 }
 .associations {
   width: 70vw;

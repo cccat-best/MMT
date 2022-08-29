@@ -22,6 +22,7 @@ const routes = [
   },
   {
     path: '/home',
+    redirect: '/home/interviewMain',
     component: () => import('../views/home/home.vue'),
     children: [
       {

@@ -36,6 +36,96 @@
       </div>
     </el-card>
     <!-- 基本信息结束 -->
+    <!-- <<<<<<< HEAD
+    <el-divider></el-divider>
+    <div class="basicInformationTitle" id="associations">社团宣传</div>
+    <!- - 下面是社团宣传 - ->
+    <div class="associations">
+      <div class="associationsBox">
+        <div class="associationsTitleFont">联系方式</div>
+        <el-input
+          type="textarea"
+          :rows="7"
+          class="textIpt"
+          placeholder="联系方式"
+          v-model="editCommunityData.contactInfo"
+          resize="none"
+          maxlength="100"
+          show-word-limit
+        >
+        </el-input>
+      </div>
+      <div class="associationsBox">
+        <div class="associationsTitleFont">纳新宣言</div>
+        <el-input
+          type="textarea"
+          :rows="7"
+          class="textIpt"
+          placeholder="纳新宣言"
+          v-model="editCommunityData.slogan"
+          resize="none"
+          maxlength="100"
+          show-word-limit
+        >
+        </el-input>
+      </div>
+      <div class="associationsBox">
+        <div class="associationsTitleFont">社团介绍</div>
+        <el-input
+          type="textarea"
+          :rows="7"
+          class="textIpt"
+          placeholder="社团介绍"
+          v-model="editCommunityData.introduction"
+          resize="none"
+          maxlength="100"
+          show-word-limit
+        >
+        </el-input>
+      </div>
+      <div class="associationsBox">
+        <div class="associationsTitleFont">社团特色</div>
+        <el-input
+          type="textarea"
+          :rows="7"
+          class="textIpt"
+          placeholder="社团特色"
+          v-model="editCommunityData.feature"
+          resize="none"
+          maxlength="100"
+          show-word-limit
+        >
+        </el-input>
+      </div>
+      <div class="associationsBox">
+        <div class="associationsTitleFont">社团日常</div>
+        <el-input
+          type="textarea"
+          :rows="7"
+          class="textIpt"
+          placeholder="社团日常"
+          v-model="editCommunityData.daily"
+          resize="none"
+          maxlength="100"
+          show-word-limit
+        >
+        </el-input>
+      </div>
+      <div class="associationsBox">
+        <div class="associationsTitleFont">更多</div>
+        <el-input
+          type="textarea"
+          :rows="7"
+          class="textIpt"
+          placeholder="更多"
+          v-model="editCommunityData.more"
+          maxlength="100"
+          show-word-limit
+          resize="none"
+        >
+        </el-input>
+      </div>
+    </div> -->
     <el-card style="margin-bottom: 70px; padding-bottom: 70px">
       <span class="basicInformationTitle" id="associations">社团宣传</span>
       <!-- 下面是社团宣传 -->

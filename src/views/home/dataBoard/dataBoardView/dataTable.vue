@@ -2,6 +2,16 @@
   <div class="content">
     <!-- 搜索区域 -->
     <div class="seach-header">
+      <el-tooltip class="item" effect="dark" placement="top">
+        <div slot="content" class="noticeContent">
+          <div style="color: red">请注意:</div>
+          <div style="margin: 2px"></div>
+          <div>数据支持多种筛选共同使用</div>
+          <!-- <div style="margin: 2px"></div>
+          <div>同时也提供了手动刷新按钮</div> -->
+        </div>
+        <i class="el-icon-warning-outline myRefresh"></i>
+      </el-tooltip>
       <el-tooltip
         class="item"
         effect="dark"
@@ -16,7 +26,7 @@
       <el-input
         v-model="searchWord"
         type="search"
-        @input="searchKeyWord"
+        @input="inputSearchKeyWord"
         class="searchInput"
         size="small"
         prefix-icon="el-icon-search"
@@ -24,6 +34,7 @@
       ></el-input>
     </div>
     <!-- 信息表单 -->
+    <!-- :header-cell-style="handleTheadStyle"支持多种排序的高亮 -->
     <el-table
       stripe
       tooltip-effect="dark"
@@ -33,7 +44,6 @@
       element-loading-text="拼命加载中"
       :row-style="{ height: '0' }"
       :cell-style="{ padding: '0px' }"
-      :header-cell-style="handleTheadStyle"
       ref="filterTable"
       :data="tableList"
       @sort-change="sortTableFun"
@@ -130,7 +140,7 @@
         column-key="interviewStatus"
       >
         <template #default="{ row }">
-          <el-tag :type="row.interviewStatus | statusFilter">
+          <el-tag :type="row.interviewStatus | statusFilter" class="tagStyle">
             {{ row.interviewStatus }}
           </el-tag>
         </template>
@@ -257,10 +267,12 @@ export default {
       // 计时器
       myLoading: false,
       timerUpdate: null,
+      // 防抖计时器
+      timeout: null,
       activeThead: {}, //保存排序所选择的表头
       // 关键字搜索
-      admissionId: 1, //纳新ID不知道，需要询问////////////////////////
-      organizationId: 2, ////组织名不知道，需要询问////////////////////////
+      admissionId: 1, //纳新ID
+      organizationId: 2, //组织名
       searchWord: '',
       // 筛选勾选的请求信息的数组
       className: [],
@@ -278,7 +290,7 @@ export default {
       currentPage: 1, // 当前页码
       pagesize: 10, // 每页条数，默认10
       total: 100
-
+      // 自定义表头排序和筛选的方案
       // 表头名
       // classNameLabel: '班级',
       // organizationOrderLabel: '社团志愿次序',
@@ -310,11 +322,11 @@ export default {
     changeDialog
   },
   // 排序保存表头
-  props: {
-    mutilSort: {
-      default: true
-    }
-  },
+  // props: {
+  //   mutilSort: {
+  //     default: true
+  //   }
+  // },
   methods: {
     ...mapMutations('dataBoard', [
       'updateClassNameFilter',
@@ -330,8 +342,8 @@ export default {
       // 获取数据
       this.admissionId = sessionStorage.getItem('homeAdmissionId')
       // 注释一个请求，先使用假数据
-      console.log('显示假数据，等数据库有数据时再删')
-      // this.requestFilterItem()
+      // console.log('显示假数据，等数据库有数据时再删')
+      this.requestFilterItem()
     },
     // 修改弹窗
     openChangeDialog(data) {
@@ -354,13 +366,13 @@ export default {
     // 触发排序
     sortTableFun(data) {
       // 多列排序，保存排序表头高亮
-      this.$emit('sort-change', data)
-      if (!this.mutilSort) return
-      if (data.order) {
-        this.activeThead[data.prop] = data.order
-      } else if (!data.order) {
-        this.activeThead[data.prop] = ''
-      }
+      // this.$emit('sort-change', data)
+      // if (!this.mutilSort) return
+      // if (data.order) {
+      //   this.activeThead[data.prop] = data.order
+      // } else if (!data.order) {
+      //   this.activeThead[data.prop] = ''
+      // }
       // 准备排序数组要接收的值
       let sortvalue
       switch (data.order) {
@@ -396,64 +408,78 @@ export default {
           break
       }
       // console.log('================')
+      // 多种排序的方案
       this.orderChange(sortItem, sortvalue)
       // console.log(this.sort[0])
       // console.log(this[Object.keys(data)[0]])
       this.currentPage = 1
       this.requestData()
     },
-    // 处理排序
+    // 处理排序，支持多种排序的方案
     orderChange(sortItem, sortvalue) {
+      // 此为简单支持单种排序
       if (this.sort.length == 0) {
         this.sort.push({
           sortCondition: sortItem,
           sortModel: sortvalue
         })
       } else {
-        let isPush = true
-        this.sort.forEach((element) => {
-          if (element.sortCondition == sortItem) {
-            element.sortModel = sortvalue
-            isPush = false
-          }
-        })
-        if (isPush) {
-          this.sort.push({
-            sortCondition: sortItem,
-            sortModel: sortvalue
-          })
-        }
+        ;(this.sort[0].sortCondition = sortItem),
+          (this.sort[0].sortModel = sortvalue)
       }
+      // 取消排序后，清除排序数组
       this.sort = this.sort.filter((element) => {
         return element.sortModel != 0
       })
+      // if (this.sort.length == 0) {
+      //   this.sort.push({
+      //     sortCondition: sortItem,
+      //     sortModel: sortvalue
+      //   })
+      // } else {
+      //   let isPush = true
+      //   this.sort.forEach((element) => {
+      //     if (element.sortCondition == sortItem) {
+      //       element.sortModel = sortvalue
+      //       isPush = false
+      //     }
+      //   })
+      //   if (isPush) {
+      //     this.sort.push({
+      //       sortCondition: sortItem,
+      //       sortModel: sortvalue
+      //     })
+      //   }
+      // }
+      // this.sort = this.sort.filter((element) => {
+      //   return element.sortModel != 0
+      // })
       // this.sort.forEach((element) => {
       //   console.log('sortCondition' + element.sortCondition)
       //   console.log('sortModel' + element.sortModel)
       // })
     },
-
+    // input输入防抖
+    inputSearchKeyWord() {
+      // 防抖函数
+      clearTimeout(this.timeout)
+      this.timeout = setTimeout(this.searchKeyWord, 700)
+    },
     //关键字搜索
     searchKeyWord() {
       // loading
       this.myLoading = true
+      this.postdata = {
+        admissionId: this.admissionId,
+        organizationId: this.organizationId,
+        pageNum: 1,
+        pageSize: this.pagesize
+      }
       // 判断字符串是否为空
       if (this.searchWord != '') {
-        this.postdata = {
-          admissionId: this.admissionId,
-          organizationId: this.organizationId,
-          keyWord: this.searchWord,
-          pageNum: 1,
-          pageSize: this.pagesize
-        }
-      } else {
-        this.postdata = {
-          admissionId: this.admissionId,
-          organizationId: this.organizationId,
-          pageNum: 1,
-          pageSize: this.pagesize
-        }
+        this.postdata.keyWord = this.searchWord
       }
+      // 判断是否有排序
       if (this.sort.length != 0) {
         this.postdata.sort = this.sort
       }
@@ -466,7 +492,6 @@ export default {
             // console.log(res.data)
             // 清除筛选的选中
             this.$refs.filterTable.clearFilter()
-            this.$refs.filterTable.clearSort()
             ;(this.className = []),
               (this.organizationOrder = []),
               (this.departmentOrder = []),
@@ -646,25 +671,25 @@ export default {
     // 获取所有筛选项
     requestAllItem() {
       // 获取班级
-      // this.$http
-      //   .get(
-      //     'api/data-panel/class?admissionId=' +
-      //       this.admissionId +
-      //       '&organizationId=' +
-      //       this.organizationId
-      //   )
-      //   .then(
-      //     (res) => {
-      //       if (res.data.code == '00000') {
-      //         this.updateClassNameFilter(res.data.data)
-      //       } else {
-      //         this.$message.error(res.data.message)
-      //       }
-      //     },
-      //     (err) => {
-      //       this.$message.error('获取数据失败' + err)
-      //     }
-      //   )
+      this.$http
+        .get(
+          'api/data-panel/class?admissionId=' +
+            this.admissionId +
+            '&organizationId=' +
+            this.organizationId
+        )
+        .then(
+          (res) => {
+            if (res.data.code == '00000') {
+              this.updateClassNameFilter(res.data.data)
+            } else {
+              this.$message.error(res.data.message)
+            }
+          },
+          (err) => {
+            this.$message.error('获取数据失败' + err)
+          }
+        )
       // 获取社团志愿次序
       this.$http
         .get(
@@ -803,20 +828,17 @@ export default {
     handleCurrentChange(val) {
       this.currentPage = val
       this.requestData()
-    },
+    }
     /**
      * 设置表头排序,允许多个排序高亮
      */
-    handleTheadStyle({ row, column }) {
-      /**
-       * 多列排序
-       */
-      console.log(row.length + '未使用定义变量的错误，记得删掉这行信息')
-      if (!this.mutilSort) return
-      if (this.activeThead[column.property]) {
-        column.order = this.activeThead[column.property]
-      }
-    }
+    // handleTheadStyle({ column }) {
+    //   //多列排序
+    //   if (!this.mutilSort) return
+    //   if (this.activeThead[column.property]) {
+    //     column.order = this.activeThead[column.property]
+    //   }
+    // }
   }
 }
 </script>
@@ -826,6 +848,18 @@ export default {
   // 暂定900px
   min-width: 900px;
   min-height: 500px;
+}
+// 提示信息
+.noticeContent {
+  display: flex;
+  flex-direction: column;
+  // align-content: center;
+  // align-items: center;
+  text-align: center;
+}
+// tag宽度一致
+.tagStyle {
+  width: 90px;
 }
 // 包含搜索的div
 .seach-header {

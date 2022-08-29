@@ -22,8 +22,8 @@ export default {
   data() {
     return {
       round: 1,
-      done: 10,
-      total: 11,
+      done: 0,
+      total: 0,
       percentage: 0
     }
   },
@@ -47,12 +47,17 @@ export default {
       this.$http
         .get(url, params)
         .then((response) => {
-          console.log(response)
-          this.total = response.data.data.totalStu
-          this.done = response.data.data.informedStu
+          // console.log(response)
+          if (response.data.code == '00000') {
+            this.total = response.data.data.totalStu
+            this.done = response.data.data.informedStu
+          } else {
+            this.$message.error(response.data.message)
+          }
         })
         .catch((error) => {
           console.log(error)
+          this.$message.error('获取进度条信息失败！')
         })
     }
   },
@@ -76,12 +81,17 @@ export default {
     this.$http
       .get(url, params)
       .then((response) => {
-        console.log(response)
-        this.total = response.data.data.totalStu
-        this.done = response.data.data.informedStu
+        // console.log(response)
+        if (response.data.code == '00000') {
+          this.total = response.data.data.totalStu
+          this.done = response.data.data.informedStu
+        } else {
+          this.$message.error(response.data.message)
+        }
       })
       .catch((error) => {
         console.log(error)
+        this.$message.error('获取进度条信息失败！')
       })
   },
   beforeDestroy() {

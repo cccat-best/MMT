@@ -18,11 +18,11 @@
               :content="item1.description"
               placement="bottom"
               effect="light"
-              v-if="item1.description.length > 13"
+              v-if="item1.description.length > 15"
             >
               <span class="freeView-name">{{ item1.description }}</span>
             </el-tooltip>
-            <span class="freeView-name" v-if="item1.description.length <= 13">{{
+            <span class="freeView-name" v-if="item1.description.length <= 15">{{
               item1.description
             }}</span>
           </div>
@@ -46,10 +46,17 @@
           <!--  展示input框-->
           <input type="text" v-if="!item1.selection" class="freeView-input" />
         </div>
+        <!-- 没有问题显示 -->
+        <div
+          v-show="departmentQuestionsList.length == 0 && !isEdit"
+          class="noProblem"
+        >
+          暂未添加问题
+        </div>
       </div>
     </div>
     <!-- 添加问题面板 -->
-    <div class="add-qus">
+    <div class="add-qus" v-show="isEdit">
       <el-popover
         placement="top"
         width="300"
@@ -256,6 +263,7 @@ export default {
         }
         que.option = option
         this.departmentQuestionsList.push(que)
+        this.updateDepartmentQuestionsList(que)
         // this.isAdd++
         this.addShow = false
         //重新定向到文本问题展示
@@ -301,6 +309,7 @@ export default {
           }
         }
         this.departmentQuestionsList.push(que)
+        this.updateDepartmentQuestionsList(que)
         // this.isAdd++
         this.text1 = ''
         //只有成功提交才会关闭这个添加框
@@ -328,13 +337,13 @@ export default {
       //同步删减vuex中此问题
       this.removeDepartmentQuestionsList(item1)
       // this.isAdd--
-    },
-    //保存到vuex
-    saveToVuex() {
-      this.departmentQuestionsList.forEach((ques) => {
-        this.updateDepartmentQuestionsList(ques)
-      })
     }
+    //保存到vuex
+    // saveToVuex() {
+    //   this.departmentQuestionsList.forEach((ques) => {
+    //     this.updateDepartmentQuestionsList(ques)
+    //   })
+    // }
   },
   props: ['sectionQues', 'departmentId'],
   watch: {
@@ -380,7 +389,7 @@ export default {
       .freeView-name-content {
         display: flex;
         margin: 10px 10px;
-        width: 220px;
+        width: 240px;
         margin-right: 20px;
         text-align: left;
         // overflow: hidden;
@@ -416,6 +425,13 @@ export default {
       }
     }
   }
+  .noProblem {
+    display: flex;
+    margin-left: 28px;
+    font-size: 17px;
+    height: 40px;
+    align-items: center;
+  }
 }
 .add-qus {
   display: flex;
@@ -424,8 +440,8 @@ export default {
   .add-botton {
     color: white;
     background-color: #02a8ef;
-    margin-bottom: 15px;
-    margin-top: 15px;
+    // margin-bottom: 15px;
+    // margin-top: 15px;
   }
   .synth-add-chose {
     display: flex;
