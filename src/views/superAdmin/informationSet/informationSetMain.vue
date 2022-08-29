@@ -117,12 +117,15 @@ export default {
     getCommunityData() {
       this.$http
         .get('/api/organization/information', {
-          organizationId: 1
+          organizationId: sessionStorage.getItem('loginOrganizationId')
         })
         .then((response) => {
           this.communityData = JSON.parse(JSON.stringify(response.data))
-          // console.log('收到了服务器的响应:结果是', this.communityData)
-          this.$bus.$emit('sendCommunityDataToChild', this.communityData)
+          console.log('收到了服务器的响应:结果是', this.communityData)
+          //检测到数据库有数据
+          if (this.communityData) {
+            this.$bus.$emit('sendCommunityDataToChild', this.communityData)
+          }
         })
         .catch(function (error) {
           console.log(error)

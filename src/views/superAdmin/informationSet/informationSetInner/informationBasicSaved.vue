@@ -1,5 +1,5 @@
 <template>
-  <div class="informationBasicSaved" v-if="showMain === true">
+  <div class="informationBasicSaved" v-if="showSaved">
     <el-card shadow="always" style="margin-bottom: 70px">
       <div slot="header" class="clearfix">
         <span class="basicInformationTitle" id="basicInformation"
@@ -84,7 +84,7 @@
       </div>
     </el-card>
     <!-- 社团宣传结束 -->
-    <el-card shadow="always" style="margin-top: 70px">
+    <el-card shadow="always" style="margin-top: 70px" v-if="showSaved">
       <div slot="header" class="clearfix">
         <span class="basicInformationTitle" id="departmentRecruiting"
           >纳新部门</span
@@ -93,10 +93,7 @@
       <!-- <div class="basicInformationTitle" id="departmentRecruiting">纳新部门</div> -->
       <!-- 纳新部门 -->
       <div class="departmentMain">
-        <div
-          class="departmentBlock"
-          v-if="communityData.departmentList[0] != null"
-        >
+        <div class="departmentBlock">
           <div class="departmentTitle">部门一</div>
           <div class="departmentFourInner">
             <div class="fourTitleFont">部门名称：</div>
@@ -123,13 +120,11 @@
             </div>
           </div>
         </div>
-        <div class="departmentBlock">
-          <div
-            class="departmentTitle"
-            v-if="communityData.departmentList[1] != null"
-          >
-            部门二
-          </div>
+        <div
+          class="departmentBlock"
+          v-if="communityData.departmentList[1] != null"
+        >
+          <div class="departmentTitle">部门二</div>
           <div class="departmentFourInner">
             <div class="fourTitleFont">部门名称：</div>
             <div class="fourInnerFont">
@@ -228,7 +223,7 @@ export default {
       circleUrl:
         'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
       communityData: {},
-      showMain: false,
+      showSaved: false,
       //用于测试触发多少次saveNeedData
       times: 0
     }
@@ -236,12 +231,28 @@ export default {
   methods: {},
   mounted() {
     this.$bus.$on('sendCommunityDataToChild', (val) => {
-      // console.log('Saved收到了数据:', val)
+      console.log('Saved收到了数据:', val)
       this.communityData = val.data
-      this.showMain = true
+      console.log('this.communityData.name =', this.communityData.name)
+      console.log(
+        'this.communityData.departmentList.length =',
+        this.communityData.departmentList.length
+      )
+
+      console.log('已经把数据放到vue里面了')
+      this.showSaved = true
+      console.log('showMain = true')
     })
     this.$bus.$emit('savedNeedData')
   },
+  // watch: {
+  //   communityData: function (newData) {
+  //     if (newData) {
+  //       console.log('现在里面有数据，数据是：', newData)
+  //       this.showSaved = true
+  //     }
+  //   }
+  // },
   beforeDestroy() {
     this.$bus.$off('sendCommunityDataToChild')
   }
