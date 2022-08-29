@@ -19,7 +19,7 @@
         <el-form-item label="学号" prop="studentId" class="stuId">
           <el-input
             placeholder="账号注册成功后，登录账号即为学号"
-            v-model="registerForm.studentId"
+            v-model.number="registerForm.studentId"
             class="input-stuId"
           >
           </el-input>
@@ -53,7 +53,7 @@
         <el-form-item label="电话号" class="tel" prop="phone">
           <el-input
             placeholder="请输入手机号"
-            v-model="registerForm.phone"
+            v-model.number="registerForm.phone"
             class="input-tel"
           >
           </el-input>
@@ -112,26 +112,28 @@ export default {
       },
       rules: {
         studentId: [
-          { required: true, message: '请输入学号', trigger: 'blur' },
-          { type: 'string', message: '学号必须为数字值', trigger: 'blur' },
-          { min: 8, max: 8, message: '长度为8个数字', trigger: 'blur' }
+          { required: true, message: '请输入学号' },
+          { type: 'number', message: '学号必须为数字值' }
+          // { min: 8, max: 8, message: '长度为8个数字',  }
         ],
         name: [
-          { required: true, message: '请输入姓名', trigger: 'blur' },
-          { min: 2, max: 4, message: '长度为2-4个字符', trigger: 'blur' }
+          { required: true, message: '请输入姓名' },
+          { min: 2, max: 4, message: '长度为2-4个汉字' }
         ],
         password: [
-          { required: true, message: '请输入密码', trigger: 'blur' },
-          { validator: validatePass, trigger: 'blur' }
+          { required: true, message: '请输入密码' },
+          { validator: validatePass }
         ],
         confirmPassword: [
-          { required: true, message: '请确认密码', trigger: 'blur' },
-          { validator: validatePass2, trigger: 'blur' }
+          { required: true, message: '请确认密码' },
+          { validator: validatePass2 }
         ],
-        phone: [{ required: true, message: '请输入手机号', trigger: 'blur' }],
-        invitationCode: [
-          { required: true, message: '请输入邀请码', trigger: 'blur' }
-        ]
+        phone: [
+          { required: true, message: '请输入手机号' },
+          // { min: 11, max: 11, message: '长度为11个字符',  }
+          { type: 'number', message: '手机号码必须为数字值' }
+        ],
+        invitationCode: [{ required: true, message: '请输入邀请码' }]
       }
     }
   },
@@ -139,35 +141,37 @@ export default {
     ...mapState('transform', ['all'])
   },
   methods: {
-    // test临时生成邀请码
-    // creat() {
-    //   this.$http.get('api/organization/invitation-code').then(
-    //     (res) => {
-    //       if (res.data.code == '00000') {
-    //         this.invitationCode = res.data.data.invitationCode
-    //         console.log(res.data.data.invitationCode)
-    //       }
-    //     },
-    //     (err) => {
-    //       this.$message.error(err)
-    //     }
-    //   )
-    // },
     ...mapMutations('transform', ['tranformAll']),
     goLogin() {
       this.$router.push('/Login').catch(() => {})
     },
     toRegister() {
+      let nameRule = /^[a-zA-Z\u4E00-\u9FA5\uf900-\ufa2d·s]{2,20}$/
       if (this.registerForm.studentId === '') {
         this.$message({
           showClose: true,
           message: '请输入账号',
           type: 'error'
         })
+      } else if (
+        this.registerForm.studentId < 20110000 ||
+        this.registerForm.studentId > 20299999
+      ) {
+        this.$message({
+          showClose: true,
+          message: '账号为八位数字',
+          type: 'error'
+        })
       } else if (this.registerForm.name === '') {
         this.$message({
           showClose: true,
           message: '请输入姓名',
+          type: 'error'
+        })
+      } else if (!nameRule.test(this.registerForm.name)) {
+        this.$message({
+          showClose: true,
+          message: '姓名为2-4位汉字',
           type: 'error'
         })
       } else if (this.registerForm.password === '') {
@@ -186,6 +190,15 @@ export default {
         this.$message({
           showClose: true,
           message: '请输入手机号',
+          type: 'error'
+        })
+      } else if (
+        this.registerForm.phone < 10000000000 ||
+        this.registerForm.phone > 20000000000
+      ) {
+        this.$message({
+          showClose: true,
+          message: '手机号为11位数字',
           type: 'error'
         })
       } else if (this.registerForm.invitationCode === '') {
