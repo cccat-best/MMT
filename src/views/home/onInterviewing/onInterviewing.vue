@@ -430,7 +430,6 @@ export default {
       //待拿取
       departmentId: 0,
       round: 1,
-      qrround: 1,
       //进度条定时器
       timer: '',
       //定时获取表格数据
@@ -556,9 +555,20 @@ export default {
       let get = this.$http.get(url)
       get
         .then((res) => {
+          if (res.data.code == 'A0400') {
+            this.$message({
+              showClose: true,
+              message: res.data.message,
+              type: 'error',
+              center: true,
+              duration: 2000
+            })
+          } else {
           // console.log(res, '获取面试轮次')
           this.round = res.data.data.round
+          this.dialogVisible3=true
           this.getEvaluation()
+          }
         })
         .catch(() => {
           this.$message({
@@ -588,6 +598,17 @@ export default {
           //   {
           //     address: '6号楼206'
           //   }]
+          if(res.data.code=='A0400'){
+            this.$message({
+              showClose: true,
+              message: res.data.message,
+              type: 'warning',
+              center: true,
+              duration: 0
+            })
+            this.loading = false
+          }
+          else{
           //真实数据
           let data = res.data.data.addressAndDataBackParamList
           let reldata = []
@@ -601,12 +622,13 @@ export default {
           //默认展示第一个地点的数据
           if (reldata.length != 0) {
             this.options = reldata
-            this.position = data[0].address
+            this.position = reldata[0].address
             //在此获取表格数据 添加定时器
             this.timer2 = setInterval(this.getTableData, 60000)
           } else {
             this.loading = false
           }
+        }
         })
         .catch(() => {
           this.loading = false
@@ -760,13 +782,13 @@ export default {
           if (res.data.code == 'A0400') {
             this.$message({
               showClose: true,
-              message: res.data.message,
+              message: '暂无面试评价数据',
               type: 'error',
               center: true,
               duration: 2000
             })
           } else {
-            this.dialogVisible3 = true
+            // this.dialogVisible3 = true
             // console.log(res, '面试评价数据')
             // 模拟数据
             // let data = {
@@ -821,7 +843,7 @@ export default {
     },
     //发送评价(ok)
     sendEvaluation() {
-      this.dialogVisible3 = false
+      // this.dialogVisible3 = false
       //发送面试评价
       let sendData = {
         studentId: this.stdId,
@@ -837,6 +859,7 @@ export default {
       post
         .then(() => {
           // console.log(res, '发送面试评价')
+          this.dialogVisible3 = false
           this.$message({
             showClose: true,
             message: '评价成功',
