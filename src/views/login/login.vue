@@ -118,8 +118,9 @@ export default {
         return this.$message(res.message)
       }
       if (res.code == 'A0200') {
-        this.loginVisible = true
+        return (this.loginVisible = true)
       }
+      this.goLogin()
     },
     goLogin() {
       this.loginVisible = false
