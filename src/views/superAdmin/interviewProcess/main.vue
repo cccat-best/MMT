@@ -195,7 +195,7 @@ export default {
     }
     .select {
       position: absolute;
-      top: 38px;
+      top: 35px;
       left: 88%;
       background-color: white;
       height: 60px;
