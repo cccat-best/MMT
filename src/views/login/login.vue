@@ -120,6 +120,7 @@ export default {
       if (res.code == 'A0200') {
         this.loginVisible = true
       }
+      this.goLogin()
     },
     goLogin() {
       this.loginVisible = false
@@ -159,6 +160,7 @@ export default {
                 'loginOrganizationId',
                 res.data.data.loginOrganizationId
               )
+              sessionStorage.setItem('studentId', res.data.data.studentId)
               this.$router.push('/home/interviewMain')
             } else {
               this.$message({

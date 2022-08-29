@@ -17,7 +17,6 @@ $http.interceptors.response.use((res) => {
     res.config.url.indexOf('login') === -1 &&
     res.config.url.indexOf('register') === -1
   ) {
-    console.log('cookie = ' + document.cookie)
     if (document.cookie === null || document.cookie === '') {
       Message.error('账号异地登录,将在3s后跳转回登录!')
       setTimeout(() => {
