@@ -112,7 +112,8 @@ const components = [
   Tabs,
   InputNumber,
   Drawer,
-  Tooltip
+  Tooltip,
+  Select
 ]
 export default function (Vue) {
   for (const component of components) {
