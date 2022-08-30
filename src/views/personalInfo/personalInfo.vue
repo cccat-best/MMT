@@ -176,7 +176,7 @@
 
             <el-form-item label="新手机号" prop="newPhone">
               <el-input
-                v-model="phoneForm.newPhone"
+                v-model.number="phoneForm.newPhone"
                 autocomplete="off"
               ></el-input>
             </el-form-item>
@@ -294,7 +294,8 @@ export default {
         ],
         newPhone: [
           { required: true, message: '请输入新手机号', trigger: 'blur' },
-          { min: 11, max: 11, message: '长度为11个字符', trigger: 'blur' }
+          // { min: 11, max: 11, message: '长度为11个字符', trigger: 'blur' },
+          { type: 'number', message: '手机号码必须为数字值' }
         ]
       },
       rules3: {
@@ -391,27 +392,38 @@ export default {
     changePhone(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          const url = '/api/account/revise/phone'
-          this.$http
-            .post(url, this.phoneForm)
-            .then((res) => {
-              if (res.data.code == '00000') {
-                location.reload()
-
-                this.$message({
-                  message: '修改成功',
-                  type: 'success'
-                })
-              } else {
-                this.changePhoneVisible = false
-
-                this.$message.error(res.data.message)
-              }
+          if (
+            this.phoneForm.newPhone < 10000000000 ||
+            this.phoneForm.newPhone > 20000000000
+          ) {
+            this.$message({
+              showClose: true,
+              message: '手机号为11位数字',
+              type: 'error'
             })
-            .catch((err) => {
-              console.log('出错了', err.message)
-              this.$message.error('当前未登录或登录已失效')
-            })
+          } else {
+            const url = '/api/account/revise/phone'
+            this.$http
+              .post(url, this.phoneForm)
+              .then((res) => {
+                if (res.data.code == '00000') {
+                  location.reload()
+
+                  this.$message({
+                    message: '修改成功',
+                    type: 'success'
+                  })
+                } else {
+                  this.changePhoneVisible = false
+
+                  this.$message.error(res.data.message)
+                }
+              })
+              .catch((err) => {
+                console.log('出错了', err.message)
+                this.$message.error('当前未登录或登录已失效')
+              })
+          }
         } else {
           return false
         }
