@@ -492,6 +492,7 @@ export default {
     //监视地点改变
     position() {
       this.currentPage = 1
+      this.search=''
       this.getTableData()
     },
     search() {
