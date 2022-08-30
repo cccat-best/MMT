@@ -282,7 +282,7 @@ export default {
           { min: 6, max: 16, message: '长度为6-16个字符', trigger: 'blur' }
         ],
         confirmNewPassword: [
-          { validator: validatePass2, trigger: 'blur' },
+          { validator: validatePass2 },
           { min: 6, max: 16, message: '长度为6-16个字符', trigger: 'blur' }
         ]
       },
