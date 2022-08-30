@@ -160,6 +160,10 @@ export default {
                 'loginOrganizationId',
                 res.data.data.loginOrganizationId
               )
+              sessionStorage.setItem(
+                'homeAdmissionId',
+                res.data.data.loginAdmissionId
+              )
               this.$router.push('/home/interviewMain')
             } else {
               this.$message({

@@ -467,7 +467,7 @@ export default {
       let get = this.$http.get(url)
       get
         .then((res) => {
-          console.log(res, '获取面试反馈')
+          // console.log(res, '获取面试反馈')
           // 模拟数据
           // let data = [
           //   {
@@ -536,7 +536,7 @@ export default {
       let get = this.$http.get(url)
       get
         .then((res) => {
-          console.log(res, '获取签到信息')
+          // console.log(res, '获取签到信息')
           // 模拟数据
           // let data = [
           //   {
@@ -587,7 +587,7 @@ export default {
       let get = this.$http.get(url)
       get
         .then((res) => {
-          console.log(res, '获取面试安排')
+          // console.log(res, '获取面试安排')
           // 模拟数据
           // let data = [
           //   {
@@ -641,7 +641,7 @@ export default {
       let get = this.$http.get(url)
       get
         .then((res) => {
-          console.log(res, '获取面试通知')
+          // console.log(res, '获取面试通知')
           // 模拟数据
           // let data = [
           //   {
@@ -686,7 +686,7 @@ export default {
       let get = this.$http.get(url)
       get
         .then((res) => {
-          console.log(res, '获取面试结果')
+          // console.log(res, '获取面试结果')
           // 模拟数据
           // let data = [
           //   {
@@ -755,7 +755,7 @@ export default {
       let get = this.$http.get(url)
       get
         .then((res) => {
-          console.log(res, '获取面试评价1')
+          // console.log(res, '获取面试评价1')
           // 模拟数据
           // let data = [
           //   {
@@ -810,7 +810,7 @@ export default {
       let get = this.$http.get(url)
       get
         .then((res) => {
-          console.log(res, '获取面试详细信息')
+          // console.log(res, '获取面试详细信息')
           // 模拟数据
           // let data = [
           //   {
@@ -944,7 +944,7 @@ export default {
       let get = this.$http.get(url)
       get
         .then((res) => {
-          console.log(res, '简历数据')
+          // console.log(res, '简历数据')
           //模拟数据
           // let data = {
           //   studentId: 20222445,

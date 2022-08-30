@@ -292,7 +292,7 @@ export default {
         ],
         studentId: [
           { required: true, message: '请输入学号', trigger: 'blur' },
-          { pattern: /^202\d{5}$/, message: '学号格式不对', trigger: 'blur' }
+          { pattern: /^20[12]\d{5}$/, message: '学号格式不对', trigger: 'blur' }
         ],
         phone: [
           { required: true, message: '请输入电话号', trigger: 'blur' },
@@ -462,7 +462,7 @@ export default {
       let get = this.$http.get(url)
       get
         .then((res) => {
-          console.log(res, '简历数据')
+          // console.log(res, '简历数据')
           //模拟数据
           // let data = {
           //   studentId: 20222445,
@@ -678,7 +678,7 @@ export default {
       axios
         .put(url, sendData)
         .then((res) => {
-          console.log(res, '修改学号')
+          // console.log(res, '修改学号')
           if (res.data.code == 'A0400') {
             this.$message({
               showClose: true,
@@ -721,7 +721,7 @@ export default {
       axios
         .put(url, sendData)
         .then((res) => {
-          console.log(res, '修改个人信息')
+          // console.log(res, '修改个人信息')
           if (res.data.code == 'A0400') {
             this.$message({
               showClose: true,

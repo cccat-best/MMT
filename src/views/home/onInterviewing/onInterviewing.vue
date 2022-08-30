@@ -76,9 +76,10 @@
         :cell-style="{ padding: '0' }"
         :row-style="{ height: '0' }"
         v-loading="loading"
+        height="50vh"
       >
         <!-- id -->
-        <el-table-column label="ID" align="center" width="100" type="index">
+        <el-table-column label="ID" align="center" width="100" prop="num">
         </el-table-column>
         <!-- 学号 -->
         <el-table-column prop="studentId" label="学号" align="center">
@@ -429,7 +430,6 @@ export default {
       //待拿取
       departmentId: 0,
       round: 1,
-      qrround: 1,
       //进度条定时器
       timer: '',
       //定时获取表格数据
@@ -519,7 +519,7 @@ export default {
       let get = this.$http.get(url)
       get
         .then((res) => {
-          console.log(res, '获取departmentid')
+          // console.log(res, '获取departmentid')
           if (res.data.code == 'A0400') {
             this.$message({
               showClose: true,
@@ -529,7 +529,7 @@ export default {
               duration: 2000
             })
           } else {
-            this.dialogVisible3 = true
+            // this.dialogVisible3 = true
             // let data = 1
             //真实数据
             let data = res.data.data
@@ -555,9 +555,20 @@ export default {
       let get = this.$http.get(url)
       get
         .then((res) => {
-          console.log(res, '获取面试轮次')
-          this.round = res.data.data.round
-          this.getEvaluation()
+          if (res.data.code == 'A0400') {
+            this.$message({
+              showClose: true,
+              message: res.data.message,
+              type: 'error',
+              center: true,
+              duration: 2000
+            })
+          } else {
+            // console.log(res, '获取面试轮次')
+            this.round = res.data.data.round
+            this.dialogVisible3 = true
+            this.getEvaluation()
+          }
         })
         .catch(() => {
           this.$message({
@@ -578,7 +589,7 @@ export default {
       let post = this.$http.post(url, sendData)
       post
         .then((res) => {
-          console.log(res, '获取地点信息')
+          // console.log(res, '获取地点信息')
           // 模拟数据
           // let data = [
           //   {
@@ -587,19 +598,39 @@ export default {
           //   {
           //     address: '6号楼206'
           //   }]
-          //真实数据
-          let data = res.data.data.addressAndDataBackParamList
-          this.options = data
-          //默认展示第一个地点的数据
-          if (data.length != 0) {
-            this.position = data[0].address
-            //在此获取表格数据 添加定时器
-            this.timer2 = setInterval(this.getTableData, 60000)
-          } else {
+          if (res.data.code == 'A0400') {
+            this.$message({
+              showClose: true,
+              message: res.data.message,
+              type: 'warning',
+              center: true,
+              duration: 0
+            })
             this.loading = false
+          } else {
+            //真实数据
+            let data = res.data.data.addressAndDataBackParamList
+            let reldata = []
+            //去掉null项
+            data.forEach((item) => {
+              if (item != null) {
+                reldata.push(item)
+              }
+            })
+            // this.options = reldata
+            //默认展示第一个地点的数据
+            if (reldata.length != 0) {
+              this.options = reldata
+              this.position = reldata[0].address
+              //在此获取表格数据 添加定时器
+              this.timer2 = setInterval(this.getTableData, 60000)
+            } else {
+              this.loading = false
+            }
           }
         })
         .catch(() => {
+          this.loading = false
           this.$message({
             showClose: true,
             message: '获取面试地点失败',
@@ -619,7 +650,7 @@ export default {
       let post = this.$http.post(url, sendData)
       post
         .then((res) => {
-          console.log(res, '获取进度条数据')
+          // console.log(res, '获取进度条数据')
           // 模拟数据
           // let data = [
           //   {
@@ -694,16 +725,26 @@ export default {
         let post = this.$http.post(url, sendData)
         post
           .then((res) => {
-            console.log(res, '获取二维码')
-            this.loadingtwo = false
-            //模拟数据
-            // let data = {
-            //     "code":"0000",
-            //     "message" : "data:image/png;base64,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",
-            // }
-            //真实数据
-            let data = res.data
-            this.code = data.message
+            if (res.data.code == 'A0400') {
+              this.$message({
+                showClose: true,
+                message: res.data.message,
+                type: 'error',
+                center: true,
+                duration: 2000
+              })
+            } else {
+              // console.log(res, '获取二维码')
+              this.loadingtwo = false
+              //模拟数据
+              // let data = {
+              //     "code":"0000",
+              //     "message" : "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAYAAAB5fY51AAAVy0lEQVR4Xu3UwW7sOhZD0ff/P909yCi7ALqYK+FQMhewJwEIy0rB//2vquoQ//EPVVWp+sGqqmP0g1VVx+gHq6qO0Q9WVR2jH6yqOkY/WFV1jH6wquoY/WBV1TH6waqqY/SDVVXH6Aerqo7RD1ZVHaMfrKo6Rj9YVXWMfrCq6hj9YFXVMfrBqqpj9INVVcfoB6uqjtEPVlUdox+sqjpGP1hVdYx+sKrqGP1gVdUx+sGqqmP0g1VVx+gHq6qO0Q9WVR2jH6yqOkY/WFV1jH6wquoY/WBV1TFiPlj//fdfM3NwuyoHt6pd+Jz2XJKY0/CS2nMOblfl4Fa1C5/TnksScxpeUnvOwe2qHNyqduFz2nNJYk7DS2rPObhdlYNb1S58TnsuScxpeEntOQe3q3Jwq9qFz2nPJYk5DS+pPefgdlUOblW78DntuSQxp+Eltecc3K7Kwa1qFz6nPZck5jS8pPacg9tVObhV7cLntOeSxJyGl9Sec3C7Kge3ql34nPZckpjT8JLacw5uV+XgVrULn9OeSxJzGl5Se87B7aoc3Kp24XPac0liTsNLUt2M76pycKtKwDOpHNyqbsZ3VSWJOQ0vSXUzvqvKwa0qAc+kcnCruhnfVZUk5jS8JNXN+K4qB7eqBDyTysGt6mZ8V1WSmNPwklQ347uqHNyqEvBMKge3qpvxXVVJYk7DS1LdjO+qcnCrSsAzqRzcqm7Gd1UliTkNL0l1M76rysGtKgHPpHJwq7oZ31WVJOY0vCTVzfiuKge3qgQ8k8rBrepmfFdVkpjT8JJUN+O7qhzcqhLwTCoHt6qb8V1VSWJOw0tS3YzvqnJwq0rAM6kc3KpuxndVJYk5DS9JdTO+q8rBrSoBz6RycKu6Gd9VlSTmNLwk1c34rioHt6oEPJPKwa3qZnxXVZKY0/CSVA5uJ3Jwq3Jwq9qFz1mVg1uVg9uJHNyqksSchpekcnA7kYNblYNb1S58zqoc3Koc3E7k4FaVJOY0vCSVg9uJHNyqHNyqduFzVuXgVuXgdiIHt6okMafhJakc3E7k4Fbl4Fa1C5+zKge3Kge3Ezm4VSWJOQ0vSeXgdiIHtyoHt6pd+JxVObhVObidyMGtKknMaXhJKge3Ezm4VTm4Ve3C56zKwa3Kwe1EDm5VSWJOw0tSObidyMGtysGtahc+Z1UOblUObidycKtKEnMaXpLKwe1EDm5VDm5Vu/A5q3Jwq3JwO5GDW1WSmNPwklQObidycKtycKvahc9ZlYNblYPbiRzcqpLEnIaXpHJwO5GDW5WDW9UufM6qHNyqHNxO5OBWlSTmNLwklYPbiRzcqhzcqnbhc1bl4Fbl4HYiB7eqJDGn4SWpHNxO5OBWlYBnUjm4VTm4VTm4ncjBrSpJzGl4SSoHtxM5uFUl4JlUDm5VDm5VDm4ncnCrShJzGl6SysHtRA5uVQl4JpWDW5WDW5WD24kc3KqSxJyGl6RycDuRg1tVAp5J5eBW5eBW5eB2Ige3qiQxp+ElqRzcTuTgVpWAZ1I5uFU5uFU5uJ3Iwa0qScxpeEkqB7cTObhVJeCZVA5uVQ5uVQ5uJ3Jwq0oScxpeksrB7UQOblUJeCaVg1uVg1uVg9uJHNyqksSchpekcnA7kYNbVQKeSeXgVuXgVuXgdiIHt6okMafhJakc3E7k4FaVgGdSObhVObhVObidyMGtKknMaXhJKge3Ezm4VSXgmVQOblUOblUObidycKtKEnMaXpLKwe1EDm5VCXgmlYNblYNblYPbiRzcqpLEnIaXpHJwO5GDW5WD25tycKtycDuRg1tVkpjT8JJUDm4ncnCrcnB7Uw5uVQ5uJ3Jwq0oScxpeksrB7UQOblUObm/Kwa3Kwe1EDm5VSWJOw0tSObidyMGtysHtTTm4VTm4ncjBrSpJzGl4SSoHtxM5uFU5uL0pB7cqB7cTObhVJYk5DS9J5eB2Ige3Kge3N+XgVuXgdiIHt6okMafhJakc3E7k4Fbl4PamHNyqHNxO5OBWlSTmNLwklYPbiRzcqhzc3pSDW5WD24kc3KqSxJyGl6RycDuRg1uVg9ubcnCrcnA7kYNbVZKY0/CSVA5uJ3Jwq3Jwe1MOblUObidycKtKEnMaXpLKwe1EDm5VDm5vysGtysHtRA5uVUliTsNLUt2M76rahc9RnYbnV92M76pKEnMaXpLqZnxX1S58juo0PL/qZnxXVZKY0/CSVDfju6p24XNUp+H5VTfju6qSxJyGl6S6Gd9VtQufozoNz6+6Gd9VlSTmNLwk1c34rqpd+BzVaXh+1c34rqokMafhJaluxndV7cLnqE7D86tuxndVJYk5DS9JdTO+q2oXPkd1Gp5fdTO+qypJzGl4Saqb8V1Vu/A5qtPw/Kqb8V1VSWJOw0tS3YzvqtqFz1GdhudX3YzvqkoScxpekupmfFfVLnyO6jQ8v+pmfFdVkpjT8JJUN+O7qnbhc1Sn4flVN+O7qpLEnIaX1J5zcKtycKtycKtycNueSxJzGl5Se87BrcrBrcrBrcrBbXsuScxpeEntOQe3Kge3Kge3Kge37bkkMafhJbXnHNyqHNyqHNyqHNy255LEnIaX1J5zcKtycKtycKtycNueSxJzGl5Se87BrcrBrcrBrcrBbXsuScxpeEntOQe3Kge3Kge3Kge37bkkMafhJbXnHNyqHNyqHNyqHNy255LEnIaX1J5zcKtycKtycKtycNueSxJzGl5Se87BrcrBrcrBrcrBbXsuScxpeEntOQe3Kge3Kge3Kge37bkkWaepCPzBrqrqX/VXVB/4oVlV1b/qr6g+8EOzqqp/1V9RfeCHZlVV/6q/ovrAD82qqv5Vf0X1gR+aVVX9q/6K6gM/NKuq+lf9FdUHfmhWVfWv+iuqD/zQrKrqX/VXVB/4oVlV1b/qr6g+8EOzqqp/FfMr4o9btQuf89Z24XNUDm5Vu/A5Kge3EyWJOQ0vSbULn/PWduFzVA5uVbvwOSoHtxMliTkNL0m1C5/z1nbhc1QOblW78DkqB7cTJYk5DS9JtQuf89Z24XNUDm5Vu/A5Kge3EyWJOQ0vSbULn/PWduFzVA5uVbvwOSoHtxMliTkNL0m1C5/z1nbhc1QOblW78DkqB7cTJYk5DS9JtQuf89Z24XNUDm5Vu/A5Kge3EyWJOQ0vSbULn/PWduFzVA5uVbvwOSoHtxMliTkNL0m1C5/z1nbhc1QOblW78DkqB7cTJYk5DS9JtQuf89Z24XNUDm5Vu/A5Kge3EyWJOQ0vSbULn/PWduFzVA5uVbvwOSoHtxMliTkNL2lVCXgm1Wl4fpWD24l24XMmOlXMyXmhq0rAM6lOw/OrHNxOtAufM9GpYk7OC11VAp5JdRqeX+XgdqJd+JyJThVzcl7oqhLwTKrT8PwqB7cT7cLnTHSqmJPzQleVgGdSnYbnVzm4nWgXPmeiU8WcnBe6qgQ8k+o0PL/Kwe1Eu/A5E50q5uS80FUl4JlUp+H5VQ5uJ9qFz5noVDEn54WuKgHPpDoNz69ycDvRLnzORKeKOTkvdFUJeCbVaXh+lYPbiXbhcyY6VczJeaGrSsAzqU7D86sc3E60C58z0aliTs4LXVUCnkl1Gp5f5eB2ol34nIlOdeTJefkqB7cqB7cT7cLnTOTgVnUann9VSbJO8yVeqMrBrcrB7US78DkTObhVnYbnX1WSrNN8iReqcnCrcnA70S58zkQOblWn4flXlSTrNF/ihaoc3Koc3E60C58zkYNb1Wl4/lUlyTrNl3ihKge3Kge3E+3C50zk4FZ1Gp5/VUmyTvMlXqjKwa3Kwe1Eu/A5Ezm4VZ2G519VkqzTfIkXqnJwq3JwO9EufM5EDm5Vp+H5V5Uk6zRf4oWqHNyqHNxOtAufM5GDW9VpeP5VJck6zZd4oSoHtyoHtxPtwudM5OBWdRqef1VJsk7zJV6oysGtysHtRLvwORM5uFWdhudfVZKs03yJF6pycKtycDvRLnzORA5uVafh+VeVJOs0X+KFTuTgVrULnzORg9tVObhdlYPbiZJkneZLvNCJHNyqduFzJnJwuyoHt6tycDtRkqzTfIkXOpGDW9UufM5EDm5X5eB2VQ5uJ0qSdZov8UIncnCr2oXPmcjB7aoc3K7Kwe1ESbJO8yVe6EQOblW78DkTObhdlYPbVTm4nShJ1mm+xAudyMGtahc+ZyIHt6tycLsqB7cTJck6zZd4oRM5uFXtwudM5OB2VQ5uV+XgdqIkWaf5Ei90Ige3ql34nIkc3K7Kwe2qHNxOlCTrNF/ihU7k4Fa1C58zkYPbVTm4XZWD24mSZJ3mS7zQiRzcqnbhcyZycLsqB7ercnA7UZKs03yJFzqRg1vVLnzORA5uV+XgdlUObidKknWaL/FCJ3JwuyoHt6u6Gd9VdRqeX5Uk6zRf4oVO5OB2VQ5uV3UzvqvqNDy/KknWab7EC53Iwe2qHNyu6mZ8V9VpeH5VkqzTfIkXOpGD21U5uF3VzfiuqtPw/KokWaf5Ei90Ige3q3Jwu6qb8V1Vp+H5VUmyTvMlXuhEDm5X5eB2VTfju6pOw/OrkmSd5ku80Ikc3K7Kwe2qbsZ3VZ2G51clyTrNl3ihEzm4XZWD21XdjO+qOg3Pr0qSdZov8UIncnC7Kge3q7oZ31V1Gp5flSTrNF/ihU7k4HZVDm5XdTO+q+o0PL8qSdZpvsQLncjB7aoc3K7qZnxX1Wl4flWSrNPUNvwRTpSAZ1I5uJ3oDd7xlvXx454oAc+kcnA70Ru84y3r48c9UQKeSeXgdqI3eMdb1sePe6IEPJPKwe1Eb/COt6yPH/dECXgmlYPbid7gHW9ZHz/uiRLwTCoHtxO9wTvesj5+3BMl4JlUDm4neoN3vGV9/LgnSsAzqRzcTvQG73jL+vhxT5SAZ1I5uJ3oDd7xlvXx454oAc+kcnA70Ru84y3r48c9UQKeSeXgdqI3iHlLXn57zsHtTSXgmVZVv8XcCP9R7TkHtzeVgGdaVf0WcyP8R7XnHNzeVAKeaVX1W8yN8B/VnnNwe1MJeKZV1W8xN8J/VHvOwe1NJeCZVlW/xdwI/1HtOQe3N5WAZ1pV/RZzI/xHtecc3N5UAp5pVfVbzI3wH9Wec3B7Uwl4plXVbzE3wn9Ue87B7U0l4JlWVb/F3Aj/Ue05B7c3lYBnWlX9FnMj/Ee15xzc3lQCnmlV9VvMjfAfpboZ31Xl4Fbl4HZVu/A5Ezm4nShJzGl4Saqb8V1VDm5VDm5XtQufM5GD24mSxJyGl6S6Gd9V5eBW5eB2VbvwORM5uJ0oScxpeEmqm/FdVQ5uVQ5uV7ULnzORg9uJksSchpekuhnfVeXgVuXgdlW78DkTObidKEnMaXhJqpvxXVUOblUOble1C58zkYPbiZLEnIaXpLoZ31Xl4Fbl4HZVu/A5Ezm4nShJzGl4Saqb8V1VDm5VDm5XtQufM5GD24mSxJyGl6S6Gd9V5eBW5eB2VbvwORM5uJ0oScxpeEmqm/FdVQ5uVQ5uV7ULnzORg9uJksSchpekuhnfVeXgVuXgdlW78DkTObidKEnMaXhJKge3Ezm4VTm4VdUP3ovKwa3Kwa3qVDEn54WqHNxO5OBW5eBWVT94LyoHtyoHt6pTxZycF6pycDuRg1uVg1tV/eC9qBzcqhzcqk4Vc3JeqMrB7UQOblUOblX1g/eicnCrcnCrOlXMyXmhKge3Ezm4VTm4VdUP3ovKwa3Kwa3qVDEn54WqHNxO5OBW5eBWVT94LyoHtyoHt6pTxZycF6pycDuRg1uVg1tV/eC9qBzcqhzcqk4Vc3JeqMrB7UQOblUOblX1g/eicnCrcnCrOlXMyXmhKge3Ezm4VTm4VdUP3ovKwa3Kwa3qVDEn54WqHNxO5OBW5eBWVT94LyoHtyoHt6pTxZycF6pycDuRg1uVg1tV/eC9qBzcqhzcqk4Vc3JeqMrB7UQOblUObtNzcLuqyhPzX+GPReXgdiIHtyoHt+k5uF1V5Yn5r/DHonJwO5GDW5WD2/Qc3K6q8sT8V/hjUTm4ncjBrcrBbXoObldVeWL+K/yxqBzcTuTgVuXgNj0Ht6uqPDH/Ff5YVA5uJ3Jwq3Jwm56D21VVnpj/Cn8sKge3Ezm4VTm4Tc/B7aoqT8x/hT8WlYPbiRzcqhzcpufgdlWVJ+a/wh+LysHtRA5uVQ5u03Nwu6rKE/Nf4Y9F5eB2Ige3Kge36Tm4XVXlifmv8MeicnA7kYNblYPb9BzcrqryxPxX+GNRObidyMGtKgHPpHJwu6pd+JxVObhdVZKY0/CSVA5uJ3Jwq0rAM6kc3K5qFz5nVQ5uV5Uk5jS8JJWD24kc3KoS8EwqB7er2oXPWZWD21UliTkNL0nl4HYiB7eqBDyTysHtqnbhc1bl4HZVSWJOw0tSObidyMGtKgHPpHJwu6pd+JxVObhdVZKY0/CSVA5uJ3Jwq0rAM6kc3K5qFz5nVQ5uV5Uk5jS8JJWD24kc3KoS8EwqB7er2oXPWZWD21UliTkNL0nl4HYiB7eqBDyTysHtqnbhc1bl4HZVSWJOw0tSObidyMGtKgHPpHJwu6pd+JxVObhdVZKY0/CSVA5uJ3Jwq0rAM6kc3K5qFz5nVQ5uV5Uk5jS8JJWD24kc3KoS8EwqB7er2oXPWZWD21UliTkNL0l1M76rahc+Z6Jd+ByVg9ubShJzGl6S6mZ8V9UufM5Eu/A5Kge3N5Uk5jS8JNXN+K6qXficiXbhc1QObm8qScxpeEmqm/FdVbvwORPtwueoHNzeVJKY0/CSVDfju6p24XMm2oXPUTm4vakkMafhJaluxndV7cLnTLQLn6NycHtTSWJOw0tS3YzvqtqFz5loFz5H5eD2ppLEnIaXpLoZ31W1C58z0S58jsrB7U0liTkNL0l1M76rahc+Z6Jd+ByVg9ubShJzGl6S6mZ8V9UufM5Eu/A5Kge3N5Uk5jS8JNXN+K6qXficiXbhc1QObm8qScxpeEntOQe3qgQ8003V38XcHv+p7TkHt6oEPNNN1d/F3B7/qe05B7eqBDzTTdXfxdwe/6ntOQe3qgQ8003V38XcHv+p7TkHt6oEPNNN1d/F3B7/qe05B7eqBDzTTdXfxdwe/6ntOQe3qgQ8003V38XcHv+p7TkHt6oEPNNN1d/F3B7/qe05B7eqBDzTTdXfxdwe/6ntOQe3qgQ8003V38XcHv+p7TkHt6oEPNNN1d/19qrqGP1gVdUx+sGqqmP0g1VVx+gHq6qO0Q9WVR2jH6yqOkY/WFV1jH6wquoY/WBV1TH6waqqY/SDVVXH6Aerqo7RD1ZVHaMfrKo6Rj9YVXWMfrCq6hj9YFXVMfrBqqpj9INVVcfoB6uqjtEPVlUdox+sqjpGP1hVdYx+sKrqGP1gVdUx+sGqqmP0g1VVx+gHq6qO0Q9WVR2jH6yqOkY/WFV1jH6wquoY/WBV1TH6waqqY/wf/xhRmMbh1c0AAAAASUVORK5CYII=",
+              // }
+              //真实数据
+              let data = res.data
+              this.code = data.message
+            }
           })
           .catch(() => {
             this.$message({
@@ -720,6 +761,8 @@ export default {
     openEvaluate(row) {
       // this.dialogVisible3 = true
       this.stdId = row.studentId
+      this.estimate = ''
+      this.score = ''
       this.getDepartmentId()
       // this.getEvaluation()
     },
@@ -735,22 +778,33 @@ export default {
       let post = this.$http.post(url, sendData)
       post
         .then((res) => {
-          console.log(res, '面试评价数据')
-          // 模拟数据
-          // let data = {
-          //   data: 'good',
-          //   score: '80'
-          // }
-          //真实数据
-          let data = res.data.data
-          if (data.data == null) {
-            data.data = ''
+          if (res.data.code == 'A0400') {
+            this.$message({
+              showClose: true,
+              message: '暂无面试评价数据',
+              type: 'error',
+              center: true,
+              duration: 2000
+            })
+          } else {
+            // this.dialogVisible3 = true
+            // console.log(res, '面试评价数据')
+            // 模拟数据
+            // let data = {
+            //   data: 'good',
+            //   score: '80'
+            // }
+            //真实数据
+            let data = res.data.data
+            if (data.data == null) {
+              data.data = ''
+            }
+            if (data.score == null) {
+              data.score = ''
+            }
+            this.estimate = data.data
+            this.score = data.score
           }
-          if (data.score == null) {
-            data.score = ''
-          }
-          this.estimate = data.data
-          this.score = data.score
         })
         .catch(() => {
           this.$message({
@@ -788,7 +842,7 @@ export default {
     },
     //发送评价(ok)
     sendEvaluation() {
-      this.dialogVisible3 = false
+      // this.dialogVisible3 = false
       //发送面试评价
       let sendData = {
         studentId: this.stdId,
@@ -802,8 +856,9 @@ export default {
       let url = `api/real-time-interview/appraise`
       let post = this.$http.post(url, sendData)
       post
-        .then((res) => {
-          console.log(res, '发送面试评价')
+        .then(() => {
+          // console.log(res, '发送面试评价')
+          this.dialogVisible3 = false
           this.$message({
             showClose: true,
             message: '评价成功',
@@ -838,7 +893,7 @@ export default {
       let get = this.$http.get(url)
       get
         .then((res) => {
-          console.log(res, '获取表格数据')
+          // console.log(res, '获取表格数据')
           this.loading = false
           // 模拟数据
           // let data = {
@@ -923,13 +978,14 @@ export default {
           // }
           //真实
           let data = res.data.data
-          data.realTimeInfoParamList.forEach((item) => {
+          data.realTimeInfoParamList.forEach((item, index) => {
             if (item.status == 4) {
               item.status = '未签到'
             }
             if (item.status == 5) {
               item.status = '已签到'
             }
+            item.num = (this.currentPage - 1) * 10 + index + 1
           })
           this.totalNum = data.total
           this.tableData = data.realTimeInfoParamList
@@ -978,7 +1034,7 @@ export default {
       let get = this.$http.get(url)
       get
         .then((res) => {
-          console.log(res, '简历数据')
+          // console.log(res, '简历数据')
           //模拟数据
           // let data = {
           //   studentId: 20222445,
@@ -1167,7 +1223,7 @@ export default {
   height: calc(100vh - 102px);
   // background-color: rgb(46, 108, 183);
   background-color: white;
-  min-width: 1100px;
+  min-width: 1000px;
   min-height: 620px;
   .one {
     // background-color: rgb(37, 189, 98);
@@ -1285,7 +1341,8 @@ export default {
   }
   .five {
     .table {
-      height: calc(100vh - 379px);
+      // height: calc(100vh - 379px);
+
       min-height: 330px;
     }
     .resumeTable {
@@ -1477,7 +1534,7 @@ export default {
       display: inline-block;
       position: absolute;
       top: 5px;
-      left: 62%;
+      left: 70%;
     }
   }
 }
