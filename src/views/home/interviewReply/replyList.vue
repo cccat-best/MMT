@@ -482,6 +482,8 @@ export default {
         .then((response) => {
           // console.log(response)
           if (response.data.code == '00000') {
+            this.currentPage = 1
+
             this.win = response.data.data.win
             this.pass = response.data.data.pass
             this.wait = response.data.data.wait
@@ -509,6 +511,7 @@ export default {
         .then((response) => {
           // console.log(response)
           if (response.data.code == '00000') {
+            this.currentPage = 1
             this.win = response.data.data.win
             this.pass = response.data.data.pass
             this.wait = response.data.data.wait
