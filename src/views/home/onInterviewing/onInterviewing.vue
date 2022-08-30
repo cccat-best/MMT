@@ -604,7 +604,7 @@ export default {
               message: res.data.message,
               type: 'warning',
               center: true,
-              duration: 0
+              duration: 4000
             })
             this.loading = false
           } else {
