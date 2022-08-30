@@ -437,11 +437,7 @@ export default {
       //进度条数据
       barData: [],
       //下拉框的选项
-      options: [
-        {
-          address: '暂无数据'
-        }
-      ],
+      options: [],
       //下拉框选择的地点数据
       position: '',
       //当前页
@@ -682,8 +678,8 @@ export default {
             this.barData = [
               {
                 total: '{暂无数据}',
-                startTime: '暂无数据',
-                endTime: '暂无数据',
+                startTime: res.data.message,
+                endTime: '',
                 proportion: 0
               }
             ]
@@ -1321,7 +1317,7 @@ export default {
     }
     .qrcode {
       float: right;
-      margin-right: 50px;
+      margin-right: 3vw;
     }
     .yes {
       position: absolute;
@@ -1465,7 +1461,7 @@ export default {
             }
             .question2 {
               // background-color: rgb(123, 207, 208);
-              margin-top: 20px;
+              margin-top: 0px;
               .problem {
                 font-size: 18px;
                 text-align: left;
