@@ -15,10 +15,9 @@ $http.interceptors.request.use((req) => {
 $http.interceptors.response.use((res) => {
   if (
     res.config.url.indexOf('login') === -1 &&
-    res.config.url.indexOf('register') === -1&&
-    res.config.url.indexOf('logout')=== -1
+    res.config.url.indexOf('register') === -1 &&
+    res.config.url.indexOf('logout') === -1
   ) {
-
     console.log('cookie = ' + document.cookie)
     if (document.cookie === null || document.cookie === '') {
       Message.error('账号异地登录,将在3s后跳转回登录!')
