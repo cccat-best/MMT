@@ -224,7 +224,7 @@ export default {
                           let timeValuePersonal = hh + ':' + mm
                           let timeValuePersonal0 =
                             dateValuePersonal + '  ' + timeValuePersonal
-                          console.log(timeValuePersonal0)
+                          // console.log(timeValuePersonal0)
                           messages.push(
                             this.messageTemplate
                               .replace(/{name}/, element)
@@ -259,7 +259,9 @@ export default {
                                 message: '发送成功！',
                                 type: 'success'
                               })
-                              location.reload()
+                              setTimeout(() => {
+                                location.reload()
+                              }, 1000)
                             } else {
                               this.$message.error(res.data.message)
                             }
@@ -311,12 +313,15 @@ export default {
       }),
       this.$bus.$on('arrangeSelectionStudentId1', (data) => {
         this.studentId = data
+        console.log('hello' + this.departmentId)
       }),
       this.$bus.$on('arrangeSelectionStudentName', (data) => {
         this.studentName = data
+        console.log('hello' + this.departmentId)
       }),
       this.$bus.$on('arrangeSelectionDepartmentName', (data) => {
         this.departmentName = data
+        console.log('hello' + this.departmentId)
       }),
       this.$bus.$on('arrangeSelectionDepartmentId', (data) => {
         this.departmentId = data
