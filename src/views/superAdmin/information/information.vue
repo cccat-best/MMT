@@ -9,7 +9,7 @@
         <div class="leftTop">
           <div class="title"><h3>信息编辑</h3></div>
           <div class="baseInfoSubmit">
-            <el-button type="primary"> 保存 </el-button>
+            <el-button type="primary" @click="submitSignData"> 保存 </el-button>
           </div>
         </div>
         <div class="leftEdit">
@@ -18,7 +18,7 @@
               <div class="baseInfo">
                 <have-title-vue title="组织头像"
                   ><div class="leftOrganizeImg">
-                    <img :src="organizeInfo.organizeImg" alt="" />
+                    <img :src="organizeInfo.avatarUrl" alt="" />
                     <div class="upload">
                       <el-button type="primary" @click="uploadPictrues">
                         上传组织头像
@@ -41,10 +41,9 @@
                   <el-row class="organizeName">
                     <input
                       type="text"
-                      v-model="organizeInfo.organizeName"
+                      v-model="organizeInfo.name"
                       class="nameInput"
                     />
-                    <el-button type="primary">修改</el-button>
                   </el-row>
                 </have-title-vue>
                 <have-title-vue title="组织属性">
@@ -52,7 +51,7 @@
                     <div class="required">
                       <div class="tagTitle">必选基本属性</div>
                       <el-select
-                        v-model="organizeInfo.tags.tagA"
+                        v-model="organizeInfo.tag.tagA"
                         placeholder="请选择"
                         class="tag"
                       >
@@ -67,7 +66,7 @@
                         <el-option label="社团" value="社团"></el-option>
                       </el-select>
                       <el-select
-                        v-model="organizeInfo.tags.tagB"
+                        v-model="organizeInfo.tag.tagB"
                         placeholder="请选择"
                         class="tag"
                       >
@@ -100,13 +99,13 @@
                     <div class="custom">
                       <div class="tagTitle">自定义属性</div>
                       <el-input
-                        v-model="organizeInfo.tags.tagC"
+                        v-model="organizeInfo.tag.tagC"
                         placeholder="请输入自定义属性"
                         maxlength="4"
                         show-word-limit
                       ></el-input>
                       <el-input
-                        v-model="organizeInfo.tags.tagD"
+                        v-model="organizeInfo.tag.tagD"
                         placeholder="请输入自定义属性"
                         maxlength="4"
                         class="two"
@@ -120,12 +119,15 @@
                     <el-input
                       type="textarea"
                       placeholder="请输入社团简介"
-                      v-model="organizeInfo.describe"
+                      v-model="organizeInfo.briefIntroduction"
                       maxlength="20"
                       show-word-limit
+                      resize="none"
                     ></el-input>
                   </div>
                 </have-title-vue>
+                <!-- 留白 -->
+                <div style="height: 40px"></div>
               </div>
             </el-tab-pane>
             <el-tab-pane label="社团宣传" name="1">
@@ -144,7 +146,7 @@
                     alt=""
                     class="img"
                     title="添加图片"
-                    @click="uploadPictrues('introduction')"
+                    @click="uploadPictrues(1, 'introduction')"
                   />
                 </div>
               </have-title-vue>
@@ -163,7 +165,7 @@
                     alt=""
                     class="img"
                     title="添加图片"
-                    @click="uploadPictrues('feature')"
+                    @click="uploadPictrues(1, 'feature')"
                   />
                 </div>
               </have-title-vue>
@@ -182,7 +184,7 @@
                     alt=""
                     class="img"
                     title="添加图片"
-                    @click="uploadPictrues('daily')"
+                    @click="uploadPictrues(1, 'daily')"
                   />
                 </div>
               </have-title-vue>
@@ -201,7 +203,7 @@
                     alt=""
                     class="img"
                     title="添加图片"
-                    @click="uploadPictrues('slogan')"
+                    @click="uploadPictrues(1, 'slogan')"
                   />
                 </div>
               </have-title-vue>
@@ -222,7 +224,7 @@
                     alt=""
                     class="img"
                     title="添加图片"
-                    @click="uploadPictrues('contactInfo')"
+                    @click="uploadPictrues(1, 'contactInfo')"
                   />
                 </div>
               </have-title-vue>
@@ -241,12 +243,92 @@
                     alt=""
                     class="img"
                     title="添加图片"
-                    @click="uploadPictrues('more')"
+                    @click="uploadPictrues(1, 'more')"
                   />
                 </div>
               </have-title-vue>
             </el-tab-pane>
-            <el-tab-pane label="纳新部门" name="2">纳新部门</el-tab-pane>
+            <el-tab-pane label="纳新部门" name="2">
+              <div class="addDepartment">
+                <el-button type="primary" @click="add = true"
+                  >添加部门</el-button
+                >
+              </div>
+              <div class="empty" v-if="isHaveDepart">
+                <img src="../../../assets/img/empty.png" alt="" />
+                <div class="text">暂无部门,请添加部门</div>
+              </div>
+              <div class="departmentList" v-else>
+                <el-tabs
+                  tab-position="left"
+                  v-model="editableTabsValue"
+                  closable
+                  @tab-remove="deleteDepFun"
+                >
+                  <el-tab-pane
+                    v-for="(item, index) in editableTabs"
+                    :key="index"
+                    :label="item.title"
+                    :name="item.name"
+                  >
+                    <div class="departmentInfo">
+                      <el-form
+                        label-position="left"
+                        label-width="80px"
+                        :model="organizeInfo.departmentList[index]"
+                      >
+                        <el-form-item label="部门简介">
+                          <el-input
+                            v-model="
+                              organizeInfo.departmentList[index]
+                                .briefIntroduction
+                            "
+                            maxlength="25"
+                            show-word-limit
+                            style="width: 450px"
+                          ></el-input>
+                        </el-form-item>
+                        <el-form-item label="部门介绍">
+                          <div class="text" style="width: 600px">
+                            <el-input
+                              type="textarea"
+                              :rows="4"
+                              placeholder="填写你的社团介绍吧"
+                              v-model="
+                                organizeInfo.departmentList[index].introduction
+                              "
+                              resize="none"
+                            >
+                            </el-input>
+                            <img
+                              src="../../../assets/img/img.png"
+                              alt=""
+                              class="img"
+                              title="添加图片"
+                              @click="uploadPictrues(2, 'introduction')"
+                            />
+                          </div>
+                        </el-form-item>
+                        <el-form-item label="纳新标准">
+                          <el-input
+                            v-model="
+                              organizeInfo.departmentList[index].standard
+                            "
+                            :rows="3"
+                            type="textarea"
+                            style="width: 600px"
+                            placeholder="针对部门的纳新要求,如对技能点,对综合素质的要求说明"
+                            maxlength="100"
+                            show-word-limit
+                            resize="none"
+                          ></el-input>
+                        </el-form-item>
+                      </el-form>
+                    </div>
+                  </el-tab-pane>
+                </el-tabs>
+              </div>
+            </el-tab-pane>
           </el-tabs>
         </div>
       </div>
@@ -256,26 +338,26 @@
             <div class="card">
               <div class="organize">
                 <div class="organizeImg">
-                  <img :src="organizeInfo.organizeImg" alt="" />
+                  <img :src="organizeInfo.avatarUrl" alt="" />
                 </div>
                 <div class="organizeAttr">
                   <div class="organizeName">
-                    {{ organizeInfo.organizeName }}
+                    {{ organizeInfo.name }}
                   </div>
                   <div class="organizeTags">
-                    <div class="tag">{{ organizeInfo.tags.tagA }}</div>
-                    <div class="tag">{{ organizeInfo.tags.tagB }}</div>
+                    <div class="tag">{{ organizeInfo.tag.tagA }}</div>
+                    <div class="tag">{{ organizeInfo.tag.tagB }}</div>
                     <div class="tag" v-if="tagC">
-                      {{ organizeInfo.tags.tagC }}
+                      {{ organizeInfo.tag.tagC }}
                     </div>
                     <div class="tag" v-if="tagD">
-                      {{ organizeInfo.tags.tagD }}
+                      {{ organizeInfo.tag.tagD }}
                     </div>
                   </div>
                 </div>
               </div>
               <div class="describe">
-                {{ organizeInfo.describe }}
+                {{ organizeInfo.briefIntroduction }}
               </div>
             </div>
           </div>
@@ -283,61 +365,155 @@
             <div class="nav">
               <span class="active">社团介绍</span><span>社团部门</span>
             </div>
-            <div class="sign_message"></div>
+            <div class="sign_message">
+              <sign-card-vue
+                title="社团介绍"
+                :content="organizeInfo.introduction"
+                v-if="organizeInfo.introduction !== ''"
+              ></sign-card-vue>
+              <sign-card-vue
+                title="社团特色"
+                :content="organizeInfo.feature"
+                v-if="organizeInfo.feature !== ''"
+              ></sign-card-vue>
+              <sign-card-vue
+                title="社团日常"
+                :content="organizeInfo.daily"
+                v-if="organizeInfo.daily !== ''"
+              ></sign-card-vue>
+              <sign-card-vue
+                title="社团宣言"
+                :content="organizeInfo.slogan"
+                v-if="organizeInfo.slogan !== ''"
+              ></sign-card-vue>
+              <sign-card-vue
+                title="联系方式"
+                :content="organizeInfo.contactInfo"
+                v-if="organizeInfo.contactInfo !== ''"
+              ></sign-card-vue>
+              <sign-card-vue
+                title="更多"
+                :content="organizeInfo.more"
+                v-if="organizeInfo.more !== ''"
+              ></sign-card-vue>
+              <div style="height: 30px"></div>
+            </div>
+          </div>
+          <div class="department" v-if="activeTab === '2'">
+            <div class="list" v-if="isList">
+              <div class="nav">
+                <span>社团介绍</span><span class="active">社团部门</span>
+              </div>
+              <div
+                class="depList"
+                v-for="(item, index) in organizeInfo.departmentList"
+                :key="index"
+              >
+                <div class="departmentCard" @click="toDepDetail(index)">
+                  <div class="info">
+                    <div class="title">{{ item.name }}</div>
+                    <div class="describe van-ellipsis">
+                      {{ item.briefIntroduction }}
+                    </div>
+                  </div>
+                  <div class="icon">
+                    <i class="el-icon-arrow-right"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="departmentDetail" v-else>
+              <div class="headNav" @click="isList = true">
+                <i class="el-icon-arrow-left"></i>
+                <span>返回</span>
+              </div>
+              <sign-card-vue
+                title="部门介绍"
+                :content="activeDep.introduction || ''"
+              ></sign-card-vue>
+              <sign-card-vue
+                title="纳新标准"
+                :content="activeDep.standard || ''"
+              ></sign-card-vue>
+            </div>
           </div>
         </div>
       </div>
     </div>
+    <el-dialog title="添加部门" :visible.sync="add" width="30%">
+      <el-input v-model="addDepName" placeholder="请输入部门名称"></el-input>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="cancelDialog">取 消</el-button>
+        <el-button type="primary" @click="confirmDialog">确 定</el-button>
+      </span>
+    </el-dialog>
+    <!-- 删除部门的弹窗 -->
+    <el-dialog :visible.sync="deleteDep" width="30%" class="deleteDep">
+      <div class="error">
+        <img src="../../../assets/img/error.png" alt="" />
+      </div>
+      <span>部门删除后，相应信息也会删除，是否确认删除</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="deleteDep = false">取 消</el-button>
+        <el-button type="primary" @click="confirmDeleDep">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import haveTitleVue from './haveTitle.vue'
 import * as qiniu from 'qiniu-js'
-import marked from 'marked'
+
+import signCardVue from './signCard.vue'
 export default {
   data() {
     return {
-      activeTab: '1',
+      activeTab: '0',
       organizeInfo: {
-        organizeImg:
-          'https://hanzoy-picture.oss-cn-chengdu.aliyuncs.com/mmt/7942b9e2a80a4945b269a597de7af7a2-file',
-        organizeName: '团委',
-        tags: {
+        userId: sessionStorage.getItem('studentId'),
+        organizationId: sessionStorage.getItem('loginOrganizationId'),
+        avatarUrl: '',
+        name: '',
+        tag: {
           tagA: '',
           tagB: '',
           tagC: '',
           tagD: ''
         },
-        describe: '',
+        briefIntroduction: '',
         introduction: '',
         feature: '',
         daily: '',
         slogan: '',
         contactInfo: '',
-        more: ''
+        more: '',
+        departmentList: []
       },
-      // markdown渲染所用数据
-      // markedData: {
-      //   introduction: '',
-      //   feature: '',
-      //   daily: '',
-      //   slogan: '',
-      //   contactInfo: '',
-      //   more: ''
-      // },
       // 七牛云上传所需
       token: '',
-      QINIU_BASE_PATH: 'https://file.sipc.yuleng.top'
+      QINIU_BASE_PATH: 'https://file.sipc.yuleng.top',
+      // 测试数据
+      editableTabsValue: '1',
+      editableTabs: [],
+      add: false,
+      addDepName: '',
+      isList: true,
+      activeDep: {},
+      active: '',
+      num: 1,
+      deleteDep: false,
+      targetName: 0
     }
   },
   components: {
-    haveTitleVue
+    haveTitleVue,
+    signCardVue
   },
   methods: {
     handleClick(e) {
       this.activeTab = e.index
-      console.log(1, e.index)
     },
     async getOrganizeDate() {
       const { data: res } = await this.$http.get(
@@ -350,10 +526,29 @@ export default {
       if (res.code !== '00000') {
         return this.$message(res.message)
       }
-      this.organizeInfo.organizeImg = res.data.avatarUrl
-      this.organizeInfo.organizeName = res.data.name
-      this.organizeInfo.tags = res.data.tag
-      this.organizeInfo.describe = res.data.briefIntroduction
+      this.organizeInfo.avatarUrl = res.data.avatarUrl || ''
+      this.organizeInfo.name = res.data.name
+      this.organizeInfo.tag = res.data.tag || {
+        tagA: '校级组织',
+        tagB: '创新创业',
+        tagC: '',
+        tagD: ''
+      }
+      this.organizeInfo.briefIntroduction = res.data.briefIntroduction || ''
+      this.organizeInfo.introduction = res.data.introduction || ''
+      this.organizeInfo.feature = res.data.feature || ''
+      this.organizeInfo.daily = res.data.daily || ''
+      this.organizeInfo.slogan = res.data.slogan || ''
+      this.organizeInfo.contactInfo = res.data.contactInfo || ''
+      this.organizeInfo.more = res.data.more || ''
+      this.organizeInfo.departmentList = res.data.departmentList || []
+      res.data.departmentList.forEach((item, index) => {
+        console.log(index)
+        this.editableTabs.push({
+          title: item.name,
+          name: index + 1 + ''
+        })
+      })
     },
     async getQiniuToken() {
       const { data: res } = await this.$http.get('/myApi/getConfig')
@@ -363,8 +558,9 @@ export default {
       this.token = res.data.token
       sessionStorage.setItem('qiniuToken', this.token)
     },
-    uploadPictrues(active) {
+    uploadPictrues(num, active) {
       this.active = active
+      this.num = num
       this.$refs.file.dispatchEvent(new MouseEvent('click'))
     },
     // 上传到七牛云 - 具体实例
@@ -375,21 +571,40 @@ export default {
         const { key } = res // key是从七牛云服务返回的文件名字
         this.url = this.QINIU_BASE_PATH + '/' + key
         console.log(this.url)
-        if (this.active !== '') {
-          if (this.organizeInfo[this.active] === '') {
-            this.organizeInfo[this.active] += `![](${this.url})`
+        // 判断是否是头像上传
+        if (this.active !== '' && this.active !== undefined) {
+          console.log('active', this.active)
+          // 判断是社团宣传图片上传还是纳新部门图片上传
+          if (this.num === 1) {
+            if (this.organizeInfo[this.active] === '') {
+              this.organizeInfo[this.active] += `![](${this.url})\n`
+            } else {
+              this.organizeInfo[this.active] += `\n![](${this.url})\n`
+            }
           } else {
-            this.organizeInfo[this.active] += `\n![](${this.url})`
+            if (
+              this.organizeInfo.departmentList[this.editableTabsValue]
+                .introduction === ''
+            ) {
+              this.organizeInfo.departmentList[
+                this.editableTabsValue - 1
+              ].introduction += `![](${this.url})\n`
+            } else {
+              this.organizeInfo.departmentList[
+                this.editableTabsValue - 1
+              ].introduction += `\n![](${this.url})\n`
+            }
           }
         } else {
-          this.organizeImg = this.url
+          this.organizeInfo.avatarUrl = this.url
         }
         this.active = ''
+        this.num = 0
       })
     },
     uploadToQiniu(file, putExtra = {}, key = undefined) {
       const token = this.token
-      // 七牛云的一些配置，region需要根据你的空间地区来选择，像我这里z2表示华南地区
+      // 七牛云的一些配置，region需要根据你的空间地区来选择，像我这里z1表示华北地区
       const config = {
         useCdnDomain: true,
         region: qiniu.region.z1
@@ -412,12 +627,78 @@ export default {
         }
       }
     },
-    async DataSubmit() {
+    // tab页面
+    addTab(titleName) {
+      let length = this.editableTabs.length
+      let newTabName = ++length + ''
+      console.log(titleName)
+      this.editableTabs.push({
+        title: titleName + '',
+        name: newTabName
+      })
+      this.organizeInfo.departmentList.push({
+        name: titleName,
+        briefIntroduction: '这是一个很好的部门',
+        introduction: '',
+        standard: ''
+      })
+      this.editableTabsValue = newTabName
+    },
+    deleteDepFun(targetName) {
+      this.deleteDep = true
+      this.targetName = targetName
+      console.log(targetName)
+    },
+    removeTab(targetName) {
+      let tabs = this.editableTabs
+      let activeName = this.editableTabsValue
+      if (activeName === targetName) {
+        tabs.forEach((tab, index) => {
+          if (tab.name === targetName) {
+            let nextTab = tabs[index + 1] || tabs[index - 1]
+            if (nextTab) {
+              activeName = nextTab.name
+            }
+          }
+        })
+      }
+      this.organizeInfo.departmentList.splice(targetName - 1, 1)
+      console.log(this.organizeInfo.departmentList)
+      this.editableTabsValue = activeName
+      this.editableTabs = tabs.filter((tab) => tab.name !== targetName)
+    },
+    cancelDialog() {
+      this.addDepName = ''
+      this.add = false
+    },
+    confirmDialog() {
+      if (this.addDepName === '') {
+        return
+      }
+      this.addTab(this.addDepName)
+      this.addDepName = ''
+      this.add = false
+      console.log(1)
+    },
+    confirmDeleDep() {
+      this.removeTab(this.targetName)
+      console.log(2, this.targetName)
+      this.deleteDep = false
+    },
+    toDepDetail(index) {
+      this.isList = false
+      this.activeDep = this.organizeInfo.departmentList[index]
+      console.log(this.organizeInfo.departmentList[index])
+    },
+    async submitSignData() {
       const { data: res } = await this.$http.post(
         '/api/organization/information',
         this.organizeInfo
       )
-      console.log(res)
+      if (res.code !== '00000') {
+        return this.$message.error(res.message)
+      }
+      this.$message.success('保存成功')
     }
   },
   created() {
@@ -427,8 +708,8 @@ export default {
   computed: {
     tagC() {
       if (
-        this.organizeInfo.tags.tagC === null ||
-        this.organizeInfo.tags.tagC === ''
+        this.organizeInfo.tag.tagC === null ||
+        this.organizeInfo.tag.tagC === ''
       ) {
         return false
       } else {
@@ -437,22 +718,19 @@ export default {
     },
     tagD() {
       if (
-        this.organizeInfo.tags.tagD === null ||
-        this.organizeInfo.tags.tagD === ''
+        this.organizeInfo.tag.tagD === null ||
+        this.organizeInfo.tag.tagD === ''
       ) {
         return false
       } else {
         return true
       }
     },
-    markedData() {
-      return {
-        introduction: marked(this.organizeInfo.introduction),
-        feature: marked(this.organizeInfo.feature),
-        daily: marked(this.organizeInfo.daily),
-        slogan: marked(this.organizeInfo.slogan),
-        contactInfo: marked(this.organizeInfo.contactInfo),
-        more: marked(this.organizeInfo.more)
+    isHaveDepart() {
+      if (this.organizeInfo.departmentList.length == 0) {
+        return true
+      } else {
+        return false
       }
     }
   }
@@ -481,6 +759,7 @@ export default {
 .left {
   height: 100%;
   flex: 1;
+  text-align: left;
   .leftEdit {
     margin-top: 10px;
     height: 100%;
@@ -495,7 +774,6 @@ export default {
         display: none; /* Chrome Safari */
       }
     }
-
     .baseInfo {
       .leftOrganizeImg {
         display: flex;
@@ -511,6 +789,37 @@ export default {
         .upload {
           margin-left: 20px;
         }
+      }
+    }
+    .addDepartment {
+      margin-left: 40px;
+    }
+  }
+  #pane-2 {
+    height: 90%;
+    .empty {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      height: 100%;
+      img {
+        height: 100px;
+      }
+      .text {
+        margin-top: 10px;
+        font-size: 16px;
+        font-weight: 500;
+      }
+    }
+  }
+  .departmentList {
+    height: 100% !important;
+    ::v-deep .el-tabs {
+      height: 80%;
+      margin-top: 30px;
+      .el-tabs__nav-scroll {
+        padding-left: 0px;
       }
     }
   }
@@ -589,6 +898,8 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
+    overflow: hidden;
+
     .baseInfo {
       width: 91%;
       height: 84%;
@@ -631,6 +942,7 @@ export default {
           text-overflow: ellipsis;
           width: 90%;
           margin: 3px auto 0;
+          text-align: left;
         }
         img {
           height: 50px;
@@ -644,23 +956,97 @@ export default {
       width: 91%;
       height: 84%;
       background-color: #f8f8f8;
-      .nav {
-        height: 44px;
-        margin-top: 10px;
-        background-color: #fff;
-        display: flex;
-        align-items: flex-end;
-        justify-content: space-around;
-        span {
-          border-bottom: 3px solid transparent;
-          padding-bottom: 5px;
+      text-align: left;
+
+      .sign_message {
+        width: 90%;
+        height: calc(100% - 52px);
+        margin: 0 auto;
+        padding-bottom: 30px;
+        overflow: scroll;
+        // 隐藏滚动条
+        scrollbar-width: none;
+        &::-webkit-scrollbar {
+          display: none; /* Chrome Safari */
         }
-        .active {
-          border-bottom: 3px solid #096dd9;
+        .sign_details {
+          margin-top: 10px;
+        }
+      }
+    }
+    .nav {
+      height: 44px;
+      width: 90%;
+      margin: 0 auto;
+      margin-top: 10px;
+      background-color: #fff;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-around;
+      span {
+        border-bottom: 3px solid transparent;
+        padding-bottom: 5px;
+      }
+      .active {
+        border-bottom: 3px solid #096dd9;
+      }
+    }
+    .department {
+      width: 91%;
+      height: 84%;
+      background-color: #f8f8f8;
+      text-align: left;
+    }
+  }
+  .depList {
+    width: 90%;
+    margin: 20px auto 0;
+    .departmentCard {
+      width: 100%;
+      height: 70px;
+      margin-top: 10px;
+      margin-bottom: 10px;
+      background-color: #fff;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      .info {
+        width: 90%;
+        margin-left: 10px;
+        .title {
+          color: #2c405a;
+          font-weight: 600;
+          margin-bottom: 5px;
+        }
+        .describe {
+          color: #3f536e;
+          font-size: 12px;
+          letter-spacing: 2px;
         }
       }
     }
   }
+  .departmentDetail {
+    .headNav {
+      margin-top: 10px;
+      margin-left: 10px;
+      cursor: pointer;
+      span {
+        margin-left: 10px;
+      }
+    }
+    .sign_details {
+      width: 90%;
+      margin: 0 auto;
+      margin-top: 20px;
+    }
+  }
+}
+.van-ellipsis {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 ::v-deep .el-tabs__nav-scroll {
   padding-left: 36px;
@@ -703,6 +1089,18 @@ export default {
     height: 20px;
     width: 20px;
     cursor: pointer;
+  }
+}
+.el-dialog {
+  display: flex;
+}
+.deleteDep {
+  ::v-deep .el-dialog__body {
+    display: flex;
+    align-items: center;
+    .error {
+      margin-right: 20px;
+    }
   }
 }
 </style>
