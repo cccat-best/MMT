@@ -152,6 +152,10 @@ export default {
             if (res.data.code === '00000') {
               this.$message.success('恭喜你，登录成功')
               // 存储数据
+              console.log(
+                'res.data.data.loginOrganizationId',
+                res.data.data.loginOrganizationId
+              )
               sessionStorage.setItem(
                 'loginOrganizationName',
                 res.data.data.loginOrganizationName
@@ -159,6 +163,10 @@ export default {
               sessionStorage.setItem(
                 'loginOrganizationId',
                 res.data.data.loginOrganizationId
+              )
+              sessionStorage.setItem(
+                'homeAdmissionId',
+                res.data.data.loginAdmissionId
               )
               this.$router.push('/home/interviewMain')
             } else {

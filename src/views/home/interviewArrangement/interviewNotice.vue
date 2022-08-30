@@ -320,6 +320,7 @@ export default {
       }),
       this.$bus.$on('arrangeSelectionDepartmentId', (data) => {
         this.departmentId = data
+        console.log('hello' + this.departmentId)
       })
   },
   beforeDestroy() {

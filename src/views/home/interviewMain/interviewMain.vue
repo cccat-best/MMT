@@ -33,7 +33,7 @@ export default {
   mounted() {
     this.getStatus()
     //debug
-    this.changeStatus(2)
+    // this.changeStatus(2)
   }
 }
 </script>

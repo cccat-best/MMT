@@ -1,35 +1,35 @@
 <template>
   <div class="interviewingMain">
     <div class="departmentNav">
-      <div class="navBtn" @click="reNewData()">全部</div>
-      <div
-        class="navBtn"
+      <el-button @click="reNewData()" size="medium">全部</el-button>
+      <el-button
+        size="medium"
         v-if="departmentNum.length > 0"
         @click="reNewData(departmentNum[0].departmentId)"
       >
         部门一 : {{ departmentNum[0].departmentName }}
-      </div>
-      <div
-        class="navBtn"
+      </el-button>
+      <el-button
+        size="medium"
         v-if="departmentNum.length > 1"
         @click="reNewData(departmentNum[1].departmentId)"
       >
         部门二 : {{ departmentNum[1].departmentName }}
-      </div>
-      <div
-        class="navBtn"
+      </el-button>
+      <el-button
+        size="medium"
         v-if="departmentNum.length > 2"
         @click="reNewData(departmentNum[2].departmentId)"
       >
         部门三 : {{ departmentNum[2].departmentName }}
-      </div>
-      <div
-        class="navBtn"
+      </el-button>
+      <el-button
+        size="medium"
         v-if="departmentNum.length > 3"
         @click="reNewData(departmentNum[3].departmentId)"
       >
         部门四 : {{ departmentNum[3].departmentName }}
-      </div>
+      </el-button>
     </div>
     <div class="interviewingInner">
       <div class="interviewingLeft">
@@ -345,6 +345,7 @@ export default {
   display: flex;
   flex-direction: row;
   align-items: center;
+  margin-left: 20px;
 
   .navBtn {
     margin: 0 10px 0 10px;
