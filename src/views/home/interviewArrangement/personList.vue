@@ -210,7 +210,7 @@ export default {
       this.sameDepartment = true
       this.departmentName = val[0].departmentName
       this.$bus.$emit('arrangeSelectionDepartmentName', this.departmentName)
-      this.$bus.$emit('arrangeSelectiondepartmentId', this.departmentId)
+      this.$bus.$emit('arrangeSelectionDepartmentId', this.departmentId)
       let selectionStudentId = []
       let selectionStudentName = []
       val.forEach((element) => {

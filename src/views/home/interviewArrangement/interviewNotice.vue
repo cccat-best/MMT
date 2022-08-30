@@ -241,7 +241,6 @@ export default {
                         // 确定发送通知
                         var form2 = {
                           postNoticeParams: postNoticeParams,
-                          studentId: this.studentId,
                           organizationId:
                             sessionStorage['loginOrganizationId'] * 1,
                           admissionId: sessionStorage['homeAdmissionId'] * 1,
