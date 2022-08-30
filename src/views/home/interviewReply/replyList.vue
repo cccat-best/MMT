@@ -108,6 +108,7 @@
           <el-pagination
             background
             layout="prev, pager, next"
+            :current-page="currentPage"
             :total="total"
             @current-change="current_change"
           >

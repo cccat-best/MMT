@@ -136,13 +136,13 @@ export default router
 router.beforeEach((to, from, next) => {
   // 判断当前用户是否登陆，如果登陆了则可以跳转，否则重定向到登陆页
   // 获取用户登陆之后的cookie，进行cookie的判断
-  // if (to.path === '/login' || to.path === '/register') {
-  //   return next()
-  // }
-  // let cookies = document.cookie
-  // console.log(cookies)
-  // if (!cookies) {
-  //   return next('/login')
-  // }
+  if (to.path === '/login' || to.path === '/register') {
+    return next()
+  }
+  let cookies = document.cookie
+  console.log(cookies)
+  if (!cookies) {
+    return next('/login')
+  }
   next()
 })
