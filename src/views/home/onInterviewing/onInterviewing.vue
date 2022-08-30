@@ -768,6 +768,7 @@ export default {
       let sendData = {
         studentId: this.stdId,
         admissionId: this.admissionId,
+        organizationId:this.organizationId,
         departmentId: this.departmentId,
         round: this.round
       }
@@ -844,6 +845,7 @@ export default {
       let sendData = {
         studentId: this.stdId,
         admissionId: this.admissionId,
+        organizationId:this.organizationId,
         departmentId: this.departmentId,
         score: this.score,
         round: this.round,
