@@ -246,15 +246,14 @@ export default {
           })
         })
         .then(() => {
+          console.log('数据', this.lineInnerData)
           var pieChart = echarts.init(this.$refs.line)
+          pieChart.resize()
           pieChart.setOption({
             legend: {
               orient: 'vertical',
               right: 5,
               top: 5
-            },
-            tooltip: {
-              trigger: 'axis'
             },
             xAxis: {
               data: this.lineData.time

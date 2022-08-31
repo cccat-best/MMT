@@ -9,27 +9,28 @@
             width: 200px;
             border-radius: 5px;
             box-shadow: 1px 1px 3px 1px #e5e9f2;
-            margin-bottom: 0px;
+            margin-right: 10px;
           "
           size="small"
           @change="dateTimeValue"
           placeholder="请选择开始日期时间"
         >
         </el-date-picker>
-        <el-date-picker
-          v-model="dateTime2"
-          type="datetime"
+        <el-input-number
+          v-model="partTimeNum"
+          @change="handleChangeTime"
+          :min="1"
+          :max="60"
+          placeholder="请选择每人面试分钟数"
+          size="small"
+          type="number"
+          controls-position="right"
           style="
             width: 200px;
             border-radius: 5px;
-            box-shadow: 1px 1px 3px 1px #e5e9f2;
-            margin-bottom: 0px;
+            box-shadow: 1px 1px 1px 1px #e5e9f2;
           "
-          size="small"
-          @change="dateTimeValue2"
-          placeholder="请选择结束日期时间"
-        >
-        </el-date-picker>
+        ></el-input-number>
       </div>
       <div class="text">
         <p
@@ -93,33 +94,35 @@ export default {
   name: 'interviewNotice',
   data() {
     return {
+      sameDepartment: true,
+      partTimeNum: undefined,
       name: 'XXX',
       departmentName: sessionStorage['loginOrganizationName'],
       departmentId: 1,
-      studentId: 20200001,
+      studentId: [],
+      studentName: [],
       order: '一面',
       round: 1,
       timestamp: 0,
       dateTime: '',
-      dateTime2: '',
       dateValue0: '',
-      dateValue2: '',
       timeValue0: '',
-      timeValue2: '',
       timeValue: '',
       address: '',
       messageTemplate: ''
     }
   },
   methods: {
+    handleChangeTime() {},
     dateTimeValue() {
+      this.timestamp2 = 0
       this.timestamp = this.dateTime.getTime() / 1000
-      var year = this.dateTime.getFullYear() //年
-      var month = this.dateTime.getMonth() + 1 //月
-      var day = this.dateTime.getDate() //日
+      let year = this.dateTime.getFullYear() //年
+      let month = this.dateTime.getMonth() + 1 //月
+      let day = this.dateTime.getDate() //日
       this.dateValue0 = year + '-' + month + '-' + day
-      var hh = this.dateTime.getHours() //时
-      var mm = this.dateTime.getMinutes() //分
+      let hh = this.dateTime.getHours() //时
+      let mm = this.dateTime.getMinutes() //分
       if (hh < 10) {
         hh = '0' + hh
       }
@@ -127,131 +130,192 @@ export default {
         mm = '0' + mm
       }
       this.timeValue0 = hh + ':' + mm
-      // console.log(this.timestamp)
       this.timeValue = this.dateValue0 + '  ' + this.timeValue0
     },
-    dateTimeValue2() {
-      this.timestamp = this.dateTime2.getTime() / 1000
-      var year = this.dateTime2.getFullYear() //年
-      var month = this.dateTime2.getMonth() + 1 //月
-      var day = this.dateTime2.getDate() //日
-      this.dateValue2 = year + '-' + month + '-' + day
-      var hh = this.dateTime2.getHours() //时
-      var mm = this.dateTime2.getMinutes() //分
-      if (hh < 10) {
-        hh = '0' + hh
-      }
-      if (mm < 10) {
-        mm = '0' + mm
-      }
-      this.timeValue2 = hh + ':' + mm
-      // console.log(this.timestamp)
-      // this.timeValue += '-' + this.timeValue2
-    },
     queding() {
-      // if (this.timestamp == 0) {
-      //   alert('请选择正确的面试时间！')
-      // } else if (this.address == '') {
-      //   alert('面试地点不能为空！')
-      // } else {
-      //   // 确定安排面试
-      //   var form3 = {
-      //     studentId: this.studentId,
-      //     startTime: this.timestamp,
-      //     address: this.address,
-      //     departmentId: this.departmentId,
-      //     round: this.round,
-      //     admissionId: sessionStorage['homeAdmissionId'] * 1
-      //   }
-      //   const url3 = 'api/interview-arrangement/arrangeNotice'
-      //   let post3 = this.$http.post(url3, form3)
-      //   post3
-      //     .then((res) => {
-      //       console.log('安排面试:', res)
-      //       if (res.data.code == '00000') {
-      // 确定获取模板
-      const url1 = 'api/interview-arrangement/getNotice'
-      let params = {
-        type: 1,
-        organizationId: sessionStorage['loginOrganizationId']
-      }
-      this.$http
-        .get(url1, params)
-        .then((response) => {
-          console.log('获取模板:', response)
-          if (response.data.code == '00000') {
-            this.messageTemplate = response.data.data.messageTemplate
-              .replace(/{name}/, this.name)
-              .replace(/{department}/, this.departmentName)
-              .replace(/{round}/, this.order)
-              .replace(/{time}/, this.dateValue0 + ' ' + this.timeValue0)
-              .replace(/{location}/, this.address)
-            console.log(this.messageTemplate)
-            // 确定发送通知
-            var form2 = {
-              message: this.messageTemplate,
+      if (!this.sameDepartment) {
+        this.$alert('请选择相同面试部门进行通知操作！', '提示', {
+          confirmButtonText: '确定',
+          type: 'warning'
+        })
+      } else if (this.studentId.length == 0) {
+        this.$alert('请选择待通知的学生！', '提示', {
+          confirmButtonText: '确定',
+          type: 'warning'
+        })
+      } else if (this.timestamp == 0) {
+        this.$alert('请选择正确的面试时间！', '提示', {
+          confirmButtonText: '确定',
+          type: 'warning'
+        })
+      } else if (this.partTimeNum == undefined || this.partTimeNum == 0) {
+        this.$alert('请选择或输入正确的每人面试分钟数！', '提示', {
+          confirmButtonText: '确定',
+          type: 'warning'
+        })
+      } else if (this.address == '') {
+        this.$alert('面试地点不能为空！', '提示', {
+          confirmButtonText: '确定',
+          type: 'warning'
+        })
+      } else {
+        this.$confirm('是否确定发送通知?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        })
+          .then(() => {
+            let studentIds = []
+            this.studentId.forEach((element) => {
+              studentIds.push({
+                studentId: element
+              })
+            })
+            // 确定安排面试
+            var form3 = {
+              studentIds: studentIds,
+              startTime: this.timestamp,
+              partTime: this.partTimeNum * 60,
               organizationId: sessionStorage['loginOrganizationId'] * 1,
-              studentId: this.studentId,
               admissionId: sessionStorage['homeAdmissionId'] * 1,
               departmentId: this.departmentId,
-              round: this.round
+              round: this.round,
+              address: this.address
             }
-            // console.log(form2)
-            const url2 = 'api/interview-arrangement/postNotice'
-            let post2 = this.$http.post(url2, form2)
-            post2
+            const url3 = 'api/interview-arrangement/arrangeNotice'
+            let post3 = this.$http.post(url3, form3)
+            post3
               .then((res) => {
-                console.log('发送通知:', res)
+                // console.log('安排面试:', res)
                 if (res.data.code == '00000') {
-                  this.$message({
-                    message: '通知成功！',
-                    type: 'success'
-                  })
-                  // location.reload()
+                  // 确定获取模板
+                  const url1 = 'api/interview-arrangement/getNotice'
+                  let params = {
+                    type: 1,
+                    organizationId: sessionStorage['loginOrganizationId']
+                  }
+                  this.$http
+                    .get(url1, params)
+                    .then((res) => {
+                      // console.log('获取模板:', res)
+                      if (res.data.code == '00000') {
+                        this.messageTemplate = res.data.data.messageTemplate
+                          .replace(/{department}/, this.departmentName)
+                          .replace(/{round}/, this.order)
+                          .replace(/{location}/, this.address)
+                        let messages = []
+                        this.studentName.forEach((element, index) => {
+                          let timestampPersonal =
+                            (this.partTimeNum * 60 * index + this.timestamp) *
+                            1000
+                          let timePersonal = new Date(timestampPersonal)
+                          let year = timePersonal.getFullYear() //年
+                          let month = timePersonal.getMonth() + 1 //月
+                          let day = timePersonal.getDate() //日
+                          let dateValuePersonal = year + '-' + month + '-' + day
+                          let hh = timePersonal.getHours() //时
+                          let mm = timePersonal.getMinutes() //分
+                          if (hh < 10) {
+                            hh = '0' + hh
+                          }
+                          if (mm < 10) {
+                            mm = '0' + mm
+                          }
+                          let timeValuePersonal = hh + ':' + mm
+                          let timeValuePersonal0 =
+                            dateValuePersonal + '  ' + timeValuePersonal
+                          // console.log(timeValuePersonal0)
+                          messages.push(
+                            this.messageTemplate
+                              .replace(/{name}/, element)
+                              .replace(/{time}/, timeValuePersonal0)
+                          )
+                        })
+                        let postNoticeParams = []
+                        messages.forEach((element, index) => {
+                          postNoticeParams.push({
+                            message: element,
+                            studentId: this.studentId[index]
+                          })
+                        })
+                        // 确定发送通知
+                        var form2 = {
+                          postNoticeParams: postNoticeParams,
+                          studentId: this.studentId,
+                          organizationId:
+                            sessionStorage['loginOrganizationId'] * 1,
+                          admissionId: sessionStorage['homeAdmissionId'] * 1,
+                          departmentId: this.departmentId,
+                          round: this.round
+                        }
+                        // console.log(form2)
+                        const url2 = 'api/interview-arrangement/postNotice'
+                        let post2 = this.$http.post(url2, form2)
+                        post2
+                          .then((res) => {
+                            // console.log('发送通知:', res)
+                            if (res.data.code == '00000') {
+                              this.$message({
+                                message: '发送成功！',
+                                type: 'success'
+                              })
+                              setTimeout(() => {
+                                location.reload()
+                              }, 1000)
+                            } else {
+                              this.$message.error(res.data.message)
+                            }
+                          })
+                          .catch((err) => {
+                            console.log(err)
+                            this.$message.error('发送失败！')
+                          })
+                      } else {
+                        this.$message.error(res.data.message)
+                      }
+                    })
+                    .catch((error) => {
+                      console.log(error)
+                      this.$message.error('获取模板失败！')
+                    })
                 } else {
                   this.$message.error(res.data.message)
                 }
               })
               .catch((err) => {
                 console.log(err)
-                this.$message.error('通知失败！')
+                this.$message.error('安排面试失败！')
               })
-          } else {
-            this.$message.error(response.data.message)
-          }
-        })
-        .catch((error) => {
-          console.log(error)
-          this.$message.error('获取模板失败！')
-        })
-      //       } else {
-      //         this.$message.error(res.data.message)
-      //       }
-      //     })
-      //     .catch((err) => {
-      //       console.log(err)
-      //       this.$message.error('安排面试失败！')
-      //     })
-      // }
+          })
+          .catch(() => {
+            this.$message({
+              type: 'warning',
+              message: '已取消发送'
+            })
+          })
+      }
     }
   },
   mounted() {
-    this.$bus.$on('arrangeOrder', (data) => {
-      this.order = data
-      let that = this
-      if (data == '一面') {
-        that.round = 1
-      } else if (data == '二面') {
-        that.round = 2
-      } else if (data == '三面') {
-        that.round = 3
-      }
+    this.$bus.$on('arrangeSameDepartment', (data) => {
+      this.sameDepartment = data
     }),
-      this.$bus.$on('arrangeSelectionName1', (data) => {
-        this.name = data
+      this.$bus.$on('arrangeOrder', (data) => {
+        this.order = data
+        let that = this
+        if (data == '一面') {
+          that.round = 1
+        } else if (data == '二面') {
+          that.round = 2
+        } else if (data == '三面') {
+          that.round = 3
+        }
       }),
       this.$bus.$on('arrangeSelectionStudentId1', (data) => {
         this.studentId = data
+      }),
+      this.$bus.$on('arrangeSelectionStudentName', (data) => {
+        this.studentName = data
       }),
       this.$bus.$on('arrangeSelectionDepartmentName', (data) => {
         this.departmentName = data
@@ -261,9 +325,11 @@ export default {
       })
   },
   beforeDestroy() {
+    this.$bus.$off('arrangeSameDepartment')
+
     this.$bus.$off('arrangeOrder')
-    this.$bus.$off('arrangeSelectionName1')
     this.$bus.$off('arrangeSelectionStudentId1')
+    this.$bus.$off('arrangeSelectionStudentName')
     this.$bus.$off('arrangeSelectionDepartmentName')
     this.$bus.$off('arrangeSelectionDepartmentId')
   }

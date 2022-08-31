@@ -48,14 +48,14 @@ export default {
       message: '',
       messageArrary: [],
       name: 'XXX',
-      departmentName: '我部门',
+      departmentName: '',
       selectTotal: 0,
       passNum: 0,
       winNum: 0,
       status: '失败',
       departmentId: 0,
       roomId: 0,
-      round: 0,
+      round: 1,
       order: ''
     }
   },
@@ -65,57 +65,39 @@ export default {
         !sessionStorage['replyDepartmentName'] ||
         sessionStorage['replyDepartmentName'] == '全部'
       ) {
-        alert('发送失败！请在面试复盘界面选择具体部门！')
+        this.$alert('发送失败！请在面试复盘界面选择具体部门！', '提示', {
+          confirmButtonText: '确定',
+          type: 'warning',
+          callback: () => {
+            window.history.go(-1)
+          }
+        })
       } else {
-        // let url8 = 'api/interview-arrangement/postNotice'
-        // let data8 = {
-        //   // message: this.messageArrary,
-        //   organizationId: sessionStorage['loginOrganizationId'],
-        //   // studentId: this.studentId,
-        //   admissionId: sessionStorage['homeAdmissionId'],
-        //   departmentId: this.departmentId,
-        //   list: this.list
-        // }
-        // this.$http
-        //   .post(url8, data8)
-        //   .then((response) => {
-        //     console.log(response)
-        //   })
-        //   .catch((error) => {
-        //     console.log(error)
-        //   })
-        // let url8 = 'api/interview-arrangement/postNotice'
-        // for (let i = 0; i < this.selectTotal; ++i) {
-        //   let data8 = {
-        //     message: this.messageArrary[i],
-        //     organizationId: sessionStorage['loginOrganizationId'],
-        //     studentId: this.studentId[i],
-        //     admissionId: sessionStorage['homeAdmissionId'],
-        //     departmentId: this.departmentId,
-        //     round: this.round
-        //   }
-        //   this.$http
-        //     .post(url8, data8)
-        //     .then((response) => {
-        //       // console.log(response)
-        //       console.log('发送成功', i)
-        //       if (i == this.selectTotal - 1) {
-        //         if (response.data.code == '00000') {
-        //           this.$message({
-        //             message: '发送成功！',
-        //             type: 'success'
-        //           })
-        //         } else {
-        //           console.log('发送失败', response)
-        //           this.$message.error(response.data.message)
-        //         }
-        //       }
-        //     })
-        //     .catch((error) => {
-        //       console.log(error)
-        //       this.$message.error('发送失败！')
-        //     })
-        // }
+        let url8 = 'api/interview-arrangement/postNotice'
+        let data8 = {
+          postNoticeParams: this.list,
+          organizationId: sessionStorage['loginOrganizationId'],
+          admissionId: sessionStorage['homeAdmissionId'],
+          departmentId: this.departmentId,
+          round: this.round
+        }
+        this.$http
+          .post(url8, data8)
+          .then((response) => {
+            // console.log(response)
+            if (response.data.code == '00000') {
+              this.$message({
+                message: '发送成功！',
+                type: 'success'
+              })
+            } else {
+              this.$message.error(response.data.message)
+            }
+          })
+          .catch((error) => {
+            console.log(error)
+            this.$message.error('发送失败！')
+          })
       }
     },
     cancel() {
@@ -139,7 +121,7 @@ export default {
       this.$http
         .get(url0, params2)
         .then((response) => {
-          console.log(response)
+          // console.log(response)
           if (response.data.code == '00000') {
             this.information = response.data.data.information
             this.studentName = []
@@ -164,7 +146,7 @@ export default {
       this.$http
         .get(url1, params)
         .then((response) => {
-          console.log(response)
+          // console.log(response)
           if (response.data.code == '00000') {
             this.messageArrary = []
             let message0 = response.data.data.messageTemplate
@@ -209,7 +191,7 @@ export default {
       this.$http
         .get(url0, params4)
         .then((response) => {
-          console.log(response)
+          // console.log(response)
           if (response.data.code == '00000') {
             this.information = response.data.data.information
             this.studentName = []
@@ -234,7 +216,7 @@ export default {
       this.$http
         .get(url1, params)
         .then((response) => {
-          console.log(response)
+          // console.log(response)
           if (response.data.code == '00000') {
             this.messageArrary = []
             let message0 = response.data.data.messageTemplate
@@ -286,12 +268,21 @@ export default {
       this.$http
         .get(url0, params0)
         .then((response) => {
-          console.log(response)
+          // console.log(response)
           if (response.data.code == '00000') {
             this.winNum = response.data.data.win
             this.passNum = response.data.data.pass
             if (response.data.data.round) {
               this.round = response.data.data.round
+            }
+            if (this.round == 0) {
+              this.order = ''
+            } else if (this.round == 1) {
+              this.order = '一面'
+            } else if (this.round == 2) {
+              this.order = '二面'
+            } else if (this.round == 3) {
+              this.order = '三面'
             }
             this.selectTotal = this.passNum
             this.status = '失败'
@@ -306,7 +297,7 @@ export default {
       this.$http
         .get(url0, params2)
         .then((response) => {
-          console.log(response)
+          // console.log(response)
           if (response.data.code == '00000') {
             this.information = response.data.data.information
             this.studentName = []
@@ -331,7 +322,7 @@ export default {
       this.$http
         .get(url1, params)
         .then((response) => {
-          console.log(response)
+          // console.log(response)
           if (response.data.code == '00000') {
             this.messageArrary = []
             let message0 = response.data.data.messageTemplate
@@ -343,13 +334,13 @@ export default {
                 message0.replace(/{name}/, this.studentName[i])
               )
             }
-            // this.list = []
-            // for (let i = 0; i < this.passNum; ++i) {
-            //   this.list.push({
-            //     message: this.messageArrary[i],
-            //     studentId: this.studentId[i]
-            //   })
-            // }
+            this.list = []
+            for (let i = 0; i < this.passNum; ++i) {
+              this.list.push({
+                message: this.messageArrary[i],
+                studentId: this.studentId[i]
+              })
+            }
           } else {
             this.$message.error(response.data.message)
           }
@@ -363,18 +354,14 @@ export default {
       this.passNum = 0
       this.selectTotal = 0
       setTimeout(() => {
-        alert('请在面试复盘界面选择具体部门！')
-        window.history.go(-1)
+        this.$alert('请在面试复盘界面选择具体部门！', '提示', {
+          confirmButtonText: '确定',
+          type: 'warning',
+          callback: () => {
+            window.history.go(-1)
+          }
+        })
       }, 600)
-    }
-    if (this.round == 0) {
-      this.order = ''
-    } else if (this.round == 1) {
-      this.order = '一面'
-    } else if (this.round == 2) {
-      this.order = '二面'
-    } else if (this.round == 3) {
-      this.order = '三面'
     }
   },
   watch: {

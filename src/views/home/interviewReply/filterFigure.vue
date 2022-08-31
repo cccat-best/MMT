@@ -169,8 +169,8 @@ export default {
       document.activeElement.classList.add('clBtn')
       this.departmentId = document.activeElement.id
       this.departmentName = document.activeElement.innerText
-      console.log(this.departmentId)
-      console.log(this.departmentName)
+      // console.log(this.departmentId)
+      // console.log(this.departmentName)
       sessionStorage['replyDepartmentId'] = this.departmentId
       sessionStorage['replyDepartmentName'] = this.departmentName
       this.$bus.$emit('replyDepartmentId', this.departmentId)
@@ -183,7 +183,7 @@ export default {
       })
       document.activeElement.classList.add('clBtn')
       this.roomId = document.activeElement.id
-      console.log(this.roomId)
+      // console.log(this.roomId)
       this.$bus.$emit('replyRoomId', this.roomId)
     }
   },
@@ -215,8 +215,8 @@ export default {
     this.$http
       .get(url1)
       .then((response) => {
-        console.log(response)
-        // setTimeout(this.drawChar, 100)
+        // console.log(response)
+        this.drawChar()
         if (response.data.code == '00000') {
           this.department = []
           this.department = response.data.data.department
@@ -226,7 +226,7 @@ export default {
       })
       .catch((error) => {
         console.log(error)
-        // this.drawChar()
+        this.drawChar()
         this.$message.error('获取部门信息失败！')
       })
 
@@ -234,7 +234,7 @@ export default {
     this.$http
       .get(url2)
       .then((response) => {
-        console.log(response)
+        // console.log(response)
         if (response.data.code == '00000') {
           this.room = []
           this.room = response.data.data.room

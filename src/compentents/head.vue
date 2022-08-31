@@ -34,6 +34,7 @@
         style="display: flex; min-width: 300px; justify-content: right"
       >
         <div
+          v-if="isSuper"
           class="edit-super"
           @mouseenter="changeColor"
           @mouseleave="changeColor"
@@ -281,10 +282,17 @@ export default {
               'loginOrganizationName',
               data.loginOrganizationName
             )
-            if (this.isPersonal) {
-              location.reload()
-            }
+            sessionStorage.setItem(
+              'loginOrganizationId',
+              data.loginOrganizationId
+            )
+            // sessionStorage.setItem('admissionId', data.loginAdmissionId)
+            sessionStorage.setItem('homeAdmissionId', data.loginAdmissionId)
 
+            // if (this.isPersonal) {
+            location.reload()
+            // }
+            // this.$router.go(0)
             this.$message({
               message: '切换成功',
               type: 'success'
@@ -404,11 +412,11 @@ export default {
       color: #409eff !important;
     }
   }
-  ::v-deep .el-icon-back {
-    &:hover {
-      color: #409eff !important;
-    }
-  }
+  // ::v-deep .el-icon-back {
+  //   &:hover {
+  //     color: #409eff !important;
+  //   }
+  // }
 }
 .el-dropdown-link {
   cursor: pointer;
@@ -421,6 +429,9 @@ export default {
   font-size: 12px;
 }
 .color-change:hover {
+  color: #409eff !important;
+}
+:deep(.el-page-header__left):hover {
   color: #409eff !important;
 }
 </style>

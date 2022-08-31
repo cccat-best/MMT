@@ -292,7 +292,7 @@ export default {
         ],
         studentId: [
           { required: true, message: '请输入学号', trigger: 'blur' },
-          { pattern: /^202\d{5}$/, message: '学号格式不对', trigger: 'blur' }
+          { pattern: /^20[12]\d{5}$/, message: '学号格式不对', trigger: 'blur' }
         ],
         phone: [
           { required: true, message: '请输入电话号', trigger: 'blur' },
@@ -462,7 +462,7 @@ export default {
       let get = this.$http.get(url)
       get
         .then((res) => {
-          console.log(res, '简历数据')
+          // console.log(res, '简历数据')
           //模拟数据
           // let data = {
           //   studentId: 20222445,
@@ -561,7 +561,7 @@ export default {
           this.ruleForm.studentId = data.studentId
           this.ruleForm.studentName = data.studentName
           this.ruleForm.phone = data.phone
-          //学院出现专业和班级才出现
+          //学院出现专业和班级才出现(三个绑定)
           if (data.academy == null) {
             this.ruleForm.academyId = null
             this.ruleForm.majorId = null
@@ -569,10 +569,13 @@ export default {
           }
           //专业出现班级才出现
           if (data.major == null) {
+            this.ruleForm.academyId = null
             this.ruleForm.majorId = null
             this.ruleForm.classId = null
           }
           if (data.classNum == null) {
+            this.ruleForm.academyId = null
+            this.ruleForm.majorId = null
             this.ruleForm.classId = null
           }
           this.ruleForm.gender = data.gender
@@ -667,7 +670,7 @@ export default {
     //提交修改学号数据(ok)
     submitNumData() {
       let sendData = {
-        oranizationId: Number(this.organizationId),
+        organizationId: Number(this.organizationId),
         studentId: Number(this.studentId),
         newStudentId: Number(this.ruleForm.studentId)
       }
@@ -675,7 +678,7 @@ export default {
       axios
         .put(url, sendData)
         .then((res) => {
-          console.log(res, '修改学号')
+          // console.log(res, '修改学号')
           if (res.data.code == 'A0400') {
             this.$message({
               showClose: true,
@@ -701,7 +704,7 @@ export default {
     //修改个人信息(ok)
     submitData() {
       let sendData = {
-        oranizationId: this.organizationId,
+        organizationId: this.organizationId,
         studentId: this.ruleForm.studentId,
         studentName: this.ruleForm.studentName,
         phone: this.ruleForm.phone,
@@ -718,7 +721,7 @@ export default {
       axios
         .put(url, sendData)
         .then((res) => {
-          console.log(res, '修改个人信息')
+          // console.log(res, '修改个人信息')
           if (res.data.code == 'A0400') {
             this.$message({
               showClose: true,
@@ -781,6 +784,7 @@ export default {
       font-size: 28px;
       // background-color: rgb(60, 170, 113);
       text-align: left;
+      margin-bottom: 20px;
     }
     .form {
       // background-color: rgb(78, 200, 186);

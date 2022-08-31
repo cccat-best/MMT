@@ -19,7 +19,7 @@
         <el-form-item label="账号" class="id" prop="studentId">
           <el-input
             placeholder="请输入学号/账号"
-            v-model="loginForm.studentId"
+            v-model.number="loginForm.studentId"
             class="input-id"
           >
           </el-input>
@@ -34,25 +34,51 @@
           </el-input>
         </el-form-item>
         <div class="forget-text">忘记密码？</div>
-        <el-button class="login-btn" @click="goLogin()">登录</el-button>
+        <el-button class="login-btn" @click="check('loginForm')"
+          >登录</el-button
+        >
         <div class="footer">
           <div class="no-id">没有账号？</div>
           <div class="register" @click="goRegister()">注册</div>
         </div>
       </el-form>
     </el-main>
+    <!-- 确认是否要挤掉前一个用户 -->
+    <el-dialog title="登录提示" :visible.sync="loginVisible" width="400px">
+      <span>检测到当前用户正处于登录状态,是否继续登录。</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="loginVisible = false">取 消</el-button>
+        <el-button type="primary" @click="goLogin()">确 定</el-button>
+      </span>
+    </el-dialog>
   </el-container>
 </template>
 <script>
 import { mapMutations } from 'vuex'
 import { mapState } from 'vuex'
-import loginData from './loginData'
 
 export default {
   name: 'Login',
   data() {
     return {
-      ...loginData.data()
+      url: require('@../../../public/sipc.png'),
+      hideRequired: true,
+      loginVisible: false,
+      loginForm: {
+        studentId: '',
+        password: ''
+      },
+      rules: {
+        studentId: [
+          { required: true, message: '请输入学号', trigger: 'blur' },
+          { type: 'number', message: '学号必须为数字值' }
+        ],
+        password: [
+          { required: true, message: '请输入密码', trigger: 'blur' },
+          { message: '密码不正确', trigger: 'blur' },
+          { min: 6, max: 16, message: '长度为6-16个字符', trigger: 'blur' }
+        ]
+      }
     }
   },
   watch: {},
@@ -69,11 +95,48 @@ export default {
     goRegister() {
       this.$router.push('/register').catch(() => {})
     },
+    // 登录前校验，验证是否该账号在登录中
+    async check(formName) {
+      let cookie = document.cookie || ''
+      let flag = true
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          flag = true
+        } else {
+          flag = false
+          return false
+        }
+      })
+      if (!flag) {
+        return
+      }
+      const { data: res } = await this.$http.post('api/check-login/b', {
+        studentId: this.loginForm.studentId,
+        cookie: cookie
+      })
+      if (res.code !== '00000' && res.code !== 'A0200') {
+        return this.$message(res.message)
+      }
+      if (res.code == 'A0200') {
+        return (this.loginVisible = true)
+      }
+      this.goLogin()
+    },
     goLogin() {
+      this.loginVisible = false
       if (this.loginForm.studentId === '') {
         this.$message({
           showClose: true,
           message: '请输入账号',
+          type: 'error'
+        })
+      } else if (
+        this.loginForm.studentId < 20110000 ||
+        this.loginForm.studentId > 20299999
+      ) {
+        this.$message({
+          showClose: true,
+          message: '账号为八位数字',
           type: 'error'
         })
       } else if (this.loginForm.password === '') {
@@ -96,6 +159,11 @@ export default {
               sessionStorage.setItem(
                 'loginOrganizationId',
                 res.data.data.loginOrganizationId
+              )
+              sessionStorage.setItem('studentId', res.data.data.studentId)
+              sessionStorage.setItem(
+                'homeAdmissionId',
+                res.data.data.loginAdmissionId
               )
               this.$router.push('/home/interviewMain')
             } else {
