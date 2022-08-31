@@ -437,11 +437,7 @@ export default {
       //进度条数据
       barData: [],
       //下拉框的选项
-      options: [
-        {
-          address: '暂无数据'
-        }
-      ],
+      options: [],
       //下拉框选择的地点数据
       position: '',
       //当前页
@@ -496,6 +492,7 @@ export default {
     //监视地点改变
     position() {
       this.currentPage = 1
+      this.search = ''
       this.getTableData()
     },
     search() {
@@ -604,7 +601,7 @@ export default {
               message: res.data.message,
               type: 'warning',
               center: true,
-              duration: 0
+              duration: 4000
             })
             this.loading = false
           } else {
@@ -682,8 +679,8 @@ export default {
             this.barData = [
               {
                 total: '{暂无数据}',
-                startTime: '暂无数据',
-                endTime: '暂无数据',
+                startTime: res.data.message,
+                endTime: '',
                 proportion: 0
               }
             ]
@@ -771,6 +768,7 @@ export default {
       let sendData = {
         studentId: this.stdId,
         admissionId: this.admissionId,
+        organizationId: this.organizationId,
         departmentId: this.departmentId,
         round: this.round
       }
@@ -847,6 +845,7 @@ export default {
       let sendData = {
         studentId: this.stdId,
         admissionId: this.admissionId,
+        organizationId: this.organizationId,
         departmentId: this.departmentId,
         score: this.score,
         round: this.round,
@@ -1321,7 +1320,7 @@ export default {
     }
     .qrcode {
       float: right;
-      margin-right: 50px;
+      margin-right: 3vw;
     }
     .yes {
       position: absolute;
@@ -1402,7 +1401,7 @@ export default {
           }
           .department {
             // background-color: rgb(82, 199, 154);
-            margin-top: 20px;
+            margin-top: 0px;
             .tit {
               font-size: 25px;
               // background-color: rgb(60, 170, 113);
@@ -1431,7 +1430,7 @@ export default {
               .problem {
                 font-size: 18px;
                 text-align: left;
-                margin-bottom: 15px;
+                margin-bottom: 20px;
               }
               .answer {
                 margin-top: 20px;
@@ -1465,7 +1464,7 @@ export default {
             }
             .question2 {
               // background-color: rgb(123, 207, 208);
-              margin-top: 20px;
+              margin-top: 0px;
               .problem {
                 font-size: 18px;
                 text-align: left;
