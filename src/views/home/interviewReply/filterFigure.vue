@@ -216,6 +216,7 @@ export default {
       .get(url1)
       .then((response) => {
         // console.log(response)
+        this.drawChar()
         if (response.data.code == '00000') {
           this.department = []
           this.department = response.data.data.department
@@ -225,7 +226,7 @@ export default {
       })
       .catch((error) => {
         console.log(error)
-        // this.drawChar()
+        this.drawChar()
         this.$message.error('获取部门信息失败！')
       })
 

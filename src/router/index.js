@@ -118,23 +118,7 @@ const routes = [
       {
         path: 'informationSet',
         component: () =>
-          import('../views/superAdmin/informationSet/informationSetMain.vue'),
-        children: [
-          {
-            path: 'informationSetEdit',
-            component: () =>
-              import(
-                '../views/superAdmin/informationSet/informationSetInner/informationBasicEdit.vue'
-              )
-          },
-          {
-            path: 'informationSetSaved',
-            component: () =>
-              import(
-                '../views/superAdmin/informationSet/informationSetInner/informationBasicSaved.vue'
-              )
-          }
-        ]
+          import('../views/superAdmin/information/information.vue')
       }
     ]
   }
