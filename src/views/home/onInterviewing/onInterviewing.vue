@@ -553,9 +553,14 @@ export default {
               duration: 2000
             })
           } else {
-            //真实数据
+            let rellist=[]
             let data = res.data.data.list
-            this.departmentIds = data
+            data.forEach((item)=>{
+              if(item!=null){
+                rellist.push(item)
+              }
+            })
+              this.departmentIds = rellist
           }
         })
         .catch(() => {
@@ -587,7 +592,7 @@ export default {
           } else {
             // console.log(res, '获取面试轮次')
             this.round = res.data.data.round
-            this.dialogVisible3 = true
+            // this.dialogVisible3 = true
             this.getEvaluation()
           }
         })
