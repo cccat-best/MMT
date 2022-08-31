@@ -347,8 +347,6 @@
 </template>
 
 <script>
-//引入表单全部数据,这是模拟数据，后期应该会删掉
-import data from './data.js'
 // 引入clipBoard
 import clipBoard from './dialog/clipboard.vue'
 //引入弹窗
@@ -380,7 +378,7 @@ export default {
       pagesize: 10, // 每页条数，默认10
       total: 100,
       // 表格数据
-      tableData: [...data], //模拟数据，发请求会获取数据覆盖它
+      tableData: [], //模拟数据，发请求会获取数据覆盖它
       tableDataChange: [], //排序、筛选之后的数据
       //多选选中记录,只能记录单页，需要改进
       multipleSelection: []
