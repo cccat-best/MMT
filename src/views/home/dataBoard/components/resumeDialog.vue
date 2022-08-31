@@ -1197,11 +1197,11 @@ export default {
       }
       .question2 {
         // background-color: rgb(123, 207, 208);
-        margin-top: 20px;
+        margin-top: 0px;
         .problem {
           font-size: 18px;
           text-align: left;
-          margin-bottom: 15px;
+          margin-bottom: 20px;
         }
         .answer {
           margin-top: 20px;
@@ -1217,7 +1217,7 @@ export default {
     //部门问题和综合问题模块
     .two {
       // background-color: rgb(82, 199, 154);
-      margin-top: 20px;
+      margin-top: 0px;
       .tit {
         font-size: 25px;
         // background-color: rgb(60, 170, 113);
@@ -1246,7 +1246,7 @@ export default {
         .problem {
           font-size: 18px;
           text-align: left;
-          margin-bottom: 15px;
+          margin-bottom: 20px;
         }
         .answer {
           margin-top: 20px;
