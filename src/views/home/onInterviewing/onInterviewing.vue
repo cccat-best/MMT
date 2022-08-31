@@ -370,6 +370,21 @@
             <el-dialog title="" :visible.sync="dialogVisible3" width="50%">
               <div class="result">
                 <div class="title">面试评价</div>
+                <div>
+                  <div class="selectdepartmentid">选择评价部门:</div>
+                  <el-select
+                    v-model="departmentId"
+                    placeholder="请选择评价部门"
+                  >
+                    <el-option
+                      v-for="item in departmentIds"
+                      :key="item.departmentId"
+                      :label="item.departmentName"
+                      :value="item.departmentId"
+                    >
+                    </el-option>
+                  </el-select>
+                </div>
                 <div class="content">
                   <el-input
                     type="textarea"
@@ -395,7 +410,10 @@
               </div>
               <span slot="footer" class="dialog-footer">
                 <el-button @click="dialogVisible3 = false">取 消</el-button>
-                <el-button type="primary" @click="clicksendEvaluation"
+                <el-button
+                  type="primary"
+                  @click="clicksendEvaluation"
+                  :disabled="disable"
                   >确 定</el-button
                 >
               </span>
@@ -427,8 +445,10 @@ export default {
     return {
       admissionId: sessionStorage.getItem('homeAdmissionId'),
       organizationId: sessionStorage.getItem('loginOrganizationId'),
+      disable: false,
       //待拿取
-      departmentId: 0,
+      departmentId: '',
+      departmentIds: [],
       round: 1,
       //进度条定时器
       timer: '',
@@ -500,6 +520,13 @@ export default {
       if (this.position != '') {
         this.getTableData()
       }
+    },
+    departmentId() {
+      this.estimate = ''
+      this.score = ''
+      if (this.departmentId != '') {
+        this.getRound()
+      }
     }
   },
   beforeDestroy() {
@@ -526,12 +553,9 @@ export default {
               duration: 2000
             })
           } else {
-            // this.dialogVisible3 = true
-            // let data = 1
             //真实数据
-            let data = res.data.data
-            this.departmentId = data
-            this.getRound()
+            let data = res.data.data.list
+            this.departmentIds = data
           }
         })
         .catch(() => {
@@ -756,7 +780,7 @@ export default {
     },
     //点击面试评价按钮获取学号和评价(ok)
     openEvaluate(row) {
-      // this.dialogVisible3 = true
+      this.dialogVisible3 = true
       this.stdId = row.studentId
       this.estimate = ''
       this.score = ''
@@ -816,7 +840,15 @@ export default {
     },
     // 点击发送评价按钮(ok)
     clicksendEvaluation() {
-      if (this.estimate == '') {
+      if (this.departmentId == '') {
+        this.$message({
+          showClose: true,
+          message: '请选择评价部门',
+          type: 'error',
+          center: true,
+          duration: 2000
+        })
+      } else if (this.estimate == '') {
         this.$message({
           showClose: true,
           message: '评价不能为空',
@@ -824,18 +856,16 @@ export default {
           center: true,
           duration: 2000
         })
+      } else if (this.score == '') {
+        this.$message({
+          showClose: true,
+          message: '得分不能为空',
+          type: 'error',
+          center: true,
+          duration: 2000
+        })
       } else {
-        if (this.score == '') {
-          this.$message({
-            showClose: true,
-            message: '得分不能为空',
-            type: 'error',
-            center: true,
-            duration: 2000
-          })
-        } else {
-          this.sendEvaluation()
-        }
+        this.sendEvaluation()
       }
     },
     //发送评价(ok)
@@ -855,16 +885,26 @@ export default {
       let url = `api/real-time-interview/appraise`
       let post = this.$http.post(url, sendData)
       post
-        .then(() => {
+        .then((res) => {
           // console.log(res, '发送面试评价')
-          this.dialogVisible3 = false
-          this.$message({
-            showClose: true,
-            message: '评价成功',
-            type: 'success',
-            center: true,
-            duration: 2000
-          })
+          if (res.data.code == 'A0400') {
+            this.$message({
+              showClose: true,
+              message: res.data.message,
+              type: 'error',
+              center: true,
+              duration: 2000
+            })
+          } else {
+            this.dialogVisible3 = false
+            this.$message({
+              showClose: true,
+              message: '评价成功',
+              type: 'success',
+              center: true,
+              duration: 2000
+            })
+          }
         })
         .catch(() => {
           this.$message({
@@ -999,13 +1039,6 @@ export default {
           })
         })
     },
-    //点击搜索(ok)
-    // getSearch() {
-    //   this.currentPage = 1
-    //   if (this.position != '') {
-    //     this.getTableData()
-    //   }
-    // },
     //点击简历按钮获取学号清空数组(ok)
     openResume(row) {
       this.dialogVisible2 = true
@@ -1232,7 +1265,7 @@ export default {
     padding: 0 15px;
     height: 112px;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     overflow-x: auto;
     .progress {
       width: 180px;
@@ -1498,9 +1531,9 @@ export default {
       .content {
         margin-top: 15px;
         margin-left: 43px;
-        width: 600px;
+        width: 41vw;
         // width: 90%;
-        height: 250px;
+        height: 237px;
       }
     }
     /deep/.el-dialog {
@@ -1534,6 +1567,17 @@ export default {
       position: absolute;
       top: 5px;
       left: 70%;
+    }
+  }
+  .selectdepartmentid {
+    display: inline-block;
+    width: 140px;
+    height: 30px;
+    // background-color: rgb(175, 162, 162);
+    font-size: 20px;
+    margin-top: 20px;
+    /deep/.el-select {
+      width: 200px;
     }
   }
 }
