@@ -66,10 +66,32 @@
         >
         </el-table-column>
 
-        <el-table-column label="通知状态" width="120">
+        <el-table-column
+          label="通知状态"
+          width="120"
+          :filters="[
+            { text: '未安排', value: 2 },
+            { text: '已通知未签到', value: 4 }
+          ]"
+          column-key="status"
+        >
           <template slot-scope="scope">
-            <span>{{ pd(scope.row.status) }} </span></template
-          >
+            <!-- <span>{{ pd(scope.row.status) }} </span> -->
+            <span v-if="scope.row.status == 2"
+              ><el-tag type="warning" disable-transitions>未安排</el-tag></span
+            >
+            <span v-else-if="scope.row.status == 3"
+              ><el-tag disable-transitions>已安排未通知</el-tag></span
+            >
+            <span v-else-if="scope.row.status == 4"
+              ><el-tag type="success" disable-transitions
+                >已通知未签到</el-tag
+              ></span
+            >
+            <span v-else
+              ><el-tag type="info" disable-transitions>其它</el-tag></span
+            >
+          </template>
         </el-table-column>
       </el-table>
       <div class="foot">
@@ -97,6 +119,7 @@ export default {
       sameDepartment: true,
       departmentId: 0,
       filterDepartment: [],
+      filterStatus: null,
       departmentName: '',
       round: 1,
       order: '',
@@ -121,10 +144,22 @@ export default {
       this.timer = setTimeout(() => {
         // console.log(this.search)
         let url = 'api/interview-arrangement/info/like'
-        let params = {
-          admissionId: sessionStorage['homeAdmissionId'],
-          round: this.round,
-          keyword: this.search
+        let params = {}
+        if (this.filterStatus == null) {
+          params = {
+            admissionId: sessionStorage['homeAdmissionId'],
+            round: this.round,
+            keyword: this.search,
+            departmentId: this.filterDepartmentId
+          }
+        } else {
+          params = {
+            admissionId: sessionStorage['homeAdmissionId'],
+            round: this.round,
+            keyword: this.search,
+            departmentId: this.filterDepartmentId,
+            status: this.filterStatus
+          }
         }
         this.$http
           .get(url, params)
@@ -166,32 +201,6 @@ export default {
     // }
   },
   methods: {
-    pd(t) {
-      switch (t) {
-        case 0:
-          return '拒绝'
-        case 1:
-          return '待定'
-        case 2:
-          return '未安排'
-        case 3:
-          return '已安排未通知'
-        case 4:
-          return '已通知未签到'
-        case 5:
-          return '已签到'
-        case 6:
-          return '面试中'
-        case 7:
-          return '待定'
-        case 8:
-          return '失败'
-        case 9:
-          return '通过'
-        default:
-          return 0
-      }
-    },
     handleSeclect(val) {
       this.departmentName = []
       this.departmentId = []
@@ -224,23 +233,111 @@ export default {
       this.$bus.$emit('arrangeSelectionStudentName', selectionStudentName)
     },
     filterChange(filters) {
-      this.currentPage = 1
-      let filterDepartment = []
-      filterDepartment = filters.department
-      let length = filterDepartment.length
-      let sum = 0
-      for (let i = 0; i < length; ++i) {
-        if (filterDepartment[i] == 0) {
-          let url = 'api/interview-arrangement/info/like'
-          let params = {
+      if (filters.department) {
+        this.currentPage = 1
+        let filterDepartment = []
+        filterDepartment = filters.department
+        let length = filterDepartment.length
+        let sum = 0
+        for (let i = 0; i < length; ++i) {
+          if (filterDepartment[i] == 0) {
+            let url = 'api/interview-arrangement/info/like'
+            let params = {}
+            if (this.filterStatus == null) {
+              params = {
+                admissionId: sessionStorage['homeAdmissionId'],
+                round: this.round,
+                departmentId: 0,
+                keyword: this.search
+              }
+            } else {
+              params = {
+                admissionId: sessionStorage['homeAdmissionId'],
+                round: this.round,
+                departmentId: 0,
+                keyword: this.search,
+                status: this.filterStatus
+              }
+            }
+            this.$http
+              .get(url, params)
+              .then((response) => {
+                console.log(response)
+                if (response.data.code == '00000') {
+                  this.tableData = []
+                  this.total = response.data.data.total
+                  this.tableData = response.data.data.infoBackParamList
+                } else {
+                  this.$message.error(response.data.message)
+                }
+              })
+              .catch((error) => {
+                console.log(error)
+                this.$message.error('获取筛选信息失败！')
+              })
+            return 0
+          } else {
+            sum += filterDepartment[i] * Math.pow(10, length - 1 - i)
+          }
+        }
+        this.filterDepartmentId = sum
+        // console.log(filterDepartment)
+        // console.log(sum)
+        let url = 'api/interview-arrangement/info/like'
+        let params = {}
+        if (this.filterStatus == null) {
+          params = {
             admissionId: sessionStorage['homeAdmissionId'],
             round: this.round,
-            departmentId: 0
+            keyword: this.search,
+            departmentId: sum
+          }
+        } else {
+          params = {
+            admissionId: sessionStorage['homeAdmissionId'],
+            round: this.round,
+            keyword: this.search,
+            departmentId: sum,
+            status: this.filterStatus
+          }
+        }
+
+        this.$http
+          .get(url, params)
+          .then((response) => {
+            console.log(response)
+            if (response.data.code == '00000') {
+              this.tableData = []
+              this.total = response.data.data.total
+              this.tableData = response.data.data.infoBackParamList
+            } else {
+              this.$message.error(response.data.message)
+            }
+          })
+          .catch((error) => {
+            console.log(error)
+            this.$message.error('获取筛选信息失败！')
+          })
+      } else if (filters.status) {
+        console.log(filters.status)
+        if (filters.status.length == 0 || filters.status.length == 2) {
+          this.filterStatus = null
+        } else if (filters.status.length == 1) {
+          this.filterStatus = filters.status[0]
+          this.currentPage = 1
+          let url = 'api/interview-arrangement/info/like'
+          let params = {
+            pageNum: this.currentPage,
+            admissionId: sessionStorage['homeAdmissionId'],
+            round: this.round,
+            departmentId: this.filterDepartmentId,
+            keyword: this.search,
+            status: this.filterStatus
           }
           this.$http
             .get(url, params)
             .then((response) => {
-              console.log(response)
+              // console.log(response)
               if (response.data.code == '00000') {
                 this.tableData = []
                 this.total = response.data.data.total
@@ -251,38 +348,10 @@ export default {
             })
             .catch((error) => {
               console.log(error)
-              this.$message.error('获取筛选信息失败！')
+              this.$message.error('获取表格信息失败！')
             })
-          return 0
-        } else {
-          sum += filterDepartment[i] * Math.pow(10, length - 1 - i)
         }
       }
-      this.filterDepartmentId = sum
-      // console.log(filterDepartment)
-      // console.log(sum)
-      let url = 'api/interview-arrangement/info/like'
-      let params = {
-        admissionId: sessionStorage['homeAdmissionId'],
-        round: this.round,
-        departmentId: sum
-      }
-      this.$http
-        .get(url, params)
-        .then((response) => {
-          console.log(response)
-          if (response.data.code == '00000') {
-            this.tableData = []
-            this.total = response.data.data.total
-            this.tableData = response.data.data.infoBackParamList
-          } else {
-            this.$message.error(response.data.message)
-          }
-        })
-        .catch((error) => {
-          console.log(error)
-          this.$message.error('获取筛选信息失败！')
-        })
     },
     indexMethod(index) {
       return (this.currentPage - 1) * this.pagesize + index + 1
@@ -290,14 +359,27 @@ export default {
     current_change(currentPage) {
       this.currentPage = currentPage
       // console.log(currentPage)
+      let params = {}
       let url = 'api/interview-arrangement/info/like'
-      let params = {
-        pageNum: currentPage,
-        admissionId: sessionStorage['homeAdmissionId'],
-        round: this.round,
-        departmentId: this.filterDepartmentId,
-        keyword: this.search
+      if (this.filterStatus == null) {
+        params = {
+          pageNum: this.currentPage,
+          admissionId: sessionStorage['homeAdmissionId'],
+          round: this.round,
+          departmentId: this.filterDepartmentId,
+          keyword: this.search
+        }
+      } else {
+        params = {
+          pageNum: this.currentPage,
+          admissionId: sessionStorage['homeAdmissionId'],
+          round: this.round,
+          departmentId: this.filterDepartmentId,
+          keyword: this.search,
+          status: this.filterStatus
+        }
       }
+
       this.$http
         .get(url, params)
         .then((response) => {
@@ -464,6 +546,10 @@ export default {
 </script>
 
 <style scoped>
+.tag {
+  color: white;
+  padding: 3px;
+}
 .bigLeft {
   height: 100%;
   width: 100%;
