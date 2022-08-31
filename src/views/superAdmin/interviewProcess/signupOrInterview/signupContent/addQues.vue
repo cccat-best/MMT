@@ -347,13 +347,13 @@ export default {
   },
   props: ['sectionQues', 'departmentId'],
   watch: {
-    addShow(newV) {
-      if (newV && !this.isEdit) {
-        this.addShow = false
-        this.$refs.addPopover.doClose()
-        return this.$message.error('非编辑模式')
-      }
-    },
+    // addShow(newV) {
+    //   if (newV && !this.isEdit) {
+    //     this.addShow = false
+    //     this.$refs.addPopover.doClose()
+    //     return this.$message.error('非编辑模式')
+    //   }
+    // },
     //弹出框位置修正
     chooseAdd() {
       this.$nextTick(() => {
