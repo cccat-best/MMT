@@ -98,6 +98,7 @@ export default {
     // 登录前校验，验证是否该账号在登录中
     async check(formName) {
       let cookie = document.cookie || ''
+      // let cookie = document.cookie || null
       let flag = true
       this.$refs[formName].validate((valid) => {
         if (valid) {
