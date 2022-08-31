@@ -473,20 +473,20 @@ export default {
     }
   },
   watch: {
-    visible(newV) {
-      if (newV && !this.isEdit) {
-        this.visible = false
-        this.$refs.baseTestPopover.doClose()
-        return this.$message.error('非编辑模式')
-      }
-    },
-    visible1(newV) {
-      if (newV && !this.isEdit) {
-        this.visible1 = false
-        this.$refs.baseChoosePopover.doClose()
-        return this.$message.error('非编辑模式')
-      }
-    },
+    // visible(newV) {
+    //   if (newV && !this.isEdit) {
+    //     this.visible = false
+    //     this.$refs.baseTestPopover.doClose()
+    //     return this.$message.error('非编辑模式')
+    //   }
+    // },
+    // visible1(newV) {
+    //   if (newV && !this.isEdit) {
+    //     this.visible1 = false
+    //     this.$refs.baseChoosePopover.doClose()
+    //     return this.$message.error('非编辑模式')
+    //   }
+    // },
     //检测用户是否设置过问题
     allQues(newV) {
       if (newV.questionsList.length != 0) {
