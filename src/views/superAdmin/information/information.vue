@@ -543,7 +543,6 @@ export default {
       this.organizeInfo.more = res.data.more || ''
       this.organizeInfo.departmentList = res.data.departmentList || []
       res.data.departmentList.forEach((item, index) => {
-        console.log(index)
         this.editableTabs.push({
           title: item.name,
           name: index + 1 + ''
@@ -566,14 +565,11 @@ export default {
     // 上传到七牛云 - 具体实例
     async uploadFile() {
       const file = this.$refs.file.files[0]
-      console.log(file)
       this.uploadToQiniu(file).then((res) => {
         const { key } = res // key是从七牛云服务返回的文件名字
         this.url = this.QINIU_BASE_PATH + '/' + key
-        console.log(this.url)
         // 判断是否是头像上传
         if (this.active !== '' && this.active !== undefined) {
-          console.log('active', this.active)
           // 判断是社团宣传图片上传还是纳新部门图片上传
           if (this.num === 1) {
             if (this.organizeInfo[this.active] === '') {
@@ -631,7 +627,6 @@ export default {
     addTab(titleName) {
       let length = this.editableTabs.length
       let newTabName = ++length + ''
-      console.log(titleName)
       this.editableTabs.push({
         title: titleName + '',
         name: newTabName
@@ -647,7 +642,6 @@ export default {
     deleteDepFun(targetName) {
       this.deleteDep = true
       this.targetName = targetName
-      console.log(targetName)
     },
     removeTab(targetName) {
       let tabs = this.editableTabs
@@ -663,7 +657,6 @@ export default {
         })
       }
       this.organizeInfo.departmentList.splice(targetName - 1, 1)
-      console.log(this.organizeInfo.departmentList)
       this.editableTabsValue = activeName
       this.editableTabs = tabs.filter((tab) => tab.name !== targetName)
     },
@@ -678,17 +671,14 @@ export default {
       this.addTab(this.addDepName)
       this.addDepName = ''
       this.add = false
-      console.log(1)
     },
     confirmDeleDep() {
       this.removeTab(this.targetName)
-      console.log(2, this.targetName)
       this.deleteDep = false
     },
     toDepDetail(index) {
       this.isList = false
       this.activeDep = this.organizeInfo.departmentList[index]
-      console.log(this.organizeInfo.departmentList[index])
     },
     async submitSignData() {
       const { data: res } = await this.$http.post(
@@ -841,12 +831,12 @@ export default {
     margin-top: 20px;
     .required {
       display: flex;
-      justify-content: start;
+      justify-content: flex-start;
       align-items: center;
     }
     .custom {
       display: flex;
-      justify-content: start;
+      justify-content: flex-start;
       align-items: center;
       margin-top: 20px;
       ::v-deep .el-input {
