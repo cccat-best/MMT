@@ -56,6 +56,7 @@ export default {
         .then((res) => {
           // 只有00000 才是设置过问题 不是直接退出
           if (res.data.code != '00000') return
+          if (res.data.data.length == 0) return
           //等于00000把他传给子组件
           this.allQues = res.data.data
         })

@@ -242,14 +242,15 @@ export default {
                     textStyle: {
                       color: 'white'
                     },
-                     formatter:function (params) {
-                   if(params.value==0){  //为0时不显示
-                       return ''
-                   }else{
-                       return params.name
-                   }
-               }
-                  },
+                    formatter: function (params) {
+                      if (params.value == 0) {
+                        //为0时不显示
+                        return ''
+                      } else {
+                        return params.name
+                      }
+                    }
+                  }
                 }
               }
             ]
