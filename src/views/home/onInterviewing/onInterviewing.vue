@@ -553,14 +553,14 @@ export default {
               duration: 2000
             })
           } else {
-            let rellist=[]
+            let rellist = []
             let data = res.data.data.list
-            data.forEach((item)=>{
-              if(item!=null){
+            data.forEach((item) => {
+              if (item != null) {
                 rellist.push(item)
               }
             })
-              this.departmentIds = rellist
+            this.departmentIds = rellist
           }
         })
         .catch(() => {
