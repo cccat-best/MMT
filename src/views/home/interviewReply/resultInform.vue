@@ -76,9 +76,9 @@ export default {
         let url8 = 'api/interview-arrangement/postNotice'
         let data8 = {
           postNoticeParams: this.list,
-          organizationId: sessionStorage['loginOrganizationId'],
-          admissionId: sessionStorage['homeAdmissionId'],
-          departmentId: this.departmentId,
+          organizationId: sessionStorage['loginOrganizationId'] * 1,
+          admissionId: sessionStorage['homeAdmissionId'] * 1,
+          departmentId: this.departmentId * 1,
           round: this.round
         }
         this.$http
@@ -229,7 +229,7 @@ export default {
               )
             }
             this.list = []
-            for (let i = 0; i < this.passNum; ++i) {
+            for (let i = 0; i < this.winNum; ++i) {
               this.list.push({
                 message: this.messageArrary[i],
                 studentId: this.studentId[i]
