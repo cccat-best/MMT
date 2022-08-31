@@ -115,7 +115,6 @@ export default {
       this.$bus.$emit('arrangeSameDepartment', this.sameDepartment)
     },
     search() {
-      this.currentPage = 1
       // 清除 timer 对应的延时器
       clearTimeout(this.timer)
       // 重新启动一个延时器，并把 timerId 赋值给 this.timer
@@ -132,6 +131,7 @@ export default {
           .then((response) => {
             // console.log(response)
             if (response.data.code == '00000') {
+              this.currentPage = 1
               this.tableData = []
               this.total = response.data.data.total
               this.tableData = response.data.data.infoBackParamList
@@ -210,7 +210,7 @@ export default {
       this.sameDepartment = true
       this.departmentName = val[0].departmentName
       this.$bus.$emit('arrangeSelectionDepartmentName', this.departmentName)
-      this.$bus.$emit('arrangeSelectiondepartmentId', this.departmentId)
+      this.$bus.$emit('arrangeSelectionDepartmentId', this.departmentId)
       let selectionStudentId = []
       let selectionStudentName = []
       val.forEach((element) => {

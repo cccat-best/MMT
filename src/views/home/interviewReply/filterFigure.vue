@@ -96,15 +96,15 @@ export default {
       total: 0,
       department: [],
       room: [],
-      departmentId: 0,
+      departmentId: null,
       departmentName: '',
-      roomId: 0
+      roomId: null
     }
   },
   methods: {
     drawChar() {
+      echarts.init(document.getElementById('pie')).dispose()
       // 基于准备好的dom，初始化echarts实例
-      echarts.init(this.$refs.pie).dispose()
       var myChart = echarts.init(this.$refs.pie)
       // 绘制图表
       myChart.setOption({
@@ -205,18 +205,28 @@ export default {
       })
   },
   watch: {
-    total() {
-      this.drawChar()
+    departmentId() {
+      setTimeout(() => {
+        this.drawChar()
+      }, 800)
+    },
+    roomId() {
+      setTimeout(() => {
+        this.drawChar()
+      }, 800)
     }
   },
   beforeMount() {
+    setTimeout(() => {
+      this.drawChar()
+    }, 800)
     let organizationId = sessionStorage['loginOrganizationId']
     let url1 = `api/interview-reply/department/${organizationId}`
     this.$http
       .get(url1)
       .then((response) => {
         // console.log(response)
-        this.drawChar()
+        // this.drawChar()
         if (response.data.code == '00000') {
           this.department = []
           this.department = response.data.data.department
@@ -226,7 +236,7 @@ export default {
       })
       .catch((error) => {
         console.log(error)
-        this.drawChar()
+        // this.drawChar()
         this.$message.error('获取部门信息失败！')
       })
 
