@@ -936,6 +936,7 @@ export default {
         }
         img {
           height: 50px;
+          width: 50px;
           min-height: 35px;
           min-width: 35px;
           border-radius: 10px;
