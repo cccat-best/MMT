@@ -1,37 +1,45 @@
 <template>
   <div class="content">
+    <!-- <div class="output-excel">
+      <el-button type="primary">导出数据</el-button>
+    </div> -->
     <!-- 搜索区域 -->
     <div class="seach-header">
-      <el-tooltip class="item" effect="dark" placement="top">
-        <div slot="content" class="noticeContent">
-          <div style="color: red">请注意:</div>
-          <div style="margin: 2px"></div>
-          <div>数据支持多种筛选共同使用</div>
-          <!-- <div style="margin: 2px"></div>
+      <div class="output-excel">
+        <el-button type="primary" @click="outPutExcel">导出数据</el-button>
+      </div>
+      <div>
+        <el-tooltip class="item" effect="dark" placement="top">
+          <div slot="content" class="noticeContent">
+            <div style="color: red">请注意:</div>
+            <div style="margin: 2px"></div>
+            <div>数据支持多种筛选共同使用</div>
+            <!-- <div style="margin: 2px"></div>
           <div>同时也提供了手动刷新按钮</div> -->
-        </div>
-        <i class="el-icon-warning-outline myRefresh"></i>
-      </el-tooltip>
-      <el-tooltip
-        class="item"
-        effect="dark"
-        content="取消所有筛选"
-        placement="top"
-      >
-        <i class="el-icon-folder-delete myRefresh" @click="searchKeyWord"></i>
-      </el-tooltip>
-      <el-tooltip class="item" effect="dark" content="刷新" placement="top">
-        <i class="el-icon-refresh-right myRefresh" @click="reFresh"></i>
-      </el-tooltip>
-      <el-input
-        v-model="searchWord"
-        type="search"
-        @input="inputSearchKeyWord"
-        class="searchInput"
-        size="small"
-        prefix-icon="el-icon-search"
-        placeholder="搜索学号、姓名"
-      ></el-input>
+          </div>
+          <i class="el-icon-warning-outline myRefresh"></i>
+        </el-tooltip>
+        <el-tooltip
+          class="item"
+          effect="dark"
+          content="取消所有筛选"
+          placement="top"
+        >
+          <i class="el-icon-folder-delete myRefresh" @click="searchKeyWord"></i>
+        </el-tooltip>
+        <el-tooltip class="item" effect="dark" content="刷新" placement="top">
+          <i class="el-icon-refresh-right myRefresh" @click="reFresh"></i>
+        </el-tooltip>
+        <el-input
+          v-model="searchWord"
+          type="search"
+          @input="inputSearchKeyWord"
+          class="searchInput"
+          size="small"
+          prefix-icon="el-icon-search"
+          placeholder="搜索学号、姓名"
+        ></el-input>
+      </div>
     </div>
     <!-- 信息表单 -->
     <!-- :header-cell-style="handleTheadStyle"支持多种排序的高亮 -->
@@ -264,6 +272,8 @@ export default {
   },
   data() {
     return {
+      // 数据库所有信息
+      allData: [],
       // 计时器
       myLoading: false,
       timerUpdate: null,
@@ -307,6 +317,8 @@ export default {
   },
   // 定时更新数据和筛选项
   mounted() {
+    // 拿到全部信息
+    this.getAllDate()
     // 无痕刷新
     this.timerUpdate = setInterval(() => {
       setTimeout(this.reFreshWithoutSee, 0)
@@ -828,7 +840,7 @@ export default {
     handleCurrentChange(val) {
       this.currentPage = val
       this.requestData()
-    }
+    },
     /**
      * 设置表头排序,允许多个排序高亮
      */
@@ -839,6 +851,111 @@ export default {
     //     column.order = this.activeThead[column.property]
     //   }
     // }
+    getAllDate() {
+      let postData = {
+        admissionId: this.admissionId,
+        organizationId: this.organizationId,
+        pageNum: 1,
+        pageSize: 30
+      }
+      this.$http
+        .post('api/data-panel/all-information', postData)
+        .then((res) => {
+          if (res.data.code == '00000') {
+            this.allData = res.data.data.allInformationData
+          } else {
+            return this.$message.error(res.data.message)
+          }
+        })
+        .catch((err) => {
+          this.$message.error('获取数据失败' + err)
+        })
+    },
+    outPutExcel() {
+      let updateBef = this.allData
+      updateBef.forEach((item, index) => {
+        item.id = index + 1
+      })
+      let jsonData = updateBef.map((v) => {
+        const { ...updateBef } = v
+        return { ...updateBef }
+      })
+      jsonData = jsonData.map((v) => ({
+        ID: v.id,
+        学号: v.stuNum,
+        姓名: v.name,
+        班级: v.className,
+        手机号: v.phone,
+        当前社团志愿: v.organizationOrder,
+        当前部门志愿: v.departmentOrder,
+        面试部门: v.wishDepartment
+      }))
+      this.JSONToExcelConvertor(jsonData, '数据看板数据表')
+    },
+
+    JSONToExcelConvertor(JSONData, FileName) {
+      //先转化json
+      var arrData =
+        typeof JSONData != 'object' ? JSON.parse(JSONData) : JSONData
+      var excel = '<table>'
+      var row = '<tr>'
+      //设置表头
+      var keys = Object.keys(JSONData[0])
+      keys.forEach(function (item) {
+        row += '<td>' + item + '</td>'
+      })
+      //换行
+      excel += row + '</tr>'
+      //设置数据
+      for (let i = 0; i < arrData.length; i++) {
+        row = '<tr>'
+        for (var index in arrData[i]) {
+          //var value = arrData[i][index] === "." ? "" : arrData[i][index];
+          row += '<td>' + arrData[i][index] + '</td>'
+        }
+        excel += row + '</tr>'
+      }
+      excel += '</table>'
+      var excelFile =
+        "<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:x='urn:schemas-microsoft-com:office:excel' xmlns='http://www.w3.org/TR/REC-html40'>"
+      excelFile +=
+        '<meta http-equiv="content-type" content="application/vnd.ms-excel; charset=UTF-8">'
+      excelFile +=
+        '<meta http-equiv="content-type" content="application/vnd.ms-excel'
+      excelFile += '; charset=UTF-8">'
+      excelFile += '<head>'
+      excelFile += '<!--[if gte mso 9]>'
+      excelFile += '<xml>'
+      excelFile += '<x:ExcelWorkbook>'
+      excelFile += '<x:ExcelWorksheets>'
+      excelFile += '<x:ExcelWorksheet>'
+      excelFile += '<x:Name>'
+      excelFile += '{worksheet}'
+      excelFile += '</x:Name>'
+      excelFile += '<x:WorksheetOptions>'
+      excelFile += '<x:DisplayGridlines/>'
+      excelFile += '</x:WorksheetOptions>'
+      excelFile += '</x:ExcelWorksheet>'
+      excelFile += '</x:ExcelWorksheets>'
+      excelFile += '</x:ExcelWorkbook>'
+      excelFile += '</xml>'
+      excelFile += '<![endif]-->'
+      excelFile += '</head>'
+      excelFile += '<body>'
+      excelFile += excel
+      excelFile += '</body>'
+      excelFile += '</html>'
+      var uri =
+        'data:application/vnd.ms-excel;charset=utf-8,' +
+        encodeURIComponent(excelFile)
+      var link = document.createElement('a')
+      link.href = uri
+      link.style = 'visibility:hidden'
+      link.download = FileName + '.xls'
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+    }
   }
 }
 </script>
@@ -864,7 +981,7 @@ export default {
 // 包含搜索的div
 .seach-header {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   align-items: center;
   margin-bottom: 10px;
   position: relative;
