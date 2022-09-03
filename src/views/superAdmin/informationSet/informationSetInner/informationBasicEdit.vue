@@ -361,6 +361,7 @@ export default {
     this.$bus.$on('sendCommunityDataToChild', (val) => {
       // console.log('Edit收到了数据:', val)
       this.editCommunityData = val.data
+      this.circleUrl = this.editCommunityData.avatarUrl
       this.editShowMain = true
       // console.log(this.editCommunityData.departmentList[0])
     })

@@ -233,6 +233,7 @@ export default {
     this.$bus.$on('sendCommunityDataToChild', (val) => {
       console.log('Saved收到了数据:', val)
       this.communityData = val.data
+      this.circleUrl = this.communityData.avatarUrl
       console.log('this.communityData.name =', this.communityData.name)
       console.log(
         'this.communityData.departmentList.length =',
