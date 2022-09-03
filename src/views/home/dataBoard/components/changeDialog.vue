@@ -384,6 +384,7 @@ export default {
     Mymounted() {
       this.getAcdademy()
       this.getDetail()
+      this.clearValidate('ruleForm')
     },
     // 获取学院列表(ok)
     getAcdademy() {
@@ -684,6 +685,10 @@ export default {
         }
       })
     },
+    //清除提示语
+    clearValidate(formName) {
+      this.$refs[formName].clearValidate()
+    },
     //提交修改学号数据(ok)
     submitNumData() {
       let sendData = {
@@ -976,7 +981,7 @@ export default {
         margin-top: 20px;
         text-align: left;
         margin-left: 30px;
-        margin-right: 30px;
+        margin-right: 50px;
         font-size: 15px;
         background-color: #f5f7fa;
         padding: 17px;
