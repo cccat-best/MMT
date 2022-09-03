@@ -32,8 +32,6 @@ export default {
   },
   mounted() {
     this.getStatus()
-    //debug
-    // this.changeStatus(2)
   }
 }
 </script>

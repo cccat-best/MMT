@@ -57,29 +57,29 @@
                 class="upperRightInnerFlex"
                 v-if="drawDone && pieUseData[0] != null"
               >
-                <span>部门一: 总人数: {{ pieUseData[0].value }}人</span>
-                <span> 今日新增：{{ pieData.pieData[0].todayNum }}人</span>
+                <span>部门一: 总人数: {{ pieUseData[0].value }}</span>
+                <span> 今日新增：{{ pieData.pieData[0].todayNum }}</span>
               </div>
               <div
                 class="upperRightInnerFlex"
                 v-if="drawDone && pieUseData[1] != null"
               >
-                <span>部门二: 总人数: {{ pieUseData[1].value }}人</span>
-                <span> 今日新增：{{ pieData.pieData[1].todayNum }}人</span>
+                <span>部门二: 总人数: {{ pieUseData[1].value }}</span>
+                <span> 今日新增：{{ pieData.pieData[1].todayNum }}</span>
               </div>
               <div
                 class="upperRightInnerFlex"
                 v-if="drawDone && pieUseData[2] != null"
               >
-                <span>部门三: 总人数: {{ pieUseData[2].value }}人</span>
-                <span> 今日新增：{{ pieData.pieData[2].todayNum }}人</span>
+                <span>部门三: 总人数: {{ pieUseData[2].value }}</span>
+                <span> 今日新增：{{ pieData.pieData[2].todayNum }}</span>
               </div>
               <div
                 class="upperRightInnerFlex"
                 v-if="drawDone && pieUseData[3] != null"
               >
-                <span>部门四: 总人数: {{ pieUseData[3].value }}人</span>
-                <span> 今日新增：{{ pieData.pieData[3].todayNum }}人</span>
+                <span>部门四: 总人数: {{ pieUseData[3].value }}</span>
+                <span> 今日新增：{{ pieData.pieData[3].todayNum }}</span>
               </div>
             </div>
             <div style="width: 50%; height: 100%" ref="pie"></div>
@@ -163,9 +163,8 @@ export default {
     drawPie() {
       this.$http
         .get('/api/interview-data/before/pie-chat', {
-          //debug
-          admissionId: 1,
-          organizationId: 1
+          organizationId: sessionStorage.getItem('loginOrganizationId'),
+          admissionId: sessionStorage.getItem('homeAdmissionId')
         })
         .then((res) => {
           console.log('饼图数据', res.data.data.pieData)
@@ -216,9 +215,8 @@ export default {
     getUpperLeft() {
       this.$http
         .get('/api/interview-data/before/registrations', {
-          //debug
-          admissionId: 1,
-          organizationId: 1
+          organizationId: sessionStorage.getItem('loginOrganizationId'),
+          admissionId: sessionStorage.getItem('homeAdmissionId')
         })
         .then((res) => {
           this.upperLeftData = res.data.data
@@ -230,9 +228,8 @@ export default {
     drawLine(part) {
       this.$http
         .get('/api/interview-data/before/line-graph', {
-          //debug
-          admissionId: 1,
-          organizationId: 1,
+          organizationId: sessionStorage.getItem('loginOrganizationId'),
+          admissionId: sessionStorage.getItem('homeAdmissionId'),
           departmentId: part
         })
         .then((res) => {

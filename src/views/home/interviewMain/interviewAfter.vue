@@ -175,7 +175,7 @@ export default {
     getDepartments() {
       this.$http
         .get('/api/interview-data/time/getOrganizationAllDepartment', {
-          organizationId: 1
+          organizationId: sessionStorage.getItem('loginOrganizationId')
         })
         .then((res) => {
           console.log('获得部门：', res)
@@ -188,13 +188,11 @@ export default {
     getRightData(val) {
       this.$http
         .get('/api/interview-data/after/rank', {
-          //debug
-          organizationId: 1,
-          admissionId: 1,
+          organizationId: sessionStorage.getItem('loginOrganizationId'),
+          admissionId: sessionStorage.getItem('homeAdmissionId'),
           departmentId: val
         })
         .then((res) => {
-          //debug
           console.log('右边的数据', res)
           this.rightData = res.data.data
         })
@@ -207,9 +205,8 @@ export default {
     drawPie(part) {
       this.$http
         .get('/api/interview-data/after/pass-num-pie', {
-          //debug
-          admissionId: 1,
-          organizationId: 1,
+          organizationId: sessionStorage.getItem('loginOrganizationId'),
+          admissionId: sessionStorage.getItem('homeAdmissionId'),
           departmentId: part
         })
         .then((res) => {
@@ -261,9 +258,8 @@ export default {
     getUpperLeft() {
       this.$http
         .get('/api/interview-data/after/registrations', {
-          //debug
-          admissionId: 1,
-          organizationId: 1
+          organizationId: sessionStorage.getItem('loginOrganizationId'),
+          admissionId: sessionStorage.getItem('homeAdmissionId')
         })
         .then((res) => {
           this.upperLeftData = res.data.data
@@ -275,9 +271,8 @@ export default {
     drawLine(part) {
       this.$http
         .get('/api/interview-data/after/line-graph', {
-          //debug
-          admissionId: 1,
-          organizationId: 1,
+          organizationId: sessionStorage.getItem('loginOrganizationId'),
+          admissionId: sessionStorage.getItem('homeAdmissionId'),
           departmentId: part
         })
         .then((res) => {
