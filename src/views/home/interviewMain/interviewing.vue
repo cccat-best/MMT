@@ -1,35 +1,35 @@
 <template>
   <div class="interviewingMain">
     <div class="departmentNav">
-      <div class="navBtn" @click="reNewData()">全部</div>
-      <div
-        class="navBtn"
+      <el-button @click="reNewData()" size="medium">全部</el-button>
+      <el-button
+        size="medium"
         v-if="departmentNum.length > 0"
         @click="reNewData(departmentNum[0].departmentId)"
       >
         部门一 : {{ departmentNum[0].departmentName }}
-      </div>
-      <div
-        class="navBtn"
+      </el-button>
+      <el-button
+        size="medium"
         v-if="departmentNum.length > 1"
         @click="reNewData(departmentNum[1].departmentId)"
       >
         部门二 : {{ departmentNum[1].departmentName }}
-      </div>
-      <div
-        class="navBtn"
+      </el-button>
+      <el-button
+        size="medium"
         v-if="departmentNum.length > 2"
         @click="reNewData(departmentNum[2].departmentId)"
       >
         部门三 : {{ departmentNum[2].departmentName }}
-      </div>
-      <div
-        class="navBtn"
+      </el-button>
+      <el-button
+        size="medium"
         v-if="departmentNum.length > 3"
         @click="reNewData(departmentNum[3].departmentId)"
       >
         部门四 : {{ departmentNum[3].departmentName }}
-      </div>
+      </el-button>
     </div>
     <div class="interviewingInner">
       <div class="interviewingLeft">
@@ -81,6 +81,9 @@
               @click="addRenderCardList()"
               v-if="cardList.length === 4"
             ></i>
+          </template>
+          <template v-if="cardList.length == 0">
+            <div>暂无房间数据</div>
           </template>
         </div>
         <div class="buttom">
@@ -187,6 +190,7 @@ export default {
       rightData: [],
       leftButtomData: [],
       nowRoomData: {},
+      departmentId: 1,
       roomList: [
         {
           roomId: 1,
@@ -237,7 +241,7 @@ export default {
     getDepartments() {
       this.$http
         .get('/api/interview-data/time/getOrganizationAllDepartment', {
-          organizationId: 1
+          organizationId: sessionStorage.getItem('loginOrganizationId')
         })
         .then((res) => {
           console.log('获得部门：', res)
@@ -250,20 +254,14 @@ export default {
     getRoomData(val) {
       this.$http
         .get('/api/interview-data/ongoing/room/all', {
-          organizationId: 1,
-          admissionId: 1,
+          organizationId: sessionStorage.getItem('loginOrganizationId'),
+          admissionId: sessionStorage.getItem('homeAdmissionId'),
           departmentId: val
         })
         .then((res) => {
-          //debug
-          console.log('获得roomData：', res.data.data.roomData)
           this.roomList = this.mergeObj(res.data.data.roomData, {
             showBack: false
           })
-          // console.log(res)
-          // this.roomList = this.mergeObj(this.roomList, {
-          //   showBack: false
-          // })
           this.cardList = this.roomList.slice(0, 4)
         })
         .then(() => {
@@ -273,29 +271,22 @@ export default {
     getLeftButtomData(val) {
       this.$http
         .get('/api/interview-data/ongoing/broadcast', {
-          //debug
-          //后期需要更改
-          organizationId: 1,
-          admissionId: 1,
+          organizationId: sessionStorage.getItem('loginOrganizationId'),
+          admissionId: sessionStorage.getItem('homeAdmissionId'),
           departmentId: val
         })
         .then((res) => {
-          //debug
-          console.log('左下角的数据：', res)
           this.leftButtomData = res.data.data
         })
     },
     getRightData(val) {
       this.$http
         .get('/api/interview-data/ongoing/rank', {
-          //debug
-          organizationId: 1,
-          admissionId: 1,
+          organizationId: sessionStorage.getItem('loginOrganizationId'),
+          admissionId: sessionStorage.getItem('homeAdmissionId'),
           departmentId: val
         })
         .then((res) => {
-          //debug
-          console.log('右边的数据', res)
           this.rightData = res.data.data
         })
     },
@@ -303,6 +294,7 @@ export default {
       this.getRightData(partId)
       this.getLeftButtomData(partId)
       this.getRoomData(partId)
+      this.departmentId = partId
     },
     addRenderCardList() {
       if (this.cardend < this.roomList.length) {
@@ -324,9 +316,9 @@ export default {
     getNowRoomData: debounce(function (roomId) {
       this.$http
         .get('/api/interview-data/ongoing/room/back', {
-          admissionId: 1,
-          organizationId: 1,
-          departmentId: 1,
+          organizationId: sessionStorage.getItem('loginOrganizationId'),
+          admissionId: sessionStorage.getItem('homeAdmissionId'),
+          departmentId: this.departmentId,
           roomId: roomId
         })
         .then((res) => {

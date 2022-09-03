@@ -312,15 +312,19 @@ export default {
       }),
       this.$bus.$on('arrangeSelectionStudentId1', (data) => {
         this.studentId = data
+        console.log('hello' + this.departmentId)
       }),
       this.$bus.$on('arrangeSelectionStudentName', (data) => {
         this.studentName = data
+        console.log('hello' + this.departmentId)
       }),
       this.$bus.$on('arrangeSelectionDepartmentName', (data) => {
         this.departmentName = data
+        console.log('hello' + this.departmentId)
       }),
       this.$bus.$on('arrangeSelectionDepartmentId', (data) => {
         this.departmentId = data
+        console.log('hello' + this.departmentId)
       })
   },
   beforeDestroy() {
