@@ -99,260 +99,10 @@
         <!-- 简历 -->
         <el-table-column prop="resume" label="简历" width="80" align="center">
           <template slot-scope="scope">
-            <div class="resumeTable">
               <!-- 弹窗按钮 -->
-              <el-button type="text" @click="openResume(scope.row)">
+              <el-button type="text" @click="openResumeDialog(scope.row)">
                 <i class="el-icon-s-order" style="font-size: 20px"></i>
               </el-button>
-              <!-- 简历弹窗 -->
-              <el-dialog
-                title=""
-                :visible.sync="dialogVisible2"
-                width="65%"
-                top="30px"
-              >
-                <!-- 主体内容 -->
-                <div class="resume">
-                  <!-- 标题 -->
-                  <div class="bigTitle">报名表</div>
-                  <!-- 内容 -->
-                  <div class="registerTable">
-                    <!-- 基本问题模块 -->
-                    <div class="base">
-                      <div class="tit">基本问题</div>
-                      <el-form
-                        :model="ruleForm"
-                        ref="ruleForm"
-                        label-width="55px"
-                        class="demo-ruleForm form"
-                      >
-                        <el-form-item
-                          label="姓名"
-                          prop="studentName"
-                          v-if="ruleForm.studentName != null"
-                        >
-                          <el-input
-                            v-model="ruleForm.studentName"
-                            disabled
-                          ></el-input>
-                        </el-form-item>
-                        <el-form-item
-                          label="学号"
-                          prop="studentId"
-                          v-if="ruleForm.studentId != null"
-                        >
-                          <el-input
-                            v-model="ruleForm.studentId"
-                            disabled
-                          ></el-input>
-                        </el-form-item>
-                        <el-form-item
-                          label="电话"
-                          prop="phone"
-                          v-if="ruleForm.phone != null"
-                        >
-                          <el-input
-                            v-model="ruleForm.phone"
-                            disabled
-                          ></el-input>
-                        </el-form-item>
-                        <el-form-item
-                          label="QQ"
-                          prop="qq"
-                          v-if="ruleForm.qq != null"
-                        >
-                          <el-input v-model="ruleForm.qq" disabled></el-input>
-                        </el-form-item>
-                        <el-form-item
-                          label="学院"
-                          prop="academy"
-                          v-if="ruleForm.academy != null"
-                        >
-                          <el-input
-                            v-model="ruleForm.academy"
-                            disabled
-                          ></el-input>
-                        </el-form-item>
-                        <el-form-item
-                          label="专业"
-                          prop="major"
-                          v-if="ruleForm.major != null"
-                        >
-                          <el-input
-                            v-model="ruleForm.major"
-                            disabled
-                          ></el-input>
-                        </el-form-item>
-                        <el-form-item
-                          label="班级"
-                          prop="classNum"
-                          v-if="ruleForm.classNum != null"
-                        >
-                          <el-input
-                            v-model="ruleForm.classNum"
-                            disabled
-                          ></el-input>
-                        </el-form-item>
-                        <el-form-item
-                          label="性别"
-                          prop="gender"
-                          v-if="ruleForm.gender != null"
-                        >
-                          <el-input
-                            v-model="ruleForm.gender"
-                            disabled
-                          ></el-input>
-                        </el-form-item>
-                        <el-form-item
-                          label="邮箱"
-                          prop="email"
-                          v-if="ruleForm.email != null"
-                        >
-                          <el-input
-                            v-model="ruleForm.email"
-                            disabled
-                          ></el-input>
-                        </el-form-item>
-
-                        <el-form-item
-                          label="身高"
-                          prop="height"
-                          v-if="ruleForm.height != null"
-                        >
-                          <el-input
-                            v-model="ruleForm.height"
-                            disabled
-                          ></el-input>
-                        </el-form-item>
-
-                        <el-form-item
-                          label="体重"
-                          prop="weight"
-                          v-if="ruleForm.weight != null"
-                        >
-                          <el-input
-                            v-model="ruleForm.weight"
-                            disabled
-                          ></el-input>
-                        </el-form-item>
-                      </el-form>
-                    </div>
-                    <!-- 自定义基本问题 -->
-                    <div class="basequestion">
-                      <!-- 基本问题（填空） -->
-                      <div
-                        class="question1"
-                        v-for="(item, index) in basicQuestions1"
-                        :key="index"
-                      >
-                        <div class="problem">填空：{{ item.question }}</div>
-                        <div class="answer">{{ item.answer }}</div>
-                      </div>
-                      <!-- 基本问题（选择） -->
-                      <div class="question2">
-                        <div
-                          class="problem"
-                          v-for="(item, index) in basicQuestions2"
-                          :key="index"
-                        >
-                          <div style="margin-right: 40px">
-                            选择：{{ item.question }}
-                          </div>
-                          <div class="answer">
-                            <el-radio
-                              disabled
-                              v-model="item.answer"
-                              :label="item1"
-                              v-for="(item1, index) in item.choices"
-                              :key="index"
-                              >{{ item1 }}</el-radio
-                            >
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <!-- 部门问题模块 -->
-                    <div class="department">
-                      <div class="tit">部门问题</div>
-                      <!-- 自定义填空 -->
-                      <div
-                        class="question1"
-                        v-for="(item, index) in departmentQuestion1"
-                        :key="index"
-                      >
-                        <div class="problem">
-                          {{ item.department }}：{{ item.question }}
-                        </div>
-                        <div class="answer">{{ item.answer }}</div>
-                      </div>
-                      <!-- 自定义选择 -->
-                      <div class="question2">
-                        <div
-                          class="problem"
-                          v-for="(item, index) in departmentQuestion2"
-                          :key="index"
-                        >
-                          <div style="margin-right: 40px">
-                            {{ item.department }}：{{ item.question }}
-                          </div>
-                          <div class="answer">
-                            <el-radio
-                              disabled
-                              v-model="item.answer"
-                              :label="item1"
-                              v-for="(item1, index) in item.choices"
-                              :key="index"
-                              >{{ item1 }}</el-radio
-                            >
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <!-- 综合问题模块 -->
-                    <div class="department">
-                      <div class="tit">综合问题</div>
-                      <!-- 自定义填空 -->
-                      <div
-                        class="question1"
-                        v-for="(item, index) in bigQuestion1"
-                        :key="index"
-                      >
-                        <div class="problem">填空：{{ item.question }}</div>
-                        <div class="answer">{{ item.answer }}</div>
-                      </div>
-                      <!-- 自定义选择 -->
-                      <div class="question2">
-                        <div
-                          class="problem"
-                          v-for="(item, index) in bigQuestion2"
-                          :key="index"
-                        >
-                          <div style="margin-right: 40px">
-                            选择：{{ item.question }}
-                          </div>
-                          <div class="answer">
-                            <el-radio
-                              disabled
-                              v-model="item.answer"
-                              :label="item1"
-                              v-for="(item1, index) in item.choices"
-                              :key="index"
-                              >{{ item1 }}</el-radio
-                            >
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <!-- 底部按钮 -->
-                <span slot="footer" class="dialog-footer">
-                  <el-button type="primary" @click="dialogVisible2 = false"
-                    >关 闭</el-button
-                  >
-                </span>
-              </el-dialog>
-            </div>
           </template>
         </el-table-column>
         <!-- 面试评价 -->
@@ -413,7 +163,7 @@
                 <el-button
                   type="primary"
                   @click="clicksendEvaluation"
-                  :disabled="disable"
+                  :disabled="send"
                   >确 定</el-button
                 >
               </span>
@@ -422,6 +172,7 @@
         </el-table-column>
       </el-table>
     </div>
+    <resume-dialog ref="resumeDialog"></resume-dialog>
     <!-- 页脚 -->
     <div class="six">
       <div class="total">共有{{ totalNum }}条记录</div>
@@ -440,12 +191,16 @@
 </template>
 
 <script>
+import resumeDialog from '../dataBoard/components/resumeDialog.vue'
 export default {
+  components:{
+    resumeDialog
+  },
   data() {
     return {
       admissionId: sessionStorage.getItem('homeAdmissionId'),
       organizationId: sessionStorage.getItem('loginOrganizationId'),
-      disable: false,
+      send: false,
       //待拿取
       departmentId: '',
       departmentIds: [],
@@ -472,28 +227,12 @@ export default {
       dialogVisible1: false,
       //二维码的loading效果
       loadingtwo: true,
-      //简历弹出框显示与隐藏
-      dialogVisible2: false,
       //面试评价弹出框显示与隐藏
       dialogVisible3: false,
       //点击的学生学号
       stdId: '',
       //表格数据
       tableData: [],
-      //简历表单数据
-      ruleForm: {},
-      //基本问题（填空）
-      basicQuestions1: [],
-      // 基本问题（选择）
-      basicQuestions2: [],
-      //部门问题数组（填空）
-      departmentQuestion1: [],
-      // 部门问题数组（选择）
-      departmentQuestion2: [],
-      //综合问题数组（填空）
-      bigQuestion1: [],
-      //综合问题数组（选择）
-      bigQuestion2: [],
       //面试评价文字
       estimate: '',
       //面试得分
@@ -545,6 +284,7 @@ export default {
         .then((res) => {
           // console.log(res, '获取departmentid')
           if (res.data.code == 'A0400') {
+            this.send=true
             this.$message({
               showClose: true,
               message: res.data.message,
@@ -553,6 +293,7 @@ export default {
               duration: 2000
             })
           } else {
+            this.send=false
             let rellist = []
             let data = res.data.data.list
             data.forEach((item) => {
@@ -582,6 +323,7 @@ export default {
       get
         .then((res) => {
           if (res.data.code == 'A0400') {
+            this.send=true
             this.$message({
               showClose: true,
               message: res.data.message,
@@ -590,6 +332,7 @@ export default {
               duration: 2000
             })
           } else {
+            this.send=false
             // console.log(res, '获取面试轮次')
             this.round = res.data.data.round
             // this.dialogVisible3 = true
@@ -786,7 +529,9 @@ export default {
     //点击面试评价按钮获取学号和评价(ok)
     openEvaluate(row) {
       this.dialogVisible3 = true
+      this.send = false
       this.stdId = row.studentId
+      this.departmentId=''
       this.estimate = ''
       this.score = ''
       this.getDepartmentId()
@@ -1044,212 +789,12 @@ export default {
           })
         })
     },
-    //点击简历按钮获取学号清空数组(ok)
-    openResume(row) {
-      this.dialogVisible2 = true
-      this.stdId = row.studentId
-      // 清空
-      // 部门问题数组（填空）
-      this.departmentQuestion1 = []
-      // 部门问题数组（选择）
-      this.departmentQuestion2 = []
-      //综合问题数组（填空）
-      this.bigQuestion1 = []
-      //综合问题数组（选择）
-      this.bigQuestion2 = []
-      //基本问题数组（填空）
-      this.basicQuestions1 = []
-      //基本问题数组（选择）
-      this.basicQuestions2 = []
-      this.getResume()
+    //点击简历，引入简历组件
+    openResumeDialog(data) {
+      this.$refs.resumeDialog.resumeDialogVisible = true
+      this.$refs.resumeDialog.studentId = data.studentId
+      this.$refs.resumeDialog.Mymounted()
     },
-    //获取简历数据(ok)
-    getResume() {
-      let studentId = this.stdId
-      let admissionId = this.admissionId
-      let url = `api/student/info/show?studentId=${studentId}&admissionId=${admissionId}`
-      let get = this.$http.get(url)
-      get
-        .then((res) => {
-          // console.log(res, '简历数据')
-          //模拟数据
-          // let data = {
-          //   studentId: 20222445,
-          //   studentName: '张张张',
-          //   phone: '13000000000',
-          //   academy: '计算机学院',
-          //   major: '计算机科学与技术',
-          //   classNum: '1班',
-          //   gender: 2,
-          //   qq: '2310768059',
-          //   email: '2310789@qq.com',
-          //   height: 180.5,
-          //   weight: 50,
-          //   basicQuestions: [
-          //     {
-          //       multipleChoice: 0,
-          //       question: '你的暑假安排',
-          //       answer: '吃饭吃饭吃饭睡觉睡觉睡觉'
-          //     },
-          //     {
-          //       multipleChoice: 0,
-          //       question: '你的暑假安排',
-          //       answer: '吃饭吃饭吃饭睡觉睡觉睡觉'
-          //     },
-          //     {
-          //       multipleChoice: 1,
-          //       choices: ['重庆火锅', '四川火锅', '北京火锅'],
-          //       question: '喜欢重庆火锅还是四川火锅',
-          //       answer: 'A'
-          //     },
-          //     {
-          //       multipleChoice: 1,
-          //       choices: ['吃饭', '睡觉', '都喜欢'],
-          //       question: '喜欢吃饭还是睡觉',
-          //       answer: 'B'
-          //     }
-          //   ],
-          //   questions: [
-          //     {
-          //       department: '学习部',
-          //       multipleChoice: 0,
-          //       question: '生涯规划',
-          //       answer: 'haohaohao'
-          //     },
-          //     {
-          //       department: '体育部',
-          //       multipleChoice: 0,
-          //       question: '时间安排是什么样',
-          //       answer: 'goodgood'
-          //     },
-          //     {
-          //       department: '新媒体部',
-          //       multipleChoice: 1,
-          //       choices: ['吃饭', '睡觉', '都不喜欢', '都喜欢'],
-          //       question: '喜欢吃饭还是睡觉',
-          //       answer: 'D'
-          //     },
-          //     {
-          //       department: '科技协会',
-          //       multipleChoice: 1,
-          //       choices: ['重庆火锅', '四川火锅', '北京火锅'],
-          //       question: '喜欢重庆火锅还是四川火锅',
-          //       answer: 'C'
-          //     },
-          //     {
-          //       department: '综合问题',
-          //       multipleChoice: 0,
-          //       question: '综合问题1',
-          //       answer: '哈哈哈哈哈哈哈哈哈'
-          //     },
-          //     {
-          //       department: '综合问题',
-          //       multipleChoice: 0,
-          //       question: '综合问题1',
-          //       answer: '哈哈哈哈哈哈哈哈哈'
-          //     },
-          //     {
-          //       department: '综合问题',
-          //       multipleChoice: 1,
-          //       choices: ['选项A8574', '选项B785'],
-          //       question: '综合问题2',
-          //       answer: 'A'
-          //     },
-          //     {
-          //       department: '综合问题',
-          //       multipleChoice: 1,
-          //       choices: ['选项A8574', '选项B785'],
-          //       question: '综合问题2',
-          //       answer: 'A'
-          //     }
-          //   ]
-          // }
-          //真实数据
-          let data = res.data.data
-          if (data.gender == 1) {
-            data.gender = '男'
-          }
-          if (data.gender == 2) {
-            data.gender = '女'
-          }
-          //赋值
-          this.ruleForm = data
-          //数据分类（basequestion）
-          data.basicQuestions.forEach((item) => {
-            //填空
-            if (item.multipleChoice == 0) {
-              this.basicQuestions1.push(item)
-            }
-            //选择
-            if (item.multipleChoice == 1) {
-              if (item.answer == 'A') {
-                item.answer = item.choices[0]
-              }
-              if (item.answer == 'B') {
-                item.answer = item.choices[1]
-              }
-              if (item.answer == 'C') {
-                item.answer = item.choices[2]
-              }
-              if (item.answer == 'D') {
-                item.answer = item.choices[3]
-              }
-              this.basicQuestions2.push(item)
-            }
-          })
-          //数据分类（部门和综合问题）
-          data.questions.forEach((item) => {
-            if (item.department == '综合问题') {
-              if (item.multipleChoice == 0) {
-                this.bigQuestion1.push(item)
-              }
-              if (item.multipleChoice == 1) {
-                if (item.answer == 'A') {
-                  item.answer = item.choices[0]
-                }
-                if (item.answer == 'B') {
-                  item.answer = item.choices[1]
-                }
-                if (item.answer == 'C') {
-                  item.answer = item.choices[2]
-                }
-                if (item.answer == 'D') {
-                  item.answer = item.choices[3]
-                }
-                this.bigQuestion2.push(item)
-              }
-            } else {
-              if (item.multipleChoice == 0) {
-                this.departmentQuestion1.push(item)
-              }
-              if (item.multipleChoice == 1) {
-                if (item.answer == 'A') {
-                  item.answer = item.choices[0]
-                }
-                if (item.answer == 'B') {
-                  item.answer = item.choices[1]
-                }
-                if (item.answer == 'C') {
-                  item.answer = item.choices[2]
-                }
-                if (item.answer == 'D') {
-                  item.answer = item.choices[3]
-                }
-                this.departmentQuestion2.push(item)
-              }
-            }
-          })
-        })
-        .catch(() => {
-          this.$message({
-            showClose: true,
-            message: '获取简历失败',
-            type: 'error',
-            center: true,
-            duration: 2000
-          })
-        })
-    }
   }
 }
 </script>
@@ -1277,7 +822,7 @@ export default {
       height: 74px;
       margin-top: 15px;
       // margin-left: 20px;
-      padding: 0 20px;
+      padding: 0 35px;
       background-color: white;
     }
     .time {
@@ -1382,146 +927,6 @@ export default {
 
       min-height: 330px;
     }
-    .resumeTable {
-      /deep/.el-dialog__body {
-        padding: 20px 20px 0px 30px;
-      }
-      // 总大小
-      /deep/.el-dialog {
-        height: calc(100vh - 80px);
-        min-width: 840px;
-        min-height: 610px;
-        // min-height: calc(100vh - 150px);
-        margin: 0 auto 30px;
-      }
-      /deep/.el-input {
-        width: 150px;
-      }
-      /deep/.el-radio__input.is-disabled + span.el-radio__label {
-        color: #606266;
-      }
-      /deep/.el-input.is-disabled .el-input__inner {
-        color: #606266;
-      }
-      .resume {
-        height: calc(100vh - 60px - 150px);
-        min-width: 800px;
-        min-height: 480px;
-        // background-color: rgb(72, 143, 188);
-        background-color: white;
-        overflow: auto;
-        .bigTitle {
-          background-color: #fff;
-          font-size: 35px;
-          text-align: left;
-          font-weight: 700;
-          margin-top: 20px;
-          margin-bottom: 30px;
-        }
-        .registerTable {
-          // border-left: 2px solid gray;
-          padding-left: 18px;
-          .base {
-            // background-color: rgb(164, 199, 82);
-            margin-top: 15px;
-            .tit {
-              font-size: 25px;
-              // background-color: rgb(60, 170, 113);
-              text-align: left;
-            }
-            .form {
-              // background-color: rgb(78, 200, 186);
-              margin-top: 20px;
-              display: flex;
-              flex-wrap: wrap;
-              justify-content: flex-start;
-            }
-          }
-          .department {
-            // background-color: rgb(82, 199, 154);
-            margin-top: 0px;
-            .tit {
-              font-size: 25px;
-              // background-color: rgb(60, 170, 113);
-              text-align: left;
-            }
-            .question1 {
-              // background-color: rgb(189, 112, 112);
-              margin-top: 20px;
-              .problem {
-                font-size: 18px;
-                text-align: left;
-              }
-              .answer {
-                margin-top: 20px;
-                text-align: left;
-                margin-left: 30px;
-                margin-right: 30px;
-                font-size: 15px;
-                background-color: #f5f7fa;
-                padding: 17px;
-              }
-            }
-            .question2 {
-              // background-color: rgb(123, 207, 208);
-              margin-top: 20px;
-              .problem {
-                font-size: 18px;
-                text-align: left;
-                margin-bottom: 20px;
-              }
-              .answer {
-                margin-top: 20px;
-                text-align: left;
-                margin-left: 30px;
-                margin-right: 30px;
-                font-size: 15px;
-                background-color: #f5f7fa;
-                padding: 17px;
-              }
-            }
-          }
-          .basequestion {
-            .question1 {
-              // background-color: rgb(189, 112, 112);
-              // margin-top: 0px;
-              margin-bottom: 20px;
-              .problem {
-                font-size: 18px;
-                text-align: left;
-              }
-              .answer {
-                margin-top: 20px;
-                text-align: left;
-                margin-left: 30px;
-                margin-right: 30px;
-                font-size: 15px;
-                background-color: #f5f7fa;
-                padding: 17px;
-              }
-            }
-            .question2 {
-              // background-color: rgb(123, 207, 208);
-              margin-top: 0px;
-              .problem {
-                font-size: 18px;
-                text-align: left;
-                margin-bottom: 20px;
-              }
-              .answer {
-                margin-top: 20px;
-                text-align: left;
-                margin-left: 30px;
-                margin-right: 30px;
-                font-size: 15px;
-                background-color: #f5f7fa;
-                padding: 17px;
-              }
-            }
-          }
-        }
-      }
-    }
     .result {
       width: 700px;
       height: 350px;
@@ -1586,4 +991,24 @@ export default {
     }
   }
 }
+::-webkit-scrollbar {
+    /*滚动条整体样式*/
+    width: 10px; /*高宽分别对应横竖滚动条的尺寸*/
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    /*滚动条里面小方块*/
+    border-radius: 10px;
+    //background-color: #8c8c8c;
+    background-color: rgba(127, 126, 126, 0.25);
+  }
+
+  ::-webkit-scrollbar-track {
+    background-color: #f6f6f6;
+  }
+  ::-webkit-scrollbar-thumb,
+  ::-webkit-scrollbar-track {
+    border: 0;
+  }
 </style>

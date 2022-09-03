@@ -219,7 +219,7 @@
         <div class="arrange">
           <el-table
             :data="arrangeTable"
-            style="width: 80%"
+            style="width: 82%"
             class="table"
             border
           >
@@ -234,7 +234,7 @@
         <!-- 面试通知 -->
         <div class="bigTitle">面试通知</div>
         <div class="inform">
-          <el-table :data="informTable" style="width: 80%" class="table" border>
+          <el-table :data="informTable" style="width: 82%" class="table" border>
             <el-table-column prop="time" label="通知发送时间" align="center">
             </el-table-column>
             <el-table-column prop="message" label="通知内容" align="center">
@@ -247,7 +247,7 @@
           <!-- 表格 -->
           <el-table
             :data="evaluateTable"
-            style="width: 80%"
+            style="width: 82%"
             class="table"
             border
           >
@@ -315,7 +315,7 @@
         <!-- 面试结果 -->
         <div class="bigTitle">面试结果</div>
         <div class="result">
-          <el-table :data="resultTable" style="width: 80%" class="table" border>
+          <el-table :data="resultTable" style="width: 82%" class="table" border>
             <el-table-column prop="rounds" label="面试轮次" align="center">
             </el-table-column>
             <el-table-column prop="result" label="面试结果" align="center">
@@ -346,7 +346,7 @@ export default {
       round: 1,
       organizationId: sessionStorage.getItem('loginOrganizationId'),
       //选择问题的渲染
-      radio: '选中且禁用',
+      radio: '',
       //简历表单数据
       ruleForm: {},
       //基本问题（填空）
@@ -425,6 +425,8 @@ export default {
   methods: {
     Mymounted() {
       this.isShowdetail = 0
+      //清空
+      this.evaluation=[]
       this.getReply()
       this.getSign()
       this.getArrange()
@@ -926,6 +928,7 @@ export default {
     //获取简历数据(ok)
     getResume() {
       // 清空
+      this.ruleForm= {},
       // 部门问题数组（填空）
       this.departmentQuestion1 = []
       // 部门问题数组（选择）
@@ -1143,14 +1146,14 @@ export default {
   //大标题样式
   .bigTitle {
     background-color: #fff;
-    font-size: 35px;
+    font-size: 30px;
     text-align: left;
     font-weight: 700;
     margin-top: 20px;
   }
   // 报名表样式
   .registerTable {
-    border-left: 2px solid gray;
+    // border-left: 2px solid gray;
     padding-left: 13px;
     // .bigTitle{
     //   background-color: #fff;
@@ -1234,7 +1237,7 @@ export default {
           margin-top: 20px;
           text-align: left;
           margin-left: 30px;
-          margin-right: 30px;
+          margin-right: 50px;
           font-size: 15px;
           background-color: #f5f7fa;
           padding: 17px;
@@ -1279,9 +1282,9 @@ export default {
   .evaluate,
   .result {
     margin-top: 10px;
-    border-left: 2px solid gray;
+    // border-left: 2px solid gray;
     .table {
-      margin-left: 20px;
+      margin-left: 0px;
     }
   }
   .evaluate {
