@@ -426,7 +426,7 @@ export default {
     Mymounted() {
       this.isShowdetail = 0
       //清空
-      this.evaluation=[]
+      this.evaluation = []
       this.getReply()
       this.getSign()
       this.getArrange()
@@ -928,9 +928,9 @@ export default {
     //获取简历数据(ok)
     getResume() {
       // 清空
-      this.ruleForm= {},
-      // 部门问题数组（填空）
-      this.departmentQuestion1 = []
+      ;(this.ruleForm = {}),
+        // 部门问题数组（填空）
+        (this.departmentQuestion1 = [])
       // 部门问题数组（选择）
       this.departmentQuestion2 = []
       //综合问题数组（填空）

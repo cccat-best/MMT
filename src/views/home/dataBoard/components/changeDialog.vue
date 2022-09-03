@@ -686,8 +686,8 @@ export default {
       })
     },
     //清除提示语
-    clearValidate (formName) {
-      this.$refs[formName].clearValidate();
+    clearValidate(formName) {
+      this.$refs[formName].clearValidate()
     },
     //提交修改学号数据(ok)
     submitNumData() {

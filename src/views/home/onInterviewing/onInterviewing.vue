@@ -99,10 +99,10 @@
         <!-- 简历 -->
         <el-table-column prop="resume" label="简历" width="80" align="center">
           <template slot-scope="scope">
-              <!-- 弹窗按钮 -->
-              <el-button type="text" @click="openResumeDialog(scope.row)">
-                <i class="el-icon-s-order" style="font-size: 20px"></i>
-              </el-button>
+            <!-- 弹窗按钮 -->
+            <el-button type="text" @click="openResumeDialog(scope.row)">
+              <i class="el-icon-s-order" style="font-size: 20px"></i>
+            </el-button>
           </template>
         </el-table-column>
         <!-- 面试评价 -->
@@ -193,7 +193,7 @@
 <script>
 import resumeDialog from '../dataBoard/components/resumeDialog.vue'
 export default {
-  components:{
+  components: {
     resumeDialog
   },
   data() {
@@ -284,7 +284,7 @@ export default {
         .then((res) => {
           // console.log(res, '获取departmentid')
           if (res.data.code == 'A0400') {
-            this.send=true
+            this.send = true
             this.$message({
               showClose: true,
               message: res.data.message,
@@ -293,7 +293,7 @@ export default {
               duration: 2000
             })
           } else {
-            this.send=false
+            this.send = false
             let rellist = []
             let data = res.data.data.list
             data.forEach((item) => {
@@ -323,7 +323,7 @@ export default {
       get
         .then((res) => {
           if (res.data.code == 'A0400') {
-            this.send=true
+            this.send = true
             this.$message({
               showClose: true,
               message: res.data.message,
@@ -332,7 +332,7 @@ export default {
               duration: 2000
             })
           } else {
-            this.send=false
+            this.send = false
             // console.log(res, '获取面试轮次')
             this.round = res.data.data.round
             // this.dialogVisible3 = true
@@ -531,7 +531,7 @@ export default {
       this.dialogVisible3 = true
       this.send = false
       this.stdId = row.studentId
-      this.departmentId=''
+      this.departmentId = ''
       this.estimate = ''
       this.score = ''
       this.getDepartmentId()
@@ -794,7 +794,7 @@ export default {
       this.$refs.resumeDialog.resumeDialogVisible = true
       this.$refs.resumeDialog.studentId = data.studentId
       this.$refs.resumeDialog.Mymounted()
-    },
+    }
   }
 }
 </script>
@@ -992,23 +992,23 @@ export default {
   }
 }
 ::-webkit-scrollbar {
-    /*滚动条整体样式*/
-    width: 10px; /*高宽分别对应横竖滚动条的尺寸*/
-    height: 8px;
-  }
+  /*滚动条整体样式*/
+  width: 10px; /*高宽分别对应横竖滚动条的尺寸*/
+  height: 8px;
+}
 
-  ::-webkit-scrollbar-thumb {
-    /*滚动条里面小方块*/
-    border-radius: 10px;
-    //background-color: #8c8c8c;
-    background-color: rgba(127, 126, 126, 0.25);
-  }
+::-webkit-scrollbar-thumb {
+  /*滚动条里面小方块*/
+  border-radius: 10px;
+  //background-color: #8c8c8c;
+  background-color: rgba(127, 126, 126, 0.25);
+}
 
-  ::-webkit-scrollbar-track {
-    background-color: #f6f6f6;
-  }
-  ::-webkit-scrollbar-thumb,
-  ::-webkit-scrollbar-track {
-    border: 0;
-  }
+::-webkit-scrollbar-track {
+  background-color: #f6f6f6;
+}
+::-webkit-scrollbar-thumb,
+::-webkit-scrollbar-track {
+  border: 0;
+}
 </style>
