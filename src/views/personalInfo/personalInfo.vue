@@ -85,6 +85,28 @@
                 真实姓名
               </template>
               {{ name }}
+              <el-tooltip
+                class="item"
+                effect="dark"
+                content="请联系社团负责人进行修改"
+                placement="right"
+              >
+                <el-button
+                  type="info"
+                  icon="el-icon-edit"
+                  circle
+                  size="small"
+                  style="margin-left: auto"
+                ></el-button>
+              </el-tooltip>
+              <!-- <el-button
+                type="primary"
+                icon="el-icon-edit"
+                circle
+                size="small"
+                style="margin-left: auto"
+                disabled
+              ></el-button> -->
             </el-descriptions-item>
             <el-descriptions-item :contentStyle="{ 'text-align': 'center' }">
               <template slot="label">
@@ -108,6 +130,28 @@
                 学号
               </template>
               {{ studentId }}
+              <el-tooltip
+                class="item"
+                effect="dark"
+                content="请联系社团负责人进行修改"
+                placement="right"
+              >
+                <el-button
+                  type="info"
+                  icon="el-icon-edit"
+                  circle
+                  size="small"
+                  style="margin-left: auto"
+                ></el-button>
+              </el-tooltip>
+              <!-- <el-button
+                type="primary"
+                icon="el-icon-edit"
+                circle
+                size="small"
+                style="margin-left: auto"
+                disabled
+              ></el-button> -->
             </el-descriptions-item>
             <el-descriptions-item :contentStyle="{ 'text-align': 'center' }">
               <template slot="label">
@@ -470,6 +514,15 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.item {
+  margin: 4px;
+}
+
+.left .el-tooltip__popper,
+.right .el-tooltip__popper {
+  padding: 8px 10px;
+}
+
 :deep(.is-bordered-label) {
   width: 125px;
 }
