@@ -118,10 +118,13 @@
             </el-button>
             <!-- 面试评价弹窗 -->
             <el-dialog title="" :visible.sync="dialogVisible3" width="50%">
-              <div class="result" >
+              <div class="result">
                 <div class="title">面试评价</div>
-                <el-tabs tab-position="left" style="height: 44vh; margin-top: 20px;min-height: 322px;" v-model="activeName">
-
+                <el-tabs
+                  tab-position="left"
+                  style="height: 44vh; margin-top: 20px; min-height: 322px"
+                  v-model="activeName"
+                >
                   <el-tab-pane label="我的评价" name="first">
                     <div class="top1">
                       <div class="selectdepartmentid">选择评价部门:</div>
@@ -145,7 +148,7 @@
                         placeholder="在这里写下面试评价"
                         v-model="estimate"
                         resize="none"
-                        style="display: block; min-height: 220px;"
+                        style="display: block; min-height: 220px"
                       >
                       </el-input>
                     </div>
@@ -168,23 +171,23 @@
                       :data="evaluationTable"
                       border
                       height="44vh"
-                      style="width: 100%;min-height: 300px;">
+                      style="width: 100%; min-height: 300px"
+                    >
                       <el-table-column
                         prop="interviewer"
                         label="姓名"
                         align="center"
-                        width="120">
+                        width="120"
+                      >
                       </el-table-column>
                       <el-table-column
                         prop="score"
                         label="评分"
                         align="center"
-                        width="100">
+                        width="100"
+                      >
                       </el-table-column>
-                      <el-table-column
-                        prop="data"
-                        align="center"
-                        label="评价">
+                      <el-table-column prop="data" align="center" label="评价">
                       </el-table-column>
                     </el-table>
                   </el-tab-pane>
@@ -270,11 +273,11 @@ export default {
       //面试得分
       score: '',
       //防抖
-      timeout:null,
+      timeout: null,
       //面试总评
-      evaluationTable:[],
+      evaluationTable: [],
       // 面试评价默认打开
-      activeName:'first',
+      activeName: 'first',
       //加载
       loading: true
     }
@@ -573,7 +576,7 @@ export default {
       this.departmentId = ''
       this.estimate = ''
       this.score = ''
-      this.activeName='first'
+      this.activeName = 'first'
       this.getDepartmentId()
       // this.getEvaluation()
     },
@@ -642,16 +645,16 @@ export default {
             // ]
             //真实数据
             let data = res.data.data.paramList
-            if (data == []||data==null) {
+            if (data == [] || data == null) {
               this.estimate = ''
               this.score = ''
-              this.evaluationTable=[]
-            }else{
-              this.evaluationTable=data
-              data.forEach((item)=>{
-                if(item.isPresent==true){
-                  this.estimate=item.data
-                  this.score=item.score
+              this.evaluationTable = []
+            } else {
+              this.evaluationTable = data
+              data.forEach((item) => {
+                if (item.isPresent == true) {
+                  this.estimate = item.data
+                  this.score = item.score
                 }
               })
             }
@@ -878,7 +881,7 @@ export default {
       this.$refs.resumeDialog.Mymounted()
     },
     //防抖
-    getTableDataDelay(){
+    getTableDataDelay() {
       clearTimeout(this.timeout)
       this.timeout = setTimeout(this.getTableData, 700)
     }
@@ -1025,7 +1028,7 @@ export default {
         font-weight: 700;
         width: 150px;
       }
-      .top1{
+      .top1 {
         min-width: 400px;
       }
       .content {
@@ -1037,18 +1040,18 @@ export default {
         // min-height: 220px;
         // min-width: 800px;
         // background-color: blue;
-        /deep/.el-textarea__inner{
+        /deep/.el-textarea__inner {
           // height: 30vh;
           min-width: 400px;
           min-height: 400px;
         }
       }
-      .getscore{
+      .getscore {
         margin-top: 10px;
         min-width: 400px;
       }
     }
-    /deep/.el-input__inner{
+    /deep/.el-input__inner {
       height: 39px;
     }
     /deep/.el-dialog {
@@ -1061,7 +1064,7 @@ export default {
       // margin-top: 20vh;
     }
 
-    /deep/.el-dialog__body{
+    /deep/.el-dialog__body {
       min-width: 600px;
       padding: 30px 20px 10px 20px;
       // min-height: 300px;

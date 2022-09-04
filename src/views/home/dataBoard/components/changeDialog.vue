@@ -367,7 +367,7 @@ export default {
   methods: {
     //类mounted函数
     Mymounted() {
-      this.ruleForm={
+      this.ruleForm = {
         studentId: '',
         studentName: '',
         phone: '',
@@ -380,9 +380,9 @@ export default {
         height: '',
         weight: ''
       }
-      this.academyIds=[]
-      this.majorIds=[]
-      this.classIds=[]
+      this.academyIds = []
+      this.majorIds = []
+      this.classIds = []
       this.getAcdademy()
       this.getDetail()
       this.clearValidate('ruleForm')
