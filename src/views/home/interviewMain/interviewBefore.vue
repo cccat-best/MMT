@@ -233,14 +233,26 @@ export default {
           departmentId: part
         })
         .then((res) => {
-          this.lineData = res.data.data
-          this.lineInnerData = this.lineData.line.map((item) => {
-            // console.log(item)
-            return Object.assign(
-              {},
-              { data: item.numDate, type: 'line', stack: 'x', name: item.name }
-            )
-          })
+          if (res.data.code == '00000') {
+            this.lineData = res.data.data
+            this.lineInnerData = this.lineData.line.map((item) => {
+              // console.log(item)
+              return Object.assign(
+                {},
+                {
+                  data: item.numDate,
+                  type: 'line',
+                  stack: 'x',
+                  name: item.name
+                }
+              )
+            })
+          } else {
+            this.$message({
+              message: res.data.message,
+              type: 'warning'
+            })
+          }
         })
         .then(() => {
           console.log('数据', this.lineInnerData)

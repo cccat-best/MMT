@@ -324,9 +324,12 @@ export default {
         .then((res) => {
           console.log(res.data.data)
           this.nowRoomData = res.data.data
+          return res
         })
-        .then(() => {
-          this.getCardDone = true
+        .then((res) => {
+          if (res.data.code === '00000') {
+            this.getCardDone = true
+          }
         })
     }, 250),
     //为数组中对象的每一项添加新的属性
@@ -356,6 +359,8 @@ export default {
 .departmentNav {
   width: 100%;
   height: 25px;
+  margin-left: 20px;
+
   display: flex;
   flex-direction: row;
   align-items: center;
