@@ -2,12 +2,7 @@
   <div class="bottomBig">
     <div style="width: 85%">
       <el-table
-        :data="
-          information.slice(
-            (currentPage - 1) * pagesize,
-            currentPage * pagesize
-          )
-        "
+        :data="information"
         height="297px"
         :header-cell-style="{ 'text-align': 'center', height: 0 + 'px' }"
         style="width: 100%; border-radius: 8px; overflow: hidden"
@@ -315,6 +310,7 @@ export default {
     },
     //排序
     sortChange(column) {
+      this.currentPage = 1
       this.sortProp = column.prop
       this.sortOrder = column.order
       // ascending 升序/
@@ -370,6 +366,8 @@ export default {
         })
     },
     filterChange(filters) {
+      this.currentPage = 1
+
       let status = filters.status
       const sum = eval(status.join('+'))
       this.filterStatus = sum
@@ -484,6 +482,8 @@ export default {
         .then((response) => {
           // console.log(response)
           if (response.data.code == '00000') {
+            this.currentPage = 1
+
             this.win = response.data.data.win
             this.pass = response.data.data.pass
             this.wait = response.data.data.wait
@@ -511,6 +511,7 @@ export default {
         .then((response) => {
           // console.log(response)
           if (response.data.code == '00000') {
+            this.currentPage = 1
             this.win = response.data.data.win
             this.pass = response.data.data.pass
             this.wait = response.data.data.wait
@@ -544,6 +545,7 @@ export default {
           .then((response) => {
             // console.log(response)
             if (response.data.code == '00000') {
+              this.currentPage = 1
               this.win = response.data.data.win
               this.pass = response.data.data.pass
               this.wait = response.data.data.wait

@@ -125,7 +125,7 @@ export default {
         {
           iconClass: 'el-icon-picture',
           id: '2',
-          pagePath: '/superAdmin/informationSet/informationSetSaved',
+          pagePath: '/superAdmin/informationSet',
           title: '宣传信息设置'
         },
         {
