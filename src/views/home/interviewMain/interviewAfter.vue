@@ -55,22 +55,22 @@
                 v-if="drawDone && pieUseData[0] != null"
                 class="upperRightInner-item"
               >
-                部门一: {{ pieUseData[0].value }}人
+                {{ departmentPieFont[0] }}: {{ pieUseData[0].value }}人
               </div>
               <div
                 v-if="drawDone && pieUseData[1] != null"
                 class="upperRightInner-item"
               >
-                部门二: {{ pieUseData[1].value }}人
+                {{ departmentPieFont[1] }}: {{ pieUseData[1].value }}人
               </div>
               <div
                 v-if="drawDone && pieUseData[2] != null"
                 class="upperRightInner-item"
               >
-                部门三: {{ pieUseData[2].value }}人
+                {{ departmentPieFont[2] }}: {{ pieUseData[2].value }}人
               </div>
               <div v-if="drawDone && pieUseData[3] != null">
-                部门四: {{ pieUseData[3].value }}人
+                {{ departmentPieFont[3] }}: {{ pieUseData[3].value }}人
               </div>
             </div>
             <div style="width: 65%; height: 100%" ref="pie"></div>
@@ -168,7 +168,8 @@ export default {
       upperLeftData: {},
       lineData: [],
       lineInnerData: [],
-      lineLegend: []
+      lineLegend: [],
+      departmentPieFont: ['部门一', '部门二', '部门三', '部门四']
     }
   },
   methods: {
@@ -201,6 +202,16 @@ export default {
       this.getRightData(partId)
       this.drawPie(partId)
       this.drawLine(partId)
+      if (partId != null) {
+        this.departmentPieFont = [
+          '第一志愿',
+          '第二志愿',
+          '第三志愿',
+          '第四志愿'
+        ]
+      } else {
+        this.departmentPieFont = ['部门一', '部门二', '部门三', '部门四']
+      }
     },
     drawPie(part) {
       this.$http
