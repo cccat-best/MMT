@@ -50,7 +50,7 @@
             @click="removeYushe(item)"
           ></i>
           <span class="choose-name">{{ item.description }}</span>
-          <input type="text" class="choose-input" v-if="!item.selection"/>
+          <input type="text" class="choose-input" v-if="!item.selection" />
           <!-- 选择 -->
           <select class="choose-selection" v-if="item.selection">
             <option
