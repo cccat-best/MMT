@@ -2,7 +2,7 @@
   <div class="information">
     <div class="title">
       <i class="el-icon-folder-opened"></i>
-      <span> 宣传管理 </span>
+      <span> 宣传信息管理 </span>
     </div>
     <div class="content">
       <div class="left">
@@ -729,6 +729,7 @@ export default {
 
 <style lang="less" scoped>
 .title {
+  color: rgb(245, 125, 45);
   text-align: left;
 }
 .information {
@@ -936,6 +937,7 @@ export default {
         }
         img {
           height: 50px;
+          width: 50px;
           min-height: 35px;
           min-width: 35px;
           border-radius: 10px;

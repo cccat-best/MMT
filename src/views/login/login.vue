@@ -153,6 +153,10 @@ export default {
             if (res.data.code === '00000') {
               this.$message.success('恭喜你，登录成功')
               // 存储数据
+              console.log(
+                'res.data.data.loginOrganizationId',
+                res.data.data.loginOrganizationId
+              )
               sessionStorage.setItem(
                 'loginOrganizationName',
                 res.data.data.loginOrganizationName

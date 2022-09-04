@@ -1,35 +1,35 @@
 <template>
   <div class="interviewingMain">
     <div class="departmentNav">
-      <div class="navBtn" @click="reNewData()">全部</div>
-      <div
-        class="navBtn"
+      <el-button @click="reNewData()" size="medium">全部</el-button>
+      <el-button
+        size="medium"
         v-if="departmentNum.length > 0"
         @click="reNewData(departmentNum[0].departmentId)"
       >
         部门一 : {{ departmentNum[0].departmentName }}
-      </div>
-      <div
-        class="navBtn"
+      </el-button>
+      <el-button
+        size="medium"
         v-if="departmentNum.length > 1"
         @click="reNewData(departmentNum[1].departmentId)"
       >
         部门二 : {{ departmentNum[1].departmentName }}
-      </div>
-      <div
-        class="navBtn"
+      </el-button>
+      <el-button
+        size="medium"
         v-if="departmentNum.length > 2"
         @click="reNewData(departmentNum[2].departmentId)"
       >
         部门三 : {{ departmentNum[2].departmentName }}
-      </div>
-      <div
-        class="navBtn"
+      </el-button>
+      <el-button
+        size="medium"
         v-if="departmentNum.length > 3"
         @click="reNewData(departmentNum[3].departmentId)"
       >
         部门四 : {{ departmentNum[3].departmentName }}
-      </div>
+      </el-button>
     </div>
     <div class="interviewingInner">
       <div class="interviewingLeft">
@@ -55,22 +55,22 @@
                 v-if="drawDone && pieUseData[0] != null"
                 class="upperRightInner-item"
               >
-                部门一: {{ pieUseData[0].value }}人
+                {{ departmentPieFont[0] }}: {{ pieUseData[0].value }}人
               </div>
               <div
                 v-if="drawDone && pieUseData[1] != null"
                 class="upperRightInner-item"
               >
-                部门二: {{ pieUseData[1].value }}人
+                {{ departmentPieFont[1] }}: {{ pieUseData[1].value }}人
               </div>
               <div
                 v-if="drawDone && pieUseData[2] != null"
                 class="upperRightInner-item"
               >
-                部门三: {{ pieUseData[2].value }}人
+                {{ departmentPieFont[2] }}: {{ pieUseData[2].value }}人
               </div>
               <div v-if="drawDone && pieUseData[3] != null">
-                部门四: {{ pieUseData[3].value }}人
+                {{ departmentPieFont[3] }}: {{ pieUseData[3].value }}人
               </div>
             </div>
             <div style="width: 65%; height: 100%" ref="pie"></div>
@@ -168,14 +168,15 @@ export default {
       upperLeftData: {},
       lineData: [],
       lineInnerData: [],
-      lineLegend: []
+      lineLegend: [],
+      departmentPieFont: ['部门一', '部门二', '部门三', '部门四']
     }
   },
   methods: {
     getDepartments() {
       this.$http
         .get('/api/interview-data/time/getOrganizationAllDepartment', {
-          organizationId: 1
+          organizationId: sessionStorage.getItem('loginOrganizationId')
         })
         .then((res) => {
           console.log('获得部门：', res)
@@ -188,13 +189,11 @@ export default {
     getRightData(val) {
       this.$http
         .get('/api/interview-data/after/rank', {
-          //debug
-          organizationId: 1,
-          admissionId: 1,
+          organizationId: sessionStorage.getItem('loginOrganizationId'),
+          admissionId: sessionStorage.getItem('homeAdmissionId'),
           departmentId: val
         })
         .then((res) => {
-          //debug
           console.log('右边的数据', res)
           this.rightData = res.data.data
         })
@@ -203,13 +202,22 @@ export default {
       this.getRightData(partId)
       this.drawPie(partId)
       this.drawLine(partId)
+      if (partId != null) {
+        this.departmentPieFont = [
+          '第一志愿',
+          '第二志愿',
+          '第三志愿',
+          '第四志愿'
+        ]
+      } else {
+        this.departmentPieFont = ['部门一', '部门二', '部门三', '部门四']
+      }
     },
     drawPie(part) {
       this.$http
         .get('/api/interview-data/after/pass-num-pie', {
-          //debug
-          admissionId: 1,
-          organizationId: 1,
+          organizationId: sessionStorage.getItem('loginOrganizationId'),
+          admissionId: sessionStorage.getItem('homeAdmissionId'),
           departmentId: part
         })
         .then((res) => {
@@ -261,9 +269,8 @@ export default {
     getUpperLeft() {
       this.$http
         .get('/api/interview-data/after/registrations', {
-          //debug
-          admissionId: 1,
-          organizationId: 1
+          organizationId: sessionStorage.getItem('loginOrganizationId'),
+          admissionId: sessionStorage.getItem('homeAdmissionId')
         })
         .then((res) => {
           this.upperLeftData = res.data.data
@@ -275,9 +282,8 @@ export default {
     drawLine(part) {
       this.$http
         .get('/api/interview-data/after/line-graph', {
-          //debug
-          admissionId: 1,
-          organizationId: 1,
+          organizationId: sessionStorage.getItem('loginOrganizationId'),
+          admissionId: sessionStorage.getItem('homeAdmissionId'),
           departmentId: part
         })
         .then((res) => {
@@ -345,6 +351,7 @@ export default {
   display: flex;
   flex-direction: row;
   align-items: center;
+  margin-left: 20px;
 
   .navBtn {
     margin: 0 10px 0 10px;
