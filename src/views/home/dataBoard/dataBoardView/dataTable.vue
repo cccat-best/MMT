@@ -856,7 +856,7 @@ export default {
         admissionId: this.admissionId,
         organizationId: this.organizationId,
         pageNum: 1,
-        pageSize: 30
+        pageSize: 0
       }
       this.$http
         .post('api/data-panel/all-information', postData)
@@ -873,6 +873,7 @@ export default {
     },
     outPutExcel() {
       let updateBef = this.allData
+      // 添加id
       updateBef.forEach((item, index) => {
         item.id = index + 1
       })

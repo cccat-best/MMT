@@ -370,6 +370,21 @@
             <el-dialog title="" :visible.sync="dialogVisible3" width="50%">
               <div class="result">
                 <div class="title">面试评价</div>
+                <div>
+                  <div class="selectdepartmentid">选择评价部门:</div>
+                  <el-select
+                    v-model="departmentId"
+                    placeholder="请选择评价部门"
+                  >
+                    <el-option
+                      v-for="item in departmentIds"
+                      :key="item.departmentId"
+                      :label="item.departmentName"
+                      :value="item.departmentId"
+                    >
+                    </el-option>
+                  </el-select>
+                </div>
                 <div class="content">
                   <el-input
                     type="textarea"
@@ -395,7 +410,10 @@
               </div>
               <span slot="footer" class="dialog-footer">
                 <el-button @click="dialogVisible3 = false">取 消</el-button>
-                <el-button type="primary" @click="clicksendEvaluation"
+                <el-button
+                  type="primary"
+                  @click="clicksendEvaluation"
+                  :disabled="disable"
                   >确 定</el-button
                 >
               </span>
@@ -427,8 +445,10 @@ export default {
     return {
       admissionId: sessionStorage.getItem('homeAdmissionId'),
       organizationId: sessionStorage.getItem('loginOrganizationId'),
+      disable: false,
       //待拿取
-      departmentId: 0,
+      departmentId: '',
+      departmentIds: [],
       round: 1,
       //进度条定时器
       timer: '',
@@ -437,11 +457,7 @@ export default {
       //进度条数据
       barData: [],
       //下拉框的选项
-      options: [
-        {
-          address: '暂无数据'
-        }
-      ],
+      options: [],
       //下拉框选择的地点数据
       position: '',
       //当前页
@@ -496,12 +512,20 @@ export default {
     //监视地点改变
     position() {
       this.currentPage = 1
+      this.search = ''
       this.getTableData()
     },
     search() {
       this.currentPage = 1
       if (this.position != '') {
         this.getTableData()
+      }
+    },
+    departmentId() {
+      this.estimate = ''
+      this.score = ''
+      if (this.departmentId != '') {
+        this.getRound()
       }
     }
   },
@@ -529,12 +553,14 @@ export default {
               duration: 2000
             })
           } else {
-            // this.dialogVisible3 = true
-            // let data = 1
-            //真实数据
-            let data = res.data.data
-            this.departmentId = data
-            this.getRound()
+            let rellist = []
+            let data = res.data.data.list
+            data.forEach((item) => {
+              if (item != null) {
+                rellist.push(item)
+              }
+            })
+            this.departmentIds = rellist
           }
         })
         .catch(() => {
@@ -566,7 +592,7 @@ export default {
           } else {
             // console.log(res, '获取面试轮次')
             this.round = res.data.data.round
-            this.dialogVisible3 = true
+            // this.dialogVisible3 = true
             this.getEvaluation()
           }
         })
@@ -604,7 +630,7 @@ export default {
               message: res.data.message,
               type: 'warning',
               center: true,
-              duration: 0
+              duration: 4000
             })
             this.loading = false
           } else {
@@ -682,8 +708,8 @@ export default {
             this.barData = [
               {
                 total: '{暂无数据}',
-                startTime: '暂无数据',
-                endTime: '暂无数据',
+                startTime: res.data.message,
+                endTime: '',
                 proportion: 0
               }
             ]
@@ -759,7 +785,7 @@ export default {
     },
     //点击面试评价按钮获取学号和评价(ok)
     openEvaluate(row) {
-      // this.dialogVisible3 = true
+      this.dialogVisible3 = true
       this.stdId = row.studentId
       this.estimate = ''
       this.score = ''
@@ -771,6 +797,7 @@ export default {
       let sendData = {
         studentId: this.stdId,
         admissionId: this.admissionId,
+        organizationId: this.organizationId,
         departmentId: this.departmentId,
         round: this.round
       }
@@ -818,7 +845,15 @@ export default {
     },
     // 点击发送评价按钮(ok)
     clicksendEvaluation() {
-      if (this.estimate == '') {
+      if (this.departmentId == '') {
+        this.$message({
+          showClose: true,
+          message: '请选择评价部门',
+          type: 'error',
+          center: true,
+          duration: 2000
+        })
+      } else if (this.estimate == '') {
         this.$message({
           showClose: true,
           message: '评价不能为空',
@@ -826,18 +861,16 @@ export default {
           center: true,
           duration: 2000
         })
+      } else if (this.score == '') {
+        this.$message({
+          showClose: true,
+          message: '得分不能为空',
+          type: 'error',
+          center: true,
+          duration: 2000
+        })
       } else {
-        if (this.score == '') {
-          this.$message({
-            showClose: true,
-            message: '得分不能为空',
-            type: 'error',
-            center: true,
-            duration: 2000
-          })
-        } else {
-          this.sendEvaluation()
-        }
+        this.sendEvaluation()
       }
     },
     //发送评价(ok)
@@ -847,6 +880,7 @@ export default {
       let sendData = {
         studentId: this.stdId,
         admissionId: this.admissionId,
+        organizationId: this.organizationId,
         departmentId: this.departmentId,
         score: this.score,
         round: this.round,
@@ -856,16 +890,26 @@ export default {
       let url = `api/real-time-interview/appraise`
       let post = this.$http.post(url, sendData)
       post
-        .then(() => {
+        .then((res) => {
           // console.log(res, '发送面试评价')
-          this.dialogVisible3 = false
-          this.$message({
-            showClose: true,
-            message: '评价成功',
-            type: 'success',
-            center: true,
-            duration: 2000
-          })
+          if (res.data.code == 'A0400') {
+            this.$message({
+              showClose: true,
+              message: res.data.message,
+              type: 'error',
+              center: true,
+              duration: 2000
+            })
+          } else {
+            this.dialogVisible3 = false
+            this.$message({
+              showClose: true,
+              message: '评价成功',
+              type: 'success',
+              center: true,
+              duration: 2000
+            })
+          }
         })
         .catch(() => {
           this.$message({
@@ -1000,13 +1044,6 @@ export default {
           })
         })
     },
-    //点击搜索(ok)
-    // getSearch() {
-    //   this.currentPage = 1
-    //   if (this.position != '') {
-    //     this.getTableData()
-    //   }
-    // },
     //点击简历按钮获取学号清空数组(ok)
     openResume(row) {
       this.dialogVisible2 = true
@@ -1233,7 +1270,7 @@ export default {
     padding: 0 15px;
     height: 112px;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     overflow-x: auto;
     .progress {
       width: 180px;
@@ -1321,7 +1358,7 @@ export default {
     }
     .qrcode {
       float: right;
-      margin-right: 50px;
+      margin-right: 3vw;
     }
     .yes {
       position: absolute;
@@ -1402,7 +1439,7 @@ export default {
           }
           .department {
             // background-color: rgb(82, 199, 154);
-            margin-top: 20px;
+            margin-top: 0px;
             .tit {
               font-size: 25px;
               // background-color: rgb(60, 170, 113);
@@ -1411,44 +1448,6 @@ export default {
             .question1 {
               // background-color: rgb(189, 112, 112);
               margin-top: 20px;
-              .problem {
-                font-size: 18px;
-                text-align: left;
-              }
-              .answer {
-                margin-top: 20px;
-                text-align: left;
-                margin-left: 30px;
-                margin-right: 30px;
-                font-size: 15px;
-                background-color: #f5f7fa;
-                padding: 17px;
-              }
-            }
-            .question2 {
-              // background-color: rgb(123, 207, 208);
-              margin-top: 20px;
-              .problem {
-                font-size: 18px;
-                text-align: left;
-                margin-bottom: 15px;
-              }
-              .answer {
-                margin-top: 20px;
-                text-align: left;
-                margin-left: 30px;
-                margin-right: 30px;
-                font-size: 15px;
-                background-color: #f5f7fa;
-                padding: 17px;
-              }
-            }
-          }
-          .basequestion {
-            .question1 {
-              // background-color: rgb(189, 112, 112);
-              // margin-top: 0px;
-              margin-bottom: 20px;
               .problem {
                 font-size: 18px;
                 text-align: left;
@@ -1482,6 +1481,44 @@ export default {
               }
             }
           }
+          .basequestion {
+            .question1 {
+              // background-color: rgb(189, 112, 112);
+              // margin-top: 0px;
+              margin-bottom: 20px;
+              .problem {
+                font-size: 18px;
+                text-align: left;
+              }
+              .answer {
+                margin-top: 20px;
+                text-align: left;
+                margin-left: 30px;
+                margin-right: 30px;
+                font-size: 15px;
+                background-color: #f5f7fa;
+                padding: 17px;
+              }
+            }
+            .question2 {
+              // background-color: rgb(123, 207, 208);
+              margin-top: 0px;
+              .problem {
+                font-size: 18px;
+                text-align: left;
+                margin-bottom: 20px;
+              }
+              .answer {
+                margin-top: 20px;
+                text-align: left;
+                margin-left: 30px;
+                margin-right: 30px;
+                font-size: 15px;
+                background-color: #f5f7fa;
+                padding: 17px;
+              }
+            }
+          }
         }
       }
     }
@@ -1499,9 +1536,9 @@ export default {
       .content {
         margin-top: 15px;
         margin-left: 43px;
-        width: 600px;
+        width: 41vw;
         // width: 90%;
-        height: 250px;
+        height: 237px;
       }
     }
     /deep/.el-dialog {
@@ -1535,6 +1572,17 @@ export default {
       position: absolute;
       top: 5px;
       left: 70%;
+    }
+  }
+  .selectdepartmentid {
+    display: inline-block;
+    width: 140px;
+    height: 30px;
+    // background-color: rgb(175, 162, 162);
+    font-size: 20px;
+    margin-top: 20px;
+    /deep/.el-select {
+      width: 200px;
     }
   }
 }

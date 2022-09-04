@@ -348,7 +348,13 @@ export default {
           id: 0,
           name: '暂无数据'
         }
-      ]
+      ],
+      //请求回来的个人信息数据（用于作对比）
+      personmessage: {},
+      //判断是否修改了全部信息
+      isrewrite: false,
+      //判断是否修改了除学号的其他信息
+      other: false
     }
   },
   watch: {
@@ -557,6 +563,8 @@ export default {
           // }
           //真实数据
           let data = res.data.data
+          //用于作对比的数据
+          this.personmessage = res.data.data
           //赋值
           this.ruleForm.studentId = data.studentId
           this.ruleForm.studentName = data.studentName
@@ -661,7 +669,16 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          this.submitNumData()
+          this.isrewrite = false
+          this.other = false
+          //修改了学号
+          if (this.ruleForm.studentId != this.personmessage.studentId) {
+            this.isrewrite = true
+            this.submitNumData()
+          } else {
+            //未修改学号,判断其他信息
+            this.isChange()
+          }
         } else {
           return false
         }
@@ -688,7 +705,7 @@ export default {
               duration: 2000
             })
           } else {
-            this.submitData()
+            this.isChange()
           }
         })
         .catch(() => {
@@ -701,22 +718,131 @@ export default {
           })
         })
     },
+    //处理是否修改
+    isChange() {
+      this.personmessage.organizationId = this.organizationId
+      this.personmessage.studentId = this.ruleForm.studentId
+      //studentName
+      if (this.personmessage.studentName == this.ruleForm.studentName) {
+        this.personmessage.studentName = null
+      } else {
+        this.personmessage.studentName = this.ruleForm.studentName
+        this.isrewrite = true
+        this.other = true
+      }
+      //phone
+      if (this.personmessage.phone == this.ruleForm.phone) {
+        this.personmessage.phone = null
+      } else {
+        this.personmessage.phone = this.ruleForm.phone
+        this.isrewrite = true
+        this.other = true
+      }
+      //academyId
+      if (this.personmessage.academyId == this.ruleForm.academyId) {
+        this.personmessage.academyId = null
+      } else {
+        this.personmessage.academyId = this.ruleForm.academyId
+        this.isrewrite = true
+        this.other = true
+      }
+      //majorId
+      if (this.personmessage.majorId == this.ruleForm.majorId) {
+        this.personmessage.majorId = null
+      } else {
+        this.personmessage.majorId = this.ruleForm.majorId
+        this.isrewrite = true
+        this.other = true
+      }
+      //classId
+      if (this.personmessage.classId == this.ruleForm.classId) {
+        this.personmessage.classId = null
+      } else {
+        this.personmessage.classId = this.ruleForm.classId
+        this.isrewrite = true
+        this.other = true
+      }
+      //gender
+      if (this.personmessage.gender == this.ruleForm.gender) {
+        this.personmessage.gender = null
+      } else {
+        this.personmessage.gender = this.ruleForm.gender
+        this.isrewrite = true
+        this.other = true
+      }
+      //qq
+      if (this.personmessage.qq == this.ruleForm.qq) {
+        this.personmessage.qq = null
+      } else {
+        this.personmessage.qq = this.ruleForm.qq
+        this.isrewrite = true
+        this.other = true
+      }
+      //email
+      if (this.personmessage.email == this.ruleForm.email) {
+        this.personmessage.email = null
+      } else {
+        this.personmessage.email = this.ruleForm.email
+        this.isrewrite = true
+        this.other = true
+      }
+      //height
+      if (this.personmessage.height == this.ruleForm.height) {
+        this.personmessage.height = null
+      } else {
+        this.personmessage.height = this.ruleForm.height
+        this.isrewrite = true
+        this.other = true
+      }
+      //weight
+      if (this.personmessage.weight == this.ruleForm.weight) {
+        this.personmessage.weight = null
+      } else {
+        this.personmessage.weight = this.ruleForm.weight
+        this.isrewrite = true
+        this.other = true
+      }
+      if (this.isrewrite == false) {
+        this.$message({
+          showClose: true,
+          message: '没有需要修改的内容',
+          type: 'warning',
+          center: true,
+          duration: 2000
+        })
+      } else {
+        if (this.other == false) {
+          this.changeDialogVisible = false
+          this.$parent.reFreshWithoutSee()
+          this.$message({
+            showClose: true,
+            message: '修改成功',
+            type: 'success',
+            center: true,
+            duration: 2000
+          })
+        } else {
+          this.submitData()
+        }
+      }
+    },
     //修改个人信息(ok)
     submitData() {
-      let sendData = {
-        organizationId: this.organizationId,
-        studentId: this.ruleForm.studentId,
-        studentName: this.ruleForm.studentName,
-        phone: this.ruleForm.phone,
-        qq: this.ruleForm.qq,
-        academyId: this.ruleForm.academyId,
-        majorId: this.ruleForm.majorId,
-        classId: this.ruleForm.classId,
-        email: this.ruleForm.email,
-        gender: this.ruleForm.gender,
-        height: this.ruleForm.height,
-        weight: this.ruleForm.weight
-      }
+      // let sendData = {
+      //   organizationId: this.organizationId,
+      //   studentId: this.ruleForm.studentId,
+      //   studentName: this.ruleForm.studentName,
+      //   phone: this.ruleForm.phone,
+      //   qq: this.ruleForm.qq,
+      //   academyId: this.ruleForm.academyId,
+      //   majorId: this.ruleForm.majorId,
+      //   classId: this.ruleForm.classId,
+      //   email: this.ruleForm.email,
+      //   gender: this.ruleForm.gender,
+      //   height: this.ruleForm.height,
+      //   weight: this.ruleForm.weight
+      // }
+      let sendData = this.personmessage
       let url = `api/student/info/change-student-info`
       axios
         .put(url, sendData)
@@ -814,7 +940,7 @@ export default {
     }
     .question2 {
       // background-color: rgb(123, 207, 208);
-      margin-top: 20px;
+      margin-top: 0px;
       .problem {
         font-size: 18px;
         text-align: left;
@@ -833,7 +959,7 @@ export default {
   }
   .two {
     // background-color: rgb(82, 199, 154);
-    margin-top: 20px;
+    margin-top: 0px;
     .tit {
       font-size: 28px;
       // background-color: rgb(60, 170, 113);
@@ -862,7 +988,7 @@ export default {
       .problem {
         font-size: 18px;
         text-align: left;
-        margin-bottom: 15px;
+        margin-bottom: 20px;
       }
       .answer {
         margin-top: 20px;
