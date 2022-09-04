@@ -272,14 +272,14 @@
                   <tr>
                     <th>面试问题/面试官</th>
                     <!-- 渲染名字 -->
-                    <th v-for="(item, index) in evaluation" :key="index">
+                    <th v-for="(item, index) in evaluations" :key="index">
                       {{ item.name }}
                     </th>
                     <th>排名</th>
                   </tr>
                   <tr v-for="(item, index) in question" :key="index">
-                    <td>{{ item.questionName }}</td>
-                    <td v-for="(item, index) in item.evaluation" :key="index">
+                    <td>{{ item.question }}</td>
+                    <td v-for="(item, index) in item.evaluations" :key="index">
                       {{ item.score }}
                     </td>
                     <td>{{ item.rank }}</td>
@@ -295,12 +295,12 @@
                     <th>面试评价</th>
                   </tr>
                   <tr v-for="(item, index) in question" :key="index">
-                    <td>{{ item.questionName }}</td>
-                    <!-- <td v-for="(item, index) in item.evaluation" :key="index">{{item.name}}</td>
-                    <td v-for="(item, index) in item.evaluation" :key="index">{{item.comment}}</td> -->
+                    <td>{{ item.question }}</td>
+                    <!-- <td v-for="(item, index) in item.evaluations" :key="index">{{item.name}}</td>
+                    <td v-for="(item, index) in item.evaluations" :key="index">{{item.comment}}</td> -->
                     <td>
                       <span
-                        v-for="(item, index) in item.evaluation"
+                        v-for="(item, index) in item.evaluations"
                         :key="index"
                         ><strong>{{ item.name }}</strong
                         >:{{ item.comment }}<br
@@ -417,7 +417,7 @@ export default {
       //面试评价每一项的显示与隐藏
       isShowdetail: 0,
       // 面试官姓名评分和评价
-      evaluation: [],
+      evaluations: [],
       //问题及评分评价
       question: []
     }
@@ -426,7 +426,7 @@ export default {
     Mymounted() {
       this.isShowdetail = 0
       //清空
-      this.evaluation = []
+      this.evaluations = []
       this.getReply()
       this.getSign()
       this.getArrange()
@@ -817,8 +817,8 @@ export default {
           // let data = [
           //   {
           //     questionId: 1,
-          //     questionName: '问题1',
-          //     evaluation: [
+          //     question: '问题1',
+          //     evaluations: [
           //       {
           //         name: '张哈哈',
           //         comment: '该生很好哈哈哈哈该生很好哈哈哈哈该生很好哈哈哈哈',
@@ -838,55 +838,33 @@ export default {
           //     rank: 3
           //   },
           //   {
-          //     questionId: 2,
-          //     questionName: '问题2',
-          //     evaluation: [
+          //     questionId: 1,
+          //     question: '问题2',
+          //     evaluations: [
           //       {
-          //         name: '张',
-          //         comment: '字符数',
-          //         score: 290
+          //         name: '张哈哈',
+          //         comment: '该生哈哈',
+          //         score: 90
           //       },
           //       {
-          //         name: '李',
-          //         comment: ' 字符',
-          //         score: 590
+          //         name: '李大壮',
+          //         comment: '不错2！不',
+          //         score: 900
           //       },
           //       {
-          //         name: 'w',
-          //         comment: '个的！',
-          //         score: 590
+          //         name: '王小二',
+          //         comment: '不错错值得表扬表扬不错值得表扬表扬',
+          //         score: 580
           //       }
           //     ],
-          //     rank: 6
+          //     rank: 3
           //   },
-          //   {
-          //     questionId: 3,
-          //     questionName: '问题3',
-          //     evaluation: [
-          //       {
-          //         name: '张',
-          //         comment: '出租车！',
-          //         score: 920
-          //       },
-          //       {
-          //         name: '李',
-          //         comment: '正常！',
-          //         score: 2
-          //       },
-          //       {
-          //         name: 'w',
-          //         comment: '额发！',
-          //         score: 590
-          //       }
-          //     ],
-          //     rank: 9
-          //   }
           // ]
           //真实数据
           let data = res.data.data
           if (data.length == 0) {
             //渲染名字
-            this.evaluation = [
+            this.evaluations = [
               {
                 name: '暂无数据',
                 comment: '暂无数据',
@@ -897,8 +875,8 @@ export default {
             this.question = [
               {
                 questionId: 1,
-                questionName: '暂无数据',
-                evaluation: [
+                question: '暂无数据',
+                evaluations: [
                   {
                     name: '暂无数据',
                     comment: '暂无数据',
@@ -910,7 +888,7 @@ export default {
             ]
           } else {
             //渲染名字
-            this.evaluation = data[0].evaluation
+            this.evaluations = data[0].evaluations
             //问题评分评价
             this.question = data
           }
