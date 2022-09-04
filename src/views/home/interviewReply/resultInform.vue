@@ -317,7 +317,7 @@ export default {
       const url1 = 'api/interview-arrangement/getNotice'
       let params = {
         type: 3,
-        organizationId: 1
+        organizationId: sessionStorage['loginOrganizationId'] * 1
       }
       this.$http
         .get(url1, params)
