@@ -254,6 +254,7 @@
 export default {
   data() {
     return {
+      admissionId:sessionStorage.getItem('homeAdmissionId'),
       organizationId: sessionStorage.getItem('loginOrganizationId'),
       //organizationId:2,
       //弹框的显示与隐藏
@@ -381,7 +382,7 @@ export default {
     },
     // 向后端请求面试问题设置展示的数据
     getProblemList() {
-      let url1 = `api/organization/interview/n?organizationId=${this.organizationId}&round=${this.round}`
+      let url1 = `api/organization/interview/n?organizationId=${this.organizationId}&round=${this.round}&admissionId=${this.admissionId}`
       let get1 = this.$http.get(url1)
       get1
         .then((res) => {
@@ -401,7 +402,7 @@ export default {
     //进入编辑页面获取面试问题列表
     edit() {
       this.dialogFormVisible = true
-      let url1 = `api/organization/interview/n?organizationId=${this.organizationId}&round=${this.round}`
+      let url1 = `api/organization/interview/n?organizationId=${this.organizationId}&round=${this.round}&admissionId=${this.admissionId}`
       let get1 = this.$http.get(url1)
       get1
         .then((res) => {
@@ -530,6 +531,7 @@ export default {
     // 发送编辑问题请求
     resetProblemList() {
       let sendData1 = {
+        admissionId:this.admissionId,
         organizationId: this.organizationId,
         round: this.round,
         interviewList: this.form.dynamicItem
@@ -699,7 +701,6 @@ export default {
           })
           this.scoreEmpty = false
         }
-
         if (this.questionEmpty == true) {
           this.$message({
             showClose: true,
@@ -811,7 +812,6 @@ export default {
     -webkit-overflow-scrolling: touch;
     overflow-y: auto;
     white-space: nowrap;
-
     .problem11 {
       .tit1 {
         // background-color: rgb(63, 40, 40);
@@ -977,7 +977,6 @@ export default {
   -webkit-overflow-scrolling: touch;
   overflow-y: auto;
   white-space: nowrap;
-
   .problem11 {
     .tit1 {
       // background-color: rgb(63, 40, 40);

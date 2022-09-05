@@ -337,13 +337,17 @@ export default {
             this.send = false
             let rellist = []
             let data = res.data.data.list
-            data.forEach((item) => {
-              if (item != null) {
-                rellist.push(item)
+            if (data.length != 0 && data != null) {
+              data.forEach((item) => {
+                if (item != null) {
+                  rellist.push(item)
+                }
+              })
+              if (rellist.length != 0) {
+                this.departmentIds = rellist
+                this.departmentId = rellist[0].departmentId
               }
-            })
-            this.departmentIds = rellist
-            this.departmentId = rellist[0].departmentId
+            }
           }
         })
         .catch(() => {
@@ -574,6 +578,7 @@ export default {
       this.send = false
       this.stdId = row.studentId
       this.departmentId = ''
+      this.departmentIds = []
       this.estimate = ''
       this.score = ''
       this.activeName = 'first'
