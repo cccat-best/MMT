@@ -852,12 +852,12 @@ export default {
           data.realTimeInfoParamList.forEach((item, index) => {
             if (item.status == 4) {
               item.status = '未签到'
-            }
-            if (item.status == 5) {
+            } else if (item.status == 5) {
               item.status = '已签到'
-            }
-            if (item.status == 6) {
+            } else if (item.status == 6) {
               item.status = '面试中'
+            } else if (item.status == 7) {
+              item.status = '待定'
             }
             item.num = (this.currentPage - 1) * 10 + index + 1
           })

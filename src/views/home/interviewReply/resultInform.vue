@@ -141,7 +141,8 @@ export default {
       const url1 = 'api/interview-arrangement/getNotice'
       let params = {
         type: 3,
-        organizationId: sessionStorage['loginOrganizationId']
+        organizationId: sessionStorage['loginOrganizationId'],
+        round: this.round
       }
       this.$http
         .get(url1, params)
@@ -211,7 +212,8 @@ export default {
       const url1 = 'api/interview-arrangement/getNotice'
       let params = {
         type: 2,
-        organizationId: sessionStorage['loginOrganizationId']
+        organizationId: sessionStorage['loginOrganizationId'],
+        round: this.round
       }
       this.$http
         .get(url1, params)
@@ -317,7 +319,8 @@ export default {
       const url1 = 'api/interview-arrangement/getNotice'
       let params = {
         type: 3,
-        organizationId: sessionStorage['loginOrganizationId'] * 1
+        organizationId: sessionStorage['loginOrganizationId'] * 1,
+        round: this.round
       }
       this.$http
         .get(url1, params)
