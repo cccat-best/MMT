@@ -50,7 +50,24 @@
             @click="removeYushe(item)"
           ></i>
           <span class="choose-name">{{ item.description }}</span>
-          <input type="text" class="choose-input" />
+          <input type="text" class="choose-input" v-if="!item.selection" />
+          <!-- 选择 -->
+          <select class="choose-selection" v-if="item.selection">
+            <option
+              selected="selected"
+              disabled="disabled"
+              style="display: none"
+              value=""
+            ></option>
+            <option
+              v-for="(item1, index1) in item.option"
+              :key="'ys' + index1"
+              v-show="item1 != null"
+              :disabled="true"
+            >
+              {{ item1 }}
+            </option>
+          </select>
         </div>
       </div>
       <!-- 自定义问题展示 -->
@@ -243,30 +260,43 @@ export default {
       preList: [
         {
           isShow: false,
+          selection: false,
           description: '班级'
         },
         {
           isShow: false,
+          selection: false,
           description: '学院'
         },
         {
           isShow: false,
+          selection: false,
           description: '专业'
         },
         {
           isShow: false,
-          description: '性别'
+          selection: true,
+          description: '性别',
+          option: {
+            a: '男',
+            b: '女',
+            c: null,
+            d: null
+          }
         },
         {
           isShow: false,
+          selection: false,
           description: 'QQ'
         },
         {
           isShow: false,
+          selection: false,
           description: '生日'
         },
         {
           isShow: false,
+          selection: false,
           description: '身高'
         }
       ],
@@ -601,6 +631,13 @@ export default {
           margin-left: 6px;
           width: 182px;
           border-radius: 5px;
+          border: 1px solid #cecece;
+        }
+        .choose-selection {
+          margin-left: 6px;
+          width: 182px;
+          border-radius: 5px;
+          height: 25px;
           border: 1px solid #cecece;
         }
         .remove-opacity {
