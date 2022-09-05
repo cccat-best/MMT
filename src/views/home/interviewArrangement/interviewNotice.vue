@@ -192,7 +192,8 @@ export default {
                   const url1 = 'api/interview-arrangement/getNotice'
                   let params = {
                     type: 1,
-                    organizationId: sessionStorage['loginOrganizationId']
+                    organizationId: sessionStorage['loginOrganizationId'],
+                    round: this.round
                   }
                   this.$http
                     .get(url1, params)
