@@ -120,43 +120,78 @@
             <el-dialog title="" :visible.sync="dialogVisible3" width="50%">
               <div class="result">
                 <div class="title">面试评价</div>
-                <div>
-                  <div class="selectdepartmentid">选择评价部门:</div>
-                  <el-select
-                    v-model="departmentId"
-                    placeholder="请选择评价部门"
-                  >
-                    <el-option
-                      v-for="item in departmentIds"
-                      :key="item.departmentId"
-                      :label="item.departmentName"
-                      :value="item.departmentId"
+                <el-tabs
+                  tab-position="left"
+                  style="height: 44vh; margin-top: 20px; min-height: 322px"
+                  v-model="activeName"
+                >
+                  <el-tab-pane label="我的评价" name="first">
+                    <div class="top1">
+                      <div class="selectdepartmentid">选择评价部门:</div>
+                      <el-select
+                        v-model="departmentId"
+                        placeholder="请选择评价部门"
+                      >
+                        <el-option
+                          v-for="item in departmentIds"
+                          :key="item.departmentId"
+                          :label="item.departmentName"
+                          :value="item.departmentId"
+                        >
+                        </el-option>
+                      </el-select>
+                    </div>
+                    <div class="content">
+                      <el-input
+                        type="textarea"
+                        :rows="10"
+                        placeholder="在这里写下面试评价"
+                        v-model="estimate"
+                        resize="none"
+                        style="display: block; min-height: 220px"
+                      >
+                      </el-input>
+                    </div>
+                    <div class="getscore">
+                      <span style="font-size: 20px; margin-right: 10px"
+                        >面试总得分:</span
+                      >
+                      <el-input
+                        placeholder="请输入得分"
+                        v-model="score"
+                        clearable
+                        type="number"
+                        style="width: 200px"
+                      >
+                      </el-input>
+                    </div>
+                  </el-tab-pane>
+                  <el-tab-pane label="全部评价" name="second">
+                    <el-table
+                      :data="evaluationTable"
+                      border
+                      height="44vh"
+                      style="width: 100%; min-height: 300px"
                     >
-                    </el-option>
-                  </el-select>
-                </div>
-                <div class="content">
-                  <el-input
-                    type="textarea"
-                    :rows="10"
-                    placeholder="在这里写下面试评价"
-                    v-model="estimate"
-                    resize="none"
-                  >
-                  </el-input>
-                </div>
-                <div class="getscore">
-                  <span style="font-size: 20px; margin-right: 10px"
-                    >面试总得分:</span
-                  >
-                  <el-input
-                    placeholder="请输入得分"
-                    v-model="score"
-                    clearable
-                    style="width: 200px"
-                  >
-                  </el-input>
-                </div>
+                      <el-table-column
+                        prop="interviewer"
+                        label="姓名"
+                        align="center"
+                        width="120"
+                      >
+                      </el-table-column>
+                      <el-table-column
+                        prop="score"
+                        label="评分"
+                        align="center"
+                        width="100"
+                      >
+                      </el-table-column>
+                      <el-table-column prop="data" align="center" label="评价">
+                      </el-table-column>
+                    </el-table>
+                  </el-tab-pane>
+                </el-tabs>
               </div>
               <span slot="footer" class="dialog-footer">
                 <el-button @click="dialogVisible3 = false">取 消</el-button>
@@ -237,6 +272,12 @@ export default {
       estimate: '',
       //面试得分
       score: '',
+      //防抖
+      timeout: null,
+      //面试总评
+      evaluationTable: [],
+      // 面试评价默认打开
+      activeName: 'first',
       //加载
       loading: true
     }
@@ -257,7 +298,7 @@ export default {
     search() {
       this.currentPage = 1
       if (this.position != '') {
-        this.getTableData()
+        this.getTableDataDelay()
       }
     },
     departmentId() {
@@ -302,6 +343,7 @@ export default {
               }
             })
             this.departmentIds = rellist
+            this.departmentId = rellist[0].departmentId
           }
         })
         .catch(() => {
@@ -534,6 +576,7 @@ export default {
       this.departmentId = ''
       this.estimate = ''
       this.score = ''
+      this.activeName = 'first'
       this.getDepartmentId()
       // this.getEvaluation()
     },
@@ -562,20 +605,59 @@ export default {
             // this.dialogVisible3 = true
             // console.log(res, '面试评价数据')
             // 模拟数据
-            // let data = {
-            //   data: 'good',
-            //   score: '80'
-            // }
+            //   let data = [
+            //   {
+            //    interviewer:'张科',
+            //    data:'good',
+            //    score:'50',
+            //    isPresent:false
+            //   }, {
+            //     interviewer:'张科fs ',
+            //    data:'good',
+            //    score:'50',
+            //    isPresent:false
+            //   }, {
+            //     interviewer:'张科0',
+            //     data:'good1111',
+            //     score:'100',
+            //     isPresent:false
+            //   }, {
+            //     interviewer:'张sfdfe科',
+            //     data:'good',
+            //     score:'5055',
+            //     isPresent:true
+            //   },{
+            //     interviewer:'张科sf',
+            //     data:'good',
+            //     score:'50',
+            //     isPresent:false
+            //   },{
+            //     interviewer:'张efsw科',
+            //     data:'good',
+            //     score:'50',
+            //     isPresent:false
+            //   },{
+            //     interviewer:'张科',
+            //     data:'good',
+            //     score:'50',
+            //     isPresent:false
+            //   },
+            // ]
             //真实数据
-            let data = res.data.data
-            if (data.data == null) {
-              data.data = ''
+            let data = res.data.data.paramList
+            if (data == [] || data == null) {
+              this.estimate = ''
+              this.score = ''
+              this.evaluationTable = []
+            } else {
+              this.evaluationTable = data
+              data.forEach((item) => {
+                if (item.isPresent == true) {
+                  this.estimate = item.data
+                  this.score = item.score
+                }
+              })
             }
-            if (data.score == null) {
-              data.score = ''
-            }
-            this.estimate = data.data
-            this.score = data.score
           }
         })
         .catch(() => {
@@ -774,6 +856,9 @@ export default {
             if (item.status == 5) {
               item.status = '已签到'
             }
+            if (item.status == 6) {
+              item.status = '面试中'
+            }
             item.num = (this.currentPage - 1) * 10 + index + 1
           })
           this.totalNum = data.total
@@ -794,6 +879,11 @@ export default {
       this.$refs.resumeDialog.resumeDialogVisible = true
       this.$refs.resumeDialog.studentId = data.studentId
       this.$refs.resumeDialog.Mymounted()
+    },
+    //防抖
+    getTableDataDelay() {
+      clearTimeout(this.timeout)
+      this.timeout = setTimeout(this.getTableData, 700)
     }
   }
 }
@@ -924,35 +1014,60 @@ export default {
   .five {
     .table {
       // height: calc(100vh - 379px);
-
       min-height: 330px;
     }
     .result {
-      width: 700px;
-      height: 350px;
+      width: 47vw;
+      height: 49vh;
       min-width: 400px;
+      min-height: 370px;
       background-color: white;
       .title {
         font-size: 28px;
         color: rgb(82, 82, 82);
         font-weight: 700;
-        width: 200px;
+        width: 150px;
+      }
+      .top1 {
+        min-width: 400px;
       }
       .content {
-        margin-top: 15px;
-        margin-left: 43px;
-        width: 41vw;
-        // width: 90%;
-        height: 237px;
+        margin-top: 12px;
+        margin-left: 1.5vw;
+        min-width: 400px;
+        width: 95%;
+        // height: 31.4vh;
+        // min-height: 220px;
+        // min-width: 800px;
+        // background-color: blue;
+        /deep/.el-textarea__inner {
+          // height: 30vh;
+          min-width: 400px;
+          min-height: 400px;
+        }
+      }
+      .getscore {
+        margin-top: 10px;
+        min-width: 400px;
       }
     }
+    /deep/.el-input__inner {
+      height: 39px;
+    }
     /deep/.el-dialog {
-      height: calc(100vh - 242px);
+      // height: calc(100vh - 242px);
       // background-color: rgb(58, 145, 129);
-      min-width: 750px;
+      min-width: 600px;
       min-height: 500px;
       // min-height: calc(100vh - 150px);
-      margin: 0 auto 30px;
+      // margin: 0 auto 30px;
+      // margin-top: 20vh;
+    }
+
+    /deep/.el-dialog__body {
+      min-width: 600px;
+      padding: 30px 20px 10px 20px;
+      // min-height: 300px;
     }
   }
   .six {
@@ -985,7 +1100,7 @@ export default {
     height: 30px;
     // background-color: rgb(175, 162, 162);
     font-size: 20px;
-    margin-top: 20px;
+    // margin-top: 20px;
     /deep/.el-select {
       width: 200px;
     }

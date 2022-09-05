@@ -329,26 +329,11 @@ export default {
         }
       ],
       //学院选择项
-      academyIds: [
-        {
-          id: 0,
-          name: '暂无数据'
-        }
-      ],
+      academyIds: [],
       //专业选择项
-      majorIds: [
-        {
-          id: 0,
-          name: '暂无数据'
-        }
-      ],
+      majorIds: [],
       // 班级选择项
-      classIds: [
-        {
-          id: 0,
-          name: '暂无数据'
-        }
-      ],
+      classIds: [],
       //请求回来的个人信息数据（用于作对比）
       personmessage: {},
       //判断是否修改了全部信息
@@ -382,6 +367,22 @@ export default {
   methods: {
     //类mounted函数
     Mymounted() {
+      this.ruleForm = {
+        studentId: '',
+        studentName: '',
+        phone: '',
+        academyId: '',
+        majorId: '',
+        classId: '',
+        gender: '',
+        qq: '',
+        email: '',
+        height: '',
+        weight: ''
+      }
+      this.academyIds = []
+      this.majorIds = []
+      this.classIds = []
       this.getAcdademy()
       this.getDetail()
       this.clearValidate('ruleForm')
