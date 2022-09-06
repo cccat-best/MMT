@@ -254,7 +254,7 @@
 export default {
   data() {
     return {
-      admissionId:sessionStorage.getItem('homeAdmissionId'),
+      admissionId: sessionStorage.getItem('homeAdmissionId'),
       organizationId: sessionStorage.getItem('loginOrganizationId'),
       //organizationId:2,
       //弹框的显示与隐藏
@@ -531,7 +531,7 @@ export default {
     // 发送编辑问题请求
     resetProblemList() {
       let sendData1 = {
-        admissionId:this.admissionId,
+        admissionId: this.admissionId,
         organizationId: this.organizationId,
         round: this.round,
         interviewList: this.form.dynamicItem
