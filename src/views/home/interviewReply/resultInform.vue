@@ -79,7 +79,8 @@ export default {
           organizationId: sessionStorage['loginOrganizationId'] * 1,
           admissionId: sessionStorage['homeAdmissionId'] * 1,
           departmentId: this.departmentId * 1,
-          round: this.round
+          round: this.round,
+          type: 1
         }
         this.$http
           .post(url8, data8)
