@@ -238,86 +238,49 @@ export default {
         let filterDepartment = []
         filterDepartment = filters.department
         let length = filterDepartment.length
-        let sum = 0
-        for (let i = 0; i < length; ++i) {
-          if (filterDepartment[i] == 0) {
-            let url = 'api/interview-arrangement/info/like'
-            let params = {}
-            if (this.filterStatus == null) {
-              params = {
-                admissionId: sessionStorage['homeAdmissionId'],
-                round: this.round,
-                departmentId: 0,
-                keyword: this.search
-              }
-            } else {
-              params = {
-                admissionId: sessionStorage['homeAdmissionId'],
-                round: this.round,
-                departmentId: 0,
-                keyword: this.search,
-                status: this.filterStatus
-              }
-            }
-            this.$http
-              .get(url, params)
-              .then((response) => {
-                console.log(response)
-                if (response.data.code == '00000') {
-                  this.tableData = []
-                  this.total = response.data.data.total
-                  this.tableData = response.data.data.infoBackParamList
-                } else {
-                  this.$message.error(response.data.message)
-                }
-              })
-              .catch((error) => {
-                console.log(error)
-                this.$message.error('获取筛选信息失败！')
-              })
-            return 0
-          } else {
-            sum += filterDepartment[i] * Math.pow(10, length - 1 - i)
-          }
-        }
-        this.filterDepartmentId = sum
-        // console.log(filterDepartment)
-        // console.log(sum)
-        let url = 'api/interview-arrangement/info/like'
-        let params = {}
-        if (this.filterStatus == null) {
-          params = {
-            admissionId: sessionStorage['homeAdmissionId'],
-            round: this.round,
-            keyword: this.search,
-            departmentId: sum
-          }
+        if (length > 1) {
+          this.$alert('部门筛选不允许多选！', '提示', {
+            confirmButtonText: '确定',
+            type: 'warning'
+          })
         } else {
-          params = {
-            admissionId: sessionStorage['homeAdmissionId'],
-            round: this.round,
-            keyword: this.search,
-            departmentId: sum,
-            status: this.filterStatus
-          }
-        }
-
-        this.$http
-          .get(url, params)
-          .then((response) => {
-            console.log(response)
-            if (response.data.code == '00000') {
-              this.tableData = []
-              this.total = response.data.data.total
-              this.tableData = response.data.data.infoBackParamList
-            } else {
-              this.$message.error(response.data.message)
+          this.filterDepartmentId = filterDepartment[0]
+          let url = 'api/interview-arrangement/info/like'
+          let params = {}
+          if (this.filterStatus == null) {
+            params = {
+              admissionId: sessionStorage['homeAdmissionId'],
+              round: this.round,
+              keyword: this.search,
+              departmentId: this.filterDepartmentId
             }
-          })
-          .catch((error) => {
-            console.log(error)
-            this.$message.error('获取筛选信息失败！')
-          })
+          } else {
+            params = {
+              admissionId: sessionStorage['homeAdmissionId'],
+              round: this.round,
+              keyword: this.search,
+              departmentId: this.filterDepartmentId,
+              status: this.filterStatus
+            }
+          }
+
+          this.$http
+            .get(url, params)
+            .then((response) => {
+              console.log(response)
+              if (response.data.code == '00000') {
+                this.tableData = []
+                this.total = response.data.data.total
+                this.tableData = response.data.data.infoBackParamList
+              } else {
+                this.$message.error(response.data.message)
+              }
+            })
+            .catch((error) => {
+              console.log(error)
+              this.$message.error('获取筛选信息失败！')
+            })
+        }
       } else if (filters.status) {
         console.log(filters.status)
         if (filters.status.length == 0 || filters.status.length == 2) {
