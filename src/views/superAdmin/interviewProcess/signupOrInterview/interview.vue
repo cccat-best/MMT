@@ -111,7 +111,7 @@
                     placeholder="请输入内容"
                     v-model="informEdit.a"
                   ></el-input
-                  >{name},{department}邀请你进行{number}面面试。面试时间:{time};面试场地:{location}<el-input
+                  >{name},{department}邀请你进行{round}面试。面试时间:{time};面试场地:{location}<el-input
                     style="width: 450px"
                     placeholder="请输入内容"
                     v-model="informEdit.b"
@@ -561,7 +561,7 @@ export default {
         type: 1,
         messageTemplate:
           this.informEdit.a +
-          '{name},{department}邀请你进行{number}面面试。面试时间:{time};面试场地:{location}' +
+          '{name},{department}邀请你进行{round}面试。面试时间:{time};面试场地:{location}' +
           this.informEdit.b
       }
       let url2 = `api/organization/interview/message`
